@@ -80,11 +80,15 @@ function createSearchIndex(allBlogs: any[]) {
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
   ) {
+    const searchData = allCoreContent(sortPosts(allBlogs)).map((doc) => ({
+      ...doc,
+      path: `${doc.author[0]}/relato/${doc.slug}`,
+    }));
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
-      JSON.stringify(allCoreContent(sortPosts(allBlogs)))
-    )
-    console.log('Local search index generated...')
+      JSON.stringify(searchData)
+    );
+    console.log('Local search index generated...');
   }
 }
 
@@ -137,7 +141,7 @@ export const Relato = defineDocumentType(() => ({
     date: { type: 'date', required: true },
     summary: { type: 'string', required: true },
     slug: { type: 'string', required: true },
-    authors: { type: 'list', of: { type: 'string' }, required: false },
+    author: { type: 'list', of: { type: 'string' }, required: true },
     image: { type: 'string', required: false },
     images: { type: 'list', of: { type: 'string' }, required: false },
     layout: { type: 'string', required: false },
@@ -149,7 +153,7 @@ export const Relato = defineDocumentType(() => ({
     path: {
       type: 'string',
       resolve: (doc) => {
-        const author = doc.authors?.[0] || 'default'
+        const author = doc.author[0]
         return `${author}/relato/${doc.slug}`
       },
     },

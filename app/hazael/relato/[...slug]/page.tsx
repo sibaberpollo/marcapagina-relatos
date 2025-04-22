@@ -29,7 +29,7 @@ export async function generateMetadata(props: {
   const post = allRelatos.find((p) => p.slug === slug)
   if (!post) return
 
-  const authorList = post.authors || ['default']
+  const authorList = post.author || ['default']
   const authorDetails = authorList.map((author) => {
     const authorResult = allAuthors.find((a) => a.slug === author)!
     return coreContent(authorResult as Authors)
@@ -89,7 +89,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const next = posts[idx - 1] ?? null
   const post = allRelatos.find((p) => p.slug === slug)! as Relato
 
-  const authorDetails = (post.authors || ['default']).map((author) => {
+  const authorDetails = (post.author || ['default']).map((author) => {
     const authorResult = allAuthors.find((a) => a.slug === author)!
     return coreContent(authorResult as Authors)
   })
