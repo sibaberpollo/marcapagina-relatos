@@ -54,19 +54,51 @@ const Monitor = () => (
 )
 const Blank = () => <svg className="h-6 w-6" />
 
+const Settings = () => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    viewBox="0 0 20 20"
+    fill="currentColor"
+    className="group:hover:text-gray-100 h-6 w-6"
+  >
+    <path
+      fillRule="evenodd"
+      d="M7.84 1.804A1 1 0 018.82 1h2.36a1 1 0 01.98.804l.331 1.652a6.993 6.993 0 011.929 1.115l1.598-.54a1 1 0 011.186.447l1.18 2.044a1 1 0 01-.205 1.251l-1.267 1.113a7.047 7.047 0 010 2.228l1.267 1.113a1 1 0 01.206 1.25l-1.18 2.045a1 1 0 01-1.187.447l-1.598-.54a6.993 6.993 0 01-1.929 1.115l-.33 1.652a1 1 0 01-.98.804H8.82a1 1 0 01-.98-.804l-.331-1.652a6.993 6.993 0 01-1.929-1.115l-1.598.54a1 1 0 01-1.186-.447l-1.18-2.044a1 1 0 01.205-1.251l1.267-1.114a7.05 7.05 0 010-2.227L1.821 7.773a1 1 0 01-.206-1.25l1.18-2.045a1 1 0 011.187-.447l1.598.54A6.993 6.993 0 017.51 3.456l.33-1.652zM10 13a3 3 0 100-6 3 3 0 000 6z"
+      clipRule="evenodd"
+    />
+  </svg>
+)
+
 const ThemeSwitch = () => {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme, resolvedTheme } = useTheme()
+  const [fontSize, setFontSize] = useState(16)
 
   // When mounted on client, now we can show the UI
-  useEffect(() => setMounted(true), [])
+  useEffect(() => {
+    setMounted(true)
+    const savedFontSize = localStorage.getItem('fontSize')
+    if (savedFontSize) {
+      setFontSize(Number(savedFontSize))
+      document.documentElement.style.fontSize = `${savedFontSize}px`
+    }
+  }, [])
+
+  const handleFontSizeChange = (increment: boolean) => {
+    const newSize = increment ? fontSize + 1 : fontSize - 1
+    if (newSize >= 12 && newSize <= 24) {
+      setFontSize(newSize)
+      document.documentElement.style.fontSize = `${newSize}px`
+      localStorage.setItem('fontSize', newSize.toString())
+    }
+  }
 
   return (
     <div className="flex items-center">
       <Menu as="div" className="relative inline-block text-left">
         <div className="hover:text-primary-500 dark:hover:text-primary-400 flex items-center justify-center">
-          <MenuButton aria-label="Theme switcher">
-            {mounted ? resolvedTheme === 'dark' ? <Moon /> : <Sun /> : <Blank />}
+          <MenuButton aria-label="Configuración">
+            {mounted ? <Settings /> : <Blank />}
           </MenuButton>
         </div>
         <Transition
@@ -78,9 +110,30 @@ const ThemeSwitch = () => {
           leaveFrom="transform opacity-100 scale-100"
           leaveTo="transform opacity-0 scale-95"
         >
-          <MenuItems className="ring-opacity-5 absolute right-0 z-50 mt-2 w-32 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-hidden dark:bg-gray-800">
-            <RadioGroup value={theme} onChange={setTheme}>
-              <div className="p-1">
+          <MenuItems className="ring-opacity-5 absolute right-0 z-50 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-hidden dark:bg-gray-800">
+            <div className="p-2">
+              <div className="flex items-center justify-between mb-2">
+                <span className="text-sm">Zoom:</span>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => handleFontSizeChange(false)}
+                    className="px-2 py-1 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                    disabled={fontSize <= 12}
+                  >
+                    A-
+                  </button>
+                  <button
+                    onClick={() => handleFontSizeChange(true)}
+                    className="px-2 py-1 text-sm rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                    disabled={fontSize >= 24}
+                  >
+                    A+
+                  </button>
+                </div>
+              </div>
+            </div>
+            <div className="p-1">
+              <RadioGroup value={theme} onChange={setTheme}>
                 <Radio value="light">
                   <MenuItem>
                     {({ focus }) => (
@@ -127,8 +180,8 @@ const ThemeSwitch = () => {
                     )}
                   </MenuItem>
                 </Radio>
-              </div>
-            </RadioGroup>
+              </RadioGroup>
+            </div>
           </MenuItems>
         </Transition>
       </Menu>
