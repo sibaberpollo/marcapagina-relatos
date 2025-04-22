@@ -143,7 +143,13 @@ export const Relato = defineDocumentType(() => ({
     layout: { type: 'string', required: false },
   },
   computedFields: {
+    // inherit common computed fields, then override path for relato routes
     ...computedFields,
+    // override default 'path' to include the correct base route for Relato
+    path: {
+      type: 'string',
+      resolve: (doc) => `hazael/relato/${doc.slug}`,
+    },
     flattenedSlug: {
       type: 'string',
       resolve: (doc) => doc.slug,
@@ -207,8 +213,8 @@ export default makeSource({
     ],
   },
   onSuccess: async (importData) => {
-    const { allBlogs } = await importData()
-    createTagCount(allBlogs)
-    createSearchIndex(allBlogs)
+    // Generate search index for Relato documents instead of blog posts
+    const { allRelatos } = await importData()
+    createSearchIndex(allRelatos)
   },
 })
