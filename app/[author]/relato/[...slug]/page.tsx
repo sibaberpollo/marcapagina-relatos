@@ -21,11 +21,12 @@ const layouts = {
 }
 
 export async function generateMetadata(props: {
-  params: Promise<{ slug: string[] }>
+  params: Promise<{ author: string; slug: string[] }>
 }): Promise<Metadata | undefined> {
   const params = await props.params
+  const author = params.author
   const slug = decodeURI(params.slug.join('/'))
-  const post = allRelatos.find((p) => p.slug === slug)
+  const post = allRelatos.find((p) => p.slug === slug && p.author[0] === author)
   if (!post) return
 
   const authorList = post.author || ['default']
@@ -57,7 +58,7 @@ export async function generateMetadata(props: {
       type: 'article',
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
-      url: siteMetadata.siteUrl + `/pino/relato/${slug}`,
+      url: siteMetadata.siteUrl + `/${author}/relato/${slug}`,
       images: ogImages,
       authors: authors.length ? authors : [siteMetadata.author],
     },
@@ -72,21 +73,23 @@ export async function generateMetadata(props: {
 
 export const generateStaticParams = async () => {
   return allRelatos.map((p) => ({
+    author: p.author[0],
     slug: p.slug.split('/').map((s) => decodeURI(s)),
   }))
 }
 
-export default async function Page(props: { params: Promise<{ slug: string[] }> }) {
+export default async function Page(props: { params: Promise<{ author: string; slug: string[] }> }) {
   const params = await props.params
+  const author = params.author
   const slug = decodeURI(params.slug.join('/'))
 
   const posts = allCoreContent(sortPosts(allRelatos))
-  const idx = posts.findIndex((p) => p.slug === slug)
+  const idx = posts.findIndex((p) => p.slug === slug && p.author[0] === author)
   if (idx === -1) return notFound()
 
   const prev = posts[idx + 1] ?? null
   const next = posts[idx - 1] ?? null
-  const post = allRelatos.find((p) => p.slug === slug)! as Relato
+  const post = allRelatos.find((p) => p.slug === slug && p.author[0] === author)! as Relato
 
   const authorDetails = (post.author || ['default']).map((author) => {
     const authorResult = allAuthors.find((a) => a.slug === author)!
