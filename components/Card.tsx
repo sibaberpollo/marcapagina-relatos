@@ -14,7 +14,7 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
     <div
       className={`${
         imgSrc && 'h-full'
-      } overflow-hidden rounded-md border-2 border-gray-200/60 dark:border-gray-700/60 relative bg-white dark:bg-gray-900`}
+      } relative overflow-hidden rounded-md border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-900`}
     >
       {imgSrc &&
         (href ? (
@@ -29,7 +29,7 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
               />
             </Link>
             {authorImgSrc && (
-              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-10">
+              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform">
                 <Image
                   alt="Autor"
                   src={authorImgSrc}
@@ -50,7 +50,7 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
               height={306}
             />
             {authorImgSrc && (
-              <div className="absolute left-1/2 bottom-0 transform -translate-x-1/2 translate-y-1/2 z-10">
+              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform">
                 <Image
                   alt="Autor"
                   src={authorImgSrc}
@@ -62,9 +62,11 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
             )}
           </div>
         ))}
-      
+
       <div className={`p-6 ${authorImgSrc ? 'pt-10' : ''}`}>
-        <h2 className={`mb-3 text-2xl leading-8 font-bold tracking-tight ${authorImgSrc ? 'mt-10' : ''}`}>
+        <h2
+          className={`mb-3 text-2xl leading-8 font-bold tracking-tight ${authorImgSrc ? 'mt-10' : ''}`}
+        >
           {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
               {title}
@@ -77,7 +79,7 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
         {href && (
           <Link
             href={href}
-            className="text-[#3b2c14] dark:text-[#f8f8f8] hover:text-[#5b4a32] dark:hover:text-white text-base leading-6 font-medium"
+            className="text-base leading-6 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white"
             aria-label={`Link to ${title}`}
           >
             Leer más &rarr;

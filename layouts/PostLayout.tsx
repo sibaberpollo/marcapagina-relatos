@@ -2,7 +2,7 @@
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Blog, Authors } from 'contentlayer/generated'
-import Comments from '@/components/Comments'
+// import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
@@ -10,6 +10,7 @@ import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+//import Comments from '@/components/Comments'
 
 const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path: string) =>
@@ -30,13 +31,7 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({
-  content,
-  authorDetails,
-  next,
-  prev,
-  children,
-}: LayoutProps) {
+export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
   // añadimos `image` al contenido
   const { filePath, path, slug, date, title, tags } = content as any
   const image = (content as any).image as string | undefined
@@ -54,10 +49,7 @@ export default function PostLayout({
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                     <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(
-                        siteMetadata.locale,
-                        postDateTemplate
-                      )}
+                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
                     </time>
                   </dd>
                 </div>
@@ -98,9 +90,7 @@ export default function PostLayout({
                       )}
                       <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">
-                          {author.name}
-                        </dd>
+                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
                         <dt className="sr-only">Twitter</dt>
                         <dd>
                           {author.twitter && (
@@ -122,22 +112,20 @@ export default function PostLayout({
             </dl>
 
             <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">
-                {children}
-              </div>
+              <div className="prose dark:prose-invert max-w-none pt-10 pb-8">{children}</div>
               <div className="pt-6 pb-6 text-sm text-gray-700 dark:text-gray-300">
-                <Link href={discussUrl(path)} rel="nofollow">
+                {/*<Link href={discussUrl(path)} rel="nofollow">
                   Discuss on Twitter
                 </Link>
                 {` • `}
-                <Link href={editUrl(filePath)}>View on GitHub</Link>
+                <Link href={editUrl(filePath)}>View on GitHub</Link>*/}
               </div>
               {siteMetadata.comments && (
                 <div
                   className="pt-6 pb-6 text-center text-gray-700 dark:text-gray-300"
                   id="comment"
                 >
-                  <Comments slug={slug} />
+                  {/*<Comments slug={slug} />*/}
                 </div>
               )}
             </div>
@@ -184,10 +172,10 @@ export default function PostLayout({
               <div className="pt-4 xl:pt-8">
                 <Link
                   href={`/${basePath}`}
-                  className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
-                  aria-label="Back to the blog"
+                  className="m-1 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white"
+                  aria-label="Volver a Inicio"
                 >
-                  &larr; Back to the blog
+                  &larr; Volver a Inicio
                 </Link>
               </div>
             </footer>

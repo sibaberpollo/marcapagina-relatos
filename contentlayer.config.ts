@@ -33,10 +33,9 @@ const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
 
 // Icono para enlaces de encabezado
-const icon = fromHtmlIsomorphic(
-  `<span class=\"content-header-link\">…svg here…</span>`,
-  { fragment: true }
-)
+const icon = fromHtmlIsomorphic(`<span class=\"content-header-link\">…svg here…</span>`, {
+  fragment: true,
+})
 
 // Campos computados comunes
 const computedFields: ComputedFields = {
@@ -95,33 +94,34 @@ export const Blog = defineDocumentType(() => ({
   filePathPattern: 'blog/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    title:       { type: 'string', required: true },
-    date:        { type: 'date',   required: true },
-    tags:        { type: 'list',   of: { type: 'string' }, default: [] },
-    lastmod:     { type: 'date',   required: false },
-    draft:       { type: 'boolean', required: false },
-    summary:     { type: 'string', required: false },
-    images:      { type: 'json',   required: false },
-    authors:     { type: 'list',   of: { type: 'string' }, required: false },
-    layout:      { type: 'string', required: false },
-    bibliography:{ type: 'string', required: false },
-    canonicalUrl:{ type: 'string', required: false },
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    tags: { type: 'list', of: { type: 'string' }, default: [] },
+    lastmod: { type: 'date', required: false },
+    draft: { type: 'boolean', required: false },
+    summary: { type: 'string', required: false },
+    images: { type: 'json', required: false },
+    authors: { type: 'list', of: { type: 'string' }, required: false },
+    layout: { type: 'string', required: false },
+    bibliography: { type: 'string', required: false },
+    canonicalUrl: { type: 'string', required: false },
   },
   computedFields: {
     ...computedFields,
     structuredData: {
       type: 'json',
       resolve: (doc) => ({
-        '@context':       'https://schema.org',
-        '@type':          'BlogPosting',
-        headline:         doc.title,
-        datePublished:    doc.date,
-        dateModified:     doc.lastmod || doc.date,
-        description:      doc.summary,
-        image:            Array.isArray(doc.images) && doc.images.length > 0
-                           ? doc.images[0]
-                           : siteMetadata.socialBanner,
-        url:              `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
+        '@context': 'https://schema.org',
+        '@type': 'BlogPosting',
+        headline: doc.title,
+        datePublished: doc.date,
+        dateModified: doc.lastmod || doc.date,
+        description: doc.summary,
+        image:
+          Array.isArray(doc.images) && doc.images.length > 0
+            ? doc.images[0]
+            : siteMetadata.socialBanner,
+        url: `${siteMetadata.siteUrl}/${doc._raw.flattenedPath}`,
       }),
     },
   },
@@ -133,12 +133,14 @@ export const Relato = defineDocumentType(() => ({
   filePathPattern: 'relatos/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    title:   { type: 'string', required: true },
-    date:    { type: 'date',   required: true },
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
     summary: { type: 'string', required: true },
-    slug:    { type: 'string', required: true },
-    authors: { type: 'list',   of: { type: 'string' }, required: false },
-    image:   { type: 'string', required: false },
+    slug: { type: 'string', required: true },
+    authors: { type: 'list', of: { type: 'string' }, required: false },
+    image: { type: 'string', required: false },
+    images: { type: 'list', of: { type: 'string' }, required: false },
+    layout: { type: 'string', required: false },
   },
   computedFields: {
     ...computedFields,
@@ -155,16 +157,16 @@ export const Authors = defineDocumentType(() => ({
   filePathPattern: 'authors/**/*.mdx',
   contentType: 'mdx',
   fields: {
-    name:       { type: 'string', required: true },
-    avatar:     { type: 'string', required: false },
+    name: { type: 'string', required: true },
+    avatar: { type: 'string', required: false },
     occupation: { type: 'string', required: false },
-    company:    { type: 'string', required: false },
-    email:      { type: 'string', required: false },
-    twitter:    { type: 'string', required: false },
-    bluesky:    { type: 'string', required: false },
-    linkedin:   { type: 'string', required: false },
-    github:     { type: 'string', required: false },
-    layout:     { type: 'string', required: false },
+    company: { type: 'string', required: false },
+    email: { type: 'string', required: false },
+    twitter: { type: 'string', required: false },
+    bluesky: { type: 'string', required: false },
+    linkedin: { type: 'string', required: false },
+    github: { type: 'string', required: false },
+    layout: { type: 'string', required: false },
   },
   computedFields,
 }))
@@ -189,7 +191,7 @@ export default makeSource({
         {
           behavior: 'prepend',
           content: icon,
-          headingProperties: { className: [ 'content-header' ] },
+          headingProperties: { className: ['content-header'] },
         },
       ],
       rehypeKatex,

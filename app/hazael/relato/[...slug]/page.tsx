@@ -21,9 +21,9 @@ const layouts = {
   PostBanner,
 }
 
-export async function generateMetadata(
-  props: { params: Promise<{ slug: string[] }> }
-): Promise<Metadata | undefined> {
+export async function generateMetadata(props: {
+  params: Promise<{ slug: string[] }>
+}): Promise<Metadata | undefined> {
   const params = await props.params
   const slug = decodeURI(params.slug.join('/'))
   const post = allRelatos.find((p) => p.slug === slug)
@@ -36,17 +36,15 @@ export async function generateMetadata(
   })
 
   const publishedAt = new Date(post.date).toISOString()
-  const modifiedAt  = new Date((post as any).lastmod || post.date).toISOString()
-  const authors     = authorDetails.map((a) => a.name)
-  let imageList     = (post as any).images
+  const modifiedAt = new Date((post as any).lastmod || post.date).toISOString()
+  const authors = authorDetails.map((a) => a.name)
+  const imageList = (post as any).images
     ? Array.isArray((post as any).images)
       ? (post as any).images
       : [(post as any).images]
     : [siteMetadata.socialBanner]
   const ogImages = imageList.map((img) => ({
-    url: img.includes('http')
-      ? img
-      : siteMetadata.siteUrl + img,
+    url: img.includes('http') ? img : siteMetadata.siteUrl + img,
   }))
 
   return {
@@ -84,7 +82,7 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   const slug = decodeURI(params.slug.join('/'))
 
   const posts = allCoreContent(sortPosts(allRelatos))
-  const idx   = posts.findIndex((p) => p.slug === slug)
+  const idx = posts.findIndex((p) => p.slug === slug)
   if (idx === -1) return notFound()
 
   const prev = posts[idx + 1] ?? null
@@ -97,8 +95,8 @@ export default async function Page(props: { params: Promise<{ slug: string[] }> 
   })
 
   const mainContent = coreContent(post)
-  const jsonLd      = {
-    ...((post as any).structuredData),
+  const jsonLd = {
+    ...(post as any).structuredData,
     author: authorDetails.map((a) => ({
       '@type': 'Person',
       name: a.name,
