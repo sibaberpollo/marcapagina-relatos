@@ -12,9 +12,9 @@ const projectsData: Project[] = [
     description: `"La lluvia sobre el asfalto huele a algo distinto para cada quien, desde la nostalgia por los amores sin nombres, hasta la inminencia de la tragedia para quien vivió una vaguada."
     
     Por Hazael, editor principal y especialista en narrativa contemporánea.`,
-    imgSrc: '/static/images/gambeta.png',
+    imgSrc: '/static/images/ilustraciones/gambeta.png',
     authorImgSrc: '/static/images/hazael.png',
-    href: '/blog',
+    href: '/hazael/relato/gambeta',
   },
   {
     title: 'El evangelio según Asdrúbal',
