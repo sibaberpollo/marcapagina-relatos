@@ -17,13 +17,11 @@ const projectsData: Project[] = [
     href: '/hazael/relato/gambeta',
   },
   {
-    title: 'El evangelio según Asdrúbal',
-    description: `"Yo crecí temiéndole a María Lionza. Mi abuela decía que si la veía en sueños, algo terrible iba a pasar. Años después, cerraba los ojos y la veía acechándome desde la montaña, los brazos extendidos, la silueta temblando en la niebla."
-    
-    Por Pino, editor asociado, especializado en narrativa folklórica.`,
-    imgSrc: '/static/images/asdrubal.png',
+    title: 'El termómetro de los poetas',
+    description: `En la serenidad del Monasterio Qingzhen Shanshui, mientras los monjes preparaban infusiones de loto y limpiaban el templo con la paciencia de los siglos, Caravallo irrumpió en la sala principal con el rostro encendido y el pulso errático.`,
+    imgSrc: '/static/images/ilustraciones/termometro.png',
     authorImgSrc: '/static/images/pino.jpg',
-    href: '/blog',
+    href: '/pino/relato/el-termometro-de-los-poetas'
   },
 ]
 

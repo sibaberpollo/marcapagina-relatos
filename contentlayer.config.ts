@@ -148,7 +148,10 @@ export const Relato = defineDocumentType(() => ({
     // override default 'path' to include the correct base route for Relato
     path: {
       type: 'string',
-      resolve: (doc) => `hazael/relato/${doc.slug}`,
+      resolve: (doc) => {
+        const author = doc.authors?.[0] || 'default'
+        return `${author}/relato/${doc.slug}`
+      },
     },
     flattenedSlug: {
       type: 'string',
