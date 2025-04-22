@@ -3,24 +3,27 @@ interface Project {
   description: string
   href?: string
   imgSrc?: string
+  authorImgSrc?: string
 }
 
 const projectsData: Project[] = [
   {
-    title: 'A Search Engine',
-    description: `What if you could look up any information in the world? Webpages, images, videos
-    and more. Google has many features to help you find exactly what you're looking
-    for.`,
-    imgSrc: '/static/images/google.png',
-    href: 'https://www.google.com',
+    title: 'Gambeta',
+    description: `"La lluvia sobre el asfalto huele a algo distinto para cada quien, desde la nostalgia por los amores sin nombres, hasta la inminencia de la tragedia para quien vivió una vaguada."
+    
+    Por Hazael, editor principal y especialista en narrativa contemporánea.`,
+    imgSrc: '/static/images/gambeta.png',
+    authorImgSrc: '/static/images/hazael.png',
+    href: '/blog',
   },
   {
-    title: 'The Time Machine',
-    description: `Imagine being able to travel back in time or to the future. Simple turn the knob
-    to the desired date and press "Go". No more worrying about lost keys or
-    forgotten headphones with this simple yet affordable solution.`,
-    imgSrc: '/static/images/time-machine.jpg',
-    href: '/blog/the-time-machine',
+    title: 'El evangelio según Asdrúbal',
+    description: `"Yo crecí temiéndole a María Lionza. Mi abuela decía que si la veía en sueños, algo terrible iba a pasar. Años después, cerraba los ojos y la veía acechándome desde la montaña, los brazos extendidos, la silueta temblando en la niebla."
+    
+    Por Pino, editor asociado, especializado en narrativa folklórica.`,
+    imgSrc: '/static/images/asdrubal.png',
+    authorImgSrc: '/static/images/pino.jpg',
+    href: '/blog',
   },
 ]
 

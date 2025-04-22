@@ -1,12 +1,20 @@
 import Image from './Image'
 import Link from './Link'
 
-const Card = ({ title, description, imgSrc, href }) => (
+interface CardProps {
+  title: string
+  description: string
+  imgSrc?: string
+  href?: string
+  authorImgSrc?: string
+}
+
+const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => (
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
         imgSrc && 'h-full'
-      } overflow-hidden rounded-md border-2 border-gray-200/60 dark:border-gray-700/60`}
+      } overflow-hidden rounded-md border-2 border-gray-200/60 dark:border-gray-700/60 relative bg-white dark:bg-gray-900`}
     >
       {imgSrc &&
         (href ? (
@@ -28,8 +36,20 @@ const Card = ({ title, description, imgSrc, href }) => (
             height={306}
           />
         ))}
+      
       <div className="p-6">
-        <h2 className="mb-3 text-2xl leading-8 font-bold tracking-tight">
+        {authorImgSrc && (
+          <div className="absolute left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            <Image
+              alt="Autor"
+              src={authorImgSrc}
+              className="rounded-full border-4 border-white dark:border-gray-900"
+              width={80}
+              height={80}
+            />
+          </div>
+        )}
+        <h2 className={`mb-3 text-2xl leading-8 font-bold tracking-tight ${authorImgSrc ? 'mt-10' : ''}`}>
           {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
               {title}
@@ -42,10 +62,10 @@ const Card = ({ title, description, imgSrc, href }) => (
         {href && (
           <Link
             href={href}
-            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400 text-base leading-6 font-medium"
+            className="text-[#3b2c14] dark:text-[#f8f8f8] hover:text-[#5b4a32] dark:hover:text-white text-base leading-6 font-medium"
             aria-label={`Link to ${title}`}
           >
-            Learn more &rarr;
+            Leer más &rarr;
           </Link>
         )}
       </div>

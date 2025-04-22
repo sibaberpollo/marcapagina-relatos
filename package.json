@@ -12,6 +12,8 @@
     "prepare": "husky"
   },
   "dependencies": {
+    "@fontsource/literata": "^5.2.5",
+    "@fontsource/unbounded": "^5.2.5",
     "@headlessui/react": "2.2.0",
     "@next/bundle-analyzer": "15.2.4",
     "@tailwindcss/forms": "^0.5.9",
