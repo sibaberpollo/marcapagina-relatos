@@ -83,8 +83,9 @@ export default async function Page(props: { params: Promise<{ author: string; sl
   const author = params.author
   const slug = decodeURI(params.slug.join('/'))
 
-  const posts = allCoreContent(sortPosts(allRelatos))
-  const idx = posts.findIndex((p) => p.slug === slug && p.author[0] === author)
+  const authorRelatos = allRelatos.filter((p) => p.author[0] === author)
+  const posts = allCoreContent(sortPosts(authorRelatos))
+  const idx = posts.findIndex((p) => p.slug === slug)
   if (idx === -1) return notFound()
 
   const prev = posts[idx + 1] ?? null
