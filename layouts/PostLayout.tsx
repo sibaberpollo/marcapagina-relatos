@@ -61,7 +61,6 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               {series && seriesMetadata[series] && (
                 <div className="mt-4 text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                   <p>Serie: {seriesMetadata[series].name}</p>
-                  <p className="mt-2">{seriesMetadata[series].description}</p>
                 </div>
               )}
               {/* Imagen del relato opcional */}

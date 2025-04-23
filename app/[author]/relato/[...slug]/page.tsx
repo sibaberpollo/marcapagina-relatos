@@ -4,13 +4,14 @@ import 'katex/dist/katex.css'
 import { components } from '@/components/MDXComponents'
 import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { sortPosts, coreContent, allCoreContent } from 'pliny/utils/contentlayer'
-import { allRelatos, allAuthors } from 'contentlayer/generated'
+import { allRelatos, allAuthors, allBlogs } from 'contentlayer/generated'
 import type { Authors, Relato } from 'contentlayer/generated'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
+import seriesMetadata from '@/data/seriesMetadata'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 
@@ -167,9 +168,12 @@ export default async function Page(props: { params: Promise<{ author: string; sl
         {post.series && (
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold mb-4">Serie: {post.series}</h2>
+            <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
+              {seriesMetadata[post.series].description}
+            </p>
             <div className="space-y-4">
-              {seriesRelatos.map((relato) => (
-                <div
+                {seriesRelatos.map((relato) => (
+                  <div
                   key={relato.slug}
                   className={`p-4 rounded-lg ${
                     relato.slug === slug

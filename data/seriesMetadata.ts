@@ -4,8 +4,8 @@ interface Series {
 }
 
 const seriesMetadata: { [key: string]: Series } = {
-  "Monasterio Qingzhen Shanshui": {
-    name: "Monasterio Qingzhen Shanshui",
+  "El Camino de la Pluma Vacía": {
+    name: "El Camino de la Pluma Vacía",
     description: "Monasterio Qingzhen Shanshui (青真山水修道院) Retiro del Verdadero Azul entre Montañas y Aguas, La Azulita, Mérida, Venezuela."
   }
 }
