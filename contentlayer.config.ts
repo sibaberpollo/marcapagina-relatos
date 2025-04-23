@@ -145,6 +145,8 @@ export const Relato = defineDocumentType(() => ({
     image: { type: 'string', required: false },
     images: { type: 'list', of: { type: 'string' }, required: false },
     layout: { type: 'string', required: false },
+    series: { type: 'string', required: false },
+    seriesOrder: { type: 'number', required: false },
   },
   computedFields: {
     // inherit common computed fields, then override path for relato routes

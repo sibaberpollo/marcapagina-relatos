@@ -12,6 +12,7 @@ import PostBanner from '@/layouts/PostBanner'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
+import Link from 'next/link'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -84,13 +85,48 @@ export default async function Page(props: { params: Promise<{ author: string; sl
   const slug = decodeURI(params.slug.join('/'))
 
   const authorRelatos = allRelatos.filter((p) => p.author[0] === author)
-  const posts = allCoreContent(sortPosts(authorRelatos))
-  const idx = posts.findIndex((p) => p.slug === slug)
-  if (idx === -1) return notFound()
+  const post = authorRelatos.find((p) => p.slug === slug)! as Relato
 
-  const prev = posts[idx + 1] ?? null
-  const next = posts[idx - 1] ?? null
-  const post = allRelatos.find((p) => p.slug === slug && p.author[0] === author)! as Relato
+  if (!post) return notFound()
+
+  let prev: { path: string; title: string } | null = null
+  let next: { path: string; title: string } | null = null
+  let seriesRelatos: Relato[] = []
+
+  if (post.series) {
+    seriesRelatos = authorRelatos
+      .filter((p) => p.series === post.series)
+      .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
+
+    const currentIndex = seriesRelatos.findIndex((p) => p.slug === slug)
+    if (currentIndex > 0) {
+      prev = {
+        path: `${author}/relato/${seriesRelatos[currentIndex - 1].slug}`,
+        title: seriesRelatos[currentIndex - 1].title,
+      }
+    }
+    if (currentIndex < seriesRelatos.length - 1) {
+      next = {
+        path: `${author}/relato/${seriesRelatos[currentIndex + 1].slug}`,
+        title: seriesRelatos[currentIndex + 1].title,
+      }
+    }
+  } else {
+    const posts = allCoreContent(sortPosts(authorRelatos))
+    const idx = posts.findIndex((p) => p.slug === slug)
+    if (idx > 0) {
+      prev = {
+        path: `${author}/relato/${posts[idx - 1].slug}`,
+        title: posts[idx - 1].title,
+      }
+    }
+    if (idx < posts.length - 1) {
+      next = {
+        path: `${author}/relato/${posts[idx + 1].slug}`,
+        title: posts[idx + 1].title,
+      }
+    }
+  }
 
   const authorDetails = (post.author || ['default']).map((author) => {
     const authorResult = allAuthors.find((a) => a.slug === author)!
@@ -113,8 +149,52 @@ export default async function Page(props: { params: Promise<{ author: string; sl
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout content={mainContent} authorDetails={authorDetails} next={next} prev={prev}>
+      <Layout 
+        content={mainContent} 
+        authorDetails={authorDetails} 
+        next={next} 
+        prev={prev}
+        series={post.series ? {
+          name: post.series,
+          relatos: seriesRelatos.map(relato => ({
+            ...coreContent(relato),
+            path: `${author}/relato/${relato.slug}`
+          })),
+          currentOrder: post.seriesOrder || 0
+        } : null}
+      >
         <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+        {post.series && (
+          <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+            <h2 className="text-2xl font-bold mb-4">Serie: {post.series}</h2>
+            <div className="space-y-4">
+              {seriesRelatos.map((relato) => (
+                <div
+                  key={relato.slug}
+                  className={`p-4 rounded-lg ${
+                    relato.slug === slug
+                      ? 'bg-primary-100 dark:bg-primary-900'
+                      : 'bg-gray-100 dark:bg-gray-800'
+                  }`}
+                >
+                  <Link
+                    href={`/${author}/relato/${relato.slug}`}
+                    className="block hover:text-primary-500 dark:hover:text-primary-400"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span className="font-medium">
+                        {relato.seriesOrder}. {relato.title}
+                      </span>
+                      {relato.slug === slug && (
+                        <span className="text-sm text-primary-500">(Leyendo)</span>
+                      )}
+                    </div>
+                  </Link>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </Layout>
     </>
   )

@@ -9,6 +9,7 @@ import SectionContainer from '@/components/SectionContainer'
 import Image from '@/components/Image'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
+import seriesMetadata from '@/data/seriesMetadata'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 //import Comments from '@/components/Comments'
 
@@ -33,7 +34,7 @@ interface LayoutProps {
 
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
   // añadimos `image` al contenido
-  const { filePath, path, slug, date, title, tags } = content as any
+  const { filePath, path, slug, date, title, tags, series } = content as any
   const image = (content as any).image as string | undefined
   const basePath = path.split('/')[0]
 
@@ -57,6 +58,12 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               <div>
                 <PageTitle>{title}</PageTitle>
               </div>
+              {series && seriesMetadata[series] && (
+                <div className="mt-4 text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
+                  <p>Serie: {seriesMetadata[series].name}</p>
+                  <p className="mt-2">{seriesMetadata[series].description}</p>
+                </div>
+              )}
               {/* Imagen del relato opcional */}
               {image && (
                 <div className="my-8">
