@@ -14,6 +14,7 @@ import siteMetadata from '@/data/siteMetadata'
 import seriesMetadata from '@/data/seriesMetadata'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 
 const defaultLayout = 'PostLayout'
 const layouts = {
@@ -134,6 +135,8 @@ export default async function Page(props: { params: Promise<{ author: string; sl
     return coreContent(authorResult as Authors)
   })
 
+  const authorPostsCore = allCoreContent(authorRelatos.filter(p => p.slug !== slug))
+
   const mainContent = coreContent(post)
   const jsonLd = {
     ...(post as any).structuredData,
@@ -200,6 +203,16 @@ export default async function Page(props: { params: Promise<{ author: string; sl
           </div>
         )}
       </Layout>
+      
+      {/* Añadir el menú fijo usando el componente cliente */}
+      <ClientFixedNavWrapper 
+        title={post.title} 
+        authorAvatar={authorDetails[0]?.avatar} 
+        authorName={authorDetails[0]?.name}
+        slug={slug}
+        relatedPosts={authorPostsCore}
+        author={author}
+      />
     </>
   )
 } 
