@@ -41,10 +41,11 @@ export async function generateMetadata(props: {
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date((post as any).lastmod || post.date).toISOString()
   const authors = authorDetails.map((a) => a.name)
-  const imageList = (post as any).images
-    ? Array.isArray((post as any).images)
-      ? (post as any).images
-      : [(post as any).images]
+  const rawImages = (post as any).image ?? (post as any).images
+  const imageList = rawImages
+    ? Array.isArray(rawImages)
+      ? rawImages
+      : [rawImages]
     : [siteMetadata.socialBanner]
   const ogImages = imageList.map((img) => ({
     url: img.includes('http') ? img : siteMetadata.siteUrl + img,
@@ -69,7 +70,7 @@ export async function generateMetadata(props: {
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images: imageList,
+      images: ogImages.map(({ url }) => url),
     },
   }
 }
