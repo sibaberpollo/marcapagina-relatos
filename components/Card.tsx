@@ -25,12 +25,12 @@ const Card = ({
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
-        imgSrc ? 'h-full' : ''
+        imgSrc && 'h-full'
       } relative overflow-hidden rounded-md border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-900`}
     >
-      {imgSrc && (
-        <div className="relative">
-          {href ? (
+      {imgSrc &&
+        (href ? (
+          <div className="relative">
             <Link href={href} aria-label={`Link to ${title}`}>
               <Image
                 alt={title}
@@ -40,7 +40,28 @@ const Card = ({
                 height={306}
               />
             </Link>
-          ) : (
+            {authorImgSrc && (
+              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform flex flex-col items-center">
+                <Image
+                  alt="Autor"
+                  src={authorImgSrc}
+                  className="rounded-full border-4 border-white dark:border-gray-900"
+                  width={80}
+                  height={80}
+                />
+                {authorName && (
+                  <Link
+                    href={authorHref ?? '/'}
+                    className="mt-2 text-base font-medium text-gray-900 dark:text-gray-100 hover:underline"
+                  >
+                    {authorName}
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        ) : (
+          <div className="relative">
             <Image
               alt={title}
               src={imgSrc}
@@ -48,27 +69,27 @@ const Card = ({
               width={544}
               height={306}
             />
-          )}
-
-          {authorImgSrc && (
-            <div className="relative flex flex-col items-center mt-4">
-              <Image
-                alt="Autor"
-                src={authorImgSrc}
-                className="rounded-full border-4 border-white dark:border-gray-900"
-                width={80}
-                height={80}
-              />
-              <Link
-                href={authorHref ?? '/'}
-                className="mt-2 text-lg font-medium text-primary-500 hover:underline dark:text-primary-400"
-              >
-                {authorName}
-              </Link>
-            </div>
-          )}
-        </div>
-      )}
+            {authorImgSrc && (
+              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform flex flex-col items-center">
+                <Image
+                  alt="Autor"
+                  src={authorImgSrc}
+                  className="rounded-full border-4 border-white dark:border-gray-900"
+                  width={80}
+                  height={80}
+                />
+                {authorName && (
+                  <Link
+                    href={authorHref ?? '/'}
+                    className="mt-2 text-base font-medium text-gray-900 dark:text-gray-100 hover:underline"
+                  >
+                    {authorName}
+                  </Link>
+                )}
+              </div>
+            )}
+          </div>
+        ))}
 
       <div className={`p-6 ${authorImgSrc ? 'pt-10' : ''}`}>
         <h2
