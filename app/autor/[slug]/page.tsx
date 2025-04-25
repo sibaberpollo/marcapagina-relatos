@@ -69,7 +69,7 @@ export default function AuthorPage({ params }: { params: { slug: string } }) {
               {relatosCore.map((relato) => (
                 <div key={relato.slug} className="border-b pb-6"> 
                   <h3 className="text-2xl font-semibold mb-2">
-                    <Link href={`/${params.slug}/relato/${relato.slug}`}>{relato.title}</Link>
+                    <Link href={`/${params.slug}/relato/${relato.slug}`} className="no-underline">{relato.title}</Link>
                   </h3>
                   <p className="text-gray-600 mb-2">{relato.summary}</p>
                   <Link href={`/${params.slug}/relato/${relato.slug}`} className="text-primary-500 font-medium">Leer más &rarr;</Link>
@@ -87,7 +87,7 @@ export default function AuthorPage({ params }: { params: { slug: string } }) {
               {articulosCore.map((articulo) => (
                 <div key={articulo.slug} className="border-b pb-6">
                   <h3 className="text-2xl font-semibold mb-2">
-                    <Link href={`/${params.slug}/articulo/${articulo.slug}`}>{articulo.title}</Link>
+                    <Link href={`/${params.slug}/articulo/${articulo.slug}`} className="no-underline">{articulo.title}</Link>
                   </h3>
                   <p className="text-gray-600 mb-2">{articulo.summary}</p>
                   <Link href={`/${params.slug}/articulo/${articulo.slug}`} className="text-primary-500 font-medium">Leer más &rarr;</Link>

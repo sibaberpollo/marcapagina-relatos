@@ -1,7 +1,7 @@
 // layouts/PostLayout.tsx
 import { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Blog, Authors } from 'contentlayer/generated'
+import type { Authors } from 'contentlayer/generated'
 // import Comments from '@/components/Comments'
 import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
@@ -25,7 +25,7 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
 }
 
 interface LayoutProps {
-  content: CoreContent<Blog>
+  content: CoreContent<any>
   authorDetails: CoreContent<Authors>[]
   next?: { path: string; title: string }
   prev?: { path: string; title: string }
@@ -35,6 +35,12 @@ interface LayoutProps {
 export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
   // añadimos `image` al contenido
   const { filePath, path, slug, date, title, tags, series } = content as any
+  // Determinar si es relato o artículo según la ruta
+  const segments = path.split('/')
+  const type = segments[1] // 'relato' o 'articulo'
+  const isArticle = type === 'articulo'
+  const prevLabel = isArticle ? 'Artículo anterior' : 'Relato anterior'
+  const nextLabel = isArticle ? 'Próximo artículo' : 'Próximo relato'
   const image = (content as any).image as string | undefined
   const basePath = path.split('/')[0]
 
@@ -96,7 +102,14 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       )}
                       <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">{author.name}</dd>
+                        <dd className="text-gray-900 dark:text-gray-100">
+                          <Link
+                            href={`/autor/${author.slug}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {author.name}
+                          </Link>
+                        </dd>
                         <dt className="sr-only">Twitter</dt>
                         <dd>
                           {author.twitter && (
@@ -140,7 +153,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {prev && (
                       <div>
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Relato anterior
+                          {prevLabel}
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                           <Link href={`/${prev.path}`}>{prev.title}</Link>
@@ -150,7 +163,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     {next && (
                       <div>
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
-                          Próximo relato
+                          {nextLabel}
                         </h2>
                         <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
                           <Link href={`/${next.path}`}>{next.title}</Link>
