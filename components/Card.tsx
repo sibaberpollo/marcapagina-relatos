@@ -51,7 +51,7 @@ const Card = ({
           )}
 
           {authorImgSrc && (
-            <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
+            <div className="relative flex flex-col items-center mt-4">
               <Image
                 alt="Autor"
                 src={authorImgSrc}
@@ -59,20 +59,12 @@ const Card = ({
                 width={80}
                 height={80}
               />
-              <div className="mt-2 text-center">
-                {authorHref ? (
-                  <Link
-                    href={authorHref}
-                    className="font-medium text-gray-900 dark:text-gray-100"
-                  >
-                    {authorName}
-                  </Link>
-                ) : (
-                  <span className="font-medium text-gray-900 dark:text-gray-100">
-                    {authorName}
-                  </span>
-                )}
-              </div>
+              <Link
+                href={authorHref ?? '/'}
+                className="mt-2 text-lg font-medium text-primary-500 hover:underline dark:text-primary-400"
+              >
+                {authorName}
+              </Link>
             </div>
           )}
         </div>
