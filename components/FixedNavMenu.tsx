@@ -159,12 +159,12 @@ export default function FixedNavMenu({
         
         #progress-bar-component {
           height: 2px !important;
-          background-color: black !important;
+          background-color: #816F50 !important;
           transition: width 0.3s !important;
         }
         
         html.dark #progress-bar-component {
-          background-color: white !important;
+          background-color: #816F50 !important;
         }
         
         #menu-content-component {
