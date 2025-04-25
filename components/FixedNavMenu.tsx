@@ -11,7 +11,7 @@ interface FixedNavMenuProps {
   authorName?: string
   slug: string
   relatedPosts: CoreContent<any>[]
-  author: string
+  author: string    // aquí author es el slug del autor
   pathPrefix: string
 }
 
@@ -28,11 +28,9 @@ export default function FixedNavMenu({
   const [menuOpen, setMenuOpen] = useState(false)
   const [minimized, setMinimized] = useState(false)
 
-  // Acorta el título si es muy largo
   const shortenTitle = (t: string, max: number = 25) =>
     t.length > max ? `${t.substring(0, max)}...` : t
 
-  // Ordena por fecha y limita a 5
   const sortedRelatedPosts = [...relatedPosts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5)
@@ -119,14 +117,18 @@ export default function FixedNavMenu({
         <div id="menu-content-component">
           <div id="menu-left-section">
             {authorAvatar && (
-              <img
-                src={authorAvatar}
-                alt={authorName || 'Author'}
-                id="menu-avatar-component"
-              />
+              <Link href={`/autor/${author}`} legacyBehavior>
+                <a>
+                  <img
+                    src={authorAvatar}
+                    alt={authorName || 'Author'}
+                    id="menu-avatar-component"
+                  />
+                </a>
+              </Link>
             )}
             <div id="menu-title-component">
-              {shortenTitle(title)}
+              {shortenTitle(title)}    
             </div>
           </div>
 
@@ -151,10 +153,15 @@ export default function FixedNavMenu({
       </div>
 
       <div id="story-menu" className={menuOpen ? '' : 'hidden'}>
-        <h3 id="story-menu-title">
-          Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de {authorName}
-        </h3>
-        {sortedRelatedPosts.map((post) => (
+          <h3 id="story-menu-title" className="text-lg font-medium">
+            Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
+            <Link href={`/autor/${author}`} legacyBehavior>
+              <a className="text-primary-500 hover:underline">
+                {authorName}
+              </a>
+            </Link>
+          </h3>
+          {sortedRelatedPosts.map((post) => (
           <Link
             href={`/${author}/${pathPrefix}/${post.slug}`}
             key={post.slug}
