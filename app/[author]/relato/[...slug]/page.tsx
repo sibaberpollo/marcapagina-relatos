@@ -1,3 +1,4 @@
+// app/[author]/relato/[...slug]/page.tsx
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
@@ -17,11 +18,7 @@ import Link from 'next/link'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 
 const defaultLayout = 'PostLayout'
-const layouts = {
-  PostSimple,
-  PostLayout,
-  PostBanner,
-}
+const layouts = { PostSimple, PostLayout, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ author: string; slug: string[] }>
@@ -29,17 +26,21 @@ export async function generateMetadata(props: {
   const params = await props.params
   const author = params.author
   const slug = decodeURI(params.slug.join('/'))
-  const post = allRelatos.find((p) => p.slug === slug && p.author[0] === author)
+  const post = allRelatos.find(
+    (p) => p.slug === slug && p.author[0] === author
+  )
   if (!post) return
 
   const authorList = post.author || ['default']
-  const authorDetails = authorList.map((author) => {
-    const authorResult = allAuthors.find((a) => a.slug === author)!
-    return coreContent(authorResult as Authors)
+  const authorDetails = authorList.map((a) => {
+    const ar = allAuthors.find((x) => x.slug === a)!
+    return coreContent(ar as Authors)
   })
 
   const publishedAt = new Date(post.date).toISOString()
-  const modifiedAt = new Date((post as any).lastmod || post.date).toISOString()
+  const modifiedAt = new Date(
+    (post as any).lastmod || post.date
+  ).toISOString()
   const authors = authorDetails.map((a) => a.name)
   const rawImages = (post as any).image ?? (post as any).images
   const imageList = rawImages
@@ -48,7 +49,7 @@ export async function generateMetadata(props: {
       : [rawImages]
     : [siteMetadata.socialBanner]
   const ogImages = imageList.map((img) => ({
-    url: img.includes('http') ? img : siteMetadata.siteUrl + img,
+    url: img.includes('http') ? img : siteMetadata.siteUrl + img
   }))
 
   return {
@@ -64,32 +65,34 @@ export async function generateMetadata(props: {
       modifiedTime: modifiedAt,
       url: siteMetadata.siteUrl + `/${author}/relato/${slug}`,
       images: ogImages,
-      authors: authors.length ? authors : [siteMetadata.author],
+      authors: authors.length ? authors : [siteMetadata.author]
     },
     twitter: {
       card: 'summary_large_image',
       title: post.title,
       description: post.summary,
-      images: ogImages.map(({ url }) => url),
-    },
+      images: ogImages.map(({ url }) => url)
+    }
   }
 }
 
-export const generateStaticParams = async () => {
-  return allRelatos.map((p) => ({
+export const generateStaticParams = async () =>
+  allRelatos.map((p) => ({
     author: p.author[0],
-    slug: p.slug.split('/').map((s) => decodeURI(s)),
+    slug: p.slug.split('/').map((s) => decodeURI(s))
   }))
-}
 
-export default async function Page(props: { params: Promise<{ author: string; slug: string[] }> }) {
+export default async function Page(props: {
+  params: Promise<{ author: string; slug: string[] }>
+}) {
   const params = await props.params
   const author = params.author
   const slug = decodeURI(params.slug.join('/'))
 
-  const authorRelatos = allRelatos.filter((p) => p.author[0] === author)
+  const authorRelatos = allRelatos.filter(
+    (p) => p.author[0] === author
+  )
   const post = authorRelatos.find((p) => p.slug === slug)! as Relato
-
   if (!post) return notFound()
 
   let prev: { path: string; title: string } | null = null
@@ -101,17 +104,17 @@ export default async function Page(props: { params: Promise<{ author: string; sl
       .filter((p) => p.series === post.series)
       .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
 
-    const currentIndex = seriesRelatos.findIndex((p) => p.slug === slug)
-    if (currentIndex > 0) {
+    const idx = seriesRelatos.findIndex((p) => p.slug === slug)
+    if (idx > 0) {
       prev = {
-        path: `${author}/relato/${seriesRelatos[currentIndex - 1].slug}`,
-        title: seriesRelatos[currentIndex - 1].title,
+        path: `${author}/relato/${seriesRelatos[idx - 1].slug}`,
+        title: seriesRelatos[idx - 1].title
       }
     }
-    if (currentIndex < seriesRelatos.length - 1) {
+    if (idx < seriesRelatos.length - 1) {
       next = {
-        path: `${author}/relato/${seriesRelatos[currentIndex + 1].slug}`,
-        title: seriesRelatos[currentIndex + 1].title,
+        path: `${author}/relato/${seriesRelatos[idx + 1].slug}`,
+        title: seriesRelatos[idx + 1].title
       }
     }
   } else {
@@ -120,31 +123,29 @@ export default async function Page(props: { params: Promise<{ author: string; sl
     if (idx > 0) {
       prev = {
         path: `${author}/relato/${posts[idx - 1].slug}`,
-        title: posts[idx - 1].title,
+        title: posts[idx - 1].title
       }
     }
     if (idx < posts.length - 1) {
       next = {
         path: `${author}/relato/${posts[idx + 1].slug}`,
-        title: posts[idx + 1].title,
+        title: posts[idx + 1].title
       }
     }
   }
 
-  const authorDetails = (post.author || ['default']).map((author) => {
-    const authorResult = allAuthors.find((a) => a.slug === author)!
-    return coreContent(authorResult as Authors)
+  const authorDetails = (post.author || ['default']).map((a) => {
+    const ar = allAuthors.find((x) => x.slug === a)!
+    return coreContent(ar as Authors)
   })
 
-  const authorPostsCore = allCoreContent(authorRelatos.filter(p => p.slug !== slug))
-
+  const authorPostsCore = allCoreContent(
+    authorRelatos.filter((p) => p.slug !== slug)
+  )
   const mainContent = coreContent(post)
   const jsonLd = {
     ...(post as any).structuredData,
-    author: authorDetails.map((a) => ({
-      '@type': 'Person',
-      name: a.name,
-    })),
+    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
   }
   const Layout = layouts[post.layout || defaultLayout]
 
@@ -154,21 +155,29 @@ export default async function Page(props: { params: Promise<{ author: string; sl
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout 
-        content={mainContent} 
-        authorDetails={authorDetails} 
-        next={next} 
+      <Layout
+        content={mainContent}
+        authorDetails={authorDetails}
+        next={next}
         prev={prev}
-        series={post.series ? {
-          name: post.series,
-          relatos: seriesRelatos.map(relato => ({
-            ...coreContent(relato),
-            path: `${author}/relato/${relato.slug}`
-          })),
-          currentOrder: post.seriesOrder || 0
-        } : null}
+        series={
+          post.series
+            ? {
+                name: post.series,
+                relatos: seriesRelatos.map((rel) => ({
+                  ...coreContent(rel),
+                  path: `${author}/relato/${rel.slug}`
+                })),
+                currentOrder: post.seriesOrder || 0
+              }
+            : null
+        }
       >
-        <MDXLayoutRenderer code={post.body.code} components={components} toc={post.toc} />
+        <MDXLayoutRenderer
+          code={post.body.code}
+          components={components}
+          toc={post.toc}
+        />
         {post.series && (
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
             <h2 className="text-2xl font-bold mb-4">Serie: {post.series}</h2>
@@ -176,8 +185,8 @@ export default async function Page(props: { params: Promise<{ author: string; sl
               {seriesMetadata[post.series].description}
             </p>
             <div className="space-y-4">
-                {seriesRelatos.map((relato) => (
-                  <div
+              {seriesRelatos.map((relato) => (
+                <div
                   key={relato.slug}
                   className={`p-4 rounded-lg ${
                     relato.slug === slug
@@ -204,16 +213,16 @@ export default async function Page(props: { params: Promise<{ author: string; sl
           </div>
         )}
       </Layout>
-      
-      {/* Añadir el menú fijo usando el componente cliente */}
-      <ClientFixedNavWrapper 
-        title={post.title} 
-        authorAvatar={authorDetails[0]?.avatar} 
+
+      <ClientFixedNavWrapper
+        title={post.title}
+        authorAvatar={authorDetails[0]?.avatar}
         authorName={authorDetails[0]?.name}
         slug={slug}
         relatedPosts={authorPostsCore}
         author={author}
+        pathPrefix="relato"
       />
     </>
   )
-} 
+}
