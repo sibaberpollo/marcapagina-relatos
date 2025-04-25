@@ -23,6 +23,8 @@ export default function Page() {
                 imgSrc={d.imgSrc}
                 href={d.href}
                 authorImgSrc={d.authorImgSrc}
+                authorName={d.authorName}
+                authorHref={d.authorHref}
               />
             ))}
           </div>

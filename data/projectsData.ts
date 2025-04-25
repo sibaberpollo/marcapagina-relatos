@@ -1,9 +1,11 @@
 interface Project {
   title: string
   description: string
-  href?: string
-  imgSrc?: string
-  authorImgSrc?: string
+  href?: string;
+  imgSrc?: string;
+  authorImgSrc?: string;
+  authorName?:string;
+  authorHref?:string;
 }
 
 const projectsData: Project[] = [
@@ -14,6 +16,8 @@ const projectsData: Project[] = [
     Por Hazael, editor principal y especialista en narrativa contemporánea.`,
     imgSrc: '/static/images/ilustraciones/gambeta.png',
     authorImgSrc: '/static/images/hazael.png',
+    authorName:'Hazael',
+    authorHref:'/autor/hazael',
     href: '/hazael/relato/gambeta',
   },
   {
@@ -21,6 +25,8 @@ const projectsData: Project[] = [
     description: `En la serenidad del Monasterio Qingzhen Shanshui, mientras los monjes preparaban infusiones de loto y limpiaban el templo con la paciencia de los siglos, Caravallo irrumpió en la sala principal con el rostro encendido y el pulso errático.`,
     imgSrc: '/static/images/ilustraciones/termometro.png',
     authorImgSrc: '/static/images/pino.jpg',
+    authorName:'Pino',
+    authorHref:'/autor/pino',
     href: '/pino/relato/el-termometro-de-los-poetas'
   },
 ]

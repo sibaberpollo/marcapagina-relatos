@@ -2,14 +2,16 @@ import Image from './Image'
 import Link from './Link'
 
 interface CardProps {
-  title: string
-  description: string
-  imgSrc?: string
-  href?: string
-  authorImgSrc?: string
+    title: string
+    description: string
+    imgSrc?: string
+    href?: string
+    authorImgSrc?: string
+    authorName: string;
+    authorHref: string;
 }
 
-const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => (
+const Card = ({ title, description, imgSrc, href, authorImgSrc, authorName, authorHref }: CardProps) => (
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
@@ -29,17 +31,23 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
               />
             </Link>
             {authorImgSrc && (
-              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform">
-                <Image
-                  alt="Autor"
-                  src={authorImgSrc}
-                  className="rounded-full border-4 border-white dark:border-gray-900"
-                  width={80}
-                  height={80}
-                />
+              <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
+                    <Image
+                        alt="Autor"
+                        src={authorImgSrc}
+                        className="rounded-full border-4 border-white dark:border-gray-900"
+                        width={80}
+                        height={80}
+                    />                   
+                    <div className="mt-2 text-center">
+                        <Link href={authorHref} className="font-medium text-gray-900 dark:text-gray-100">
+                            {authorName}
+                        </Link>
+                    </div>
+                    
               </div>
             )}
-          </div>
+          </div>  
         ) : (
           <div className="relative">
             <Image
@@ -50,14 +58,19 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc }: CardProps) => 
               height={306}
             />
             {authorImgSrc && (
-              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform">
-                <Image
-                  alt="Autor"
-                  src={authorImgSrc}
-                  className="rounded-full border-4 border-white dark:border-gray-900"
-                  width={80}
-                  height={80}
-                />
+               <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
+                    <Image
+                        alt="Autor"
+                        src={authorImgSrc}
+                        className="rounded-full border-4 border-white dark:border-gray-900"
+                        width={80}
+                        height={80}
+                    />                    
+                    <div className="mt-2 text-center">
+                         <Link href={authorHref} className="font-medium text-gray-900 dark:text-gray-100">
+                            {authorName}
+                        </Link>
+                    </div>
               </div>
             )}
           </div>

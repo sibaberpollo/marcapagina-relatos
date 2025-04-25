@@ -12,7 +12,7 @@ const siteMetadata = {
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/twitter-card.png`,
   mastodon: '',
   email: '',
-  github: '',
+  github: 'https://github.com/sibaberpollo/marcapagina-relatos',
   x: '',
   // twitter: 'https://twitter.com/Twitter',
   facebook: '',
