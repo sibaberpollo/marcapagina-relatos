@@ -3,7 +3,6 @@ import { writeFileSync } from 'fs'
 import path from 'path'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
-import { fromHtmlIsomorphic } from 'hast-util-from-html-isomorphic'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 
@@ -31,11 +30,6 @@ import siteMetadata from './data/siteMetadata'
 
 const root = process.cwd()
 const isProduction = process.env.NODE_ENV === 'production'
-
-// Icono para enlaces de encabezado
-const icon = fromHtmlIsomorphic(`<span class=\"content-header-link\">…svg here…</span>`, {
-  fragment: true,
-})
 
 // Campos computados comunes
 const computedFields: ComputedFields = {
@@ -166,6 +160,41 @@ export const Relato = defineDocumentType(() => ({
   },
 }))
 
+// Artículos en data/articulos/**/*.mdx
+export const Articulo = defineDocumentType(() => ({
+  name: 'Articulo',
+  filePathPattern: 'articulos/**/*.mdx',
+  contentType: 'mdx',
+  fields: {
+    title: { type: 'string', required: true },
+    date: { type: 'date', required: true },
+    summary: { type: 'string', required: true },
+    slug: { type: 'string', required: true },
+    author: { type: 'list', of: { type: 'string' }, required: true },
+    image: { type: 'string', required: false },
+    images: { type: 'list', of: { type: 'string' }, required: false },
+    layout: { type: 'string', required: false },
+    series: { type: 'string', required: false },
+    seriesOrder: { type: 'number', required: false },
+  },
+  computedFields: {
+    // inherit common computed fields, then override path for article routes
+    ...computedFields,
+    // override default 'path' to include the correct base route for Articulo
+    path: {
+      type: 'string',
+      resolve: (doc) => {
+        const author = doc.author[0]
+        return `${author}/articulo/${doc.slug}`
+      },
+    },
+    flattenedSlug: {
+      type: 'string',
+      resolve: (doc) => doc.slug,
+    },
+  },
+}))
+
 // Autores en data/authors/**/*.mdx
 export const Authors = defineDocumentType(() => ({
   name: 'Authors',
@@ -188,7 +217,7 @@ export const Authors = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: 'data',
-  documentTypes: [Blog, Relato, Authors],
+  documentTypes: [Blog, Relato, Articulo, Authors],
   mdx: {
     cwd: root,
     remarkPlugins: [
@@ -205,7 +234,6 @@ export default makeSource({
         rehypeAutolinkHeadings,
         {
           behavior: 'prepend',
-          content: icon,
           headingProperties: { className: ['content-header'] },
         },
       ],
@@ -224,6 +252,10 @@ export default makeSource({
   onSuccess: async (importData) => {
     // Generate search index for Relato documents instead of blog posts
     const { allRelatos } = await importData()
-    createSearchIndex(allRelatos)
+    // Usar allArticulos cuando esté disponible
+    // const { allRelatos, allArticulos } = await importData()
+    // const allContent = [...allRelatos, ...allArticulos]
+    const allContent = [...allRelatos]
+    createSearchIndex(allContent)
   },
 })

@@ -42,6 +42,12 @@ const Header = () => {
                 {link.title}
               </Link>
             ))}
+          <Link
+            href="/autor/anairene"
+            className="m-1 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white"
+          >
+            Autores
+          </Link>
         </div>
         <SearchButton />
         <ThemeSwitch />
