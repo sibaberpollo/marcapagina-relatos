@@ -42,13 +42,17 @@ const Card = ({
             </Link>
             {authorImgSrc && (
               <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform flex flex-col items-center">
-                <Image
-                  alt="Autor"
-                  src={authorImgSrc}
-                  className="rounded-full border-4 border-white dark:border-gray-900"
-                  width={80}
-                  height={80}
-                />
+                <Link
+                    href={authorHref ?? '/'}
+                >
+                  <Image
+                    alt="Autor"
+                    src={authorImgSrc}
+                    className="rounded-full border-4 border-white dark:border-gray-900"
+                    width={80}
+                    height={80}
+                  />
+                </Link>
                 {authorName && (
                   <Link
                     href={authorHref ?? '/'}
