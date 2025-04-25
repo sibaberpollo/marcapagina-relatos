@@ -1,26 +1,36 @@
+// components/Card.tsx
+
 import Image from './Image'
 import Link from './Link'
 
 interface CardProps {
-    title: string
-    description: string
-    imgSrc?: string
-    href?: string
-    authorImgSrc?: string
-    authorName: string;
-    authorHref: string;
+  title: string
+  description: string
+  imgSrc?: string
+  href?: string
+  authorImgSrc?: string
+  authorName?: string
+  authorHref?: string
 }
 
-const Card = ({ title, description, imgSrc, href, authorImgSrc, authorName, authorHref }: CardProps) => (
+const Card = ({
+  title,
+  description,
+  imgSrc,
+  href,
+  authorImgSrc,
+  authorName,
+  authorHref,
+}: CardProps) => (
   <div className="md max-w-[544px] p-4 md:w-1/2">
     <div
       className={`${
-        imgSrc && 'h-full'
+        imgSrc ? 'h-full' : ''
       } relative overflow-hidden rounded-md border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-900`}
     >
-      {imgSrc &&
-        (href ? (
-          <div className="relative">
+      {imgSrc && (
+        <div className="relative">
+          {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
               <Image
                 alt={title}
@@ -30,26 +40,7 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc, authorName, auth
                 height={306}
               />
             </Link>
-            {authorImgSrc && (
-              <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
-                    <Image
-                        alt="Autor"
-                        src={authorImgSrc}
-                        className="rounded-full border-4 border-white dark:border-gray-900"
-                        width={80}
-                        height={80}
-                    />                   
-                    <div className="mt-2 text-center">
-                        <Link href={authorHref} className="font-medium text-gray-900 dark:text-gray-100">
-                            {authorName}
-                        </Link>
-                    </div>
-                    
-              </div>
-            )}
-          </div>  
-        ) : (
-          <div className="relative">
+          ) : (
             <Image
               alt={title}
               src={imgSrc}
@@ -57,28 +48,41 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc, authorName, auth
               width={544}
               height={306}
             />
-            {authorImgSrc && (
-               <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
-                    <Image
-                        alt="Autor"
-                        src={authorImgSrc}
-                        className="rounded-full border-4 border-white dark:border-gray-900"
-                        width={80}
-                        height={80}
-                    />                    
-                    <div className="mt-2 text-center">
-                         <Link href={authorHref} className="font-medium text-gray-900 dark:text-gray-100">
-                            {authorName}
-                        </Link>
-                    </div>
+          )}
+
+          {authorImgSrc && (
+            <div className="absolute bottom-0 left-1/2 z-10 flex flex-col items-center -translate-x-1/2 translate-y-1/2 transform">
+              <Image
+                alt="Autor"
+                src={authorImgSrc}
+                className="rounded-full border-4 border-white dark:border-gray-900"
+                width={80}
+                height={80}
+              />
+              <div className="mt-2 text-center">
+                {authorHref ? (
+                  <Link
+                    href={authorHref}
+                    className="font-medium text-gray-900 dark:text-gray-100"
+                  >
+                    {authorName}
+                  </Link>
+                ) : (
+                  <span className="font-medium text-gray-900 dark:text-gray-100">
+                    {authorName}
+                  </span>
+                )}
               </div>
-            )}
-          </div>
-        ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div className={`p-6 ${authorImgSrc ? 'pt-10' : ''}`}>
         <h2
-          className={`mb-3 text-2xl leading-8 font-bold tracking-tight ${authorImgSrc ? 'mt-10' : ''}`}
+          className={`mb-3 text-2xl leading-8 font-bold tracking-tight ${
+            authorImgSrc ? 'mt-10' : ''
+          }`}
         >
           {href ? (
             <Link href={href} aria-label={`Link to ${title}`}>
@@ -88,7 +92,9 @@ const Card = ({ title, description, imgSrc, href, authorImgSrc, authorName, auth
             title
           )}
         </h2>
-        <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
+        <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
+          {description}
+        </p>
         {href && (
           <Link
             href={href}
