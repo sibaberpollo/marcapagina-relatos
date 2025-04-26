@@ -10,7 +10,7 @@ export default function Page() {
             Relatos
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Gente que escribe de cuando en vez
+            Gente que escribe cuando nadie los ve.
           </p>
         </div>
         <div className="container py-12">
