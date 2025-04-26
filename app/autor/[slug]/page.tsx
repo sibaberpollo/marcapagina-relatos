@@ -46,8 +46,8 @@ export default async function Page({ params }) {
 
       {/* Sección de Relatos */}
       {relatosCore.length > 0 && (
-        <section className="mt-10">
-          <h2 className="text-3xl font-bold mb-6">Relatos</h2>
+        <section className="mt-2">
+          <h2 className="text-3xl font-bold mt-0 pt-0">Relatos</h2>
           <div className="space-y-8">
             {relatosCore.map((relato) => (
               <div key={relato.slug} className="border-b pb-6">
