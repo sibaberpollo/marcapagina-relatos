@@ -28,16 +28,7 @@ Por Hazael, editor principal y especialista en narrativa contemporánea.`,
     authorName: 'Hazael',
     authorHref: '/autor/hazael',
     href: '/hazael/relato/gambeta',
-  },
-  {
-    title: 'El termómetro de los poetas',
-    description: `En la serenidad del Monasterio Qingzhen Shanshui, mientras los monjes preparaban infusiones de loto y limpiaban el templo con la paciencia de los siglos, Caravallo irrumpió en la sala principal con el rostro encendido y el pulso errático.`,
-    imgSrc: '/static/images/ilustraciones/termometro.png',
-    authorImgSrc: '/static/images/pino.jpg',
-    authorName: 'Pino',
-    authorHref: '/autor/pino',
-    href: '/pino/relato/el-termometro-de-los-poetas',
-  },
+  }
 ];
 
 export default projectsData;
