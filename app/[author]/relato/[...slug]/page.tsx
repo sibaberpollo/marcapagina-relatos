@@ -222,6 +222,7 @@ export default async function Page(props: {
         relatedPosts={authorPostsCore}
         author={author}
         pathPrefix="relato"
+        readingTime={post.readingTime}
       />
     </>
   )

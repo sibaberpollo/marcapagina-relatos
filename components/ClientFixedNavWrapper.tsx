@@ -17,6 +17,7 @@ interface ClientFixedNavWrapperProps {
   relatedPosts: CoreContent<any>[]
   author: string
   pathPrefix: string
+  readingTime?: { text: string; minutes: number; time: number; words: number }
 }
 
 export default function ClientFixedNavWrapper({
@@ -26,7 +27,8 @@ export default function ClientFixedNavWrapper({
   slug,
   relatedPosts,
   author,
-  pathPrefix
+  pathPrefix,
+  readingTime
 }: ClientFixedNavWrapperProps) {
   return (
     <FixedNavMenu
@@ -37,6 +39,7 @@ export default function ClientFixedNavWrapper({
       relatedPosts={relatedPosts}
       author={author}
       pathPrefix={pathPrefix}
+      readingTime={readingTime}
     />
   )
 }

@@ -13,6 +13,7 @@ interface FixedNavMenuProps {
   relatedPosts: CoreContent<any>[]
   author: string    // aquí author es el slug del autor
   pathPrefix: string
+  readingTime?: { text: string; minutes: number; time: number; words: number }
 }
 
 export default function FixedNavMenu({
@@ -22,7 +23,8 @@ export default function FixedNavMenu({
   slug,
   relatedPosts,
   author,
-  pathPrefix
+  pathPrefix,
+  readingTime
 }: FixedNavMenuProps) {
   const [readingProgress, setReadingProgress] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -30,6 +32,10 @@ export default function FixedNavMenu({
 
   const shortenTitle = (t: string, max: number = 25) =>
     t.length > max ? `${t.substring(0, max)}...` : t
+
+  const formatReadingTime = (minutes: number) => {
+    return `(${Math.ceil(minutes)} min)`
+  }
 
   const sortedRelatedPosts = [...relatedPosts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
@@ -128,7 +134,7 @@ export default function FixedNavMenu({
               </Link>
             )}
             <div id="menu-title-component">
-              {shortenTitle(title)}    
+              {shortenTitle(title)} {readingTime && formatReadingTime(readingTime.minutes)}    
             </div>
           </div>
 
@@ -168,7 +174,7 @@ export default function FixedNavMenu({
             className={`story-menu-item ${post.slug === slug ? 'active' : ''}`}
             onClick={() => setMenuOpen(false)}
           >
-            {post.title}
+            {post.title} {post.readingTime && formatReadingTime(post.readingTime.minutes)}
           </Link>
         ))}
       </div>
