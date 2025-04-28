@@ -6,7 +6,7 @@ const siteMetadata = {
   description: 'Relatos de gente que escribe de cuando en vez',
   language: 'es-ES',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://marcapagina.vercel.app',
+  siteUrl: 'https://marcapagina.page/',
   siteRepo: 'https://github.com/sibaberpollo/marcapagina-relatos',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/marcapagina_card.png`,
@@ -19,7 +19,7 @@ const siteMetadata = {
   youtube: '',
   linkedin: '',
   threads: '',
-  instagram: '',
+  instagram: 'https://www.instagram.com/marcapagina.page/',
   medium: '',
   bluesky: '',
   locale: 'es-ES',
