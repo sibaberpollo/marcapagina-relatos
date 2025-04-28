@@ -9,6 +9,7 @@ export default function Footer() {
         <div className="flex w-full justify-center">        
 
             <SocialIcon kind="github" href={siteMetadata.github} size={5} />
+            &nbsp; <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
         </div>
       </div>
 
