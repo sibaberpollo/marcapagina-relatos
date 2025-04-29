@@ -139,9 +139,17 @@ export default async function Page(props: {
     return coreContent(ar as Authors)
   })
 
-  const authorPostsCore = allCoreContent(
-    authorRelatos.filter((p) => p.slug !== slug)
-  )
+  let relatedPosts;
+  if (post.series) {
+    relatedPosts = allCoreContent(
+      authorRelatos.filter((p) => p.series === post.series && p.slug !== slug)
+    );
+  } else {
+    relatedPosts = allCoreContent(
+      authorRelatos.filter((p) => !p.series && p.slug !== slug)
+    );
+  }
+
   const mainContent = coreContent(post)
   const jsonLd = {
     ...(post as any).structuredData,
@@ -219,10 +227,11 @@ export default async function Page(props: {
         authorAvatar={authorDetails[0]?.avatar}
         authorName={authorDetails[0]?.name}
         slug={slug}
-        relatedPosts={authorPostsCore}
+        relatedPosts={relatedPosts}
         author={author}
         pathPrefix="relato"
         readingTime={post.readingTime}
+        seriesName={post.series}
       />
     </>
   )

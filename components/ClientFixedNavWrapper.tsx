@@ -18,6 +18,7 @@ interface ClientFixedNavWrapperProps {
   author: string
   pathPrefix: string
   readingTime?: { text: string; minutes: number; time: number; words: number }
+  seriesName?: string
 }
 
 export default function ClientFixedNavWrapper({
@@ -28,7 +29,8 @@ export default function ClientFixedNavWrapper({
   relatedPosts,
   author,
   pathPrefix,
-  readingTime
+  readingTime,
+  seriesName
 }: ClientFixedNavWrapperProps) {
   return (
     <FixedNavMenu
@@ -40,6 +42,7 @@ export default function ClientFixedNavWrapper({
       author={author}
       pathPrefix={pathPrefix}
       readingTime={readingTime}
+      seriesName={seriesName}
     />
   )
 }

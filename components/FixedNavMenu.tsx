@@ -14,6 +14,7 @@ interface FixedNavMenuProps {
   author: string    // aquí author es el slug del autor
   pathPrefix: string
   readingTime?: { text: string; minutes: number; time: number; words: number }
+  seriesName?: string // Nuevo parámetro para el nombre de la serie
 }
 
 export default function FixedNavMenu({
@@ -24,7 +25,8 @@ export default function FixedNavMenu({
   relatedPosts,
   author,
   pathPrefix,
-  readingTime
+  readingTime,
+  seriesName
 }: FixedNavMenuProps) {
   const [readingProgress, setReadingProgress] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -160,12 +162,21 @@ export default function FixedNavMenu({
 
       <div id="story-menu" className={menuOpen ? '' : 'hidden'}>
           <h3 id="story-menu-title" className="text-lg font-medium">
-            Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
-            <Link href={`/autor/${author}`} legacyBehavior>
-              <a className="text-primary-500 hover:underline">
-                {authorName}
-              </a>
-            </Link>
+            {seriesName ? (
+              <>
+                Más relatos de la serie{' '}
+                <span className="text-primary-500">{seriesName}</span>
+              </>
+            ) : (
+              <>
+                Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
+                <Link href={`/autor/${author}`} legacyBehavior>
+                  <a className="text-primary-500 hover:underline">
+                    {authorName}
+                  </a>
+                </Link>
+              </>
+            )}
           </h3>
           {sortedRelatedPosts.map((post) => (
           <Link
