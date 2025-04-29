@@ -99,7 +99,7 @@ export default function AcercaDePage() {
                 <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400">
                   Hazael
                 </h3>
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Contenido</p>
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos</p>
               </Link>
             </div>
             
@@ -116,7 +116,7 @@ export default function AcercaDePage() {
                 <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400">
                   Pino
                 </h3>
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Desarrollo</p>
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos/Desarrollo</p>
               </Link>
             </div>
             
