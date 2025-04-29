@@ -6,6 +6,7 @@ interface Project {
   authorImgSrc?: string;
   authorName?: string;
   authorHref?: string;
+  order: number;
 }
 
 const projectsData: Project[] = [
@@ -17,6 +18,7 @@ const projectsData: Project[] = [
     authorName: 'Pino',
     authorHref: '/autor/pino',
     href: '/pino/relato/el-evangelio-de-asdrubal',
+    order: 1,
   },
   {
     title: 'Gambeta',
@@ -28,7 +30,12 @@ Por Hazael, editor principal y especialista en narrativa contemporánea.`,
     authorName: 'Hazael',
     authorHref: '/autor/hazael',
     href: '/hazael/relato/gambeta',
+    order: 2,
   }
 ];
+
+export const getSortedProjects = () => {
+  return [...projectsData].sort((a, b) => a.order - b.order);
+};
 
 export default projectsData;

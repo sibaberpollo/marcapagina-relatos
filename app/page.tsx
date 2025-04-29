@@ -1,7 +1,10 @@
-import projectsData from '@/data/projectsData'
+import { getSortedProjects } from '@/data/projectsData'
 import Card from '@/components/Card'
 
 export default function Page() {
+  // Obtener los proyectos ordenados según la propiedad 'order'
+  const sortedProjects = getSortedProjects();
+
   return (
     <>
       <div className="divide-y divide-gray-200 dark:divide-gray-700">
@@ -15,7 +18,7 @@ export default function Page() {
         </div>
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            {projectsData.map((d) => (
+            {sortedProjects.map((d) => (
               <Card
                 key={d.title}
                 title={d.title}
