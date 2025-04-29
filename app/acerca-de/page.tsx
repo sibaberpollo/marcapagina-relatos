@@ -31,6 +31,8 @@ export default function AcercaDePage() {
             <div className="flex space-x-3 pt-6">
               <SocialIcon kind="github" href={siteMetadata.github} />
               <SocialIcon kind="instagram" href={siteMetadata.instagram} />
+              <SocialIcon kind="bluesky" href={siteMetadata.bluesky} />
+              <SocialIcon kind="threads" href={siteMetadata.threads} /> 
             </div>
           </div>
           <div className="prose dark:prose-invert max-w-none pt-2 pb-2 xl:col-span-2">
