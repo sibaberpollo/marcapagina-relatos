@@ -18,19 +18,17 @@ const projectsData: Project[] = [
     authorName: 'Pino',
     authorHref: '/autor/pino',
     href: '/pino/relato/el-evangelio-de-asdrubal',
-    order: 1,
+    order: 2,
   },
   {
-    title: 'Gambeta',
-    description: `"La lluvia sobre el asfalto huele a algo distinto para cada quien, desde la nostalgia por los amores sin nombres, hasta la inminencia de la tragedia para quien vivió una vaguada."
-
-Por Hazael, editor principal y especialista en narrativa contemporánea.`,
-    imgSrc: '/static/images/ilustraciones/gambeta.png',
+    title: 'Un cuento chino',
+    description: 'Las ciudades del interior de un país siempre suponen una apuesta por lo desconocido. En Latinoamérica este fenómeno se potencia, pues, según quien mire y visite, la percepción de la provincia puede balancearse entre lo bucólico y lo agreste, lo bárbaro, lo peligroso.', 
+    imgSrc: '/static/images/ilustraciones/chipen.png',
     authorImgSrc: '/static/images/hazael.png',
     authorName: 'Hazael',
     authorHref: '/autor/hazael',
-    href: '/hazael/relato/gambeta',
-    order: 2,
+    href: '/hazael/relato/un-cuento-chino',
+    order: 1,
   }
 ];
 
