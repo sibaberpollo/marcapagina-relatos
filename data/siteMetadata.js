@@ -21,7 +21,7 @@ const siteMetadata = {
   threads: '',
   instagram: 'https://www.instagram.com/marcapagina.page/',
   medium: '',
-  bluesky: '',
+  bluesky: 'https://bsky.app/profile/marcapagina.bsky.social',
   locale: 'es-ES',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,

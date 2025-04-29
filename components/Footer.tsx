@@ -8,8 +8,9 @@ export default function Footer() {
       <div className="mt-12 mb-8 flex flex-col items-center md:flex-row">
         <div className="flex w-full justify-center">        
 
-            <SocialIcon kind="github" href={siteMetadata.github} size={5} />
-            &nbsp; <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
+            <SocialIcon kind="github" href={siteMetadata.github} size={5} />&nbsp;
+            &nbsp; <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />&nbsp;
+            &nbsp; <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />&nbsp;
         </div>
       </div>
 
