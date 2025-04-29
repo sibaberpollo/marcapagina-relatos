@@ -8,6 +8,7 @@ import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import AuthorTabContent from '@/components/AuthorTabContent'
+import { Suspense } from 'react'
 
 export const generateStaticParams = async () => {
   return allAuthors.map((author) => ({
@@ -51,12 +52,14 @@ export default async function Page({ params, searchParams }) {
       <MDXLayoutRenderer code={author.body.code} />
       
       {/* Componente de tabs para filtrar contenido */}
-      <AuthorTabContent 
-        relatos={relatosCore} 
-        articulos={articulosCore} 
-        authorSlug={params.slug} 
-        defaultTab={defaultTab}
-      />
+      <Suspense fallback={<div className="p-4 text-center">Cargando contenido...</div>}>
+        <AuthorTabContent 
+          relatos={relatosCore} 
+          articulos={articulosCore} 
+          authorSlug={params.slug} 
+          defaultTab={defaultTab}
+        />
+      </Suspense>
     </AuthorLayout>
   )
 }
