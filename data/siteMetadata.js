@@ -18,7 +18,7 @@ const siteMetadata = {
   facebook: '',
   youtube: '',
   linkedin: '',
-  threads: '',
+  threads: 'https://www.threads.com/@marcapagina.page',
   instagram: 'https://www.instagram.com/marcapagina.page/',
   medium: '',
   bluesky: 'https://bsky.app/profile/marcapagina.bsky.social',
