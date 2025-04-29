@@ -5,6 +5,7 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+//import SearchButton from './SearchButton'
 
 const Header = () => {
   let headerClass =
@@ -44,7 +45,7 @@ const Header = () => {
               </Link>
             ))}
         </div>
-        <SearchButton />
+        {/*<SearchButton />*/}
         <ThemeSwitch />
         <MobileNav />
       </div>

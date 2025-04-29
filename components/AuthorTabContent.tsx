@@ -126,7 +126,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
           <div className="space-y-12">
             {seriesGroups.map((series) => (
               <div key={series.name} className="border-b pb-8">
-                <h3 className="text-2xl font-semibold mb-4">Serie: {series.name}</h3>
+                <h3 className="text-2xl font-semibold mb-4">{series.name}</h3>
                 <div className="space-y-6 pl-4 border-l-4 border-primary-500">
                   {series.relatos.map((relato) => (
                     <div key={relato.slug} className="pb-4">
