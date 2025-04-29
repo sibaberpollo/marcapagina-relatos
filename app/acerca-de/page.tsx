@@ -15,7 +15,7 @@ export default function AcercaDePage() {
             Acerca de
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Textos de gente que escribe cuando nadie los ve.
+            {siteMetadata.descriptionRich}
           </p>
         </div>
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">
