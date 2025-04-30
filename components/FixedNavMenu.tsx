@@ -1,5 +1,6 @@
 // components/FixedNavMenu.tsx
 'use client'
+'use client'
 
 import { useEffect, useState } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
@@ -113,14 +114,27 @@ export default function FixedNavMenu({
             className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label="Toggle menu"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-              className="h-5 w-5 text-gray-500 hover:text-primary-500"
-            >
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
-            </svg>
+            {menuOpen ? (
+              // Arrow down icon when open
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="h-5 w-5 text-gray-500 hover:text-primary-500"
+              >
+                <path d="M5 8l5 5 5-5H5z" />
+              </svg>
+            ) : (
+              // Arrow up icon when closed
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+                className="h-5 w-5 text-gray-500 hover:text-primary-500"
+              >
+                <path d="M5 12l5-5 5 5H5z" />
+              </svg>
+            )}
           </button>
         </div>
 
@@ -149,14 +163,10 @@ export default function FixedNavMenu({
                   <Link
                     href={`/${author}/${pathPrefix}/${post.slug}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block hover:text-primary-500 ${
-                      post.slug === slug ? 'font-semibold' : ''
-                    }`}
+                    className={`block hover:text-primary-500 ${post.slug === slug ? 'font-semibold' : ''}`}
                   >
                     {post.title}{' '}
-                    {post.readingTime && `(${Math.ceil(
-                      post.readingTime.minutes
-                    )} min)`}
+                    {post.readingTime && `(${Math.ceil(post.readingTime.minutes)} min)`}
                   </Link>
                 </li>
               ))}
