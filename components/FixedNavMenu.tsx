@@ -4,6 +4,9 @@
 import { useEffect, useState } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import Link from 'next/link'
+import Image from 'next/image'
+import { readingTimeActivities } from '@/data/readingTimeActivities'
+import { Clock } from 'lucide-react'
 
 interface FixedNavMenuProps {
   title: string
@@ -11,184 +14,186 @@ interface FixedNavMenuProps {
   authorName?: string
   slug: string
   relatedPosts: CoreContent<any>[]
-  author: string    // aquí author es el slug del autor
+  author: string
   pathPrefix: string
   readingTime?: { text: string; minutes: number; time: number; words: number }
-  seriesName?: string // Nuevo parámetro para el nombre de la serie
+  seriesName?: string
 }
 
-export default function FixedNavMenu({ 
-  title, 
-  authorAvatar, 
+export default function FixedNavMenu({
+  title,
+  authorAvatar,
   authorName,
   slug,
   relatedPosts,
   author,
   pathPrefix,
   readingTime,
-  seriesName
+  seriesName,
 }: FixedNavMenuProps) {
   const [readingProgress, setReadingProgress] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
-  const [minimized, setMinimized] = useState(false)
+  const [modalOpen, setModalOpen] = useState(false)
 
-  const shortenTitle = (t: string, max: number = 25) =>
-    t.length > max ? `${t.substring(0, max)}...` : t
-
-  const formatReadingTime = (minutes: number) => {
-    return `(${Math.ceil(minutes)} min)`
+  // Reduce title to first two words
+  const shortenTitle = (t: string) => {
+    const words = t.split(' ')
+    return words.length <= 2 ? t : `${words.slice(0, 2).join(' ')}...`
   }
 
   const sortedRelatedPosts = [...relatedPosts]
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5)
 
-  const toggleMinimize = () => {
-    if (menuOpen) setMenuOpen(false)
-    setMinimized(!minimized)
-  }
-  
-  const expandIfMinimized = () => {
-    if (minimized) setMinimized(false)
-  }
-
+  // Track scroll progress
   useEffect(() => {
-    const updateReadingProgress = () => {
-      const current = window.scrollY
-      const full = document.documentElement.scrollHeight - window.innerHeight
-      if (full) {
-        setReadingProgress(Number((current / full).toFixed(2)) * 100)
-      }
+    function updateProgress() {
+      const scrollY = window.scrollY
+      const fullHeight = document.documentElement.scrollHeight - window.innerHeight
+      setReadingProgress(fullHeight ? (scrollY / fullHeight) * 100 : 0)
     }
-
-    const handleScroll = () => {
-      updateReadingProgress()
-      if (menuOpen) setMenuOpen(false)
-    }
-
-    updateReadingProgress()
-    window.addEventListener('scroll', handleScroll)
-    window.addEventListener('resize', updateReadingProgress)
-    
-    const handleClickOutside = (e: MouseEvent) => {
-      const tgt = e.target as HTMLElement
-      if (
-        menuOpen &&
-        !tgt.closest('#fixed-nav-menu-component') &&
-        !tgt.closest('#story-menu')
-      ) {
-        setMenuOpen(false)
-      }
-    }
-    
-    document.addEventListener('click', handleClickOutside)
+    updateProgress()
+    window.addEventListener('scroll', updateProgress)
+    window.addEventListener('resize', updateProgress)
     return () => {
-      window.removeEventListener('scroll', handleScroll)
-      window.removeEventListener('resize', updateReadingProgress)
-      document.removeEventListener('click', handleClickOutside)
+      window.removeEventListener('scroll', updateProgress)
+      window.removeEventListener('resize', updateProgress)
     }
-  }, [menuOpen])
+  }, [])
 
   return (
     <>
-      <div 
-        id="fixed-nav-menu-component" 
-        className={minimized ? 'minimized' : ''}
-        onClick={expandIfMinimized}
-      >
-        <div 
-          id="minimize-handle" 
-          onClick={toggleMinimize}
-          title={minimized ? 'Expandir menú' : 'Minimizar menú'}
-        >
-          <svg 
-            id="minimize-icon" 
-            xmlns="http://www.w3.org/2000/svg" 
-            viewBox="0 0 20 20" 
-            fill="currentColor"
-          >
-            <path
-              fillRule="evenodd"
-              d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 
-                 111.414 1.414l-4 4a1 1 0 
-                 01-1.414 0l-4-4a1 1 0 010-1.414z"
-              clipRule="evenodd"
-            />
-          </svg>
-        </div>
-        
-        <div 
-          id="progress-bar-component" 
+      {/* Fixed nav container at bottom */}
+      <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
+        {/* Progress bar */}
+        <div
+          className="h-1 bg-primary-500"
           style={{ width: `${readingProgress}%` }}
         />
-        
-        <div id="menu-content-component">
-          <div id="menu-left-section">
+
+        {/* Main row: avatar, title, reading time, toggle button */}
+        <div className="flex items-center justify-between p-2">
+          <div className="flex items-center space-x-2">
             {authorAvatar && (
-              <Link href={`/autor/${author}`} legacyBehavior>
-                <a>
-              <img
-                src={authorAvatar}
-                alt={authorName || 'Author'}
-                id="menu-avatar-component"
-              />
-                </a>
+              <Link href={`/autor/${author}`}> 
+                <Image
+                  src={authorAvatar}
+                  alt={authorName || 'Author'}
+                  width={32}
+                  height={32}
+                  className="rounded-full"
+                />
               </Link>
             )}
-            <div id="menu-title-component">
-              {shortenTitle(title)} {readingTime && formatReadingTime(readingTime.minutes)}    
-            </div>
+            <span className="font-medium">
+              {shortenTitle(title)}{' '}
+              {readingTime && (() => {
+                const mins = Math.ceil(readingTime.minutes)
+                const acts = readingTimeActivities[mins] || []
+                return acts.length ? (
+                  <button
+                    onClick={() => setModalOpen(true)}
+                    className="inline-flex items-center text-primary-500 hover:underline"
+                  >
+                    <span className="flex items-center">
+                      <span>(</span>
+                      <span>{mins} min</span>
+                      <Clock className="mx-1 h-4 w-4 animate-pulse" />
+                      <span>)</span>
+                    </span>
+                  </button>
+                ) : (
+                  <span>({mins} min)</span>
+                )
+              })()}
+            </span>
           </div>
-          
-          <button 
-            id="menu-button" 
-            aria-label={`Ver más ${pathPrefix}`}
-            onClick={(e) => {
-              e.stopPropagation()
-              setMenuOpen(!menuOpen)
-            }}
+          <button
+            onClick={() => setMenuOpen(!menuOpen)}
+            className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+            aria-label="Toggle menu"
           >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 20 20"
               fill="currentColor"
+              className="h-5 w-5 text-gray-500 hover:text-primary-500"
             >
-              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 
-                0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
+              <path d="M10 6a2 2 0 110-4 2 2 0 010 4zM10 12a2 2 0 110-4 2 2 0 010 4zM10 18a2 2 0 110-4 2 2 0 010 4z" />
             </svg>
           </button>
         </div>
-      </div>
-      
-      <div id="story-menu" className={menuOpen ? '' : 'hidden'}>
-          <h3 id="story-menu-title" className="text-lg font-medium">
-            {seriesName ? (
-              <>
-                Más relatos de la serie{' '}
-                <span className="text-primary-500">{seriesName}</span>
-              </>
-            ) : (
-              <>
-                Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
-                <Link href={`/autor/${author}`} legacyBehavior>
-                  <a className="text-primary-500 hover:underline">
+
+        {/* Animated related posts panel */}
+        <div
+          className={
+            `overflow-hidden transition-[max-height] duration-200 ease-in-out ` +
+            (menuOpen ? 'max-h-60' : 'max-h-0')
+          }
+        >
+          <div className="bg-white dark:bg-gray-900 p-4 border-t">
+            <h3 className="text-lg font-medium mb-2">
+              {seriesName ? (
+                <>Más relatos de la serie <span className="text-primary-500">{seriesName}</span></>
+              ) : (
+                <>Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
+                  <Link href={`/autor/${author}`} className="text-primary-500 hover:underline">
                     {authorName}
-                  </a>
-                </Link>
-              </>
-            )}
-          </h3>
-        {sortedRelatedPosts.map((post) => (
-          <Link
-            href={`/${author}/${pathPrefix}/${post.slug}`}
-            key={post.slug}
-            className={`story-menu-item ${post.slug === slug ? 'active' : ''}`}
-            onClick={() => setMenuOpen(false)}
-          >
-            {post.title} {post.readingTime && formatReadingTime(post.readingTime.minutes)}
-          </Link>
-        ))}
+                  </Link>
+                </>
+              )}
+            </h3>
+            <ul className="space-y-1">
+              {sortedRelatedPosts.map((post) => (
+                <li key={post.slug}>
+                  <Link
+                    href={`/${author}/${pathPrefix}/${post.slug}`}
+                    onClick={() => setMenuOpen(false)}
+                    className={`block hover:text-primary-500 ${
+                      post.slug === slug ? 'font-semibold' : ''
+                    }`}
+                  >
+                    {post.title}{' '}
+                    {post.readingTime && `(${Math.ceil(
+                      post.readingTime.minutes
+                    )} min)`}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
       </div>
+
+      {/* Reading time modal with side margins */}
+      {modalOpen && readingTime && (() => {
+        const mins = Math.ceil(readingTime.minutes)
+        const acts = readingTimeActivities[mins] || []
+        return (
+          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+            <div
+              className="absolute inset-0 bg-black opacity-50"
+              onClick={() => setModalOpen(false)}
+            />
+            <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+              <h2 className="text-lg font-semibold mb-4">
+                Cosas que se hacen en ~{mins} {mins === 1 ? 'minuto' : 'minutos'}
+              </h2>
+              <ul className="list-disc list-inside space-y-2 text-sm mb-4">
+                {acts.map((act) => (
+                  <li key={act}>{act}</li>
+                ))}
+              </ul>
+              <button
+                onClick={() => setModalOpen(false)}
+                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
+              >
+                Cerrar
+              </button>
+            </div>
+          </div>
+        )
+      })()}
     </>
   )
-} 
+}
