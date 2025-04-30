@@ -38,7 +38,7 @@ export default function FixedNavMenu({
   // Reduce title to first two words
   const shortenTitle = (t: string) => {
     const words = t.split(' ')
-    return words.length <= 2 ? t : `${words.slice(0, 2).join(' ')}...`
+    return words.length <= 3 ? t : `${words.slice(0, 2).join(' ')}...`
   }
 
   const sortedRelatedPosts = [...relatedPosts]
