@@ -1,5 +1,6 @@
 import { getSortedProjects } from '@/data/projectsData'
 import Card from '@/components/Card'
+import siteMetadata from '@/data/siteMetadata';
 
 export default function Page() {
   // Obtener los proyectos ordenados según la propiedad 'order'
@@ -13,7 +14,7 @@ export default function Page() {
             Relatos
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            Gente que escribe cuando nadie los ve.
+            {siteMetadata.descriptionRich}
           </p>
         </div>
         <div className="container py-12">
