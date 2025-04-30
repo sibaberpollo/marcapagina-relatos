@@ -77,6 +77,7 @@ module.exports = () => {
         { protocol: 'https', hostname: 'via.placeholder.com' },
         { protocol: 'https', hostname: 'avatars.dicebear.com' },
       ],
+      domains: ['res.cloudinary.com'],
     },
 
     async headers() {

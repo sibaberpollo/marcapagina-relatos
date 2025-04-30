@@ -163,20 +163,20 @@ export default async function Page(props: {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout
-        content={mainContent}
-        authorDetails={authorDetails}
-        next={next}
+      <Layout 
+        content={mainContent} 
+        authorDetails={authorDetails} 
+        next={next} 
         prev={prev}
         series={
           post.series
             ? {
-                name: post.series,
+          name: post.series,
                 relatos: seriesRelatos.map((rel) => ({
                   ...coreContent(rel),
                   path: `${author}/relato/${rel.slug}`
-                })),
-                currentOrder: post.seriesOrder || 0
+          })),
+          currentOrder: post.seriesOrder || 0
               }
             : null
         }
@@ -193,8 +193,8 @@ export default async function Page(props: {
               {seriesMetadata[post.series].description}
             </p>
             <div className="space-y-4">
-              {seriesRelatos.map((relato) => (
-                <div
+                {seriesRelatos.map((relato) => (
+                  <div
                   key={relato.slug}
                   className={`p-4 rounded-lg ${
                     relato.slug === slug
@@ -221,10 +221,10 @@ export default async function Page(props: {
           </div>
         )}
       </Layout>
-
-      <ClientFixedNavWrapper
-        title={post.title}
-        authorAvatar={authorDetails[0]?.avatar}
+      
+      <ClientFixedNavWrapper 
+        title={post.title} 
+        authorAvatar={authorDetails[0]?.avatar} 
         authorName={authorDetails[0]?.name}
         slug={slug}
         relatedPosts={relatedPosts}
@@ -235,4 +235,4 @@ export default async function Page(props: {
       />
     </>
   )
-}
+} 

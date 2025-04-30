@@ -24,13 +24,13 @@ export default function sitemap(): MetadataRoute.Sitemap {
   const blogRoutes = allBlogs.map((post) => ({
     url: `${siteUrl}/${post.authors?.[0] || 'blog'}/${post.path}`,
     lastModified: post.date,
-  }))
-  
+    }))
+
   // Relatos
   const relatosRoutes = allRelatos.map((relato) => ({
     url: `${siteUrl}/${relato.author[0]}/relato/${relato.slug}`,
     lastModified: relato.date,
   }))
-  
+
   return [...routes, ...blogRoutes, ...relatosRoutes]
 }

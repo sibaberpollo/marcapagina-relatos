@@ -13,7 +13,7 @@ const projectsData: Project[] = [
   {
     title: 'El evangelio según Asdrúbal',
     description: `En un altar improvisado, reposaba un libro de tapas negras gastadas y papel tan delgado como las Biblias que reparten los evangelistas. —Nadie lo toque —nos advirtió la bruja que lo resguardaba—. Tiene demasiada energía.`,
-    imgSrc: '/static/images/ilustraciones/elevengaliodeasdrubal.png',
+    imgSrc: 'elevengaliodeasdrubal_wjmkc2.jpg',
     authorImgSrc: '/static/images/pino.jpg',
     authorName: 'Pino',
     authorHref: '/autor/pino',
@@ -23,7 +23,7 @@ const projectsData: Project[] = [
   {
     title: 'Un cuento chino',
     description: 'Las ciudades del interior de un país siempre suponen una apuesta por lo desconocido. En Latinoamérica este fenómeno se potencia, pues, según quien mire y visite, la percepción de la provincia puede balancearse entre lo bucólico y lo agreste, lo bárbaro, lo peligroso.', 
-    imgSrc: '/static/images/ilustraciones/chipen.png',
+    imgSrc: 'chipen_oje3fc.jpg',
     authorImgSrc: '/static/images/hazael.png',
     authorName: 'Hazael',
     authorHref: '/autor/hazael',

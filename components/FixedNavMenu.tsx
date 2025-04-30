@@ -17,9 +17,9 @@ interface FixedNavMenuProps {
   seriesName?: string // Nuevo parámetro para el nombre de la serie
 }
 
-export default function FixedNavMenu({
-  title,
-  authorAvatar,
+export default function FixedNavMenu({ 
+  title, 
+  authorAvatar, 
   authorName,
   slug,
   relatedPosts,
@@ -47,7 +47,7 @@ export default function FixedNavMenu({
     if (menuOpen) setMenuOpen(false)
     setMinimized(!minimized)
   }
-
+  
   const expandIfMinimized = () => {
     if (minimized) setMinimized(false)
   }
@@ -69,7 +69,7 @@ export default function FixedNavMenu({
     updateReadingProgress()
     window.addEventListener('scroll', handleScroll)
     window.addEventListener('resize', updateReadingProgress)
-
+    
     const handleClickOutside = (e: MouseEvent) => {
       const tgt = e.target as HTMLElement
       if (
@@ -80,7 +80,7 @@ export default function FixedNavMenu({
         setMenuOpen(false)
       }
     }
-
+    
     document.addEventListener('click', handleClickOutside)
     return () => {
       window.removeEventListener('scroll', handleScroll)
@@ -91,20 +91,20 @@ export default function FixedNavMenu({
 
   return (
     <>
-      <div
-        id="fixed-nav-menu-component"
+      <div 
+        id="fixed-nav-menu-component" 
         className={minimized ? 'minimized' : ''}
         onClick={expandIfMinimized}
       >
-        <div
-          id="minimize-handle"
+        <div 
+          id="minimize-handle" 
           onClick={toggleMinimize}
           title={minimized ? 'Expandir menú' : 'Minimizar menú'}
         >
-          <svg
-            id="minimize-icon"
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 20 20"
+          <svg 
+            id="minimize-icon" 
+            xmlns="http://www.w3.org/2000/svg" 
+            viewBox="0 0 20 20" 
             fill="currentColor"
           >
             <path
@@ -116,22 +116,22 @@ export default function FixedNavMenu({
             />
           </svg>
         </div>
-
-        <div
-          id="progress-bar-component"
+        
+        <div 
+          id="progress-bar-component" 
           style={{ width: `${readingProgress}%` }}
         />
-
+        
         <div id="menu-content-component">
           <div id="menu-left-section">
             {authorAvatar && (
               <Link href={`/autor/${author}`} legacyBehavior>
                 <a>
-                  <img
-                    src={authorAvatar}
-                    alt={authorName || 'Author'}
-                    id="menu-avatar-component"
-                  />
+              <img
+                src={authorAvatar}
+                alt={authorName || 'Author'}
+                id="menu-avatar-component"
+              />
                 </a>
               </Link>
             )}
@@ -139,9 +139,9 @@ export default function FixedNavMenu({
               {shortenTitle(title)} {readingTime && formatReadingTime(readingTime.minutes)}    
             </div>
           </div>
-
-          <button
-            id="menu-button"
+          
+          <button 
+            id="menu-button" 
             aria-label={`Ver más ${pathPrefix}`}
             onClick={(e) => {
               e.stopPropagation()
@@ -159,7 +159,7 @@ export default function FixedNavMenu({
           </button>
         </div>
       </div>
-
+      
       <div id="story-menu" className={menuOpen ? '' : 'hidden'}>
           <h3 id="story-menu-title" className="text-lg font-medium">
             {seriesName ? (
@@ -178,7 +178,7 @@ export default function FixedNavMenu({
               </>
             )}
           </h3>
-          {sortedRelatedPosts.map((post) => (
+        {sortedRelatedPosts.map((post) => (
           <Link
             href={`/${author}/${pathPrefix}/${post.slug}`}
             key={post.slug}
@@ -191,4 +191,4 @@ export default function FixedNavMenu({
       </div>
     </>
   )
-}
+} 
