@@ -15,7 +15,7 @@ export const readingTimeActivities: Record<number, string[]> = {
     ],
     3: [
       'Leer este texto',
-      'Caminar cinco pasos en línea recta y volver',
+      'Caminar cinco pasos arrodillado en línea recta y volver',
       'Encender y apagar una luz sin razón',
       'Silbar una melodía inventada',
       'Acariciar una planta o tela suave',
