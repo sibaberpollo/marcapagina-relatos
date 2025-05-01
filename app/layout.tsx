@@ -1,4 +1,3 @@
-// app/layout.tsx
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
@@ -74,6 +73,7 @@ export default function RootLayout({
       className={`${literata.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      {/* Google Analytics if configured */}
       {googleAnalyticsId && (
         <>
           <Script
@@ -83,13 +83,20 @@ export default function RootLayout({
           <Script id="google-analytics" strategy="afterInteractive">
             {`
               window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
+              function gtag(){dataLayer.push(arguments);}  
               gtag('js', new Date());
               gtag('config', '${googleAnalyticsId}');
             `}
           </Script>
         </>
       )}
+
+      {/* hCaptcha API script for all client pages */}
+      <Script
+        src="https://js.hcaptcha.com/1/api.js"
+        strategy="afterInteractive"
+      />
+
       <link
         rel="apple-touch-icon"
         sizes="76x76"
