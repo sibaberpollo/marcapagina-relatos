@@ -1,4 +1,4 @@
-// next.config.js
+// File: next.config.js
 
 const { withContentlayer } = require('next-contentlayer2')
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
@@ -7,8 +7,8 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 
 const ContentSecurityPolicy = `
   default-src 'self';
-  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://challenges.cloudflare.com;
-  script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com;
+  script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://challenges.cloudflare.com https://www.googletagmanager.com;
+  script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com;
   frame-src 'self' https://challenges.cloudflare.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
@@ -52,6 +52,9 @@ const output = process.env.EXPORT ? 'export' : undefined
 const basePath = process.env.BASE_PATH || undefined
 const unoptimized = process.env.UNOPTIMIZED ? true : undefined
 
+/**
+ * @type {import('next').NextConfig}
+ **/
 module.exports = () => {
   const plugins = [withContentlayer, withBundleAnalyzer]
 
@@ -62,6 +65,7 @@ module.exports = () => {
     trailingSlash: false,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
 
+    // Configuración de ESLint
     eslint: {
       dirs: ['app', 'components', 'layouts', 'scripts'],
       ignoreDuringBuilds: true,

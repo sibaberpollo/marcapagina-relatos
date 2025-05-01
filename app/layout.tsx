@@ -1,4 +1,4 @@
-// layout.tsx
+// File: tailwind-nextjs-starter-blog/app/layout.tsx
 
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
@@ -13,6 +13,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
+import Script from 'next/script'
 
 const literata = Literata({
   subsets: ['latin'],
@@ -66,6 +67,7 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const basePath = process.env.BASE_PATH || ''
+  const gaId = siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId
 
   return (
     <html
@@ -73,6 +75,23 @@ export default function RootLayout({
       className={`${literata.variable} scroll-smooth`}
       suppressHydrationWarning
     >
+      {gaId && (
+        <>
+          <Script
+            src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            strategy="afterInteractive"
+          />
+          <Script id="gtag-init" strategy="afterInteractive">
+            {`
+              window.dataLayer = window.dataLayer || [];
+              function gtag(){dataLayer.push(arguments);}
+              gtag('js', new Date());
+              gtag('config', '${gaId}', { page_path: window.location.pathname });
+            `}
+          </Script>
+        </>
+      )}
+
       <link
         rel="apple-touch-icon"
         sizes="76x76"
@@ -100,12 +119,12 @@ export default function RootLayout({
       <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
       <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
       <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+
       <body
         suppressHydrationWarning
         className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"
       >
         <ThemeProviders>
-          {/* Aquí va tu Vercel Analytics */}
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
