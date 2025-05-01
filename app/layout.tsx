@@ -1,3 +1,5 @@
+// layout.tsx
+
 import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
@@ -11,7 +13,6 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
-import Script from 'next/script'
 
 const literata = Literata({
   subsets: ['latin'],
@@ -65,7 +66,6 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   const basePath = process.env.BASE_PATH || ''
-  const googleAnalyticsId = siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId
 
   return (
     <html
@@ -73,30 +73,6 @@ export default function RootLayout({
       className={`${literata.variable} scroll-smooth`}
       suppressHydrationWarning
     >
-      {/* Google Analytics if configured */}
-      {googleAnalyticsId && (
-        <>
-          <Script
-            src={`https://www.googletagmanager.com/gtag/js?id=${googleAnalyticsId}`}
-            strategy="afterInteractive"
-          />
-          <Script id="google-analytics" strategy="afterInteractive">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}  
-              gtag('js', new Date());
-              gtag('config', '${googleAnalyticsId}');
-            `}
-          </Script>
-        </>
-      )}
-
-      {/* hCaptcha API script for all client pages */}
-      <Script
-        src="https://js.hcaptcha.com/1/api.js"
-        strategy="afterInteractive"
-      />
-
       <link
         rel="apple-touch-icon"
         sizes="76x76"
@@ -129,6 +105,7 @@ export default function RootLayout({
         className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"
       >
         <ThemeProviders>
+          {/* Aquí va tu Vercel Analytics */}
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>

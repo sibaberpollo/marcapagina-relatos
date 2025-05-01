@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
       text: '¡Hola! Este es un correo de prueba enviado desde el endpoint /api/test-email.',
     })
 
-    return NextResponse.json({ message: 'Correo de prueba enviado exitosamente a pino.jose@gmail.com' })
+    return NextResponse.json({ message: 'Correo de prueba enviado exitosamente' })
   } catch (error) {
     console.error('Error al enviar correo de prueba:', error)
     return NextResponse.json(
