@@ -15,7 +15,7 @@ const siteMetadata = {
   email: '',
   github: 'https://github.com/sibaberpollo/marcapagina-relatos',
   x: '',
-  // twitter: 'https://twitter.com/Twitter',
+  twitter: 'https://x.com/marcapaginapage',
   facebook: '',
   youtube: '',
   linkedin: '',
