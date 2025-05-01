@@ -3,11 +3,11 @@
 
 import { useState, useEffect, useRef, DragEvent } from 'react'
 import Script from 'next/script'
+import { usePathname } from 'next/navigation'
 import SectionContainer from '@/components/SectionContainer'
 import PageTitle from '@/components/PageTitle'
-import Link from '@/components/Link'
+import { useRouter } from 'next/navigation'
 
-// Declaramos la interfaz global de Turnstile
 declare global {
   interface Window {
     turnstile: {
@@ -25,6 +25,9 @@ declare global {
 const TURNSTILE_SITEKEY = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY!
 
 export default function PublicaPage() {
+  const router = useRouter()
+  const pathname = usePathname()
+
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -83,7 +86,11 @@ export default function PublicaPage() {
 
   // Renderiza Turnstile solo una vez
   const initTurnstile = () => {
-    if (window.turnstile && captchaRef.current && widgetIdRef.current === null) {
+    if (
+      window.turnstile &&
+      captchaRef.current &&
+      widgetIdRef.current === null
+    ) {
       const id = window.turnstile.render(captchaRef.current, {
         sitekey: TURNSTILE_SITEKEY,
         callback: (t: string) => setToken(t),
@@ -92,18 +99,29 @@ export default function PublicaPage() {
     }
   }
 
+  // Inicializar y limpiar Turnstile cada vez que navegamos a esta ruta
   useEffect(() => {
-    initTurnstile()
+    if (pathname === '/publica') {
+      // Si el script ya cargó, inicializamos; si no, esperamos un poco
+      if (window.turnstile) {
+        initTurnstile()
+      } else {
+        const interval = setInterval(() => {
+          if (window.turnstile) {
+            initTurnstile()
+            clearInterval(interval)
+          }
+        }, 300)
+        return () => clearInterval(interval)
+      }
+    }
     return () => {
       if (widgetIdRef.current && window.turnstile) {
         window.turnstile.remove(widgetIdRef.current)
+        widgetIdRef.current = null
       }
     }
-  }, [])
-
-  const onLoad = () => {
-    initTurnstile()
-  }
+  }, [pathname])
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -111,26 +129,38 @@ export default function PublicaPage() {
       alert('Por favor completa el CAPTCHA.')
       return
     }
-
+  
     try {
       setIsSubmitting(true)
       setStatus(null)
-
+  
       const body = new FormData()
       body.append('name', formData.name)
       body.append('email', formData.email)
       body.append('description', formData.description)
       body.append('response', token)
       formData.files.forEach(f => body.append('files', f))
-
+  
       const res = await fetch('/api/publica', { method: 'POST', body })
       const json = await res.json()
-
+  
       if (!res.ok) throw new Error(json.error || 'Error en el envío')
-      setStatus({ success: true, message: json.message })
-      setFormData({ name: '', email: '', description: '', files: [], agree: false })
+  
+      // Limpio estado y CAPTCHA
+      setFormData({
+        name: '',
+        email: '',
+        description: '',
+        files: [],
+        agree: false,
+      })
       setToken(null)
-      if (widgetIdRef.current && window.turnstile) window.turnstile.reset(widgetIdRef.current)
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.reset(widgetIdRef.current)
+      }
+  
+      // Redirijo a página de gracias
+      router.push('/publica/gracias')
     } catch (err) {
       setStatus({ success: false, message: (err as Error).message })
     } finally {
@@ -144,7 +174,6 @@ export default function PublicaPage() {
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
           strategy="afterInteractive"
-          onLoad={onLoad}
         />
 
         <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
@@ -159,11 +188,13 @@ export default function PublicaPage() {
         </article>
 
         {status && (
-          <div className={`mx-auto max-w-2xl p-4 mb-6 rounded-lg ${
-            status.success
-              ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100'
-              : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100'
-          }`}>
+          <div
+            className={`mx-auto max-w-2xl p-4 mb-6 rounded-lg ${
+              status.success
+                ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100'
+                : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100'
+            }`}
+          >
             {status.message}
           </div>
         )}
@@ -175,7 +206,10 @@ export default function PublicaPage() {
         >
           {/* Nombre */}
           <div>
-            <label htmlFor="name" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Nombre o seudónimo
             </label>
             <input
@@ -191,7 +225,10 @@ export default function PublicaPage() {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Correo electrónico
             </label>
             <input
@@ -207,7 +244,10 @@ export default function PublicaPage() {
 
           {/* Descripción */}
           <div>
-            <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="description"
+              className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+            >
               Presentación breve
             </label>
             <textarea
@@ -242,13 +282,18 @@ export default function PublicaPage() {
             {formData.files.length > 0 && (
               <ul className="mt-2 space-y-1 text-sm text-gray-700 dark:text-gray-300">
                 {formData.files.map((f, i) => (
-                  <li key={i} className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2 rounded">
+                  <li
+                    key={i}
+                    className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2 rounded"
+                  >
                     <span className="truncate">{f.name}</span>
                     <button
                       type="button"
                       onClick={() => removeFile(i)}
                       className="ml-2 text-red-600 hover:text-red-800"
-                    >&times;</button>
+                    >
+                      &times;
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -271,7 +316,10 @@ export default function PublicaPage() {
               checked={formData.agree}
               onChange={handleChange}
             />
-            <label htmlFor="agree" className="ml-2 text-sm text-gray-700 dark:text-gray-300">
+            <label
+              htmlFor="agree"
+              className="ml-2 text-sm text-gray-700 dark:text-gray-300"
+            >
               Acepto que este texto es original y cedo derechos de publicación a MarcaPagina.
             </label>
           </div>

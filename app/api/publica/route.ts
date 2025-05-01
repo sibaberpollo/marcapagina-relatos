@@ -1,4 +1,5 @@
 // File: tailwind-nextjs-starter-blog/app/api/publica/route.ts
+
 import { NextRequest, NextResponse } from 'next/server'
 import nodemailer from 'nodemailer'
 
@@ -31,10 +32,13 @@ export async function POST(req: NextRequest) {
     })
     const vj = await verify.json()
     if (!vj.success) {
-      return NextResponse.json({ error: 'Turnstile inválido', details: vj['error-codes'] }, { status: 400 })
+      return NextResponse.json(
+        { error: 'Turnstile inválido', details: vj['error-codes'] },
+        { status: 400 }
+      )
     }
 
-    // Adjuntos
+    // Preparar adjuntos
     const attachments: { filename: string; content: Buffer }[] = []
     for (const key of data.keys()) {
       if (key === 'files') {
@@ -46,8 +50,23 @@ export async function POST(req: NextRequest) {
       }
     }
 
-    await transporter.sendMail({
-      from: GMAIL_USER,
+    // 1) Envío de confirmación al remitente (no bloquea errores)
+    transporter
+      .sendMail({
+        from: `MarcaPagina <${GMAIL_USER}>`,
+        to: email,
+        subject: 'MarcaPagina: recibimos tu relato',
+        text: `Hola ${name},\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\n— El equipo de MarcaPagina`,
+        html: `<p>Hola <strong>${name}</strong>,</p>
+               <p>¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.</p>
+               <p>— El equipo de MarcaPagina</p>`,
+      })
+      .then(info => console.log('Confirmación enviada a remitente:', info.messageId))
+      .catch(err => console.error('Error enviando confirmación al remitente:', err))
+
+    // 2) Envío interno con copia a ti
+    const infoInternal = await transporter.sendMail({
+      from: `MarcaPagina <${GMAIL_USER}>`,
       to: GMAIL_USER,
       cc: 'pino.jose@gmail.com',
       replyTo: email,
@@ -55,6 +74,7 @@ export async function POST(req: NextRequest) {
       text: `De: ${name} <${email}>\n\n${description}`,
       attachments,
     })
+    console.log('Correo interno enviado:', infoInternal.messageId)
 
     return NextResponse.json({ message: 'Relato enviado correctamente' })
   } catch (err) {
