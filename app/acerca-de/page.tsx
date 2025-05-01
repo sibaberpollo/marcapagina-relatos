@@ -4,7 +4,10 @@ import siteMetadata from '@/data/siteMetadata'
 import Link from 'next/link'
 import { genPageMetadata } from 'app/seo'
 
-export const metadata = genPageMetadata({ title: 'Acerca de' })
+export const metadata = genPageMetadata({ 
+  title: 'Acerca de',
+  description: 'Marcapágina renace como un espacio dedicado a la publicación de relatos literarios: un lugar sin algoritmos, centrado en cuidar el texto y la experiencia de lectura, donde autores comparten historias que invitan a perderse en mundos nuevos.'
+})
 
 export default function AcercaDePage() {
   return (

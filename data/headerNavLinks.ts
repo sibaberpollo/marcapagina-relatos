@@ -1,6 +1,6 @@
 const headerNavLinks = [
   { href: '/', title: 'Inicio' },
-  { href: '/publica', title: 'Publica' },
+  { href: '/publica', title: 'Publica con nosotros' },
   { href: '/acerca-de', title: 'Acerca de' },
 ]
 
