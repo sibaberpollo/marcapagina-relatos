@@ -1,6 +1,5 @@
 // components/FixedNavMenu.tsx
 'use client'
-'use client'
 
 import { useEffect, useState } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
