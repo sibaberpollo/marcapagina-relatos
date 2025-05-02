@@ -21,6 +21,17 @@ interface FixedNavMenuProps {
   seriesName?: string
 }
 
+// Utilidad para enviar eventos a Google Analytics
+function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    })
+  }
+}
+
 export default function FixedNavMenu({
   title,
   authorAvatar,
@@ -93,7 +104,15 @@ export default function FixedNavMenu({
                 const acts = readingTimeActivities[mins] || []
                 return acts.length ? (
                   <button
-                    onClick={() => setModalOpen(true)}
+                    onClick={() => {
+                      sendGAEvent({
+                        action: 'open_reading_time_modal',
+                        category: 'ReadingTime',
+                        label: title,
+                        value: readingTime ? Math.ceil(readingTime.minutes) : undefined,
+                      })
+                      setModalOpen(true)
+                    }}
                     className="inline-flex items-center text-primary-500 hover:underline"
                   >
                     <span className="flex items-center">
@@ -110,7 +129,15 @@ export default function FixedNavMenu({
             </span>
           </div>
           <button
-            onClick={() => setMenuOpen(!menuOpen)}
+            onClick={() => {
+              sendGAEvent({
+                action: 'toggle_author_menu',
+                category: 'AuthorMenu',
+                label: authorName || author,
+                value: !menuOpen ? 'opened' : 'closed',
+              })
+              setMenuOpen(!menuOpen)
+            }}
             className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
             aria-label="Toggle menu"
           >
