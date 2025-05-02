@@ -7,9 +7,21 @@ interface Project {
   authorName?: string;
   authorHref?: string;
   order: number;
+  featured?: boolean;
 }
 
 const projectsData: Project[] = [
+  {
+    title: 'Tormenta Isaac',
+    description: 'A simple vista, Isaac Sullivan parecía un hombre normal, con sus mañas y rarezas como cualquiera. Corpulento, siempre de saco y camisa abierta, cadena al cuello y un diente de oro que relucía entre sus gestos amables.',
+    imgSrc: 'tormenta-isaac-1200x675-crop_gw6gaa.jpg',
+    authorImgSrc: '/static/images/oscar.jpg',
+    authorName: 'Óscar',
+    authorHref: '/autor/oscar',
+    href: '/oscar/relato/tormenta-isaac',
+    order: 0,
+    featured: true,
+  },
   {
     title: 'El evangelio según Asdrúbal',
     description: `En un altar improvisado, reposaba un libro de tapas negras gastadas y papel tan delgado como las Biblias que reparten los evangelistas. —Nadie lo toque —nos advirtió la bruja que lo resguardaba—. Tiene demasiada energía.`,
@@ -34,6 +46,15 @@ const projectsData: Project[] = [
 
 export const getSortedProjects = () => {
   return [...projectsData].sort((a, b) => a.order - b.order);
+};
+
+export const getFeaturedProject = () => {
+  return projectsData.find(project => project.featured === true);
+};
+
+export const getNonFeaturedProjects = () => {
+  return [...projectsData].filter(project => !project.featured)
+    .sort((a, b) => a.order - b.order);
 };
 
 export default projectsData;

@@ -1,10 +1,14 @@
-import { getSortedProjects } from '@/data/projectsData'
+import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
 import Card from '@/components/Card'
+import FeaturedCard from '@/components/FeaturedCard'
 import siteMetadata from '@/data/siteMetadata';
 
 export default function Page() {
-  // Obtener los proyectos ordenados según la propiedad 'order'
-  const sortedProjects = getSortedProjects();
+  // Obtener el proyecto destacado
+  const featuredProject = getFeaturedProject();
+  
+  // Obtener los proyectos no destacados ordenados
+  const nonFeaturedProjects = getNonFeaturedProjects();
 
   return (
     <>
@@ -17,9 +21,26 @@ export default function Page() {
             {siteMetadata.descriptionRich}
           </p>
         </div>
+        
+        {/* Relato Destacado */}
+        {featuredProject && (
+          <div className="container py-4">
+            <FeaturedCard
+              title={featuredProject.title}
+              description={featuredProject.description}
+              imgSrc={featuredProject.imgSrc || ''}
+              href={featuredProject.href || '#'}
+              authorImgSrc={featuredProject.authorImgSrc || ''}
+              authorName={featuredProject.authorName || ''}
+              authorHref={featuredProject.authorHref || '#'}
+            />
+          </div>
+        )}
+        
+        {/* Otros Relatos */}
         <div className="container py-12">
           <div className="-m-4 flex flex-wrap">
-            {sortedProjects.map((d) => (
+            {nonFeaturedProjects.map((d) => (
               <Card
                 key={d.title}
                 title={d.title}
