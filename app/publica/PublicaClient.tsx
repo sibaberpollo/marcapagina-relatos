@@ -37,6 +37,7 @@ export default function PublicaClient() {
   const [status, setStatus] = useState<{ success: boolean; message: string } | null>(null)
   const captchaRef = useRef<HTMLDivElement>(null)
   const widgetIdRef = useRef<string | null>(null)
+  const [dotCount, setDotCount] = useState(0)
 
   const allowedExtensions = ['pdf', 'docx', 'txt']
 
@@ -113,6 +114,17 @@ export default function PublicaClient() {
     }
   }, [pathname])
 
+  useEffect(() => {
+    if (isSubmitting) {
+      const interval = setInterval(() => {
+        setDotCount(prev => (prev + 1) % 4)
+      }, 500)
+      return () => clearInterval(interval)
+    } else {
+      setDotCount(0)
+    }
+  }, [isSubmitting])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!token) {
@@ -177,7 +189,7 @@ export default function PublicaClient() {
 
         <form
           onSubmit={handleSubmit}
-          className="mx-auto max-w-2xl space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow"
+          className="mx-auto max-w-2xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow"
           encType="multipart/form-data"
         >
           <p className="text-sm text-gray-600 dark:text-gray-400">Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.</p>
@@ -195,7 +207,7 @@ export default function PublicaClient() {
               name="name"
               type="text"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
+              className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.name}
               onChange={handleChange}
             />
@@ -214,7 +226,7 @@ export default function PublicaClient() {
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
+              className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.email}
               onChange={handleChange}
             />
@@ -233,7 +245,7 @@ export default function PublicaClient() {
               name="description"
               rows={4}
               required
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
+              className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.description}
               onChange={handleChange}
             />
@@ -255,7 +267,7 @@ export default function PublicaClient() {
                 multiple
                 accept=".pdf,.docx,.txt"
                 required
-                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border border-black border-2 rounded-lg"
                 onChange={handleFileInput}
               />
             </div>
@@ -292,7 +304,7 @@ export default function PublicaClient() {
               name="agree"
               type="checkbox"
               required
-              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 dark:border-gray-600 rounded"
+              className="h-4 w-4 text-primary-600 focus:ring-primary-500 border border-black border-2 rounded-lg"
               checked={formData.agree}
               onChange={handleChange}
             />
@@ -311,7 +323,7 @@ export default function PublicaClient() {
               disabled={!token || isSubmitting}
               className="w-full inline-flex justify-center rounded-md bg-primary-600 py-2 px-4 text-white shadow hover:bg-primary-700 focus:ring-2 focus:ring-primary-500 disabled:opacity-50"
             >
-              {isSubmitting ? 'Enviando...' : 'Enviar relato'}
+              {isSubmitting ? `Enviando${'.'.repeat(dotCount)}` : 'Enviar relato'}
             </button>
           </div>
         </form>
