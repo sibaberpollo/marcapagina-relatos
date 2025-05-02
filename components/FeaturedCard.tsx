@@ -22,7 +22,7 @@ const FeaturedCard = ({
 }: FeaturedCardProps) => (
   <div className="w-full mb-8">
     <div
-      className="relative overflow-hidden rounded-lg border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-900 h-96"
+      className="relative overflow-hidden rounded-lg border border-black border-4 bg-white dark:border-black dark:bg-gray-900 h-96"
     >
       <Link href={href} aria-label={`Link to ${title}`} className="block">
         <div className="absolute inset-0">

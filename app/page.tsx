@@ -12,8 +12,8 @@ export default function Page() {
 
   return (
     <>
-      <div className="divide-y divide-gray-200 dark:divide-gray-700">
-        <div className="space-y-2 pt-6 pb-8 md:space-y-5">
+      <div >
+        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
           <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-100">
             Relatos
           </h1>
@@ -38,7 +38,7 @@ export default function Page() {
         )}
         
         {/* Otros Relatos */}
-        <div className="container py-12">
+        <div className="container">
           <div className="-m-4 flex flex-wrap">
             {nonFeaturedProjects.map((d) => (
               <Card

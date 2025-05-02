@@ -26,7 +26,7 @@ const Card = ({
     <div
       className={`${
         imgSrc && 'h-full'
-      } relative overflow-hidden rounded-md border-2 border-gray-200/60 bg-white dark:border-gray-700/60 dark:bg-gray-900`}
+      } relative overflow-hidden rounded-md border border-black border-4 bg-white dark:border-black dark:bg-gray-900`}
     >
       {imgSrc &&
         (href ? (
