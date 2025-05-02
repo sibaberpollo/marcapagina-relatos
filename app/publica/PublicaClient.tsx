@@ -1,4 +1,3 @@
-// File: tailwind-nextjs-starter-blog/app/publica/PublicaClient.tsx
 'use client'
 
 import { useState, useEffect, useRef, DragEvent } from 'react'
@@ -7,7 +6,6 @@ import { usePathname, useRouter } from 'next/navigation'
 import SectionContainer from '@/components/SectionContainer'
 import PageTitle from '@/components/PageTitle'
 
-// Declaramos la interfaz global de Turnstile
 declare global {
   interface Window {
     turnstile: {
@@ -66,12 +64,15 @@ export default function PublicaClient() {
     const valid = processFiles(dropped)
     setFormData(prev => ({ ...prev, files: [...prev.files, ...valid].slice(0, 5) }))
   }
+
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => e.preventDefault()
+
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const valid = processFiles(Array.from(e.target.files))
     setFormData(prev => ({ ...prev, files: [...prev.files, ...valid].slice(0, 5) }))
   }
+
   const removeFile = (idx: number) => {
     setFormData(prev => {
       const arr = [...prev.files]
@@ -132,7 +133,6 @@ export default function PublicaClient() {
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Error en el envío')
 
-      // Resetear estado y CAPTCHA
       setFormData({ name: '', email: '', description: '', files: [], agree: false })
       setToken(null)
       if (widgetIdRef.current && window.turnstile) {
@@ -158,8 +158,7 @@ export default function PublicaClient() {
         <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
           <PageTitle>Publica con nosotros</PageTitle>
           <p>
-            En MarcaPagina celebramos la fuerza de la ficción para encender la imaginación
-            y tejer nuevos mundos.
+            En MarcaPágina celebramos la fuerza de la ficción para encender la imaginación y tejer nuevos mundos.
           </p>
           <p>Comparte tu relato: cuéntanos quién eres, tus influencias y adjunta tu historia.</p>
         </article>
@@ -181,20 +180,22 @@ export default function PublicaClient() {
           className="mx-auto max-w-2xl space-y-6 bg-white dark:bg-gray-800 p-8 rounded-lg shadow"
           encType="multipart/form-data"
         >
+          <p className="text-sm text-gray-600 dark:text-gray-400">Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.</p>
+
           {/* Nombre */}
           <div>
             <label
               htmlFor="name"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Nombre o seudónimo
+              Nombre o seudónimo <span className="text-red-600">*</span>
             </label>
             <input
               id="name"
               name="name"
               type="text"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2 focus:ring-primary-500 focus:border-primary-500"
+              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.name}
               onChange={handleChange}
             />
@@ -206,14 +207,14 @@ export default function PublicaClient() {
               htmlFor="email"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Correo electrónico
+              Correo electrónico <span className="text-red-600">*</span>
             </label>
             <input
               id="email"
               name="email"
               type="email"
               required
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2 focus:ring-primary-500 focus:border-primary-500"
+              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.email}
               onChange={handleChange}
             />
@@ -225,13 +226,14 @@ export default function PublicaClient() {
               htmlFor="description"
               className="block text-sm font-medium text-gray-700 dark:text-gray-300"
             >
-              Presentación breve
+              Presentación breve <span className="text-red-600">*</span>
             </label>
             <textarea
               id="description"
               name="description"
               rows={4}
-              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2 focus:ring-primary-500 focus:border-primary-500"
+              required
+              className="mt-1 block w-full rounded-md border-gray-300 dark:border-gray-700 bg-gray-50 dark:bg-gray-900 p-2"
               value={formData.description}
               onChange={handleChange}
             />
@@ -240,18 +242,19 @@ export default function PublicaClient() {
           {/* Archivos */}
           <div>
             <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-              Archivos (máx. 5) – PDF, DOCX, TXT
+              Archivos (máx. 5) – PDF, DOCX, TXT <span className="text-red-600">*</span>
             </label>
             <div
               onDrop={handleDrop}
               onDragOver={handleDragOver}
-              className="mt-1 relative flex flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-6 text-gray-500 hover:border-primary-500 hover:bg-gray-100 dark:hover:bg-gray-800 transition"
+              className="mt-1 relative flex flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-6 text-gray-500"
             >
               <p>Arrastra y suelta archivos aquí o haz clic para seleccionar</p>
               <input
                 type="file"
                 multiple
                 accept=".pdf,.docx,.txt"
+                required
                 className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
                 onChange={handleFileInput}
               />
@@ -297,7 +300,7 @@ export default function PublicaClient() {
               htmlFor="agree"
               className="ml-2 text-sm text-gray-700 dark:text-gray-300"
             >
-              Acepto que este texto es original y cedo derechos de publicación a MarcaPagina.
+              Acepto que este texto es original y cedo derechos de publicación a MarcaPágina. <span className="text-red-600">*</span>
             </label>
           </div>
 
