@@ -13,7 +13,7 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: 'Tormenta Isaac',
-    description: 'A simple vista, Isaac Sullivan parecía un hombre normal, con sus mañas y rarezas como cualquiera. Corpulento, siempre de saco y camisa abierta, cadena al cuello y un diente de oro que relucía entre sus gestos amables.',
+    description: 'A simple vista, Isaac Sullivan parecía un hombre normal, con sus mañas y rarezas como cualquiera. Corpulento, siempre de saco y camisa abierta...',
     imgSrc: 'tormenta-isaac-1200x675-crop_gw6gaa.jpg',
     authorImgSrc: '/static/images/oscar.jpg',
     authorName: 'Óscar',
