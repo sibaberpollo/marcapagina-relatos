@@ -173,6 +173,9 @@ export default function PublicaClient() {
             En MarcaPágina celebramos la fuerza de la ficción para encender la imaginación y tejer nuevos mundos.
           </p>
           <p>Comparte tu relato: cuéntanos quién eres, tus influencias y adjunta tu historia.</p>
+          <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
+            <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados.
+          </p>
         </article>
 
         {status && (
