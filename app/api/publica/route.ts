@@ -56,9 +56,17 @@ export async function POST(req: NextRequest) {
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: email,
         subject: 'MarcaPagina: recibimos tu relato',
-        text: `Hola ${name},\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\n— El equipo de MarcaPagina`,
+        text: `Hola ${name},\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\nTu texto será evaluado antes de publicarse.\n\nSíguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— El equipo de MarcaPagina`,
         html: `<p>Hola <strong>${name}</strong>,</p>
                <p>¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.</p>
+               <p style='background:#faff00; color:#222; padding:8px; border-radius:6px; font-weight:bold;'>Tu texto será evaluado antes de publicarse.</p>
+               <p>Síguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:</p>
+               <ul>
+                 <li><a href='https://www.instagram.com/marcapagina.page/' target='_blank'>Instagram</a></li>
+                 <li><a href='https://x.com/marcapaginapage' target='_blank'>Twitter</a></li>
+                 <li><a href='https://www.threads.com/@marcapagina.page' target='_blank'>Threads</a></li>
+                 <li><a href='https://bsky.app/profile/marcapagina.bsky.social' target='_blank'>Bluesky</a></li>
+               </ul>
                <p>— El equipo de MarcaPagina</p>`,
       })
       .then(info => console.log('Confirmación enviada a remitente:', info.messageId))
