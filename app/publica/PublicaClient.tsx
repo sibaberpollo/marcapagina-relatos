@@ -21,6 +21,17 @@ declare global {
 
 const TURNSTILE_SITEKEY = process.env.NEXT_PUBLIC_TURNSTILE_SITEKEY!
 
+// Utilidad para enviar eventos a Google Analytics
+function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
+  if (typeof window !== 'undefined' && (window as any).gtag) {
+    (window as any).gtag('event', action, {
+      event_category: category,
+      event_label: label,
+      value: value,
+    })
+  }
+}
+
 export default function PublicaClient() {
   const router = useRouter()
   const pathname = usePathname()
@@ -127,6 +138,12 @@ export default function PublicaClient() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    sendGAEvent({
+      action: 'submit_publica_form',
+      category: 'PublicaForm',
+      label: formData.name,
+      value: formData.files.length,
+    })
     if (!token) {
       alert('Por favor completa el CAPTCHA.')
       return
