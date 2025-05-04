@@ -78,7 +78,7 @@ export default function FixedNavMenu({
       <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
         {/* Progress bar */}
         <div
-          className="h-1 bg-primary-500"
+          className="h-1 bg-black"
           style={{ width: `${readingProgress}%` }}
         />
 
@@ -96,7 +96,7 @@ export default function FixedNavMenu({
                 />
               </Link>
             )}
-            <span className="font-medium">
+            <span className="font-medium text-gray-900">
               {shortenTitle(title)}{' '}
               {readingTime && (() => {
                 const mins = Math.ceil(readingTime.minutes)
@@ -112,17 +112,22 @@ export default function FixedNavMenu({
                       })
                       setModalOpen(true)
                     }}
-                    className="inline-flex items-center text-primary-500 hover:underline"
+                    className="inline-flex items-center text-gray-900 hover:underline"
                   >
-                    <span className="flex items-center">
+                    <span className="flex items-center px-2 py-0.5 rounded text-sm font-bold text-black">
                       <span>(</span>
                       <span>{mins} min</span>
-                      <Clock className="mx-1 h-4 w-4 animate-pulse" />
+                      <Clock className="mx-1 h-4 w-4 text-black" />
                       <span>)</span>
                     </span>
                   </button>
                 ) : (
-                  <span>({mins} min)</span>
+                  <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-bold ml-1">
+                    <span>(</span>
+                    <span>{mins} min</span>
+                    <Clock className="mx-1 h-4 w-4" />
+                    <span>)</span>
+                  </span>
                 )
               })()}
             </span>
@@ -174,10 +179,10 @@ export default function FixedNavMenu({
           <div className="bg-white dark:bg-gray-900 p-4 border-t">
             <h3 className="text-lg font-medium mb-2">
               {seriesName ? (
-                <>Más relatos de la serie <span className="text-primary-500">{seriesName}</span></>
+                <>Más relatos de la serie <span className="text-gray-900">{seriesName}</span></>
               ) : (
                 <>Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
-                  <Link href={`/autor/${author}`} className="text-primary-500 hover:underline">
+                  <Link href={`/autor/${author}`} className="text-gray-500 hover:underline">
                     {authorName}
                   </Link>
                 </>
@@ -222,7 +227,7 @@ export default function FixedNavMenu({
               </ul>
               <button
                 onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-primary-500 text-white rounded hover:bg-primary-600"
+                className="px-4 py-2 bg-black text-[#faff00] rounded hover:bg-gray-900"
               >
                 Cerrar
               </button>

@@ -5,6 +5,7 @@ import Link from './Link'
 import MobileNav from './MobileNav'
 import ThemeSwitch from './ThemeSwitch'
 import SearchButton from './SearchButton'
+import PublishLink from './PublishLink'
 //import SearchButton from './SearchButton'
 
 const Header = () => {
@@ -33,32 +34,26 @@ const Header = () => {
       </Link>
       <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
         <div className="no-scrollbar hidden max-w-40 items-center gap-x-4 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
+          {/* Enlace destacado de publicación en desktop */}
+          <PublishLink variant="desktop" />
           {headerNavLinks
-            .filter((link) => link.href !== '/')
+            .filter((link) => link.href !== '/' && link.href !== '/publica')
             .map((link) => (
               <Link
                 key={link.title}
                 href={link.href}
-                className={
-                  link.title === 'Publica con nosotros'
-                    ? 'm-1 font-bold flex items-center gap-2 px-3 py-1 rounded-lg bg-black text-[#faff00] hover:bg-gray-800 transition-colors duration-200'
-                    : 'm-1 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white flex items-center gap-2'
-                }
+                className="m-1 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white"
               >
                 {link.title}
-                {link.title === 'Publica con nosotros' && (
-                  <span className="inline-flex items-center justify-center rounded-full ml-2" style={{ background: '#faff00', width: 22, height: 22 }}>
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M4 13.5V16h2.5l7.06-7.06-2.5-2.5L4 13.5z" fill="#222"/>
-                      <path d="M17.71 6.04a1 1 0 0 0 0-1.41l-2.34-2.34a1 1 0 0 0-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z" fill="#222"/>
-                    </svg>
-                  </span>
-                )}
               </Link>
             ))}
         </div>
-        {/*<SearchButton />*/}
-        <ThemeSwitch />
+        {/* Enlace destacado de publicación en móvil fuera del menú */}
+        <PublishLink variant="mobile" />
+        {/* ThemeSwitch en desktop */}
+        <div className="hidden sm:block">
+          <ThemeSwitch />
+        </div>
         <MobileNav />
       </div>
     </header>

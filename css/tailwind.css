@@ -10,17 +10,17 @@
   --font-sans: var(--font-literata), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
 
   /* Kraft-inspired primary (cálido, terroso, papel) */
-  --color-primary-50:  oklch(0.98 0.01 80);   /* beige claro */
-  --color-primary-100: oklch(0.95 0.02 80);
-  --color-primary-200: oklch(0.90 0.03 80);
-  --color-primary-300: oklch(0.82 0.04 80);
-  --color-primary-400: oklch(0.75 0.05 80);   /* kraft natural */
-  --color-primary-500: oklch(0.68 0.06 80);   /* kraft clásico */
-  --color-primary-600: oklch(0.55 0.05 80);   /* papel envejecido */
-  --color-primary-700: oklch(0.45 0.04 80);   /* marrón oscuro */
-  --color-primary-800: oklch(0.35 0.03 80);   /* café */
-  --color-primary-900: oklch(0.25 0.02 80);   /* casi negro */
-  --color-primary-950: oklch(0.18 0.015 80);  /* negro terroso */
+  --color-primary-50:  #ffffd0;   /* amarillo muy claro */
+  --color-primary-100: #ffffc0;
+  --color-primary-200: #ffffa0;
+  --color-primary-300: #ffff80;
+  --color-primary-400: #ffff40;   /* amarillo brillante */
+  --color-primary-500: #faff00;   /* amarillo fluorescente (base) */
+  --color-primary-600: #e0e500;   /* amarillo más saturado */
+  --color-primary-700: #c0c000;   /* amarillo con verde */
+  --color-primary-800: #a0a000;   /* ocre */
+  --color-primary-900: #808000;   /* oliva */
+  --color-primary-950: #606000;   /* verde oliva oscuro */
 
   /* Neutros tipo carbón / tinta / papel */
   --color-gray-50:  oklch(0.96 0 270);  /* gris papel */

@@ -5,6 +5,8 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'bo
 import { Fragment, useState, useEffect, useRef } from 'react'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
+import ThemeSwitch from './ThemeSwitch'
+import PublishLink from './PublishLink'
 
 const MobileNav = () => {
   const [navShow, setNavShow] = useState(false)
@@ -70,18 +72,29 @@ const MobileNav = () => {
             <DialogPanel className="fixed top-0 left-0 z-70 h-full w-full bg-white/95 duration-300 dark:bg-gray-950/98">
               <nav
                 ref={navRef}
-                className="mt-8 flex h-full basis-0 flex-col items-start overflow-y-auto pt-2 pl-12 text-left"
+                className="mt-8 flex h-full basis-0 flex-col items-center overflow-y-auto pt-2 px-6 text-center w-full"
               >
-                {headerNavLinks.map((link) => (
+                {headerNavLinks
+                 .filter(link => link.href !== '/publica')
+                 .map((link) => (
                   <Link
                     key={link.title}
                     href={link.href}
-                    className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 pr-4 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
+                    className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100 w-full text-center"
                     onClick={onToggleNav}
                   >
                     {link.title}
                   </Link>
                 ))}
+                <div className="mt-4 mb-8 flex flex-col items-center gap-4 w-full">
+                  <div className="w-full flex justify-center mb-4">
+                    <PublishLink variant="mobileNav" onClick={onToggleNav} />
+                  </div>
+                  <div className="flex items-center justify-center w-full">
+                    <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mr-3 text-center">Tema:</span>
+                    <ThemeSwitch />
+                  </div>
+                </div>
               </nav>
 
               <button
