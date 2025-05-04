@@ -102,10 +102,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                       )}
                       <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                         <dt className="sr-only">Name</dt>
-                        <dd className="text-gray-900 dark:text-gray-100">
+                        <dd className="text-black">
                           <Link
                             href={`/autor/${author.slug}`}
-                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                            className="text-black hover:text-gray-700"
                           >
                             {author.name}
                           </Link>
@@ -115,7 +115,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           {author.twitter && (
                             <Link
                               href={author.twitter}
-                              className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                              className="text-black hover:text-gray-700"
                             >
                               {author.twitter
                                 .replace('https://twitter.com/', '@')
@@ -155,7 +155,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                           {prevLabel}
                         </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                        <div className="text-black hover:text-gray-700">
                           <Link href={`/${prev.path}`}>{prev.title}</Link>
                         </div>
                       </div>
@@ -165,7 +165,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                           {nextLabel}
                         </h2>
-                        <div className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400">
+                        <div className="text-black hover:text-gray-700">
                           <Link href={`/${next.path}`}>{next.title}</Link>
                         </div>
                       </div>

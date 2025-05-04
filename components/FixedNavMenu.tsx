@@ -194,7 +194,7 @@ export default function FixedNavMenu({
                   <Link
                     href={`/${author}/${pathPrefix}/${post.slug}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block hover:text-primary-500 ${post.slug === slug ? 'font-semibold' : ''}`}
+                    className={`block hover:text-gray-700 hover:underline ${post.slug === slug ? 'font-semibold' : ''}`}
                   >
                     {post.title}{' '}
                     {post.readingTime && `(${Math.ceil(post.readingTime.minutes)} min)`}

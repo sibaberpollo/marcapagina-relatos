@@ -192,27 +192,36 @@ export default async function Page(props: {
             <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
               {seriesMetadata[post.series].description}
             </p>
-            <div className="space-y-4">
-                {seriesRelatos.map((relato) => (
+            <div className="space-y-0">
+              {seriesRelatos.map((relato, index) => (
+                <div key={relato.slug} className="relative pl-10">
+                  {/* Línea punteada estilizada */}
                   <div
-                  key={relato.slug}
-                  className={`p-4 rounded-lg ${
-                    relato.slug === slug
-                      ? 'bg-primary-100 dark:bg-primary-900'
-                      : 'bg-gray-100 dark:bg-gray-800'
-                  }`}
-                >
+                    className="absolute left-4 top-0 bottom-0 w-0.5"
+                    style={{
+                      borderLeft: '2px dotted #bdbdbd',
+                      height: index === seriesRelatos.length - 1 ? '1.25rem' : '100%',
+                    }}
+                  />
+                  {/* Punto destacado centrado */}
+                  <div
+                    className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-black ${
+                      relato.slug === slug ? 'bg-[#faff00]' : 'bg-white'
+                    }`}
+                  />
                   <Link
                     href={`/${author}/relato/${relato.slug}`}
-                    className="block hover:text-primary-500 dark:hover:text-primary-400"
+                    className="block hover:text-gray-700 dark:hover:text-gray-300"
                   >
-                    <div className="flex items-center justify-between">
-                      <span className="font-medium">
+                    <div className="flex items-center">
+                      <span className="font-medium text-black dark:text-white">
                         {relato.seriesOrder}. {relato.title}
+                        {relato.slug === slug && (
+                          <span className="ml-2 px-2 py-0.5 bg-black text-[#faff00] rounded text-sm">
+                            (Leyendo)
+                          </span>
+                        )}
                       </span>
-                      {relato.slug === slug && (
-                        <span className="text-sm text-primary-500">(Leyendo)</span>
-                      )}
                     </div>
                   </Link>
                 </div>
