@@ -46,17 +46,17 @@ export default function Page() {
         
         {/* Otros Relatos */}
         <div className="container">
-          <div className="-m-4 flex flex-wrap">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
             {nonFeaturedProjects.map((d) => (
-              <Card
+              <FeaturedCard
                 key={d.title}
                 title={d.title}
                 description={d.description}
-                imgSrc={d.imgSrc}
-                href={d.href}
-                authorImgSrc={d.authorImgSrc}
-                authorName={d.authorName}
-                authorHref={d.authorHref}
+                imgSrc={d.imgSrc || ''}
+                href={d.href || '#'}
+                authorImgSrc={d.authorImgSrc || ''}
+                authorName={d.authorName || ''}
+                authorHref={d.authorHref || '#'}
               />
             ))}
           </div>
