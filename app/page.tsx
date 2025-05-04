@@ -22,20 +22,16 @@ export default function Page() {
               const desc = siteMetadata.descriptionRich;
               const match = desc.match(/(.*?)(\(2009 ~ 2014 → 2025 ➔ ∞\))/);
               if (match) {
+                const HighlightStroke = require('@/components/HighlightStroke').default;
                 return <>
                   {match[1]}
-                  <a
-                    href="/acerca-de/"
-                    className="ml-2 px-2 underline font-semibold hover:bg-yellow-200 transition-colors duration-200 align-middle rounded"
-                    style={{ 
-                      background: 'linear-gradient(90deg, rgba(250,255,0,0.2) 0%, rgba(250,255,0,0.4) 20%, rgba(250,255,0,0.6) 50%, rgba(250,255,0,0.4) 80%, rgba(250,255,0,0.2) 100%)',
-                      color: '#222',
-                      boxShadow: '0 0 12px rgba(250,255,0,0.2)',
-                      clipPath: 'polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 0% 0%, 2% 2%, 98% 2%, 98% 98%, 2% 98%, 2% 2%)'
-                    }}
-                  >
-                    {match[2]}
-                  </a>
+                  <HighlightStroke>
+                    <a
+                      href="/acerca-de/"
+                    >
+                      {match[2]}
+                    </a>
+                  </HighlightStroke>
                 </>;
               }
               return desc;

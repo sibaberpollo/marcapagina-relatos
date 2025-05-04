@@ -3,6 +3,7 @@ import SocialIcon from '@/components/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import Link from 'next/link'
 import { genPageMetadata } from 'app/seo'
+import HighlightStroke from '@/components/HighlightStroke'
 
 export const metadata = genPageMetadata({ 
   title: 'Acerca de',
@@ -18,7 +19,19 @@ export default function AcercaDePage() {
             Acerca de
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
-            {siteMetadata.descriptionRich}
+            {(() => {
+              const desc = siteMetadata.descriptionRich;
+              const match = desc.match(/(.*?)(\(2009 ~ 2014 → 2025 ➔ ∞\))/);
+              if (match) {
+                return <>
+                  {match[1]}
+                  <HighlightStroke>
+                    <span className="underline font-semibold">{match[2]}</span>
+                  </HighlightStroke>
+                </>;
+              }
+              return desc;
+            })()}
           </p>
         </div>
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">

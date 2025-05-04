@@ -1,18 +1,22 @@
 import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
 import SocialIcon from '@/components/social-icons'
+import HighlightStroke from './HighlightStroke'
 
 export default function Footer() {
   return (
     <footer className="mb-20">    
       <div className="mt-12 mb-8 flex flex-col items-center md:flex-row">
-        <div className="flex w-full justify-center">        
-
-            <SocialIcon kind="github" href={siteMetadata.github} size={5} />&nbsp;
-            &nbsp; <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />&nbsp;
-            &nbsp; <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />&nbsp;
-            &nbsp; <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />&nbsp;
-            &nbsp; <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />&nbsp;
+        <div className="flex w-full justify-center">
+          <HighlightStroke>
+            <div className="flex gap-4">
+              <SocialIcon kind="github" href={siteMetadata.github} size={5} />
+              <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
+              <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
+              <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
+              <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
+            </div>
+          </HighlightStroke>
         </div>
       </div>
 
