@@ -4,7 +4,7 @@ const siteMetadata = {
   author: 'Hazael & Pino',
   headerTitle: 'Hazael & Pino',
   description: 'Textos de gente que escribe cuando nadie los ve',
-  descriptionRich: '👀 Textos de gente que escribe cuando nadie los ve (2009 ~ 2014 → 2025 ➔ ∞)',
+  descriptionRich: 'Textos de gente que escribe cuando nadie los ve (2009 ~ 2014 → 2025 ➔ ∞)',
   language: 'es-ES',
   theme: 'system', // system, dark or light
   siteUrl: 'https://marcapagina.page/',

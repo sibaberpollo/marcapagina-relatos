@@ -19,6 +19,13 @@ export default function Page() {
           </h1>
           <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
             {siteMetadata.descriptionRich}
+            <a
+              href="/acerca-de/"
+              className="ml-2 px-2 py-1 bg-yellow-300 text-gray-900 font-semibold hover:bg-yellow-200 transition-colors duration-200 align-middle"
+              style={{ boxShadow: '0 2px 8px 0 rgba(255,255,0,0.3)' }}
+            >
+              ¿Quieres saber más? <span className="underline">Leer</span>
+            </a>
           </p>
         </div>
         
