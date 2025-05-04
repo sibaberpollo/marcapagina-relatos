@@ -51,10 +51,10 @@ const FeaturedCard = ({
               height={60}
             />
           </Link>
-          <div className="flex flex-col">
-          <Link
+          <div>
+            <Link
               href={authorHref}
-              className="text-sm font-medium text-gray-300 hover:underline"
+              className="inline-block text-sm font-medium bg-black text-gray-100 px-2 py-1 rounded hover:underline"
             >
               {authorName}
             </Link>
