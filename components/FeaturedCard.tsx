@@ -20,7 +20,7 @@ const FeaturedCard = ({
   authorName,
   authorHref,
 }: FeaturedCardProps) => (
-  <div className="w-full mb-8">
+  <div className="w-full mb-4">
     <div
       className="relative overflow-hidden rounded-lg border border-black border-4 bg-white dark:border-black dark:bg-gray-900 h-96"
     >
