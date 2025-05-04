@@ -21,10 +21,10 @@ export default function Page() {
             {siteMetadata.descriptionRich}
             <a
               href="/acerca-de/"
-              className="ml-2 px-2 py-1 bg-yellow-300 text-gray-900 font-semibold hover:bg-yellow-200 transition-colors duration-200 align-middle"
-              style={{ boxShadow: '0 2px 8px 0 rgba(255,255,0,0.3)' }}
+              className="ml-2 px-2 underline py-1 font-semibold hover:bg-yellow-200 transition-colors duration-200 align-middle rounded"
+              style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}
             >
-              ¿Quieres saber más? <span className="underline">Leer</span>
+              ¿Quieres saber más?
             </a>
           </p>
         </div>
