@@ -48,31 +48,31 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
     <div className="tabs flex border-b border-gray-200 dark:border-gray-700 mb-6">
       <button 
         onClick={() => handleTabChange('relatos')} 
-        className={`px-4 py-2 mr-2 rounded-t-lg font-medium ${
-          activeTab === 'relatos' 
-            ? 'bg-primary-500 text-white' 
-            : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-        }`}
+        className={`px-4 py-2 mr-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+          ${activeTab === 'relatos' 
+            ? 'bg-black text-[#faff00] border-black' 
+            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+        `}
       >
         Relatos
       </button>
       <button 
         onClick={() => handleTabChange('series')} 
-        className={`px-4 py-2 mr-2 rounded-t-lg font-medium ${
-          activeTab === 'series' 
-            ? 'bg-primary-500 text-white' 
-            : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-        }`}
+        className={`px-4 py-2 mr-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+          ${activeTab === 'series' 
+            ? 'bg-black text-[#faff00] border-black' 
+            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+        `}
       >
         Series
       </button>
       <button 
         onClick={() => handleTabChange('articulos')} 
-        className={`px-4 py-2 rounded-t-lg font-medium ${
-          activeTab === 'articulos' 
-            ? 'bg-primary-500 text-white' 
-            : 'bg-gray-100 dark:bg-gray-800 hover:bg-gray-200 dark:hover:bg-gray-700'
-        }`}
+        className={`px-4 py-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+          ${activeTab === 'articulos' 
+            ? 'bg-black text-[#faff00] border-black' 
+            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+        `}
       >
         No ficción
       </button>
