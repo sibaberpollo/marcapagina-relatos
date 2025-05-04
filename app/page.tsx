@@ -40,7 +40,7 @@ export default function Page() {
         
         {/* Relato Destacado */}
         {featuredProject && (
-          <div className="container py-4">
+          <div className="container py-2">
             <FeaturedCard
               title={featuredProject.title}
               description={featuredProject.description}
@@ -55,7 +55,7 @@ export default function Page() {
         
         {/* Otros Relatos */}
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 md:gap-8">
             {nonFeaturedProjects.map((d) => (
               <FeaturedCard
                 key={d.title}
