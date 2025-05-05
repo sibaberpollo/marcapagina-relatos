@@ -154,21 +154,7 @@ export default function AcercaDePage() {
             </div>
           </div>
         </div>
-        {/* Sección: Publica con nosotros */}
-        <div className="flex justify-center mt-12">
-          <div className="px-6 py-4 rounded font-semibold text-center max-w-xl w-full" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
-            <p className="text-lg mb-2">
-              <strong>¿Te gustaría publicar tu relato aquí?</strong>
-            </p>
-            <p className="mb-4">En Marcapágina buscamos nuevas voces y relatos. Si tienes un texto que quieras compartir, ¡anímate a enviarlo!</p>
-            <a
-              href="/publica"
-              className="inline-block px-4 py-2 rounded bg-black text-yellow-200 font-bold hover:bg-gray-800 transition-colors duration-200"
-            >
-              Publica con nosotros
-            </a>
-          </div>
-        </div>
+        
       </div>
     </>
   )

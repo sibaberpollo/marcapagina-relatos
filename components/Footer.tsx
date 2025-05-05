@@ -2,10 +2,17 @@ import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
 import SocialIcon from '@/components/social-icons'
 import HighlightStroke from './HighlightStroke'
+import PublishBanner from './PublishBanner'
 
 export default function Footer() {
   return (
     <footer className="mb-20">    
+      <div className="mt-12 mb-8 flex flex-col items-center md:flex-row">
+        <div className="flex w-full justify-center">
+          <PublishBanner />
+        </div>
+      </div>
+
       <div className="mt-12 mb-8 flex flex-col items-center md:flex-row">
         <div className="flex w-full justify-center">
           <HighlightStroke>
