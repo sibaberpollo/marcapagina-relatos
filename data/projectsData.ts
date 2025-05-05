@@ -12,6 +12,17 @@ interface Project {
 
 const projectsData: Project[] = [
   {
+    title: 'Mishalba',
+    description: 'Decían que antes fue juez. Que impartía sentencias en la corte de un mundo que ya no existe. Pero ahora, Mishalba cocina. Y lo hace con la misma determinación con la que antes dictaba justicia: mide el sabor como quien sopesa el alma.',
+    imgSrc: 'mishalba_pteev5.jpg',
+    authorImgSrc: '/static/images/vanessa.jpg',
+    authorName: 'Vanessa Sosa',
+    authorHref: '/autor/vanessa',
+    href: '/vanessa/relato/mishalba',
+    order: 0,
+    featured: true,
+  },
+  {
     title: 'Tormenta Isaac',
     description: 'A simple vista, Isaac Sullivan parecía un hombre normal, con sus mañas y rarezas como cualquiera. Corpulento, siempre de saco y camisa abierta...',
     imgSrc: 'tormenta-isaac-1200x675-crop_gw6gaa.jpg',
@@ -19,8 +30,17 @@ const projectsData: Project[] = [
     authorName: 'Óscar',
     authorHref: '/autor/oscar',
     href: '/oscar/relato/tormenta-isaac',
-    order: 0,
-    featured: true,
+    order: 1,
+  },
+  {
+    title: 'Un cuento chino',
+    description: 'Las ciudades del interior de un país siempre suponen una apuesta por lo desconocido. En Latinoamérica este fenómeno se potencia, pues, según quien mire y visite, la percepción de la provincia puede balancearse entre lo bucólico y lo agreste, lo bárbaro, lo peligroso.',
+    imgSrc: 'chipen_oje3fc.jpg',
+    authorImgSrc: '/static/images/hazael.png',
+    authorName: 'Hazael',
+    authorHref: '/autor/hazael',
+    href: '/hazael/relato/un-cuento-chino',
+    order: 2,
   },
   {
     title: 'El evangelio según Asdrúbal',
@@ -30,18 +50,8 @@ const projectsData: Project[] = [
     authorName: 'Pino',
     authorHref: '/autor/pino',
     href: '/pino/relato/el-evangelio-de-asdrubal',
-    order: 2,
+    order: 3,
   },
-  {
-    title: 'Un cuento chino',
-    description: 'Las ciudades del interior de un país siempre suponen una apuesta por lo desconocido. En Latinoamérica este fenómeno se potencia, pues, según quien mire y visite, la percepción de la provincia puede balancearse entre lo bucólico y lo agreste, lo bárbaro, lo peligroso.', 
-    imgSrc: 'chipen_oje3fc.jpg',
-    authorImgSrc: '/static/images/hazael.png',
-    authorName: 'Hazael',
-    authorHref: '/autor/hazael',
-    href: '/hazael/relato/un-cuento-chino',
-    order: 1,
-  }
 ];
 
 export const getSortedProjects = () => {

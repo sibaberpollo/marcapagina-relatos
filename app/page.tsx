@@ -1,5 +1,5 @@
 import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
-import Card from '@/components/Card'
+//import Card from '@/components/Card'
 import FeaturedCard from '@/components/FeaturedCard'
 import siteMetadata from '@/data/siteMetadata';
 
