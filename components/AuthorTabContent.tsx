@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import TabsAuthor from './TabsAuthor';
 import { useSearchParams } from 'next/navigation';
+import HighlightStroke from '@/components/HighlightStroke'
 
 type Tab = 'relatos' | 'series' | 'articulos';
 
@@ -94,9 +95,8 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                 <p className="text-gray-600 dark:text-gray-400 mb-2">{relato.summary}</p>
                 <Link
                   href={`/${authorSlug}/relato/${relato.slug}`}
-                  className="text-primary-500 font-medium"
                 >
-                  Leer más &rarr;
+                  <HighlightStroke>Leer más &rarr;</HighlightStroke>
                 </Link>
               </div>
             ))}
@@ -143,7 +143,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                         href={`/${authorSlug}/relato/${relato.slug}`}
                         className="text-primary-500 font-medium"
                       >
-                        Leer más &rarr;
+                        <HighlightStroke>Leer más &rarr;</HighlightStroke>
                       </Link>
                     </div>
                   ))}
@@ -189,7 +189,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                   href={`/${authorSlug}/articulo/${articulo.slug}`}
                   className="text-primary-500 font-medium"
                 >
-                  Leer más &rarr;
+                  <HighlightStroke>Leer más &rarr;</HighlightStroke>
                 </Link>
               </div>
             ))}

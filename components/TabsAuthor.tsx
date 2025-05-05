@@ -45,7 +45,7 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
   }, [tabParam, onTabChange]);
 
   return (
-    <div className="tabs flex border-b border-gray-200 dark:border-gray-700 mb-6">
+    <div className="tabs flex border-b-2 border-black dark:border-gray-700 mb-6">
       <button 
         onClick={() => handleTabChange('relatos')} 
         className={`px-4 py-2 mr-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200

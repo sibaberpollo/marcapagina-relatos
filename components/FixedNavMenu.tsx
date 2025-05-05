@@ -78,7 +78,7 @@ export default function FixedNavMenu({
       <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
         {/* Progress bar */}
         <div
-          className="h-1 bg-black"
+          className="h-1 bg-[#faff00]"
           style={{ width: `${readingProgress}%` }}
         />
 
