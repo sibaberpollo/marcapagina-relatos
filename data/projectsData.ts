@@ -13,7 +13,7 @@ interface Project {
 const projectsData: Project[] = [
   {
     title: 'Pecados de la carne',
-    description: 'Un relato que explora la complejidad de la condición humana a través de la mirada única de Gregory Zambrano.',
+    description: 'Todas las ciudades guardan sus secretos, sus misterios insondables, sus calles oscuras, sus espacios siniestros.',
     imgSrc: 'pecados_poejzv.jpg',
     authorImgSrc: '/static/images/gregory_zambrano.jpg',
     authorName: 'Gregory Zambrano',
