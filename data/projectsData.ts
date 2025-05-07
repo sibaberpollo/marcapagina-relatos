@@ -12,7 +12,7 @@ interface Project {
 
 const projectsData: Project[] = [
   {
-    title: 'Pecados de la carne',
+    title: 'Peligos de la carne',
     description: 'Todas las ciudades guardan sus secretos, sus misterios insondables, sus calles oscuras, sus espacios siniestros.',
     imgSrc: 'pecados_poejzv.jpg',
     authorImgSrc: '/static/images/gregory_zambrano.jpg',
