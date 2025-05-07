@@ -12,6 +12,17 @@ interface Project {
 
 const projectsData: Project[] = [
   {
+    title: 'Pecados de la carne',
+    description: 'Un relato que explora la complejidad de la condición humana a través de la mirada única de Gregory Zambrano.',
+    imgSrc: 'pecados_poejzv.jpg',
+    authorImgSrc: '/static/images/gregory_zambrano.jpg',
+    authorName: 'Gregory Zambrano',
+    authorHref: '/autor/gregory',
+    href: '/gregory/relato/peligros-de-la-carne',
+    order: 0,
+    featured: true,
+  },
+  {
     title: 'Mishalba',
     description: 'Decían que antes fue juez. Que impartía sentencias en la corte de un mundo que ya no existe. Pero ahora, Mishalba cocina. Y lo hace con la misma determinación con la que antes dictaba justicia: mide el sabor como quien sopesa el alma.',
     imgSrc: 'mishalba_pteev5.jpg',
@@ -19,8 +30,7 @@ const projectsData: Project[] = [
     authorName: 'Vanessa Sosa',
     authorHref: '/autor/vanessa',
     href: '/vanessa/relato/mishalba',
-    order: 0,
-    featured: true,
+    order: 1,
   },
   {
     title: 'Tormenta Isaac',
@@ -30,7 +40,7 @@ const projectsData: Project[] = [
     authorName: 'Óscar',
     authorHref: '/autor/oscar',
     href: '/oscar/relato/tormenta-isaac',
-    order: 1,
+    order: 2,
   },
   {
     title: 'Un cuento chino',
@@ -40,7 +50,7 @@ const projectsData: Project[] = [
     authorName: 'Hazael',
     authorHref: '/autor/hazael',
     href: '/hazael/relato/un-cuento-chino',
-    order: 2,
+    order: 3,
   },
   {
     title: 'El evangelio según Asdrúbal',
@@ -50,7 +60,7 @@ const projectsData: Project[] = [
     authorName: 'Pino',
     authorHref: '/autor/pino',
     href: '/pino/relato/el-evangelio-de-asdrubal',
-    order: 3,
+    order: 4,
   },
 ];
 
