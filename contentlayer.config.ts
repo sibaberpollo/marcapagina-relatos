@@ -210,6 +210,7 @@ export const Authors = defineDocumentType(() => ({
     bluesky: { type: 'string', required: false },
     linkedin: { type: 'string', required: false },
     github: { type: 'string', required: false },
+    website: { type: 'string', required: false },
     layout: { type: 'string', required: false },
     defaultTab: { type: 'string', required: false, default: 'relatos' },
   },
