@@ -295,6 +295,42 @@ export async function getAutorData(slug: string) {
   }
 }
 
+// Función auxiliar para calcular el tiempo de lectura
+function calcularTiempoLectura(contenido: any = '') {
+  // Promedio de palabras por minuto para lectura
+  const PALABRAS_POR_MINUTO = 200;
+  
+  // Extrae solo el texto plano del contenido
+  let texto = '';
+  if (typeof contenido === 'string') {
+    texto = contenido;
+  } else if (Array.isArray(contenido)) {
+    // Si es un array de bloques (como en Portable Text)
+    texto = contenido
+      .filter((bloque: any) => bloque._type === 'block' && bloque.children)
+      .map((bloque: any) => 
+        bloque.children
+          .filter((child: any) => child._type === 'span')
+          .map((span: any) => span.text || '')
+          .join(' ')
+      )
+      .join(' ');
+  }
+  
+  // Cuenta palabras (dividiendo por espacios)
+  const palabras = texto.trim().split(/\s+/).length;
+  
+  // Calcula minutos
+  const minutos = Math.max(1, Math.ceil(palabras / PALABRAS_POR_MINUTO));
+  
+  return {
+    text: `${minutos} min`,
+    minutes: minutos,
+    time: minutos * 60 * 1000,
+    words: palabras
+  };
+}
+
 // Función para obtener un relato por su slug
 export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
   console.log(`Obteniendo relato "${slug}" desde Sanity`);
@@ -333,6 +369,10 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
         series: relato.series,
         seriesOrder: relato.seriesOrder
       });
+      
+      // Calcular tiempo de lectura basado en el contenido
+      relato.readingTime = calcularTiempoLectura(relato.body);
+      console.log(`Tiempo de lectura calculado: ${relato.readingTime.text} (${relato.readingTime.words} palabras)`);
     } else {
       console.log(`Relato con slug "${slug}" no encontrado`);
     }

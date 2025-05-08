@@ -334,7 +334,7 @@ export default async function Page(props: {
         relatedPosts={relatedPosts}
         author={post.author.slug.current}
         pathPrefix="relato"
-        readingTime={post.readingTime || { text: "5 min", minutes: 5, time: 300000, words: 1000 }}
+        readingTime={post.readingTime}
         seriesName={serie?.title}
       />
     </>
