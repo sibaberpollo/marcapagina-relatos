@@ -17,10 +17,10 @@ export async function generateStaticParams() {
 }
 
 // Generar metadata para SEO
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   // Aseguramos que params es esperado (awaited)
-  const paramsCopy = await Promise.resolve(params);
-  const slug = paramsCopy.slug;
+  const awaitedParams = await params;
+  const slug = awaitedParams.slug;
   
   const { author } = await getAutorData(slug);
   
@@ -37,10 +37,10 @@ export async function generateMetadata({ params }) {
   })
 }
 
-export default async function Page({ params }) {
+export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   // Aseguramos que params es esperado (awaited)
-  const paramsCopy = await Promise.resolve(params);
-  const slug = paramsCopy.slug;
+  const awaitedParams = await params;
+  const slug = awaitedParams.slug;
   
   // Obtenemos todos los datos del autor en una sola llamada
   const { author, formattedRelatos, series } = await getAutorData(slug);

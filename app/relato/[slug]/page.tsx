@@ -48,11 +48,11 @@ const ptComponents = {
 } as any // Usamos as any para evitar errores de tipado
 
 export async function generateMetadata(props: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }): Promise<Metadata | undefined> {
   // Aseguramos que params sea awaited antes de usarlo
-  const paramsCopy = await Promise.resolve(props.params);
-  const { slug } = paramsCopy;
+  const params = await props.params;
+  const { slug } = params;
   const post = await getRelatoBySlug(slug)
   
   if (!post) return
@@ -100,11 +100,11 @@ export const generateStaticParams = async () => {
 }
 
 export default async function Page(props: {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }) {
   // Aseguramos que params sea awaited antes de usarlo
-  const paramsCopy = await Promise.resolve(props.params);
-  const { slug } = paramsCopy;
+  const params = await props.params;
+  const { slug } = params;
   const post = await getRelatoBySlug(slug)
   
   if (!post) return notFound()
