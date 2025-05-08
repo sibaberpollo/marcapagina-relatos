@@ -15,6 +15,16 @@ export const client = createClient({
 interface Autor {
   name: string;
   avatar: string;
+  occupation?: string;
+  company?: string;
+  email?: string;
+  twitter?: string;
+  linkedin?: string;
+  github?: string;
+  website?: string;
+  bluesky?: string;
+  bio?: string;
+  defaultTab?: string;
   slug: {
     current: string;
   };
@@ -28,6 +38,9 @@ interface Relato {
   summary?: string;
   image?: string;
   author: Autor;
+  date: string;
+  category?: any;
+  tags?: any[];
 }
 
 interface Portada {
@@ -95,6 +108,130 @@ export async function getFeaturedAndNonFeaturedRelatos(): Promise<{
     featured: mapRelatoToProject(featured),
     nonFeatured: nonFeatured.map(mapRelatoToProject)
   };
+}
+
+// ---- FUNCIONES PARA AUTORES ----
+
+// Obtener todos los autores (para generación estática)
+export async function getAllAutores(): Promise<Autor[]> {
+  console.log('Obteniendo todos los autores desde Sanity');
+  try {
+    const autores = await client.fetch(`
+      *[_type == "autor"] {
+        name,
+        slug,
+        bio,
+        avatar,
+        occupation,
+        company,
+        email,
+        twitter,
+        linkedin,
+        github,
+        website,
+        defaultTab
+      }
+    `);
+    console.log(`Se encontraron ${autores.length} autores en Sanity`);
+    return autores;
+  } catch (error) {
+    console.error('Error al obtener autores desde Sanity:', error);
+    return [];
+  }
+}
+
+// Obtener un autor específico por slug
+export async function getAutorBySlug(slug: string): Promise<Autor | null> {
+  console.log(`Obteniendo autor "${slug}" desde Sanity`);
+  try {
+    const autor = await client.fetch(`
+      *[_type == "autor" && slug.current == $slug][0] {
+        name,
+        slug,
+        bio,
+        avatar,
+        occupation,
+        company,
+        email,
+        twitter,
+        linkedin,
+        github,
+        website,
+        defaultTab
+      }
+    `, { slug });
+    
+    if (autor) {
+      console.log(`Autor "${autor.name}" encontrado`);
+    } else {
+      console.log(`Autor con slug "${slug}" no encontrado`);
+    }
+    
+    return autor;
+  } catch (error) {
+    console.error(`Error al obtener autor "${slug}" desde Sanity:`, error);
+    return null;
+  }
+}
+
+// Obtener los relatos de un autor
+export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
+  console.log(`Obteniendo relatos del autor "${autorSlug}" desde Sanity`);
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && author->slug.current == $autorSlug] | order(date desc) {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        },
+        "category": category->title,
+        "tags": tags[]->title
+      }
+    `, { autorSlug });
+    
+    console.log(`Se encontraron ${relatos.length} relatos del autor "${autorSlug}"`);
+    return relatos;
+  } catch (error) {
+    console.error(`Error al obtener relatos del autor "${autorSlug}" desde Sanity:`, error);
+    return [];
+  }
+}
+
+// Obtener las series de un autor
+export async function getSeriesByAutor(autorSlug: string): Promise<any[]> {
+  console.log(`Obteniendo series del autor "${autorSlug}" desde Sanity`);
+  try {
+    const series = await client.fetch(`
+      *[_type == "serie" && $autorSlug in authors[]->slug.current] {
+        title,
+        slug,
+        description,
+        "authors": authors[]-> {
+          name,
+          slug,
+          avatar
+        },
+        "relatos": relatos[]-> {
+          title,
+          slug,
+          date,
+          summary
+        }
+      }
+    `, { autorSlug });
+    
+    console.log(`Se encontraron ${series.length} series del autor "${autorSlug}"`);
+    return series;
+  } catch (error) {
+    console.error(`Error al obtener series del autor "${autorSlug}" desde Sanity:`, error);
+    return [];
+  }
 }
 
 // Función para mapear un relato de Sanity al formato que espera la UI
