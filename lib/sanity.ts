@@ -248,4 +248,40 @@ function mapRelatoToProject(relato: Relato): ProyectoFormateado {
     authorName: relato.author?.name || '',
     authorHref: authorSlug ? `/autor/${authorSlug}` : '#',
   };
+}
+
+// Al final del archivo, agregamos una función consolidada
+export async function getAutorData(slug: string) {
+  console.log(`Obteniendo datos completos del autor "${slug}"`);
+  try {
+    // Obtenemos todos los datos necesarios en una sola función
+    const [author, relatos, series] = await Promise.all([
+      getAutorBySlug(slug),
+      getRelatosByAutor(slug),
+      getSeriesByAutor(slug)
+    ]);
+    
+    // Formateamos los relatos para la UI
+    const formattedRelatos = relatos.map(relato => ({
+      slug: relato.slug.current,
+      title: relato.title,
+      summary: relato.summary || '',
+      series: undefined
+    }));
+    
+    // Asociamos los relatos con sus series
+    series.forEach(serie => {
+      serie.relatos.forEach(relato => {
+        const index = formattedRelatos.findIndex(r => r.slug === relato.slug.current);
+        if (index !== -1) {
+          formattedRelatos[index].series = serie.title;
+        }
+      });
+    });
+    
+    return { author, formattedRelatos, series };
+  } catch (error) {
+    console.error(`Error al obtener datos del autor "${slug}"`, error);
+    return { author: null, formattedRelatos: [], series: [] };
+  }
 } 

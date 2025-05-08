@@ -1,6 +1,6 @@
 // app/autor/[slug]/page.tsx
 
-import { getAutorBySlug, getAllAutores, getRelatosByAutor, getSeriesByAutor } from '../../../lib/sanity'
+import { getAllAutores, getAutorData } from '../../../lib/sanity'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
   const paramsCopy = await Promise.resolve(params);
   const slug = paramsCopy.slug;
   
-  const author = await getAutorBySlug(slug)
+  const { author } = await getAutorData(slug);
   
   if (!author) {
     return {
@@ -42,37 +42,12 @@ export default async function Page({ params }) {
   const paramsCopy = await Promise.resolve(params);
   const slug = paramsCopy.slug;
   
-  const author = await getAutorBySlug(slug)
+  // Obtenemos todos los datos del autor en una sola llamada
+  const { author, formattedRelatos, series } = await getAutorData(slug);
   
   if (!author) {
     return notFound()
   }
-  
-  // Obtener relatos del autor
-  const relatos = await getRelatosByAutor(slug)
-  
-  // Convertir los datos de Sanity al formato esperado por AuthorTabContent
-  const formatearRelatos = relatos.map(relato => ({
-    slug: relato.slug.current,
-    title: relato.title,
-    summary: relato.summary || '',
-    // De momento no tenemos series en el mismo formato, pero lo manejaremos más adelante
-    series: undefined
-  }))
-  
-  // Obtener series del autor (para agrupar relatos)
-  const seriesData = await getSeriesByAutor(slug)
-  
-  // Para cada serie, marcamos sus relatos con el nombre de la serie
-  seriesData.forEach(serie => {
-    serie.relatos.forEach(relato => {
-      // Buscar el relato en formatearRelatos
-      const index = formatearRelatos.findIndex(r => r.slug === relato.slug.current)
-      if (index !== -1) {
-        formatearRelatos[index].series = serie.title
-      }
-    })
-  })
   
   // Articles/Artículos: de momento un array vacío ya que no hemos implementado este tipo de contenido
   const articulos = []
@@ -82,7 +57,7 @@ export default async function Page({ params }) {
     ? author.defaultTab 
     : 'relatos'
   
-  // Simulamos un objeto de tipo Authors para el AuthorLayout
+  // Convertir el autor de Sanity al formato esperado por AuthorLayout
   const authorContent: Omit<Authors, '_id' | '_raw' | 'body'> = {
     name: author.name,
     avatar: author.avatar || '',
@@ -117,7 +92,7 @@ export default async function Page({ params }) {
       {/* Componente de tabs para filtrar contenido */}
       <Suspense fallback={<div className="p-4 text-center">Cargando contenido...</div>}>
         <AuthorTabContent 
-          relatos={formatearRelatos} 
+          relatos={formattedRelatos} 
           articulos={articulos}
           authorSlug={slug}
           defaultTab={defaultTab}
