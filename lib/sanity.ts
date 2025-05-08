@@ -41,6 +41,15 @@ interface Relato {
   date: string;
   category?: any;
   tags?: any[];
+  body?: any;
+  readingTime?: {
+    text: string;
+    minutes: number;
+    time: number;
+    words: number;
+  };
+  series?: string;
+  seriesOrder?: number;
 }
 
 interface Portada {
@@ -185,6 +194,8 @@ export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
         date,
         summary,
         image,
+        series,
+        seriesOrder,
         "author": author-> {
           name,
           slug,
@@ -243,7 +254,7 @@ function mapRelatoToProject(relato: Relato): ProyectoFormateado {
     title: relato.title,
     description: relato.summary || '',
     imgSrc: relato.image || '',
-    href: authorSlug ? `/${authorSlug}/relato/${relato.slug?.current}` : `/relato/${relato.slug?.current}`,
+    href: `/relato/${relato.slug?.current}`,
     authorImgSrc: relato.author?.avatar || '',
     authorName: relato.author?.name || '',
     authorHref: authorSlug ? `/autor/${authorSlug}` : '#',
@@ -283,5 +294,100 @@ export async function getAutorData(slug: string) {
   } catch (error) {
     console.error(`Error al obtener datos del autor "${slug}"`, error);
     return { author: null, formattedRelatos: [], series: [] };
+  }
+}
+
+// Función para obtener un relato por su slug
+export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
+  console.log(`Obteniendo relato "${slug}" desde Sanity`);
+  try {
+    const relato = await client.fetch(`
+      *[_type == "relato" && slug.current == $slug][0] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        body,
+        "author": author-> {
+          name,
+          slug,
+          avatar,
+          occupation,
+          company,
+          email,
+          twitter,
+          linkedin,
+          github
+        },
+        "category": category->title,
+        "tags": tags[]->title,
+        series,
+        seriesOrder
+      }
+    `, { slug });
+    
+    if (relato) {
+      console.log(`Relato "${relato.title}" encontrado`);
+    } else {
+      console.log(`Relato con slug "${slug}" no encontrado`);
+    }
+    
+    return relato;
+  } catch (error) {
+    console.error(`Error al obtener relato "${slug}" desde Sanity:`, error);
+    return null;
+  }
+}
+
+// Función para obtener todos los relatos
+export async function getAllRelatos(): Promise<Relato[]> {
+  console.log('Obteniendo todos los relatos desde Sanity');
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato"] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug
+        }
+      }
+    `);
+    console.log(`Se encontraron ${relatos.length} relatos en Sanity`);
+    return relatos;
+  } catch (error) {
+    console.error('Error al obtener relatos desde Sanity:', error);
+    return [];
+  }
+}
+
+// Función para obtener relatos relacionados
+export async function getRelatedRelatos(slug: string, limit: number = 3): Promise<Relato[]> {
+  console.log(`Obteniendo relatos relacionados para "${slug}"`);
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && slug.current != $slug][0...${limit}] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        }
+      }
+    `, { slug });
+    
+    console.log(`Se encontraron ${relatos.length} relatos relacionados`);
+    return relatos;
+  } catch (error) {
+    console.error(`Error al obtener relatos relacionados para "${slug}":`, error);
+    return [];
   }
 } 

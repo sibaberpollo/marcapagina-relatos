@@ -113,10 +113,12 @@ export default async function Page(props: {
   let seriesRelatos: any[] = []
 
   if (post.series) {
-    // Filtramos los relatos de la misma serie
+    // Filtramos los relatos de la misma serie y los ordenamos por seriesOrder
     seriesRelatos = autorRelatos
       .filter(p => p.series === post.series)
       .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
+
+    console.log('Relatos de la serie encontrados:', seriesRelatos.length)
 
     const idx = seriesRelatos.findIndex(p => p.slug.current === slug)
     if (idx > 0) {
