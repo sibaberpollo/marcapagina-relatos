@@ -30,7 +30,8 @@ export default function CustomTooltip({
       <span
         role="tooltip"
         className={`
-          absolute z-50 w-64 p-3 mt-2 text-sm text-gray-800 bg-white
+          absolute left-1/2 -translate-x-1/2 top-full mt-2 z-50 
+          w-64 max-w-xs p-3 text-sm text-gray-800 bg-white
           border border-gray-200 rounded-lg shadow-lg dark:bg-gray-800
           dark:text-gray-200 dark:border-gray-700 transition-opacity
           duration-200 ${show ? 'opacity-100' : 'opacity-0 pointer-events-none'}
