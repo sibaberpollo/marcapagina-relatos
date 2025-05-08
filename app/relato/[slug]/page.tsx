@@ -198,8 +198,8 @@ export default async function Page(props: {
     slug: post.slug.current,
     path: `relato/${post.slug.current}`,
     // Incluimos series como parte del objeto content, no como prop separado
-    series: serie,
-    seriesOrder: post.seriesOrder,
+    series: serie?.title,
+    seriesOrder: relatosDeSerie.findIndex(r => r.slug.current === slug) + 1,
     // Para que MDXLayoutRenderer funcione con el contenido de Sanity
     body: { 
       code: `

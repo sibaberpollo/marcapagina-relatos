@@ -18779,6 +18779,7 @@ __metadata:
     "@fontsource/unbounded": ^5.2.5
     "@headlessui/react": 2.2.0
     "@next/bundle-analyzer": 15.2.4
+    "@portabletext/react": ^3.2.1
     "@sanity/icons": ^3.7.0
     "@sanity/types": ^3.88.2
     "@sanity/ui": ^2.15.17
