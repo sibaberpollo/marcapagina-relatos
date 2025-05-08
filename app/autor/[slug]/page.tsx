@@ -17,7 +17,10 @@ export async function generateStaticParams() {
 
 // Generar metadata para SEO
 export async function generateMetadata({ params }) {
-  const { slug } = params
+  // Aseguramos que params es esperado (awaited)
+  const paramsCopy = await Promise.resolve(params);
+  const slug = paramsCopy.slug;
+  
   const author = await getAutorBySlug(slug)
   
   if (!author) {
@@ -34,7 +37,10 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function Page({ params }) {
-  const { slug } = params
+  // Aseguramos que params es esperado (awaited)
+  const paramsCopy = await Promise.resolve(params);
+  const slug = paramsCopy.slug;
+  
   const author = await getAutorBySlug(slug)
   
   if (!author) {

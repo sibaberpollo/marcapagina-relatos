@@ -70,65 +70,68 @@ export default function SanityAuthorTabContent({
   }, [tabParam, defaultTab])
   
   return (
-    <div className="pt-6">
+    <div className="py-4">
       {/* Tabs */}
-      <div className="border-b border-gray-200 dark:border-gray-700 mb-4">
-        <ul className="flex flex-wrap -mb-px">
-          <li className="mr-2">
-            <button
-              onClick={() => setActiveTab('relatos')}
-              className={`inline-block p-4 ${
-                activeTab === 'relatos'
-                  ? 'text-black dark:text-white border-b-2 border-black dark:border-white'
-                  : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-              }`}
-            >
-              Relatos
-            </button>
-          </li>
-          {series.length > 0 && (
-            <li className="mr-2">
-              <button
-                onClick={() => setActiveTab('series')}
-                className={`inline-block p-4 ${
-                  activeTab === 'series'
-                    ? 'text-black dark:text-white border-b-2 border-black dark:border-white'
-                    : 'text-gray-500 hover:text-gray-700 dark:hover:text-gray-300'
-                }`}
-              >
-                Series
-              </button>
-            </li>
-          )}
-        </ul>
+      <div className="flex border-b border-gray-200 dark:border-gray-700">
+        <button
+          onClick={() => setActiveTab('relatos')}
+          className={`py-2 px-4 text-sm font-medium ${
+            activeTab === 'relatos'
+              ? 'border-b-2 border-primary-500 dark:border-primary-500 text-primary-500 dark:text-primary-500'
+              : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+          }`}
+        >
+          Relatos
+        </button>
+        
+        {series.length > 0 && (
+          <button
+            onClick={() => setActiveTab('series')}
+            className={`py-2 px-4 text-sm font-medium ${
+              activeTab === 'series'
+                ? 'border-b-2 border-primary-500 dark:border-primary-500 text-primary-500 dark:text-primary-500'
+                : 'text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-300'
+            }`}
+          >
+            Series
+          </button>
+        )}
       </div>
       
       {/* Tab content */}
       <div className="py-4">
         {activeTab === 'relatos' && (
-          <div className="space-y-4">
+          <div>
             {relatos.length > 0 ? (
-              <ul className="divide-y divide-gray-200 dark:divide-gray-700">
+              <ul>
                 {relatos.map((relato) => (
-                  <li key={relato.slug.current} className="py-4">
-                    <Link
-                      href={`/${authorSlug}/relato/${relato.slug.current}`}
-                      className="block hover:bg-gray-50 dark:hover:bg-gray-800 -m-3 p-3 rounded-md transition duration-150 ease-in-out"
-                    >
-                      <div className="font-medium text-xl text-black dark:text-white">{relato.title}</div>
-                      {relato.summary && (
-                        <p className="mt-1 text-gray-500 dark:text-gray-400 line-clamp-2">
-                          {relato.summary}
-                        </p>
-                      )}
-                      <div className="mt-2 text-sm text-gray-500 dark:text-gray-400">
-                        {new Date(relato.date).toLocaleDateString('es-ES', {
-                          year: 'numeric',
-                          month: 'long',
-                          day: 'numeric',
-                        })}
+                  <li key={relato.slug.current} className="py-5">
+                    <article className="space-y-2 xl:grid xl:grid-cols-4 xl:space-y-0 xl:items-baseline">
+                      <dl>
+                        <dt className="sr-only">Publicado el</dt>
+                        <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
+                          {new Date(relato.date).toLocaleDateString('es-ES', {
+                            year: 'numeric',
+                            month: 'long',
+                            day: 'numeric',
+                          })}
+                        </dd>
+                      </dl>
+                      <div className="space-y-3 xl:col-span-3">
+                        <div>
+                          <h3 className="text-xl font-bold leading-8 tracking-tight">
+                            <Link href={`/${authorSlug}/relato/${relato.slug.current}`} className="text-gray-900 dark:text-gray-100">
+                              {relato.title}
+                            </Link>
+                          </h3>
+                        </div>
+                        {relato.summary && (
+                          <div className="prose max-w-none text-gray-500 dark:text-gray-400">
+                            {relato.summary}
+                          </div>
+                        )}
                       </div>
-                    </Link>
+                    </article>
                   </li>
                 ))}
               </ul>
@@ -141,39 +144,36 @@ export default function SanityAuthorTabContent({
         )}
         
         {activeTab === 'series' && (
-          <div className="space-y-8">
+          <div className="space-y-10">
             {series.length > 0 ? (
               series.map((serie) => (
-                <div key={serie.slug.current} className="border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-                  <h3 className="text-2xl font-bold text-black dark:text-white mb-2">
-                    {serie.title}
-                  </h3>
-                  {serie.description && (
-                    <p className="text-gray-600 dark:text-gray-300 mb-4">{serie.description}</p>
-                  )}
+                <div key={serie.slug.current} className="space-y-3">
+                  <div className="flex flex-col space-y-2">
+                    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+                      {serie.title}
+                    </h3>
+                    {serie.description && (
+                      <p className="text-gray-500 dark:text-gray-400">{serie.description}</p>
+                    )}
+                  </div>
                   
                   {/* Lista de relatos en la serie */}
-                  <div className="mt-4">
-                    <h4 className="text-lg font-semibold mb-2">Relatos en esta serie:</h4>
-                    <ul className="space-y-2">
-                      {serie.relatos.map((relato, index) => (
-                        <li key={relato.slug.current} className="flex items-start">
-                          <span className="inline-flex items-center justify-center h-6 w-6 rounded-full bg-black text-white text-xs mr-3 flex-shrink-0">
-                            {index + 1}
-                          </span>
-                          <div>
-                            <Link
-                              href={`/${authorSlug}/relato/${relato.slug.current}`}
-                              className="text-black dark:text-white hover:underline font-medium"
-                            >
-                              {relato.title}
-                            </Link>
-                            {relato.summary && (
-                              <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
-                                {relato.summary}
-                              </p>
-                            )}
-                          </div>
+                  <div className="pl-4 border-l-2 border-gray-200 dark:border-gray-700 space-y-3">
+                    <h4 className="text-lg font-semibold text-gray-900 dark:text-gray-100">Relatos en esta serie:</h4>
+                    <ul className="space-y-3 ml-6 list-disc">
+                      {serie.relatos.map((relato) => (
+                        <li key={relato.slug.current}>
+                          <Link
+                            href={`/${authorSlug}/relato/${relato.slug.current}`}
+                            className="text-primary-500 hover:text-primary-600 dark:hover:text-primary-400"
+                          >
+                            {relato.title}
+                          </Link>
+                          {relato.summary && (
+                            <p className="text-sm text-gray-500 dark:text-gray-400 mt-1">
+                              {relato.summary}
+                            </p>
+                          )}
                         </li>
                       ))}
                     </ul>
