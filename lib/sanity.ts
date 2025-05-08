@@ -48,12 +48,6 @@ interface Relato {
     time: number;
     words: number;
   };
-  series?: string | any; // Puede ser string o referencia
-  seriesObj?: { 
-    name?: string;
-    title?: string;
-  };
-  seriesOrder?: number;
 }
 
 interface Portada {
@@ -401,5 +395,57 @@ export async function getRelatedRelatos(slug: string, limit: number = 3): Promis
   } catch (error) {
     console.error(`Error al obtener relatos relacionados para "${slug}":`, error);
     return [];
+  }
+}
+
+// Función para obtener la serie de un relato y todos los relatos de esa serie
+export async function getSerieDeRelato(slug: string): Promise<{
+  serie: any;
+  relatosDeSerie: Relato[];
+}> {
+  console.log(`Obteniendo serie que contiene al relato "${slug}"`);
+  try {
+    // Primero buscamos la serie que contiene este relato
+    const series = await client.fetch(`
+      *[_type == "serie" && $slug in relatos[]->slug.current] {
+        title,
+        slug,
+        description,
+        "authors": authors[]-> {
+          name,
+          slug,
+          avatar
+        },
+        "relatos": relatos[]-> {
+          title,
+          slug,
+          date,
+          summary,
+          image,
+          "author": author-> {
+            name,
+            slug,
+            avatar
+          }
+        }
+      }
+    `, { slug });
+    
+    if (series.length === 0) {
+      console.log(`No se encontró serie para el relato "${slug}"`);
+      return { serie: null, relatosDeSerie: [] };
+    }
+    
+    // Tomamos la primera serie (normalmente solo habrá una)
+    const serie = series[0];
+    console.log(`Serie encontrada: "${serie.title}" con ${serie.relatos.length} relatos`);
+    
+    return {
+      serie,
+      relatosDeSerie: serie.relatos
+    };
+  } catch (error) {
+    console.error(`Error al obtener serie para el relato "${slug}":`, error);
+    return { serie: null, relatosDeSerie: [] };
   }
 } 

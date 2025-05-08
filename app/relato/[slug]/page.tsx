@@ -13,7 +13,7 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import { getRelatoBySlug, getRelatosByAutor, getAllRelatos } from '../../../lib/sanity'
+import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 
 const defaultLayout = 'PostLayout'
@@ -108,52 +108,32 @@ export default async function Page(props: {
   // Obtener todos los relatos del mismo autor
   const autorRelatos = await getRelatosByAutor(post.author.slug.current)
   
+  // Buscar si el relato pertenece a una serie
+  const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
+  
+  console.log('Serie encontrada:', serie?.title || 'Ninguna')
+  console.log('Relatos en serie:', relatosDeSerie.length)
+  
   let prev: { path: string; title: string } | undefined = undefined
   let next: { path: string; title: string } | undefined = undefined
-  let seriesRelatos: any[] = []
-
-  if (post.series) {
-    // Filtramos los relatos de la misma serie y los ordenamos por seriesOrder
-    seriesRelatos = autorRelatos
-      .filter(p => p.series === post.series)
-      .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
-
-    console.log('⭐ Relatos de la serie encontrados:', seriesRelatos.length, 'para la serie:', post.series)
-    console.log('⭐ Detalles de relatos en serie:', seriesRelatos.map(r => ({
-      title: r.title, 
-      slug: r.slug.current, 
-      series: r.series, 
-      seriesOrder: r.seriesOrder
-    })))
-
-    // Si no encontramos relatos en la serie, puede ser porque series es un objeto _ref
-    if (seriesRelatos.length === 0 && typeof post.series === 'object' && post.seriesObj) {
-      console.log('⭐ Usando seriesObj:', post.seriesObj)
-      seriesRelatos = autorRelatos
-        .filter(p => p.series && (
-          (typeof p.series === 'object' && p.series._ref === post.series._ref) || 
-          (typeof p.series === 'string' && p.series === post.seriesObj.title)
-        ))
-        .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
-      
-      console.log('⭐ Relatos de la serie usando seriesObj:', seriesRelatos.length)
-    }
-
-    const idx = seriesRelatos.findIndex(p => p.slug.current === slug)
+  
+  // Si encontramos una serie, configuramos navegación prev/next dentro de la serie
+  if (serie && relatosDeSerie.length > 0) {
+    const idx = relatosDeSerie.findIndex(p => p.slug.current === slug)
     if (idx > 0) {
       prev = {
-        path: `relato/${seriesRelatos[idx - 1].slug.current}`,
-        title: seriesRelatos[idx - 1].title
+        path: `relato/${relatosDeSerie[idx - 1].slug.current}`,
+        title: relatosDeSerie[idx - 1].title
       }
     }
-    if (idx < seriesRelatos.length - 1) {
+    if (idx < relatosDeSerie.length - 1) {
       next = {
-        path: `relato/${seriesRelatos[idx + 1].slug.current}`,
-        title: seriesRelatos[idx + 1].title
+        path: `relato/${relatosDeSerie[idx + 1].slug.current}`,
+        title: relatosDeSerie[idx + 1].title
       }
     }
   } else {
-    // Usamos todos los relatos del autor ordenados por fecha
+    // Si no hay serie, usamos relatos del mismo autor ordenados por fecha
     const sortedRelatos = [...autorRelatos].sort((a, b) => 
       new Date(b.date).getTime() - new Date(a.date).getTime()
     )
@@ -195,9 +175,9 @@ export default async function Page(props: {
   
   // Obtener relatos relacionados
   let relatedPosts: any[] = []
-  if (post.series) {
-    relatedPosts = autorRelatos
-      .filter(p => p.series === post.series && p.slug.current !== slug)
+  if (serie && relatosDeSerie.length > 0) {
+    relatedPosts = relatosDeSerie
+      .filter(p => p.slug.current !== slug)
       .map(formatRelatedPost)
   } else {
     relatedPosts = autorRelatos
@@ -218,7 +198,7 @@ export default async function Page(props: {
     slug: post.slug.current,
     path: `relato/${post.slug.current}`,
     // Incluimos series como parte del objeto content, no como prop separado
-    series: post.series,
+    series: serie,
     seriesOrder: post.seriesOrder,
     // Para que MDXLayoutRenderer funcione con el contenido de Sanity
     body: { 
@@ -235,7 +215,7 @@ export default async function Page(props: {
     title: post.title,
     image: post.image,
     authorDetails: authorDetails[0],
-    series: post.series,
+    series: serie,
     content: mainContent,
     body: post.body // Agregamos el cuerpo para ver su formato
   })
@@ -266,16 +246,16 @@ export default async function Page(props: {
   }
 
   // Formatear relatos para la serie (si existe)
-  const formattedSeriesRelatos = seriesRelatos.map(relato => ({
+  const formattedSeriesRelatos = relatosDeSerie.map(relato => ({
     title: relato.title,
     slug: relato.slug.current,
     path: `relato/${relato.slug.current}`,
-    seriesOrder: relato.seriesOrder || 0
+    order: relatosDeSerie.findIndex(r => r.slug.current === relato.slug.current) + 1
   }))
 
   console.log('⭐ formattedSeriesRelatos creados:', formattedSeriesRelatos.length)
-  console.log('⭐ post.series existe:', !!post.series, 'valor:', post.series)
-  console.log('⭐ Condición de render:', post.series && formattedSeriesRelatos.length > 0)
+  console.log('⭐ serie existe:', !!serie, 'título:', serie?.title)
+  console.log('⭐ Condición de render:', !!serie && formattedSeriesRelatos.length > 0)
 
   return (
     <>
@@ -292,12 +272,19 @@ export default async function Page(props: {
         <div className="prose dark:prose-invert max-w-none">
           <PortableText value={post.body} components={ptComponents} />
         </div>
-        {post.series && formattedSeriesRelatos.length > 0 && (
+        {serie && formattedSeriesRelatos.length > 0 && (
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-bold mb-4">Serie: {post.series}</h2>
-            {seriesMetadata[post.series] && (
+            <h2 className="text-2xl font-bold mb-4">
+              Serie: {serie.title}
+            </h2>
+            {seriesMetadata[serie.title] && (
               <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
-                {seriesMetadata[post.series].description}
+                {seriesMetadata[serie.title].description}
+              </p>
+            )}
+            {!seriesMetadata[serie.title] && serie.description && (
+              <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
+                {serie.description}
               </p>
             )}
             <div className="space-y-0">
@@ -323,7 +310,7 @@ export default async function Page(props: {
                   >
                     <div className="flex items-center">
                       <span className="font-medium text-black dark:text-white">
-                        {relato.seriesOrder}. {relato.title}
+                        {relato.order}. {relato.title}
                         {relato.slug === slug && (
                           <span className="ml-2 px-2 py-0.5 bg-black text-[#faff00] rounded text-sm">
                             (Leyendo)
@@ -348,7 +335,7 @@ export default async function Page(props: {
         author={post.author.slug.current}
         pathPrefix="relato"
         readingTime={post.readingTime || { text: "5 min", minutes: 5, time: 300000, words: 1000 }}
-        seriesName={post.series}
+        seriesName={serie?.title}
       />
     </>
   )
