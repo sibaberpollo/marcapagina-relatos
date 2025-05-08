@@ -2,8 +2,6 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import { components } from '@/components/MDXComponents'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import seriesMetadata from '@/data/seriesMetadata'
@@ -13,6 +11,7 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
+import CustomTooltip from '@/components/CustomTooltip'
 import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 
@@ -22,48 +21,49 @@ const layouts = { PostSimple, PostLayout, PostBanner }
 // Componentes personalizados para el PortableText de Sanity
 const ptComponents = {
   types: {
-    image: ({value}: any) => (
-      <img 
-        src={value.imageUrl || value.asset?.url} 
-        alt={value.alt || ''} 
+    image: ({ value }: any) => (
+      <img
+        src={value.imageUrl || value.asset?.url}
+        alt={value.alt || ''}
         className="w-full rounded-lg my-4"
       />
     ),
-    callout: ({value}: any) => (
+    callout: ({ value }: any) => (
       <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
         <p className="italic">{value.text}</p>
       </div>
     )
   },
   marks: {
-    link: ({value, children}: any) => {
+    link: ({ value, children }: any) => {
       const target = (value?.href || '').startsWith('http') ? '_blank' : undefined
       return (
-        <a href={value?.href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : ''}>
+        <a
+          href={value?.href}
+          target={target}
+          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
+        >
           {children}
         </a>
       )
+    },
+    tooltip: ({ value, children }: any) => {
+      return <CustomTooltip text={String(children)} tooltip={value.tooltipText} />
     }
   }
-} as any // Usamos as any para evitar errores de tipado
+} as any
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata | undefined> {
-  // Aseguramos que params sea awaited antes de usarlo
-  const params = await props.params;
-  const { slug } = params;
+  const params = await props.params
+  const { slug } = params
   const post = await getRelatoBySlug(slug)
-  
   if (!post) return
 
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.date).toISOString()
-  
-  const imageList = post.image 
-    ? [post.image] 
-    : [siteMetadata.socialBanner]
-  
+  const imageList = post.image ? [post.image] : [siteMetadata.socialBanner]
   const ogImages = imageList.map((img) => ({
     url: img.includes('http') ? img : siteMetadata.siteUrl + img
   }))
@@ -102,91 +102,81 @@ export const generateStaticParams = async () => {
 export default async function Page(props: {
   params: Promise<{ slug: string }>
 }) {
-  // Aseguramos que params sea awaited antes de usarlo
-  const params = await props.params;
-  const { slug } = params;
+  const params = await props.params
+  const { slug } = params
   const post = await getRelatoBySlug(slug)
-  
   if (!post) return notFound()
-  
-  // Obtener todos los relatos del mismo autor
+
   const autorRelatos = await getRelatosByAutor(post.author.slug.current)
-  
-  // Buscar si el relato pertenece a una serie
   const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
-  
-  let prev: { path: string; title: string } | undefined = undefined
-  let next: { path: string; title: string } | undefined = undefined
-  
-  // Si encontramos una serie, configuramos navegación prev/next dentro de la serie
+
+  let prev: { path: string; title: string } | undefined
+  let next: { path: string; title: string } | undefined
+
   if (serie && relatosDeSerie.length > 0) {
-    const idx = relatosDeSerie.findIndex(p => p.slug.current === slug)
+    const idx = relatosDeSerie.findIndex((r) => r.slug.current === slug)
     if (idx > 0) {
-      prev = {
-        path: `relato/${relatosDeSerie[idx - 1].slug.current}`,
-        title: relatosDeSerie[idx - 1].title
-      }
+      const p = relatosDeSerie[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
     }
     if (idx < relatosDeSerie.length - 1) {
-      next = {
-        path: `relato/${relatosDeSerie[idx + 1].slug.current}`,
-        title: relatosDeSerie[idx + 1].title
-      }
+      const n = relatosDeSerie[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
     }
   } else {
-    // Si no hay serie, usamos relatos del mismo autor ordenados por fecha
-    const sortedRelatos = [...autorRelatos].sort((a, b) => 
-      new Date(b.date).getTime() - new Date(a.date).getTime()
+    const sorted = [...autorRelatos].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
     )
-    
-    const idx = sortedRelatos.findIndex(p => p.slug.current === slug)
+    const idx = sorted.findIndex((r) => r.slug.current === slug)
     if (idx > 0) {
-      prev = {
-        path: `relato/${sortedRelatos[idx - 1].slug.current}`,
-        title: sortedRelatos[idx - 1].title
-      }
+      const p = sorted[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
     }
-    if (idx < sortedRelatos.length - 1) {
-      next = {
-        path: `relato/${sortedRelatos[idx + 1].slug.current}`,
-        title: sortedRelatos[idx + 1].title
-      }
+    if (idx < sorted.length - 1) {
+      const n = sorted[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
     }
   }
 
-  // Preparar el formato que esperan los componentes
-  const authorDetails = [{
-    name: post.author.name,
-    avatar: post.author.avatar,
-    occupation: post.author.occupation || '',
-    company: post.author.company || '',
-    twitter: post.author.twitter || '',
-    linkedin: post.author.linkedin || '',
-    github: post.author.github || '',
-    slug: post.author.slug.current,
-    // Campos adicionales requeridos para compatibilidad con CoreContent<Authors>
-    type: 'authors',
-    path: `/autor/${post.author.slug.current}`,
-    defaultTab: 'relatos',
-    readingTime: { text: '', minutes: 0, time: 0, words: 0 },
-    filePath: '',
-    url: `/autor/${post.author.slug.current}`,
-    toc: []
-  }] as any // Usamos 'as any' para evitar problemas de tipado
-  
-  // Obtener relatos relacionados
+  const authorDetails = [
+    {
+      name: post.author.name,
+      avatar: post.author.avatar,
+      occupation: post.author.occupation || '',
+      company: post.author.company || '',
+      twitter: post.author.twitter || '',
+      linkedin: post.author.linkedin || '',
+      github: post.author.github || '',
+      slug: post.author.slug.current,
+      type: 'authors',
+      path: `/autor/${post.author.slug.current}`,
+      defaultTab: 'relatos',
+      readingTime: { text: '', minutes: 0, time: 0, words: 0 },
+      filePath: '',
+      url: `/autor/${post.author.slug.current}`,
+      toc: []
+    }
+  ] as any
+
   let relatedPosts: any[] = []
   if (serie && relatosDeSerie.length > 0) {
     relatedPosts = relatosDeSerie
-      .filter(p => p.slug.current !== slug)
-      .map(formatRelatedPost)
+      .filter((r) => r.slug.current !== slug)
+      .map((r) => ({
+        title: r.title,
+        path: `relato/${r.slug.current}`,
+        slug: r.slug.current
+      }))
   } else {
     relatedPosts = autorRelatos
-      .filter(p => p.slug.current !== slug)
-      .map(formatRelatedPost)
+      .filter((r) => r.slug.current !== slug)
+      .map((r) => ({
+        title: r.title,
+        path: `relato/${r.slug.current}`,
+        slug: r.slug.current
+      }))
   }
 
-  // Formatear el contenido principal
   const mainContent = {
     title: post.title,
     date: post.date,
@@ -194,25 +184,24 @@ export default async function Page(props: {
     draft: false,
     summary: post.summary || '',
     images: post.image ? [post.image] : [],
-    image: post.image, // Imagen destacada
+    image: post.image,
     authors: [post.author.name],
     slug: post.slug.current,
     path: `relato/${post.slug.current}`,
-    // Incluimos series como parte del objeto content, no como prop separado
     series: serie?.title,
-    seriesOrder: relatosDeSerie.findIndex(r => r.slug.current === slug) + 1,
-    // Para que MDXLayoutRenderer funcione con el contenido de Sanity
-    body: { 
+    seriesOrder: serie
+      ? relatosDeSerie.findIndex((r) => r.slug.current === slug) + 1
+      : undefined,
+    body: {
       code: `
         function MDXContent() {
           return null;
         }
       `
     },
-    toc: [] // Sanity no proporciona TOC, usamos array vacío
+    toc: []
   }
 
-  // Preparar JSON-LD para SEO
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -224,25 +213,14 @@ export default async function Page(props: {
     url: siteMetadata.siteUrl + `/relato/${slug}`,
     author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
   }
-  
-  // Determinar el layout - usamos PostLayout por defecto
+
   const Layout = layouts[defaultLayout]
 
-  // Función auxiliar para formatear relatos relacionados
-  function formatRelatedPost(relato) {
-    return {
-      title: relato.title,
-      path: `relato/${relato.slug.current}`,
-      slug: relato.slug.current
-    }
-  }
-
-  // Formatear relatos para la serie (si existe)
-  const formattedSeriesRelatos = relatosDeSerie.map(relato => ({
-    title: relato.title,
-    slug: relato.slug.current,
-    path: `relato/${relato.slug.current}`,
-    order: relatosDeSerie.findIndex(r => r.slug.current === relato.slug.current) + 1
+  const formattedSeriesRelatos = (relatosDeSerie || []).map((r, index) => ({
+    title: r.title,
+    slug: r.slug.current,
+    path: `relato/${r.slug.current}`,
+    order: index + 1
   }))
 
   return (
@@ -251,10 +229,10 @@ export default async function Page(props: {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <Layout 
-        content={mainContent} 
-        authorDetails={authorDetails} 
-        next={next} 
+      <Layout
+        content={mainContent}
+        authorDetails={authorDetails}
+        next={next}
         prev={prev}
       >
         <div className="prose dark:prose-invert max-w-none">
@@ -262,31 +240,25 @@ export default async function Page(props: {
         </div>
         {serie && formattedSeriesRelatos.length > 0 && (
           <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-bold mb-4">
-              Serie: {serie.title}
-            </h2>
-            {seriesMetadata[serie.title] && (
+            <h2 className="text-2xl font-bold mb-4">Serie: {serie.title}</h2>
+            {(seriesMetadata[serie.title]?.description || serie.description) && (
               <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
-                {seriesMetadata[serie.title].description}
-              </p>
-            )}
-            {!seriesMetadata[serie.title] && serie.description && (
-              <p className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400 mb-4">
-                {serie.description}
+                {seriesMetadata[serie.title]?.description || serie.description}
               </p>
             )}
             <div className="space-y-0">
-              {formattedSeriesRelatos.map((relato, index) => (
+              {formattedSeriesRelatos.map((relato, idx) => (
                 <div key={relato.slug} className="relative pl-10">
-                  {/* Línea punteada estilizada */}
                   <div
                     className="absolute left-4 top-0 bottom-0 w-0.5"
                     style={{
                       borderLeft: '2px dotted #bdbdbd',
-                      height: index === formattedSeriesRelatos.length - 1 ? '1.25rem' : '100%',
+                      height:
+                        idx === formattedSeriesRelatos.length - 1
+                          ? '1.25rem'
+                          : '100%'
                     }}
                   />
-                  {/* Punto destacado centrado */}
                   <div
                     className={`absolute left-2.5 top-1/2 -translate-y-1/2 w-3 h-3 rounded-full border-2 border-black ${
                       relato.slug === slug ? 'bg-[#faff00]' : 'bg-white'
@@ -313,10 +285,9 @@ export default async function Page(props: {
           </div>
         )}
       </Layout>
-      
-      <ClientFixedNavWrapper 
-        title={post.title} 
-        authorAvatar={post.author.avatar} 
+      <ClientFixedNavWrapper
+        title={post.title}
+        authorAvatar={post.author.avatar}
         authorName={post.author.name}
         slug={slug}
         relatedPosts={relatedPosts}
@@ -327,4 +298,4 @@ export default async function Page(props: {
       />
     </>
   )
-} 
+}
