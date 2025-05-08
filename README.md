@@ -342,3 +342,52 @@ Using the template? Support this effort by giving a star on GitHub, sharing your
 ## Licence
 
 [MIT](https://github.com/timlrx/tailwind-nextjs-starter-blog/blob/main/LICENSE) © [Timothy Lin](https://www.timlrx.com)
+
+## Integración con Sanity CMS
+
+### Migración de Contentlayer a Sanity
+
+El proyecto ha sido migrado de Contentlayer a Sanity CMS para gestionar el contenido. Los principales cambios incluyen:
+
+- Simplificación de la estructura de URLs (de `/[autor]/relato/[slug]` a `/relato/[slug]`)
+- Implementación de middleware para redirigir URLs antiguas
+- Creación de consultas GROQ para obtener datos desde Sanity
+- Implementación de PortableText para renderizar contenido estructurado
+- Cálculo de tiempo de lectura basado en el contenido real
+
+### Configuración de Sanity
+
+Para trabajar con Sanity CMS se requiere:
+
+1. Variables de entorno:
+   - `NEXT_PUBLIC_SANITY_PROJECT_ID` - ID del proyecto de Sanity
+   - `NEXT_PUBLIC_SANITY_DATASET` - Generalmente "production"
+   - `NEXT_PUBLIC_SANITY_API_VERSION` - Formato: YYYY-MM-DD
+
+2. Estructura de contenido:
+   - Relatos: Contenido principal de ficción
+   - Artículos: Contenido de no ficción
+   - Autores: Perfiles de escritores
+   - Portada: Configuración de la página principal
+
+### Flujo de trabajo con Sanity
+
+1. **Creación de contenido**:
+   - Crear y editar contenido en Sanity Studio
+   - Publicar para disponibilizar en la API
+
+2. **Actualización en producción**:
+   - Para contenido nuevo: Los despliegues automáticos se activan con un webhook de Sanity a Vercel
+   - Para cambiar el orden de elementos en portada: Editar y publicar el documento de portada
+
+3. **Configuración del webhook**:
+   - En Vercel: Settings → Git → Deploy Hooks → Crear un nuevo hook
+   - En Sanity: API → Webhooks → Añadir la URL del hook de Vercel
+
+### Estructura de archivos
+
+- `lib/sanity.ts`: Cliente y funciones para consultar datos de Sanity
+- `app/relato/[slug]/page.tsx`: Página de relatos individuales
+- `app/articulo/[slug]/page.tsx`: Página de artículos individuales
+- `app/autor/[slug]/page.tsx`: Página de perfil de autor
+- `middleware.ts`: Gestión de redirecciones de URLs antiguas

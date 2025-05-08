@@ -23,6 +23,7 @@ const siteMetadata = {
   instagram: 'https://www.instagram.com/marcapagina.page/',
   medium: '',
   bluesky: 'https://bsky.app/profile/marcapagina.bsky.social',
+  sanity: 'https://www.sanity.io/',
   locale: 'es-ES',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,

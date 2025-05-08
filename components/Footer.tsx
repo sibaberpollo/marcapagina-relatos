@@ -18,6 +18,7 @@ export default function Footer() {
           <HighlightStroke>
             <div className="flex gap-4">
               <SocialIcon kind="github" href={siteMetadata.github} size={5} />
+              <SocialIcon kind="sanity" href={siteMetadata.sanity} size={6} />
               <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
               <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
               <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
