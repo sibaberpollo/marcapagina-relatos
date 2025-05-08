@@ -65,6 +65,25 @@ interface ProyectoFormateado {
   authorHref: string;
 }
 
+// Interfaz para Artículo
+interface Articulo {
+  title: string;
+  slug: {
+    current: string;
+  };
+  summary?: string;
+  image?: string;
+  author: Autor;
+  date: string;
+  body?: any;
+  readingTime?: {
+    text: string;
+    minutes: number;
+    time: number;
+    words: number;
+  };
+}
+
 // Función para obtener los relatos de la portada
 export async function getPortadaRelatos(): Promise<Portada | null> {
   try {
@@ -450,5 +469,115 @@ export async function getSerieDeRelato(slug: string): Promise<{
   } catch (error) {
     console.error(`Error al obtener serie para el relato "${slug}":`, error);
     return { serie: null, relatosDeSerie: [] };
+  }
+}
+
+// Función para obtener un artículo por su slug
+export async function getArticuloBySlug(slug: string): Promise<Articulo | null> {
+  try {
+    const articulo = await client.fetch(`
+      *[_type == "articulo" && slug.current == $slug][0] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        body,
+        "author": author-> {
+          name,
+          slug,
+          avatar,
+          occupation,
+          company,
+          email,
+          twitter,
+          linkedin,
+          github
+        }
+      }
+    `, { slug });
+    
+    if (articulo) {
+      // Calcular tiempo de lectura basado en el contenido
+      articulo.readingTime = calcularTiempoLectura(articulo.body);
+    }
+    
+    return articulo;
+  } catch (error) {
+    console.error(`Error al obtener artículo "${slug}" desde Sanity:`, error);
+    return null;
+  }
+}
+
+// Función para obtener todos los artículos
+export async function getAllArticulos(): Promise<Articulo[]> {
+  try {
+    const articulos = await client.fetch(`
+      *[_type == "articulo"] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug
+        }
+      }
+    `);
+    return articulos;
+  } catch (error) {
+    console.error('Error al obtener artículos desde Sanity:', error);
+    return [];
+  }
+}
+
+// Función para obtener los artículos de un autor
+export async function getArticulosByAutor(autorSlug: string): Promise<Articulo[]> {
+  try {
+    const articulos = await client.fetch(`
+      *[_type == "articulo" && author->slug.current == $autorSlug] | order(date desc) {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        }
+      }
+    `, { autorSlug });
+    
+    return articulos;
+  } catch (error) {
+    console.error(`Error al obtener artículos del autor "${autorSlug}" desde Sanity:`, error);
+    return [];
+  }
+}
+
+// Función para obtener artículos relacionados
+export async function getRelatedArticulos(slug: string, limit: number = 3): Promise<Articulo[]> {
+  try {
+    const articulos = await client.fetch(`
+      *[_type == "articulo" && slug.current != $slug][0...${limit}] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        }
+      }
+    `, { slug });
+    
+    return articulos;
+  } catch (error) {
+    console.error(`Error al obtener artículos relacionados para "${slug}":`, error);
+    return [];
   }
 } 

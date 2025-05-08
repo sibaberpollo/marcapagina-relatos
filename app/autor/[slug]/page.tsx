@@ -1,6 +1,6 @@
 // app/autor/[slug]/page.tsx
 
-import { getAllAutores, getAutorData } from '../../../lib/sanity'
+import { getAllAutores, getAutorData, getArticulosByAutor } from '../../../lib/sanity'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
@@ -49,8 +49,16 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     return notFound()
   }
   
-  // Articles/Artículos: de momento un array vacío ya que no hemos implementado este tipo de contenido
-  const articulos = []
+  // Obtenemos los artículos del autor
+  const articulosData = await getArticulosByAutor(slug);
+  
+  // Formateamos los artículos para la UI (similar a relatos)
+  const articulos = articulosData.map(articulo => ({
+    slug: articulo.slug.current,
+    title: articulo.title,
+    summary: articulo.summary || '',
+    date: articulo.date
+  }));
   
   // Determinar el tab por defecto según el autor
   const defaultTab = (author.defaultTab === 'relatos' || author.defaultTab === 'series' || author.defaultTab === 'articulos') 

@@ -86,7 +86,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
               <div key={relato.slug} className="border-b pb-6">
                 <h3 className="text-2xl font-semibold mb-2">
                   <Link
-                    href={`/${authorSlug}/relato/${relato.slug}`}
+                    href={`/relato/${relato.slug}`}
                     className="no-underline hover:underline !text-black"
                   >
                     {relato.title}
@@ -94,7 +94,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-2">{relato.summary}</p>
                 <Link
-                  href={`/${authorSlug}/relato/${relato.slug}`}
+                  href={`/relato/${relato.slug}`}
                 >
                   <HighlightStroke>Leer más &rarr;</HighlightStroke>
                 </Link>
@@ -132,7 +132,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                     <div key={relato.slug} className="pb-4">
                       <h4 className="text-xl font-medium mb-2">
                         <Link
-                          href={`/${authorSlug}/relato/${relato.slug}`}
+                          href={`/relato/${relato.slug}`}
                           className="no-underline hover:underline !text-black"
                         >
                           {relato.title}
@@ -140,7 +140,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                       </h4>
                       <p className="text-gray-600 dark:text-gray-400 mb-2">{relato.summary}</p>
                       <Link
-                        href={`/${authorSlug}/relato/${relato.slug}`}
+                        href={`/relato/${relato.slug}`}
                         className="text-primary-500 font-medium"
                       >
                         <HighlightStroke>Leer más &rarr;</HighlightStroke>
@@ -178,7 +178,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
               <div key={articulo.slug} className="border-b pb-6">
                 <h3 className="text-2xl font-semibold mb-2">
                   <Link
-                    href={`/${authorSlug}/articulo/${articulo.slug}`}
+                    href={`/articulo/${articulo.slug}`}
                     className="no-underline hover:underline !text-black"
                   >
                     {articulo.title}
@@ -186,7 +186,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400 mb-2">{articulo.summary}</p>
                 <Link
-                  href={`/${authorSlug}/articulo/${articulo.slug}`}
+                  href={`/articulo/${articulo.slug}`}
                   className="text-primary-500 font-medium"
                 >
                   <HighlightStroke>Leer más &rarr;</HighlightStroke>
