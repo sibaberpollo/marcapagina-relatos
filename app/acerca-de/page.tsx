@@ -89,13 +89,13 @@ export default function AcercaDePage() {
             <div className="flex flex-col items-center">
               <Link href="/autor/anairene" className="group">
                 <Image
-                  src="/static/images/anairene.jpg"
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1746708177/anairene_i2d4uc.jpg"
                   alt="Anairene"
                   width={150}
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400">
+                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
                   Anairene
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Contenido</p>
@@ -106,13 +106,13 @@ export default function AcercaDePage() {
             <div className="flex flex-col items-center">
               <Link href="/autor/hazael" className="group">
                 <Image
-                  src="/static/images/hazael.png"
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1746708178/hazael_cyxoy3.png"
                   alt="Hazael"
                   width={150}
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400">
+                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
                   Hazael
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos</p>
@@ -123,13 +123,13 @@ export default function AcercaDePage() {
             <div className="flex flex-col items-center">
               <Link href="/autor/pino" className="group">
                 <Image
-                  src="/static/images/pino.jpg"
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1746708177/pino_gf3ue8.jpg"
                   alt="Pino"
                   width={150}
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-primary-500 dark:group-hover:text-primary-400">
+                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
                   Pino
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos/Desarrollo</p>
@@ -140,13 +140,13 @@ export default function AcercaDePage() {
             <div className="flex flex-col items-center">
               <div className="group">
                 <Image
-                  src="/static/images/mayling.jpg"
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1746708177/mayling_aytspj.jpg"
                   alt="Mayling"
                   width={150}
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100">
+                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
                   Mayling
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Diseño Gráfico</p>
@@ -154,8 +154,7 @@ export default function AcercaDePage() {
             </div>
           </div>
         </div>
-        
       </div>
     </>
   )
-} 
+}
