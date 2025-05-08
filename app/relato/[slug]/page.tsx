@@ -50,7 +50,9 @@ const ptComponents = {
 export async function generateMetadata(props: {
   params: { slug: string }
 }): Promise<Metadata | undefined> {
-  const { slug } = props.params
+  // Aseguramos que params sea awaited antes de usarlo
+  const paramsCopy = await Promise.resolve(props.params);
+  const { slug } = paramsCopy;
   const post = await getRelatoBySlug(slug)
   
   if (!post) return
@@ -100,7 +102,9 @@ export const generateStaticParams = async () => {
 export default async function Page(props: {
   params: { slug: string }
 }) {
-  const { slug } = props.params
+  // Aseguramos que params sea awaited antes de usarlo
+  const paramsCopy = await Promise.resolve(props.params);
+  const { slug } = paramsCopy;
   const post = await getRelatoBySlug(slug)
   
   if (!post) return notFound()
@@ -110,9 +114,6 @@ export default async function Page(props: {
   
   // Buscar si el relato pertenece a una serie
   const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
-  
-  console.log('Serie encontrada:', serie?.title || 'Ninguna')
-  console.log('Relatos en serie:', relatosDeSerie.length)
   
   let prev: { path: string; title: string } | undefined = undefined
   let next: { path: string; title: string } | undefined = undefined
@@ -181,7 +182,7 @@ export default async function Page(props: {
       .map(formatRelatedPost)
   } else {
     relatedPosts = autorRelatos
-      .filter(p => !p.series && p.slug.current !== slug)
+      .filter(p => p.slug.current !== slug)
       .map(formatRelatedPost)
   }
 
@@ -210,15 +211,6 @@ export default async function Page(props: {
     },
     toc: [] // Sanity no proporciona TOC, usamos array vacío
   }
-
-  console.log('Post data:', {
-    title: post.title,
-    image: post.image,
-    authorDetails: authorDetails[0],
-    series: serie,
-    content: mainContent,
-    body: post.body // Agregamos el cuerpo para ver su formato
-  })
 
   // Preparar JSON-LD para SEO
   const jsonLd = {
@@ -252,10 +244,6 @@ export default async function Page(props: {
     path: `relato/${relato.slug.current}`,
     order: relatosDeSerie.findIndex(r => r.slug.current === relato.slug.current) + 1
   }))
-
-  console.log('⭐ formattedSeriesRelatos creados:', formattedSeriesRelatos.length)
-  console.log('⭐ serie existe:', !!serie, 'título:', serie?.title)
-  console.log('⭐ Condición de render:', !!serie && formattedSeriesRelatos.length > 0)
 
   return (
     <>
