@@ -118,7 +118,26 @@ export default async function Page(props: {
       .filter(p => p.series === post.series)
       .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
 
-    console.log('Relatos de la serie encontrados:', seriesRelatos.length)
+    console.log('⭐ Relatos de la serie encontrados:', seriesRelatos.length, 'para la serie:', post.series)
+    console.log('⭐ Detalles de relatos en serie:', seriesRelatos.map(r => ({
+      title: r.title, 
+      slug: r.slug.current, 
+      series: r.series, 
+      seriesOrder: r.seriesOrder
+    })))
+
+    // Si no encontramos relatos en la serie, puede ser porque series es un objeto _ref
+    if (seriesRelatos.length === 0 && typeof post.series === 'object' && post.seriesObj) {
+      console.log('⭐ Usando seriesObj:', post.seriesObj)
+      seriesRelatos = autorRelatos
+        .filter(p => p.series && (
+          (typeof p.series === 'object' && p.series._ref === post.series._ref) || 
+          (typeof p.series === 'string' && p.series === post.seriesObj.title)
+        ))
+        .sort((a, b) => (a.seriesOrder || 0) - (b.seriesOrder || 0))
+      
+      console.log('⭐ Relatos de la serie usando seriesObj:', seriesRelatos.length)
+    }
 
     const idx = seriesRelatos.findIndex(p => p.slug.current === slug)
     if (idx > 0) {
@@ -253,6 +272,10 @@ export default async function Page(props: {
     path: `relato/${relato.slug.current}`,
     seriesOrder: relato.seriesOrder || 0
   }))
+
+  console.log('⭐ formattedSeriesRelatos creados:', formattedSeriesRelatos.length)
+  console.log('⭐ post.series existe:', !!post.series, 'valor:', post.series)
+  console.log('⭐ Condición de render:', post.series && formattedSeriesRelatos.length > 0)
 
   return (
     <>

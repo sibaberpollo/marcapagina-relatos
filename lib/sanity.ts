@@ -48,7 +48,11 @@ interface Relato {
     time: number;
     words: number;
   };
-  series?: string;
+  series?: string | any; // Puede ser string o referencia
+  seriesObj?: { 
+    name?: string;
+    title?: string;
+  };
   seriesOrder?: number;
 }
 
@@ -322,6 +326,7 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
         },
         "category": category->title,
         "tags": tags[]->title,
+        "seriesObj": series->{name, title},
         series,
         seriesOrder
       }
@@ -329,6 +334,11 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
     
     if (relato) {
       console.log(`Relato "${relato.title}" encontrado`);
+      console.log('Datos de series en relato:', {
+        seriesObj: relato.seriesObj,
+        series: relato.series,
+        seriesOrder: relato.seriesOrder
+      });
     } else {
       console.log(`Relato con slug "${slug}" no encontrado`);
     }
@@ -376,6 +386,8 @@ export async function getRelatedRelatos(slug: string, limit: number = 3): Promis
         date,
         summary,
         image,
+        series,
+        seriesOrder,
         "author": author-> {
           name,
           slug,
