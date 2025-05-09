@@ -39,7 +39,7 @@ const DESAFIO_RESPALDO = {
 };
 
 // Estados posibles
-type Estado = 'bienvenida' | 'leyendo' | 'preguntas' | 'formulario' | 'resultado'
+type Estado = 'pre_formulario' | 'leyendo' | 'preguntas' | 'formulario' | 'resultado'
 
 // Utilidad para enviar eventos a Google Analytics
 function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
@@ -58,11 +58,11 @@ export default function PublicaClient() {
 
   // Estado para el formulario original
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     description: '',
     files: [] as File[],
     agree: false,
+    source: '', // Cómo nos encontró
   })
   const [token, setToken] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -72,7 +72,7 @@ export default function PublicaClient() {
   const [dotCount, setDotCount] = useState(0)
   
   // Estados nuevos para el desafío
-  const [estado, setEstado] = useState<Estado>('bienvenida')
+  const [estado, setEstado] = useState<Estado>('pre_formulario')
   const [relatoActual, setRelatoActual] = useState(0)
   const [desafio, setDesafio] = useState<any>(null)
   const [cargando, setCargando] = useState(true)
@@ -82,6 +82,7 @@ export default function PublicaClient() {
     aprobado: false
   })
   const [errorCarga, setErrorCarga] = useState<string | null>(null)
+  const [preFormularioCompletado, setPreFormularioCompletado] = useState(false)
 
   const allowedExtensions = ['pdf', 'docx', 'txt']
 
@@ -129,7 +130,7 @@ export default function PublicaClient() {
   }, [])
 
   // Manejar cambios en el formulario
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value, type, checked } = e.target as HTMLInputElement
     setFormData(prev => ({
       ...prev,
@@ -138,12 +139,33 @@ export default function PublicaClient() {
   }
 
   const processFiles = (incoming: File[]) => {
+    // Si ya tenemos un archivo, ignorar
+    if (formData.files.length > 0) {
+      alert('Solo se permite un archivo. Por favor, elimina el archivo actual antes de agregar uno nuevo.')
+      return []
+    }
+    
     const valid: File[] = []
-    incoming.forEach(file => {
+    for (const file of incoming) {
       const ext = file.name.split('.').pop()?.toLowerCase()
-      if (ext && allowedExtensions.includes(ext)) valid.push(file)
-      else alert(`Formato no soportado: ${file.name}`)
-    })
+      
+      // Verificar extensión
+      if (!ext || !allowedExtensions.includes(ext)) {
+        alert(`Formato no soportado: ${file.name}`)
+        continue
+      }
+      
+      // Verificar tamaño (1MB = 1048576 bytes)
+      if (file.size > 1048576) {
+        alert(`El archivo ${file.name} excede el límite de 1MB (${(file.size / (1024 * 1024)).toFixed(2)}MB)`)
+        continue
+      }
+      
+      // Solo aceptar el primer archivo válido
+      valid.push(file)
+      break
+    }
+    
     return valid
   }
 
@@ -151,7 +173,7 @@ export default function PublicaClient() {
     e.preventDefault()
     const dropped = Array.from(e.dataTransfer.files)
     const valid = processFiles(dropped)
-    setFormData(prev => ({ ...prev, files: [...prev.files, ...valid].slice(0, 5) }))
+    setFormData(prev => ({ ...prev, files: [...prev.files, ...valid] }))
   }
 
   const handleDragOver = (e: DragEvent<HTMLDivElement>) => e.preventDefault()
@@ -159,7 +181,7 @@ export default function PublicaClient() {
   const handleFileInput = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!e.target.files) return
     const valid = processFiles(Array.from(e.target.files))
-    setFormData(prev => ({ ...prev, files: [...prev.files, ...valid].slice(0, 5) }))
+    setFormData(prev => ({ ...prev, files: [...prev.files, ...valid] }))
   }
 
   const removeFile = (idx: number) => {
@@ -213,46 +235,53 @@ export default function PublicaClient() {
     }
   }, [isSubmitting])
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
+  // Validar y procesar el pre-formulario
+  const handlePreFormularioSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Validar que el email esté completo
+    if (!formData.email || !formData.source) {
+      alert('Por favor completa todos los campos obligatorios.');
+      return;
+    }
+    
+    // Registrar en Analytics
     sendGAEvent({
-      action: 'submit_publica_form',
-      category: 'PublicaForm',
-      label: formData.name,
-      value: formData.files.length,
-    })
-    if (!token) {
-      alert('Por favor completa el CAPTCHA.')
-      return
-    }
+      action: 'submit_pre_form',
+      category: 'PreFormulario',
+      label: formData.email,
+      value: 1
+    });
+    
+    // Marcar como completado
+    setPreFormularioCompletado(true);
+    
     try {
-      setIsSubmitting(true)
-      setStatus(null)
-      const body = new FormData()
-      body.append('name', formData.name)
-      body.append('email', formData.email)
-      body.append('description', formData.description)
-      body.append('response', token)
-      formData.files.forEach(f => body.append('files', f))
-
-      const res = await fetch('/api/publica', { method: 'POST', body })
-      const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Error en el envío')
-
-      setFormData({ name: '', email: '', description: '', files: [], agree: false })
-      setToken(null)
-      if (widgetIdRef.current && window.turnstile) {
-        window.turnstile.reset(widgetIdRef.current)
+      // Enviar datos al backend
+      const response = await fetch('/api/sheets', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          source: formData.source,
+          etapa: 'pre_formulario',
+          fechaRegistro: new Date().toISOString()
+        }),
+      });
+      
+      if (!response.ok) {
+        console.error('Error al enviar datos del pre-formulario');
       }
-
-      router.push('/publica/gracias')
-    } catch (err) {
-      setStatus({ success: false, message: (err as Error).message })
-    } finally {
-      setIsSubmitting(false)
+    } catch (error) {
+      console.error('Error al enviar datos a la API:', error);
     }
-  }
-
+    
+    // Avanzar al desafío
+    iniciarDesafio();
+  };
+  
   // Funciones para el desafío
   const iniciarDesafio = () => {
     sendGAEvent({
@@ -389,7 +418,7 @@ export default function PublicaClient() {
     }
     
     switch (estado) {
-      case 'bienvenida':
+      case 'pre_formulario':
         return (
           <div className="prose dark:prose-invert max-w-none">
             <div className="flex flex-col items-center mb-8">
@@ -402,21 +431,71 @@ export default function PublicaClient() {
               />
             </div>
             
-            <h2 className="text-2xl font-bold mb-4">{desafio.titulo}</h2>
-            <p className="mb-4">{desafio.descripcion}</p>
+            <h2 className="text-2xl font-bold mb-4">{desafio?.titulo || "Bienvenido a MarcaPágina"}</h2>
+            <p className="mb-4">{desafio?.descripcion || "Comparte tu relato con nuestra comunidad de lectores. En MarcaPágina publicamos textos que abrazan la creatividad y la imaginación."}</p>
             
             <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
-              <strong>Nota:</strong> Este proceso nos ayuda a mantener la calidad y coherencia de nuestras publicaciones.
+              <strong>Nota:</strong> Para publicar tu relato, primero necesitamos que completes un breve desafío de lectura.
             </p>
             
-            <div className="text-center mt-8">
-              <button
-                onClick={iniciarDesafio}
-                className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 transition-colors"
-              >
-                Comenzar Desafío
-              </button>
-            </div>
+            <form 
+              onSubmit={handlePreFormularioSubmit}
+              className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow mt-8"
+            >
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="pre-email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Correo electrónico <span className="text-red-600">*</span>
+                </label>
+                <input
+                  id="pre-email"
+                  name="email"
+                  type="email"
+                  required
+                  className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+              
+              {/* Fuente */}
+              <div>
+                <label
+                  htmlFor="source"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  ¿Cómo supiste de nosotros? <span className="text-red-600">*</span>
+                </label>
+                <select
+                  id="source"
+                  name="source"
+                  required
+                  className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+                  value={formData.source}
+                  onChange={handleChange}
+                >
+                  <option value="">Selecciona una opción</option>
+                  <option value="instagram">Instagram</option>
+                  <option value="facebook">Facebook</option>
+                  <option value="twitter">Twitter/X</option>
+                  <option value="web">Búsqueda web</option>
+                  <option value="amigo">Recomendación de un amigo</option>
+                  <option value="otra">Otra fuente</option>
+                </select>
+              </div>
+              
+              <div className="text-center mt-4">
+                <button
+                  type="submit"
+                  className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 transition-colors"
+                >
+                  Comenzar Desafío
+                </button>
+              </div>
+            </form>
           </div>
         )
         
@@ -508,7 +587,7 @@ export default function PublicaClient() {
               <p>
                 En MarcaPágina celebramos la fuerza de la ficción para encender la imaginación y tejer nuevos mundos.
               </p>
-              <p>Comparte tu relato: cuéntanos quién eres, tus influencias y adjunta tu historia.</p>
+              <p>Comparte tu relato (máximo 5-7 cuartillas).</p>
               <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
                 <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados.
               </p>
@@ -533,44 +612,6 @@ export default function PublicaClient() {
             >
               <p className="text-sm text-gray-600 dark:text-gray-400">Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.</p>
 
-              {/* Nombre */}
-              <div>
-                <label
-                  htmlFor="name"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Nombre o seudónimo <span className="text-red-600">*</span>
-                </label>
-                <input
-                  id="name"
-                  name="name"
-                  type="text"
-                  required
-                  className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
-                  value={formData.name}
-                  onChange={handleChange}
-                />
-              </div>
-
-              {/* Email */}
-              <div>
-                <label
-                  htmlFor="email"
-                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
-                >
-                  Correo electrónico <span className="text-red-600">*</span>
-                </label>
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  required
-                  className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
-                  value={formData.email}
-                  onChange={handleChange}
-                />
-              </div>
-
               {/* Descripción */}
               <div>
                 <label
@@ -587,23 +628,24 @@ export default function PublicaClient() {
                   className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
                   value={formData.description}
                   onChange={handleChange}
+                  placeholder="Cuéntanos un poco sobre ti y tu relato..."
                 />
               </div>
 
               {/* Archivos */}
               <div>
                 <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                  Archivos (máx. 5) – PDF, DOCX, TXT <span className="text-red-600">*</span>
+                  Archivo (PDF, DOCX, TXT - máx. 1MB) <span className="text-red-600">*</span>
                 </label>
                 <div
                   onDrop={handleDrop}
                   onDragOver={handleDragOver}
                   className="mt-1 relative flex flex-col items-center justify-center rounded-md border-2 border-dashed border-gray-300 dark:border-gray-600 bg-gray-50 dark:bg-gray-900 p-6 text-gray-500"
                 >
-                  <p>Arrastra y suelta archivos aquí o haz clic para seleccionar</p>
+                  <p>Arrastra y suelta tu archivo aquí o haz clic para seleccionar</p>
+                  <p className="text-sm text-gray-500">Máximo 1 archivo de 1MB (5-7 cuartillas)</p>
                   <input
                     type="file"
-                    multiple
                     accept=".pdf,.docx,.txt"
                     required
                     className="absolute inset-0 w-full h-full opacity-0 cursor-pointer border border-black border-2 rounded-lg"
@@ -617,7 +659,7 @@ export default function PublicaClient() {
                         key={i}
                         className="flex justify-between items-center bg-gray-100 dark:bg-gray-800 p-2 rounded"
                       >
-                        <span className="truncate">{f.name}</span>
+                        <span className="truncate">{f.name} ({(f.size / (1024 * 1024)).toFixed(2)} MB)</span>
                         <button
                           type="button"
                           onClick={() => removeFile(i)}
@@ -671,6 +713,64 @@ export default function PublicaClient() {
       
       default:
         return null
+    }
+  }
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    sendGAEvent({
+      action: 'submit_publica_form',
+      category: 'PublicaForm',
+      label: formData.email,
+      value: formData.files.length,
+    })
+    if (!token) {
+      alert('Por favor completa el CAPTCHA.')
+      return
+    }
+    try {
+      setIsSubmitting(true)
+      setStatus(null)
+      const body = new FormData()
+      body.append('email', formData.email)
+      body.append('description', formData.description)
+      body.append('response', token)
+      formData.files.forEach(f => body.append('files', f))
+
+      const res = await fetch('/api/publica', { method: 'POST', body })
+      const json = await res.json()
+      if (!res.ok) throw new Error(json.error || 'Error en el envío')
+
+      // Actualizar Google Sheets para indicar que completó todo el proceso
+      try {
+        await fetch('/api/sheets', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: formData.email,
+            source: formData.source,
+            etapa: 'formulario_completo',
+            archivoEnviado: true,
+            fechaEnvio: new Date().toISOString()
+          }),
+        });
+      } catch (error) {
+        console.error('Error al actualizar datos en Google Sheets:', error);
+      }
+
+      setFormData(prev => ({ ...prev, description: '', files: [], agree: false }))
+      setToken(null)
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.reset(widgetIdRef.current)
+      }
+
+      router.push('/publica/gracias')
+    } catch (err) {
+      setStatus({ success: false, message: (err as Error).message })
+    } finally {
+      setIsSubmitting(false)
     }
   }
 

@@ -15,7 +15,6 @@ const transporter = nodemailer.createTransport({
 export async function POST(req: NextRequest) {
   try {
     const data = await req.formData()
-    const name = data.get('name') as string
     const email = data.get('email') as string
     const description = data.get('description') as string
     const token = data.get('response') as string
@@ -56,8 +55,8 @@ export async function POST(req: NextRequest) {
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: email,
         subject: 'MarcaPagina: recibimos tu relato',
-        text: `Hola ${name},\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\nTu texto será evaluado antes de publicarse.\n\nSíguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— El equipo de MarcaPagina`,
-        html: `<p>Hola <strong>${name}</strong>,</p>
+        text: `Hola,\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\nTu texto será evaluado antes de publicarse.\n\nSíguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— El equipo de MarcaPagina`,
+        html: `<p>Hola,</p>
                <p>¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.</p>
                <p style='background:#faff00; color:#222; padding:8px; border-radius:6px; font-weight:bold;'>Tu texto será evaluado antes de publicarse.</p>
                <p>Síguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:</p>
@@ -78,8 +77,8 @@ export async function POST(req: NextRequest) {
       to: GMAIL_USER,
       cc: 'pino.jose@gmail.com',
       replyTo: email,
-      subject: `Nuevo relato de ${name}`,
-      text: `De: ${name} <${email}>\n\n${description}`,
+      subject: `Nuevo relato de ${email}`,
+      text: `De: ${email}\n\n${description}`,
       attachments,
     })
     console.log('Correo interno enviado:', infoInternal.messageId)
