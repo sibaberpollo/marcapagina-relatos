@@ -33,7 +33,7 @@ function sendGAEvent({ action, category, label, value }: { action: string; categ
   }
 }
 
-export default function PublicaDirectoClient() {
+export default function ColaboradorDirectoClient() {
   const router = useRouter()
 
   // Estado para el formulario
@@ -42,7 +42,7 @@ export default function PublicaDirectoClient() {
     description: '',
     files: [] as File[],
     agree: false,
-    source: 'directo', // Fuente predeterminada para tracking
+    source: 'colaborador', // Fuente predeterminada para tracking
   })
   const [token, setToken] = useState<string | null>(null)
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -164,17 +164,17 @@ export default function PublicaDirectoClient() {
     // Registro de pageview para analíticas
     if (typeof window !== 'undefined' && (window as any).gtag) {
       (window as any).gtag('event', 'page_view', {
-        page_title: 'Publicación Directa',
+        page_title: 'Portal Colaboradores',
         page_location: window.location.href,
-        page_path: '/publica/directo',
+        page_path: '/publica/colaboradores',
         send_to: siteMetadata?.analytics?.googleAnalytics?.googleAnalyticsId
       });
     }
     
     sendGAEvent({
-      action: 'view_directo',
-      category: 'PublicacionDirecta',
-      label: 'Página de publicación directa vista'
+      action: 'view_colaborador',
+      category: 'PortalColaboradores',
+      label: 'Página de colaboradores vista'
     });
   }, []);
 
@@ -187,8 +187,8 @@ export default function PublicaDirectoClient() {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          email: formData.email || 'no-email@directo',
-          source: 'enlace_directo',
+          email: formData.email || 'no-email@colaborador',
+          source: 'colaborador_invitado',
           etapa: 'pre_formulario',
           fechaRegistro: new Date().toISOString()
         }),
@@ -205,8 +205,8 @@ export default function PublicaDirectoClient() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     sendGAEvent({
-      action: 'submit_publica_form_directo',
-      category: 'PublicaForm',
+      action: 'submit_colaborador_form',
+      category: 'ColaboradorForm',
       label: formData.email,
       value: formData.files.length,
     })
@@ -236,7 +236,7 @@ export default function PublicaDirectoClient() {
           },
           body: JSON.stringify({
             email: formData.email,
-            source: 'enlace_directo',
+            source: 'colaborador_invitado',
             etapa: 'formulario_completo',
             archivoEnviado: true,
             fechaEnvio: new Date().toISOString()
@@ -268,7 +268,7 @@ export default function PublicaDirectoClient() {
       />
 
       <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
-        <PageTitle>Publica tu relato</PageTitle>
+        <PageTitle>Portal para Colaboradores</PageTitle>
         <div className="flex flex-col items-center mb-8">
           <Image
             src="/static/images/logo.jpg"
@@ -279,7 +279,7 @@ export default function PublicaDirectoClient() {
           />
         </div>
         <p>
-          En MarcaPágina celebramos la fuerza de la ficción para encender la imaginación y tejer nuevos mundos.
+          Bienvenido al portal exclusivo para colaboradores de MarcaPágina. Esta área está reservada para envíos directos.
         </p>
         <p>Comparte tu relato (máximo 5-7 cuartillas).</p>
         <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
