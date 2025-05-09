@@ -84,6 +84,27 @@ interface Articulo {
   };
 }
 
+// Interfaz para el desafío
+interface Desafio {
+  titulo: string;
+  descripcion: string;
+  relatos: {
+    relato: Relato;
+    orden: number;
+  }[];
+  preguntas: {
+    relatoId: string;
+    pregunta: string;
+    opciones: {
+      texto: string;
+      esCorrecta: boolean;
+    }[];
+  }[];
+  activo: boolean;
+  mensajeExito: string;
+  mensajeError: string;
+}
+
 // Función para obtener los relatos de la portada
 export async function getPortadaRelatos(): Promise<Portada | null> {
   try {
@@ -579,5 +600,126 @@ export async function getRelatedArticulos(slug: string, limit: number = 3): Prom
   } catch (error) {
     console.error(`Error al obtener artículos relacionados para "${slug}":`, error);
     return [];
+  }
+}
+
+// Función para obtener el desafío activo
+export async function getDesafioActivo(): Promise<Desafio | null> {
+  try {
+    console.log('Iniciando búsqueda de desafío activo');
+    console.log(`Sanity config - projectId: ${projectId}, dataset: ${dataset}, apiVersion: ${apiVersion}`);
+    
+    if (!projectId || !dataset || !apiVersion) {
+      console.error('Error: Faltan variables de entorno para Sanity', { projectId, dataset, apiVersion });
+      throw new Error('Configuración incompleta de Sanity');
+    }
+    
+    const desafio = await client.fetch(`
+      *[_type == "desafio" && activo == true][0] {
+        titulo,
+        descripcion,
+        "relatos": relatos[] {
+          "relato": relato->{
+            _id,
+            title,
+            slug,
+            summary,
+            image,
+            body,
+            "author": author->{
+              name,
+              slug,
+              avatar
+            }
+          },
+          orden
+        },
+        preguntas,
+        activo,
+        mensajeExito,
+        mensajeError
+      }
+    `);
+    
+    if (!desafio) {
+      console.error('No se encontró ningún desafío activo en Sanity');
+      return null;
+    }
+    
+    // Verificar que el desafío tenga relatos
+    if (!desafio.relatos || desafio.relatos.length === 0) {
+      console.error('El desafío no tiene relatos asociados');
+      return null;
+    }
+    
+    // Ordenar los relatos por el campo orden
+    desafio.relatos.sort((a, b) => a.orden - b.orden);
+    
+    return desafio;
+  } catch (error) {
+    console.error('Error al obtener desafío activo desde Sanity:', error);
+    throw error; // Re-lanzar para que el componente pueda manejarlo
+  }
+}
+
+// Función para obtener un desafío específico por ID
+export async function getDesafioById(id: string): Promise<Desafio | null> {
+  try {
+    console.log(`Iniciando búsqueda de desafío con ID: ${id}`);
+    console.log(`Sanity config - projectId: ${projectId}, dataset: ${dataset}, apiVersion: ${apiVersion}`);
+    
+    if (!projectId || !dataset || !apiVersion) {
+      console.error('Error: Faltan variables de entorno para Sanity', { projectId, dataset, apiVersion });
+      throw new Error('Configuración incompleta de Sanity');
+    }
+    
+    const desafio = await client.fetch(`
+      *[_type == "desafio" && _id == $id][0] {
+        titulo,
+        descripcion,
+        "relatos": relatos[] {
+          "relato": relato->{
+            _id,
+            title,
+            slug,
+            summary,
+            image,
+            body,
+            "author": author->{
+              name,
+              slug,
+              avatar
+            }
+          },
+          orden
+        },
+        preguntas,
+        activo,
+        mensajeExito,
+        mensajeError
+      }
+    `, { id });
+    
+    console.log('Respuesta de Sanity para desafío:', desafio ? 'Datos recibidos' : 'NULL');
+    
+    // Si no se encuentra el desafío
+    if (!desafio) {
+      console.error(`No se encontró el desafío con ID ${id} en Sanity`);
+      return null;
+    }
+    
+    // Verificar que el desafío tenga relatos
+    if (!desafio.relatos || desafio.relatos.length === 0) {
+      console.error('El desafío no tiene relatos asociados');
+      return null;
+    }
+    
+    // Ordenar los relatos por el campo orden
+    desafio.relatos.sort((a, b) => a.orden - b.orden);
+    
+    return desafio;
+  } catch (error) {
+    console.error(`Error al obtener desafío "${id}" desde Sanity:`, error);
+    throw error; // Re-lanzar para que el componente pueda manejarlo
   }
 } 
