@@ -5,8 +5,8 @@ import { usePathname } from 'next/navigation'
 export default function PublishBanner() {
   const pathname = usePathname()
   
-  // No mostrar el banner en la página de publicación
-  if (pathname === '/publica') {
+  // No mostrar el banner en las páginas de publicación
+  if (pathname === '/publica' || pathname === '/publica/colaboradores' || pathname === '/publica/gracias') {
     return null
   }
 
