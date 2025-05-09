@@ -217,13 +217,34 @@ export default function ColaboradorDirectoClient() {
     try {
       setIsSubmitting(true)
       setStatus(null)
+      
+      // Crear FormData para enviar al servidor
       const body = new FormData()
+      
+      // Añadir todos los campos necesarios
       body.append('email', formData.email)
       body.append('description', formData.description)
       body.append('response', token)
-      formData.files.forEach(f => body.append('files', f))
+      
+      // Añadir archivos
+      if (formData.files.length > 0) {
+        for (const file of formData.files) {
+          body.append('files', file)
+        }
+      }
+      
+      console.log('Enviando formulario desde colaboradores:', { 
+        email: formData.email, 
+        description: formData.description.substring(0, 30) + '...',
+        filesCount: formData.files.length
+      });
 
-      const res = await fetch('/api/publica', { method: 'POST', body })
+      // Enviar al endpoint
+      const res = await fetch('/api/publica', { 
+        method: 'POST', 
+        body 
+      })
+      
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Error en el envío')
 
@@ -254,6 +275,7 @@ export default function ColaboradorDirectoClient() {
 
       router.push('/publica/gracias')
     } catch (err) {
+      console.error('Error al enviar el formulario:', err);
       setStatus({ success: false, message: (err as Error).message })
     } finally {
       setIsSubmitting(false)

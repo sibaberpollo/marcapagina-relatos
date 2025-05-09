@@ -92,6 +92,15 @@ export default function PublicaClient() {
     if (yaCompletado === 'true') {
       setDesafioCompletado(true)
       setEstado('formulario')
+
+      // Recuperar email si existe
+      const emailGuardado = localStorage.getItem('desafioEmail')
+      if (emailGuardado) {
+        setFormData(prev => ({
+          ...prev,
+          email: emailGuardado
+        }))
+      }
     }
     
     // Cargar el desafío
@@ -367,6 +376,11 @@ export default function PublicaClient() {
       localStorage.setItem('desafioCompletado', 'true')
       setDesafioCompletado(true)
       setEstado('formulario')
+
+      // También guardar el email en localStorage para recuperarlo después
+      if (formData.email) {
+        localStorage.setItem('desafioEmail', formData.email)
+      }
     } else {
       setEstado('resultado')
     }
