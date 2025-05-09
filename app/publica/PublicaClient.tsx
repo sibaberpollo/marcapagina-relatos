@@ -10,6 +10,7 @@ import RelatoDesafio from '@/components/RelatoDesafio'
 import PreguntasDesafio from '@/components/PreguntasDesafio'
 import Image from '@/components/Image'
 import * as sanityClient from '../../lib/sanity'
+import siteMetadata from '@/data/siteMetadata'
 
 declare global {
   interface Window {
@@ -264,32 +265,58 @@ export default function PublicaClient() {
 
   const avanzarRelato = () => {
     if (relatoActual < desafio.relatos.length - 1) {
-      setRelatoActual(relatoActual + 1)
+      const nuevoRelatoIndex = relatoActual + 1;
+      setRelatoActual(nuevoRelatoIndex);
+      
+      // Registrar pageview del relato
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        const tituloRelato = desafio.relatos[nuevoRelatoIndex].relato.title;
+        const autorRelato = desafio.relatos[nuevoRelatoIndex].relato.author.name;
+        (window as any).gtag('event', 'page_view', {
+          page_title: `Relato: ${tituloRelato}`,
+          page_location: window.location.href,
+          page_path: `/publica/desafio/relato/${nuevoRelatoIndex + 1}`,
+          send_to: siteMetadata?.analytics?.googleAnalytics?.googleAnalyticsId
+        });
+      }
       
       sendGAEvent({
         action: 'leer_relato',
         category: 'Desafio',
         label: `Relato ${relatoActual + 1} completado`
-      })
+      });
     } else {
       sendGAEvent({
         action: 'iniciar_preguntas',
         category: 'Desafio',
         label: 'Todos los relatos leídos'
-      })
-      setEstado('preguntas')
+      });
+      setEstado('preguntas');
     }
   }
 
   const retrocederRelato = () => {
     if (relatoActual > 0) {
-      setRelatoActual(relatoActual - 1)
+      const nuevoRelatoIndex = relatoActual - 1;
+      setRelatoActual(nuevoRelatoIndex);
+      
+      // Registrar pageview del relato
+      if (typeof window !== 'undefined' && (window as any).gtag) {
+        const tituloRelato = desafio.relatos[nuevoRelatoIndex].relato.title;
+        const autorRelato = desafio.relatos[nuevoRelatoIndex].relato.author.name;
+        (window as any).gtag('event', 'page_view', {
+          page_title: `Relato: ${tituloRelato}`,
+          page_location: window.location.href,
+          page_path: `/publica/desafio/relato/${nuevoRelatoIndex + 1}`,
+          send_to: siteMetadata?.analytics?.googleAnalytics?.googleAnalyticsId
+        });
+      }
       
       sendGAEvent({
         action: 'retroceder_relato',
         category: 'Desafio',
         label: `Volver al relato ${relatoActual}`
-      })
+      });
     }
   }
 
@@ -394,6 +421,18 @@ export default function PublicaClient() {
         )
         
       case 'leyendo':
+        // Registrar pageview del relato actual cuando se entra en modo lectura
+        if (typeof window !== 'undefined' && (window as any).gtag) {
+          const tituloRelato = desafio.relatos[relatoActual].relato.title;
+          const autorRelato = desafio.relatos[relatoActual].relato.author.name;
+          (window as any).gtag('event', 'page_view', {
+            page_title: `Relato: ${tituloRelato}`,
+            page_location: window.location.href,
+            page_path: `/publica/desafio/relato/${relatoActual + 1}`,
+            send_to: siteMetadata?.analytics?.googleAnalytics?.googleAnalyticsId
+          });
+        }
+        
         return (
           <>
             <DesafioTimeline pasoActual={relatoActual} totalPasos={desafio.relatos.length + 1} />
