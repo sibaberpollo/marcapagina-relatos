@@ -533,15 +533,6 @@ export default function PublicaClient() {
       case 'pre_formulario':
         return (
           <div className="prose dark:prose-invert max-w-none">
-            <div className="flex flex-col items-center mb-8">
-              <Image
-                src="/static/images/logo.jpg"
-                alt="Marcapágina Logo"
-                width={150}
-                height={150}
-                className="h-36 w-36 rounded-full border-4 border-black mb-4"
-              />
-            </div>
             
             <h2 className="text-2xl font-bold mb-4">{desafio?.titulo || "Bienvenido a MarcaPágina"}</h2>
             <p className="mb-4">{desafio?.descripcion || "Comparte tu relato con nuestra comunidad de lectores. En MarcaPágina publicamos textos que abrazan la creatividad y la imaginación."}</p>
@@ -941,7 +932,7 @@ export default function PublicaClient() {
   }, [pathname]);
 
   return (
-    <div className="py-16">
+    <div className="py-4">
       <SectionContainer>
         {/* Cargar script de Turnstile siempre */}
         <Script

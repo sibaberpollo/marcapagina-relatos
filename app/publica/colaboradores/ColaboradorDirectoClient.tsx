@@ -283,7 +283,7 @@ export default function ColaboradorDirectoClient() {
   }
 
   return (
-    <div className="py-16">
+    <div className="py-4">
       <Script
         src="https://challenges.cloudflare.com/turnstile/v0/api.js"
         strategy="afterInteractive"
@@ -291,15 +291,6 @@ export default function ColaboradorDirectoClient() {
 
       <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
         <PageTitle>Portal para Colaboradores</PageTitle>
-        <div className="flex flex-col items-center mb-8">
-          <Image
-            src="/static/images/logo.jpg"
-            alt="Marcapágina Logo"
-            width={150}
-            height={150}
-            className="h-36 w-36 rounded-full border-4 border-black mb-4"
-          />
-        </div>
         <p>
           Bienvenido al portal exclusivo para colaboradores de MarcaPágina. Esta área está reservada para envíos directos.
         </p>
