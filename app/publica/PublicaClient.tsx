@@ -93,14 +93,21 @@ export default function PublicaClient() {
       setDesafioCompletado(true)
       setEstado('formulario')
 
-      // Recuperar email si existe
+      // Recuperar email y source si existen
       const emailGuardado = localStorage.getItem('desafioEmail')
-      if (emailGuardado) {
-        setFormData(prev => ({
-          ...prev,
-          email: emailGuardado
-        }))
-      }
+      const sourceGuardado = localStorage.getItem('desafioSource')
+      
+      console.log('Datos recuperados de localStorage:', { 
+        email: emailGuardado, 
+        source: sourceGuardado 
+      });
+      
+      // Actualizar formData con los valores guardados
+      setFormData(prev => ({
+        ...prev,
+        email: emailGuardado || prev.email,
+        source: sourceGuardado || prev.source
+      }))
     }
     
     // Cargar el desafío
@@ -202,36 +209,85 @@ export default function PublicaClient() {
   }
 
   const initTurnstile = () => {
-    if (window.turnstile && captchaRef.current && widgetIdRef.current === null) {
-      const id = window.turnstile.render(captchaRef.current, {
-        sitekey: TURNSTILE_SITEKEY,
-        callback: t => setToken(t),
-      })
-      widgetIdRef.current = id
-    }
+    console.log('Intentando inicializar Turnstile...', {
+      turnstileExists: !!window.turnstile,
+      captchaRefExists: !!captchaRef.current,
+      widgetIdExists: !!widgetIdRef.current
+    });
+    
+    // Pequeño retraso para asegurar que el DOM esté listo
+    setTimeout(() => {
+      if (window.turnstile && captchaRef.current && widgetIdRef.current === null) {
+        console.log('Renderizando widget de Turnstile');
+        try {
+          const id = window.turnstile.render(captchaRef.current, {
+            sitekey: TURNSTILE_SITEKEY,
+            callback: t => {
+              console.log('Callback de Turnstile ejecutado');
+              setToken(t);
+            },
+          });
+          widgetIdRef.current = id;
+          console.log('Widget de Turnstile renderizado con ID:', id);
+        } catch (error) {
+          console.error('Error al renderizar Turnstile:', error);
+        }
+      } else {
+        console.log('No se puede inicializar Turnstile ahora', {
+          turnstileExists: !!window.turnstile,
+          captchaRefExists: !!captchaRef.current,
+          widgetIdExists: !!widgetIdRef.current
+        });
+      }
+    }, 500);
   }
 
   useEffect(() => {
-    if (pathname === '/publica' && estado === 'formulario') {
-      if (window.turnstile) {
-        initTurnstile()
-      } else {
-        const interval = setInterval(() => {
-          if (window.turnstile) {
-            initTurnstile()
-            clearInterval(interval)
-          }
-        }, 300)
-        return () => clearInterval(interval)
-      }
+    if (estado === 'formulario') {
+      // Forzar la inicialización de Turnstile cuando cambie el estado a 'formulario'
+      console.log('Estado cambiado a formulario, inicializando Turnstile');
+      
+      // Función para verificar e inicializar Turnstile
+      const verificarTurnstile = () => {
+        // Si ya existe un widget, removemos para recrearlo
+        if (widgetIdRef.current && window.turnstile) {
+          window.turnstile.remove(widgetIdRef.current);
+          widgetIdRef.current = null;
+        }
+        
+        // Tratar de inicializar
+        if (window.turnstile && captchaRef.current) {
+          initTurnstile();
+          return true; // Éxito
+        }
+        return false; // Fallo
+      };
+      
+      // Intento inmediato después de un breve retraso
+      const timerInicial = setTimeout(() => {
+        if (!verificarTurnstile()) {
+          console.log('Primer intento de inicialización fallido, programando intentos adicionales');
+        }
+      }, 500);
+      
+      // Intentos adicionales periódicos por si el primer intento falla
+      const interval = setInterval(() => {
+        if (verificarTurnstile()) {
+          console.log('Turnstile inicializado exitosamente en un intento posterior');
+          clearInterval(interval);
+        }
+      }, 1000);
+      
+      return () => {
+        clearTimeout(timerInicial);
+        clearInterval(interval);
+        if (widgetIdRef.current && window.turnstile) {
+          window.turnstile.remove(widgetIdRef.current);
+          widgetIdRef.current = null;
+        }
+      };
     }
-    return () => {
-      if (widgetIdRef.current && window.turnstile) {
-        window.turnstile.remove(widgetIdRef.current)
-        widgetIdRef.current = null
-      }
-    }
-  }, [pathname, estado])
+  }, [estado]);
 
   useEffect(() => {
     if (isSubmitting) {
@@ -377,9 +433,20 @@ export default function PublicaClient() {
       setDesafioCompletado(true)
       setEstado('formulario')
 
-      // También guardar el email en localStorage para recuperarlo después
+      // Guardar el email y la fuente en localStorage
       if (formData.email) {
         localStorage.setItem('desafioEmail', formData.email)
+        
+        // Asegurarnos de que el formData tenga el email actualizado
+        setFormData(prev => ({
+          ...prev,
+          email: formData.email
+        }))
+      }
+      
+      // Guardar también la fuente (source) en localStorage
+      if (formData.source) {
+        localStorage.setItem('desafioSource', formData.source)
       }
     } else {
       setEstado('resultado')
@@ -402,6 +469,37 @@ export default function PublicaClient() {
     console.log('Yendo directamente al formulario');
     setDesafioCompletado(true);
     localStorage.setItem('desafioCompletado', 'true');
+    
+    // Guardar datos en localStorage
+    if (formData.email) {
+      localStorage.setItem('desafioEmail', formData.email);
+    }
+    
+    if (formData.source) {
+      localStorage.setItem('desafioSource', formData.source);
+    }
+    
+    // Si no hay email o source actual, intentar recuperarlos del localStorage
+    const formDataActualizado = { ...formData };
+    let datosRecuperados = false;
+    
+    const emailGuardado = localStorage.getItem('desafioEmail');
+    if (!formDataActualizado.email && emailGuardado) {
+      formDataActualizado.email = emailGuardado;
+      datosRecuperados = true;
+    }
+    
+    const sourceGuardado = localStorage.getItem('desafioSource');
+    if (!formDataActualizado.source && sourceGuardado) {
+      formDataActualizado.source = sourceGuardado;
+      datosRecuperados = true;
+    }
+    
+    // Actualizar el formData si recuperamos algún dato
+    if (datosRecuperados) {
+      setFormData(formDataActualizado);
+    }
+    
     setEstado('formulario');
   };
 
@@ -576,11 +674,6 @@ export default function PublicaClient() {
       case 'formulario':
         return (
           <>
-            <Script
-              src="https://challenges.cloudflare.com/turnstile/v0/api.js"
-              strategy="afterInteractive"
-            />
-
             <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
               <PageTitle>Publica con nosotros</PageTitle>
               {desafioCompletado && desafio && (
@@ -625,6 +718,30 @@ export default function PublicaClient() {
               encType="multipart/form-data"
             >
               <p className="text-sm text-gray-600 dark:text-gray-400">Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.</p>
+
+              {/* Email */}
+              <div>
+                <label
+                  htmlFor="email"
+                  className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+                >
+                  Tu correo electrónico <span className="text-red-600">*</span>
+                </label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+                  value={formData.email}
+                  onChange={handleChange}
+                />
+              </div>
+
+              {/* Campo oculto para Source */}
+              <div className="text-xs text-gray-500 -mt-2">
+                <p>Fuente: {formData.source || 'No especificada'}</p>
+              </div>
 
               {/* Descripción */}
               <div>
@@ -751,25 +868,39 @@ export default function PublicaClient() {
       body.append('response', token)
       formData.files.forEach(f => body.append('files', f))
 
+      console.log('Enviando formulario a /api/publica con email:', formData.email);
       const res = await fetch('/api/publica', { method: 'POST', body })
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Error en el envío')
 
       // Actualizar Google Sheets para indicar que completó todo el proceso
       try {
-        await fetch('/api/sheets', {
+        console.log('Actualizando datos en Google Sheets:', {
+          email: formData.email,
+          source: formData.source,
+          etapa: 'formulario_completo'
+        });
+        
+        const sheetsResponse = await fetch('/api/sheets', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
             email: formData.email,
-            source: formData.source,
+            source: formData.source || 'no especificado', // Asegurar que siempre hay un valor
             etapa: 'formulario_completo',
             archivoEnviado: true,
             fechaEnvio: new Date().toISOString()
           }),
         });
+        
+        if (!sheetsResponse.ok) {
+          const sheetsError = await sheetsResponse.text();
+          console.error('Error en respuesta de Google Sheets:', sheetsError);
+        } else {
+          console.log('Actualización de Google Sheets exitosa');
+        }
       } catch (error) {
         console.error('Error al actualizar datos en Google Sheets:', error);
       }
@@ -788,9 +919,35 @@ export default function PublicaClient() {
     }
   }
 
+  // Efecto para re-inicializar cuando cambia la ruta
+  useEffect(() => {
+    // Solo cuando estamos en /publica y en el estado de formulario
+    if (pathname === '/publica' && estado === 'formulario') {
+      console.log('Cambio de ruta detectado, re-inicializando Turnstile');
+      
+      // Si hay un widget anterior, lo eliminamos
+      if (widgetIdRef.current && window.turnstile) {
+        window.turnstile.remove(widgetIdRef.current);
+        widgetIdRef.current = null;
+      }
+      
+      // Programamos una inicialización con un pequeño retraso
+      const timer = setTimeout(() => {
+        initTurnstile();
+      }, 800);
+      
+      return () => clearTimeout(timer);
+    }
+  }, [pathname]);
+
   return (
     <div className="py-16">
       <SectionContainer>
+        {/* Cargar script de Turnstile siempre */}
+        <Script
+          src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+          strategy="afterInteractive"
+        />
         {renderContenido()}
       </SectionContainer>
     </div>
