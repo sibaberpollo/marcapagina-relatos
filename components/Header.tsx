@@ -33,7 +33,8 @@ const Header = () => {
         </div>
       </Link>
       <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
-        <div className="no-scrollbar hidden max-w-40 items-center gap-x-4 overflow-x-auto sm:flex md:max-w-72 lg:max-w-96">
+      <div className="hidden items-center gap-x-6 sm:flex max-w-full lg:max-w-[calc(100vw-300px)] overflow-x-auto">
+
           {/* Enlace destacado de publicación en desktop */}
           <PublishLink variant="desktop" />
           {headerNavLinks
@@ -51,9 +52,7 @@ const Header = () => {
         {/* Enlace destacado de publicación en móvil fuera del menú */}
         <PublishLink variant="mobile" />
         {/* ThemeSwitch en desktop */}
-        <div className="hidden sm:block">
           <ThemeSwitch />
-        </div>
         <MobileNav />
       </div>
     </header>

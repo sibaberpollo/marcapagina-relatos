@@ -5,7 +5,6 @@ import { disableBodyScroll, enableBodyScroll, clearAllBodyScrollLocks } from 'bo
 import { Fragment, useState, useEffect, useRef } from 'react'
 import Link from './Link'
 import headerNavLinks from '@/data/headerNavLinks'
-import ThemeSwitch from './ThemeSwitch'
 import PublishLink from './PublishLink'
 
 const MobileNav = () => {
@@ -89,10 +88,6 @@ const MobileNav = () => {
                 <div className="mt-4 mb-8 flex flex-col items-center gap-4 w-full">
                   <div className="w-full flex justify-center mb-4">
                     <PublishLink variant="mobileNav" onClick={onToggleNav} />
-                  </div>
-                  <div className="flex items-center justify-center w-full">
-                    <span className="text-lg font-medium text-gray-800 dark:text-gray-200 mr-3 text-center">Tema:</span>
-                    <ThemeSwitch />
                   </div>
                 </div>
               </nav>

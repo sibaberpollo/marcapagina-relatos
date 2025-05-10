@@ -19,8 +19,7 @@ export default function PreFormulario({
 }: PreFormularioProps) {
   return (
     <div className="prose dark:prose-invert max-w-none">
-      <h2 className="text-2xl font-bold mb-4">{titulo}</h2>
-      <p className="mb-4">{descripcion}</p>
+      {/* Título y descripción eliminados ya que se muestran en el componente padre */}
       
       <form 
         onSubmit={onSubmit}

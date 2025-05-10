@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { PortableText } from '@portabletext/react'
@@ -46,6 +46,11 @@ export default function RelatoDesafio({
   permitirRetroceder = false,
   onRetroceder
 }: RelatoDesafioProps) {
+  // Efecto para hacer scroll al inicio cuando el componente se monta
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
   return (
     <div className="max-w-3xl mx-auto">
       <div className="mb-6">

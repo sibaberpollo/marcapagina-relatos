@@ -227,8 +227,13 @@ export default function PublicaClient() {
   const renderContenido = () => {
     if (cargando) {
       return (
-        <div className="flex justify-center items-center py-16">
-          <div className="animate-spin rounded-full h-16 w-16 border-t-2 border-b-2 border-black"></div>
+        <div className="flex flex-col items-center justify-center py-6 mt-4">
+          <p className="text-lg font-medium mb-2">Cargando el desafío</p>
+          <div className="flex items-center">
+            <span className="animate-pulse mx-[1px] text-xl">.</span>
+            <span className="animate-pulse mx-[1px] text-xl" style={{ animationDelay: '200ms' }}>.</span>
+            <span className="animate-pulse mx-[1px] text-xl" style={{ animationDelay: '400ms' }}>.</span>
+          </div>
         </div>
       )
     }
@@ -256,8 +261,6 @@ export default function PublicaClient() {
             formData={formData}
             handleChange={handleChange}
             onSubmit={handlePreFormularioSubmit}
-            titulo={desafio?.titulo}
-            descripcion={desafio?.descripcion}
           />
         )
         
@@ -384,6 +387,28 @@ export default function PublicaClient() {
   return (
     <div className="py-4">
       <SectionContainer>
+        {/* Texto de bienvenida estático - siempre visible */}
+        {estado === 'pre_formulario' && (
+          <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mb-8">
+            <h2>¡Publica con nosotros!</h2>
+            <p>
+              Estamos encantados con la idea de leerte y, ojalá, publicarte. Pero antes, queremos mostrarte el tipo de relatos que buscamos.
+            </p>
+            <p>
+              Te presentaremos un cuento breve al azar para que conozcas el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
+              <a href="/criterios-editoriales" className="font-semibold !text-gray-700 hover:text-black"> Ver criterios editoriales ↗</a>
+            </p>
+            <p>
+              Luego de responder un par de preguntas sobre ese cuento, accederás al formulario para enviar tu texto.
+            </p>
+            <p>
+              Nos comprometemos a leer con atención cada texto recibido. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
+              Si tu relato es seleccionado, además de su publicación, te daremos acceso a una selección de ilustraciones especialmente creadas para acompañarlo.
+            </p>
+            <p className="font-semibold">¿Empezamos?</p>
+          </div>
+        )}
+
         {/* Cargar script de Turnstile siempre */}
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
