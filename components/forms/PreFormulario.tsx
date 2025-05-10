@@ -75,7 +75,7 @@ export default function PreFormulario({
             type="submit"
             className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 hover:scale-105 transition-all duration-200"
           >
-            Comenzar Desafío
+            Siguiente
           </button>
         </div>
       </form>

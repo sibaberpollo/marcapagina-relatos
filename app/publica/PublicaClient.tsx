@@ -16,6 +16,7 @@ import { useTurnstile } from '../../lib/hooks/useTurnstile'
 import { useDesafio } from '../../lib/hooks/useDesafio'
 import FormularioPublica from '../../components/forms/FormularioPublica'
 import PreFormulario from '../../components/forms/PreFormulario'
+import HighlightStroke from '@/components/HighlightStroke'
 
 // Utilidad para enviar eventos a Google Analytics
 function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
@@ -392,23 +393,22 @@ export default function PublicaClient() {
           <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mb-8">
             <h2>¡Publica con nosotros!</h2>
             <p>
-              Estamos encantados con la idea de leerte y, ojalá, publicarte. Pero antes, queremos mostrarte el tipo de relatos que buscamos.
+              Estamos encantados con la idea de leerte y, ojalá, publicarte. Pero antes, queremos que conozcas mejor el tipo de relatos que buscamos.
             </p>
             <p>
-              Te presentaremos un cuento breve al azar para que conozcas el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
-              <a href="/criterios-editoriales" className="font-semibold !text-gray-700 hover:text-black"> Ver criterios editoriales ↗</a>
+              1) Te mostraremos un cuento breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
+              <HighlightStroke>
+                <a href="/criterios-editoriales" className="font-semibold !text-gray-700 hover:text-black">
+                  Ver criterios editoriales
+                </a>
+              </HighlightStroke>
             </p>
             <p>
-              Luego de responder un par de preguntas sobre ese cuento, accederás al formulario para enviar tu texto.
+              2) Luego de leerlo, te haremos un par de preguntas muy simples. Al responderlas, se activará el formulario para enviar tu texto.
             </p>
-            <p>
-              Nos comprometemos a leer con atención cada texto recibido. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
-              Si tu relato es seleccionado, además de su publicación, te daremos acceso a una selección de ilustraciones especialmente creadas para acompañarlo.
-            </p>
-            <p className="font-semibold">¿Empezamos?</p>
           </div>
         )}
-
+  
         {/* Cargar script de Turnstile siempre */}
         <Script
           src="https://challenges.cloudflare.com/turnstile/v0/api.js"
@@ -416,6 +416,14 @@ export default function PublicaClient() {
         />
         {renderContenido()}
       </SectionContainer>
+      {estado === 'pre_formulario' && (
+        <div className="prose prose-lg mx-auto max-w-3xl mt-8">
+          <p>
+            Nos comprometemos a leer con atención cada texto recibido. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
+            Si tu relato es seleccionado, además de su publicación, te daremos acceso a una selección de ilustraciones especialmente creadas para acompañarlo.
+          </p>
+        </div>
+      )}
     </div>
-  )
+  )  
 }
