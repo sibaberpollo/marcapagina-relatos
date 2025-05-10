@@ -330,9 +330,14 @@ export default function PublicaClient() {
         return (
           <div className="max-w-3xl mx-auto text-center py-8">
             <h2 className="text-2xl font-bold mb-4">Resultado del Desafío</h2>
-            <div className="p-6 rounded-lg bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 mb-6">
-              <p className="text-lg font-semibold mb-2">{desafio.mensajeError}</p>
-              <p>Respuestas correctas: {resultadoDesafio.respuestasCorrectas}</p>
+            <div className="p-2 mb-4 rounded-lg bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100 flex items-center justify-center">
+              <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              <div>
+                <p className="font-semibold">{desafio.mensajeError}</p>
+                <p className="text-sm">Respuestas correctas: {resultadoDesafio.respuestasCorrectas}</p>
+              </div>
             </div>
             
             <button
@@ -349,24 +354,7 @@ export default function PublicaClient() {
           <>
             <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
               <PageTitle>Publica con nosotros</PageTitle>
-              {desafioCompletado && desafio && (
-                <div className="p-4 mb-4 rounded-lg bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
-                  <p className="font-semibold">{desafio.mensajeExito}</p>
-                </div>
-              )}
-              {desafioCompletado && !desafio && (
-                <div className="p-4 mb-4 rounded-lg bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100">
-                  <p className="font-semibold">¡Gracias por tu interés en publicar con nosotros! Por favor, completa el formulario a continuación.</p>
-                </div>
-              )}
-              {!desafioCompletado && !desafio && (
-                <div className="p-4 mb-4 rounded-lg bg-yellow-100 dark:bg-yellow-900 text-yellow-800 dark:text-yellow-100">
-                  <p className="font-semibold">Bienvenido al formulario de publicación. Por favor, comparte tu relato con nosotros.</p>
-                </div>
-              )}
-              <p>
-                En MarcaPágina celebramos la fuerza de la ficción para encender la imaginación y tejer nuevos mundos.
-              </p>
+              
               <p>Comparte tu relato (máximo 5-7 cuartillas).</p>
               <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
                 <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados.

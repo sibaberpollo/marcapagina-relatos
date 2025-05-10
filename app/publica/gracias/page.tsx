@@ -21,14 +21,6 @@ export default function PublicaGraciasPage() {
         <p className="text-base text-gray-700 dark:text-gray-300">
           Te hemos enviado un correo de confirmación a tu email. Por favor, revisa tu bandeja de spam y márcanos como “no spam” para asegurarte de recibir nuestras notificaciones.
         </p>
-        <p className="text-sm text-gray-500 dark:text-gray-400">
-          Para cualquier consulta, escríbenos a{' '}
-          <span
-            dangerouslySetInnerHTML={{
-              __html: 'marcapaginapage&#64;gmail&#46;com',
-            }}
-          />
-        </p>
       </div>
     </div>
   )

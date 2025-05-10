@@ -22,10 +22,6 @@ export default function PreFormulario({
       <h2 className="text-2xl font-bold mb-4">{titulo}</h2>
       <p className="mb-4">{descripcion}</p>
       
-      <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
-        <strong>Nota:</strong> Para publicar tu relato, primero necesitamos que completes un breve desafío de lectura.
-      </p>
-      
       <form 
         onSubmit={onSubmit}
         className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow mt-8"
@@ -78,7 +74,7 @@ export default function PreFormulario({
         <div className="text-center mt-4">
           <button
             type="submit"
-            className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 transition-colors"
+            className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 hover:scale-105 transition-all duration-200"
           >
             Comenzar Desafío
           </button>

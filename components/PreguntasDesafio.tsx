@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 
 type PreguntaOpcion = {
   texto: string
@@ -27,6 +27,16 @@ export default function PreguntasDesafio({
   const [resultados, setResultados] = useState<boolean[]>([])
   const [mostrarResultados, setMostrarResultados] = useState(false)
   
+  // Efecto para hacer scroll al inicio cuando se monta el componente
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [])
+
+  // Efecto para hacer scroll al inicio cuando cambia la pregunta
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }, [preguntaActual])
+
   const seleccionarRespuesta = (opcionIndex: number) => {
     // Solo permitir cambios si no se muestran resultados
     if (mostrarResultados) return
@@ -105,7 +115,7 @@ export default function PreguntasDesafio({
             <div 
               key={index}
               onClick={() => seleccionarRespuesta(index)}
-              className={`p-3 border rounded-lg cursor-pointer transition-colors ${
+              className={`p-3 border-2 rounded-lg cursor-pointer transition-colors flex items-center ${
                 respuestas[preguntaActual] === index 
                   ? 'border-black bg-gray-100 dark:bg-gray-700' 
                   : 'border-gray-300 hover:bg-gray-50 dark:border-gray-600 dark:hover:bg-gray-700'
@@ -119,9 +129,15 @@ export default function PreguntasDesafio({
                   : ''
               }`}
             >
-              {opcion.texto}
+              <input
+                type="radio"
+                checked={respuestas[preguntaActual] === index}
+                onChange={() => seleccionarRespuesta(index)}
+                className="mr-3 h-4 w-4 border-2 border-black text-black focus:ring-black"
+              />
+              <span className="flex-grow">{opcion.texto}</span>
               {mostrarResultados && (
-                <span className="float-right">
+                <span className="ml-2">
                   {opcion.esCorrecta ? '✓' : respuestas[preguntaActual] === index ? '✗' : ''}
                 </span>
               )}

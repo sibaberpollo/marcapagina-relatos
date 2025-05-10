@@ -10,7 +10,7 @@ export function DesafioTimeline({ pasoActual, totalPasos }: DesafioTimelineProps
   const pasos = Array.from({ length: totalPasos })
   
   return (
-    <div className="w-full py-4 sticky top-0 bg-white dark:bg-gray-900 z-10 shadow-md">
+    <div className="w-full py-4 bg-white dark:bg-gray-900">
       <div className="flex justify-between items-center max-w-3xl mx-auto px-4">
         {pasos.map((_, index) => (
           <div key={index} className="flex flex-col items-center">
@@ -32,9 +32,9 @@ export function DesafioTimeline({ pasoActual, totalPasos }: DesafioTimelineProps
         ))}
       </div>
       <div className="relative mt-4 mb-2 max-w-3xl mx-auto px-4">
-        <div className="absolute top-0 left-0 h-1 bg-gray-200 dark:bg-gray-700 w-full rounded-full" />
+        <div className="absolute top-0 left-0 h-2 bg-gray-200 dark:bg-gray-700 w-full rounded-full" />
         <div
-          className="absolute top-0 left-0 h-1 bg-black dark:bg-[#faff00] transition-all duration-300 rounded-full"
+          className="absolute top-0 left-0 h-2 bg-black dark:bg-[#faff00] transition-all duration-300 rounded-full"
           style={{ width: `${(pasoActual / (totalPasos - 1)) * 100}%` }}
         />
       </div>

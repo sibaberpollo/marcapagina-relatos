@@ -284,7 +284,6 @@ export default function FormularioPublica({
           <div ref={captchaRef}></div>
           {captchaVerified && (
             <div className="text-sm text-green-600 mt-2">
-              ✅ Verificación completada
             </div>
           )}
         </div>
