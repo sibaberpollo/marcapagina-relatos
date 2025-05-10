@@ -1,10 +1,10 @@
-// File: tailwind-nextjs-starter-blog/app/sitemap.ts
+// File: app/sitemap.ts
 
 import { MetadataRoute } from 'next'
-import { allBlogs, allRelatos } from 'contentlayer/generated'
 import siteMetadata from '@/data/siteMetadata'
+import { getAllRelatos, getAllArticulos, getAllAutores } from '../lib/sanity'
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Asegurarse de que la URL no termine con slash
   const siteUrl = siteMetadata.siteUrl.endsWith('/')
     ? siteMetadata.siteUrl.slice(0, -1)
@@ -27,20 +27,33 @@ export default function sitemap(): MetadataRoute.Sitemap {
       url: `${siteUrl}/publica`, // la nueva página de publica
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/criterios-editoriales`, // la página de criterios editoriales
+      lastModified: today,
+    },
   ]
 
-  // Rutas generadas por Contentlayer: blogs/artículos
-  const blogRoutes = allBlogs.map((post) => ({
-    url: `${siteUrl}/${post.authors?.[0] || 'blog'}/${post.path}`,
-    lastModified: post.date,
+  // Obtener todos los relatos desde Sanity
+  const relatos = await getAllRelatos()
+  const relatosRoutes = relatos.map((relato) => ({
+    url: `${siteUrl}/relato/${relato.slug.current}`,
+    lastModified: relato.date || today,
   }))
 
-  // Rutas generadas por Contentlayer: relatos
-  const relatosRoutes = allRelatos.map((relato) => ({
-    url: `${siteUrl}/${relato.author[0]}/relato/${relato.slug}`,
-    lastModified: relato.date,
+  // Obtener todos los artículos desde Sanity
+  const articulos = await getAllArticulos()
+  const articulosRoutes = articulos.map((articulo) => ({
+    url: `${siteUrl}/articulo/${articulo.slug.current}`,
+    lastModified: articulo.date || today,
+  }))
+
+  // Obtener todos los autores desde Sanity
+  const autores = await getAllAutores()
+  const autoresRoutes = autores.map((autor) => ({
+    url: `${siteUrl}/autor/${autor.slug.current}`,
+    lastModified: today,
   }))
 
   // Unir todas las rutas en el sitemap
-  return [...routes, ...blogRoutes, ...relatosRoutes]
+  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes]
 }
