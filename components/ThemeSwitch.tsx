@@ -100,10 +100,7 @@ const ThemeSwitch = () => {
       setFontSize(Number(savedFontSize))
       document.documentElement.style.fontSize = `${savedFontSize}px`
     }
-    
-    // Forzar el tema claro
-    setTheme('light')
-  }, [setTheme])
+  }, [])
 
   const handleFontSizeChange = (increment: boolean) => {
     const newSize = increment ? fontSize + 1 : fontSize - 1
@@ -171,8 +168,56 @@ const ThemeSwitch = () => {
                 </div>
               </div>
             </div>
-            {/* Se ha ocultado el RadioGroup con las opciones de tema */}
-            {/* Solo se mantiene el modo claro que está forzado por el useEffect */}
+            <div className="p-1">
+              <RadioGroup value={theme} onChange={setTheme}>
+                <Radio value="light">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <button
+                        className={`${focus ? 'bg-primary-600 text-white' : ''} group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        <div className="mr-2">
+                          <Sun />
+                        </div>
+                        Claro
+                      </button>
+                    )}
+                  </MenuItem>
+                </Radio>
+                <Radio value="dark">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <button
+                        className={`${
+                          focus ? 'bg-primary-600 text-white' : ''
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        <div className="mr-2">
+                          <Moon />
+                        </div>
+                        Oscuro
+                      </button>
+                    )}
+                  </MenuItem>
+                </Radio>
+                <Radio value="system">
+                  <MenuItem>
+                    {({ focus }) => (
+                      <button
+                        className={`${
+                          focus ? 'bg-primary-600 text-white' : ''
+                        } group flex w-full items-center rounded-md px-2 py-2 text-sm`}
+                      >
+                        <div className="mr-2">
+                          <Monitor />
+                        </div>
+                        Default
+                      </button>
+                    )}
+                  </MenuItem>
+                </Radio>
+              </RadioGroup>
+            </div>
           </MenuItems>
         </Transition>
       </Menu>

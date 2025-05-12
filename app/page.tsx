@@ -37,10 +37,10 @@ export default async function Page() {
     <>
       <div >
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-100">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
             Relatos
           </h1>
-          <p className="text-lg leading-7 text-gray-500 dark:text-gray-400">
+          <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
             {(() => {
               const desc = siteMetadata.descriptionRich;
               const match = desc.match(/(.*?)(\(2009 ~ 2014 → 2025 ➔ ∞\))/);
@@ -51,6 +51,7 @@ export default async function Page() {
                   <HighlightStroke>
                     <a
                       href="/acerca-de/"
+                      className="hover:text-gray-800 dark:text-gray-900"
                     >
                       {match[2]}
                     </a>
@@ -97,7 +98,7 @@ export default async function Page() {
           </div>
         ) : (
           <div className="container text-center py-8">
-            <p className="text-lg text-gray-600">No hay relatos configurados en Sanity</p>
+            <p className="text-lg text-gray-600 dark:text-gray-400">No hay relatos configurados en Sanity</p>
           </div>
         )}
       </div>
