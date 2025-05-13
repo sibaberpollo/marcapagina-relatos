@@ -37,7 +37,7 @@ export default function AcercaDePage() {
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">
           <div className="flex flex-col items-center pt-8">
             <Image
-              src="/static/images/logo.jpg"
+              src="/static/images/logo_amarillo.png"
               alt="Marcapágina Logo"
               width={192}
               height={192}

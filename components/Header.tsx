@@ -33,22 +33,22 @@ const Header = () => {
         </div>
       </Link>
       <div className="flex items-center space-x-4 leading-5 sm:-mr-6 sm:space-x-6">
-      <div className="hidden items-center gap-x-6 sm:flex max-w-full lg:max-w-[calc(100vw-300px)] overflow-x-auto">
+        <div className="hidden items-center gap-x-6 sm:flex max-w-full lg:max-w-[calc(100vw-300px)] overflow-x-auto">
 
-          {/* Enlace destacado de publicación en desktop */}
-          <PublishLink variant="desktop" />
-          {headerNavLinks
-            .filter((link) => link.href !== '/' && link.href !== '/publica')
-            .map((link) => (
-              <Link
-                key={link.title}
-                href={link.href}
-                className="m-1 font-medium text-[#3b2c14] hover:text-[#5b4a32] dark:text-[#f8f8f8] dark:hover:text-white"
-              >
-                {link.title}
-              </Link>
-            ))}
-        </div>
+            {/* Enlace destacado de publicación en desktop */}
+            <PublishLink variant="desktop" />
+            {headerNavLinks
+              .filter((link) => link.href !== '/' && link.href !== '/publica')
+              .map((link) => (
+                <Link
+                  key={link.title}
+                  href={link.href}
+                  className="m-1 font-medium text-black hover:text-gray-700 dark:text-[#f8f8f8] dark:hover:text-white"
+                >
+                  {link.title}
+                </Link>
+              ))}
+          </div>
         {/* Enlace destacado de publicación en móvil fuera del menú */}
         <PublishLink variant="mobile" />
         {/* ThemeSwitch en desktop */}
