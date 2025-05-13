@@ -45,33 +45,33 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
   }, [tabParam, onTabChange]);
 
   return (
-    <div className="tabs flex border-b-2 border-black dark:border-gray-700 mb-6">
+    <div className="tabs flex border-b border-[var(--color-gray-200)] dark:border-[var(--color-gray-700)] mb-6">
       <button 
         onClick={() => handleTabChange('relatos')} 
-        className={`px-4 py-2 mr-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+        className={`px-4 py-2 mr-2 rounded-t-lg font-medium transition-colors duration-200
           ${activeTab === 'relatos' 
-            ? 'bg-black text-[#faff00] border-black' 
-            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+            ? 'bg-black text-[var(--color-accent)] dark:bg-[var(--color-gray-700)] dark:text-[var(--color-text-dark)]' 
+            : 'bg-transparent text-[var(--color-text-light)] hover:bg-gray-100 hover:text-black dark:text-[var(--color-text-dark)] dark:hover:bg-[var(--color-gray-700)]'}
         `}
       >
         Relatos
       </button>
       <button 
         onClick={() => handleTabChange('series')} 
-        className={`px-4 py-2 mr-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+        className={`px-4 py-2 mr-2 rounded-t-lg font-medium transition-colors duration-200
           ${activeTab === 'series' 
-            ? 'bg-black text-[#faff00] border-black' 
-            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+            ? 'bg-black text-[var(--color-accent)] dark:bg-[var(--color-gray-700)] dark:text-[var(--color-text-dark)]' 
+            : 'bg-transparent text-[var(--color-text-light)] hover:bg-gray-100 hover:text-black dark:text-[var(--color-text-dark)] dark:hover:bg-[var(--color-gray-700)]'}
         `}
       >
         Series
       </button>
       <button 
         onClick={() => handleTabChange('articulos')} 
-        className={`px-4 py-2 rounded-t-lg font-medium border-b-4 transition-colors duration-200
+        className={`px-4 py-2 rounded-t-lg font-medium transition-colors duration-200
           ${activeTab === 'articulos' 
-            ? 'bg-black text-[#faff00] border-black' 
-            : 'bg-transparent text-gray-700 border-transparent hover:bg-gray-100 hover:text-black'}
+            ? 'bg-black text-[var(--color-accent)] dark:bg-[var(--color-gray-700)] dark:text-[var(--color-text-dark)]' 
+            : 'bg-transparent text-[var(--color-text-light)] hover:bg-gray-100 hover:text-black dark:text-[var(--color-text-dark)] dark:hover:bg-[var(--color-gray-700)]'}
         `}
       >
         No ficción

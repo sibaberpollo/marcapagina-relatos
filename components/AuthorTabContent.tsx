@@ -87,7 +87,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                 <h3 className="text-2xl font-semibold mb-2">
                   <Link
                     href={`/relato/${relato.slug}`}
-                    className="no-underline hover:underline !text-black"
+                    className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)]"
                   >
                     {relato.title}
                   </Link>
@@ -133,7 +133,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                       <h4 className="text-xl font-medium mb-2">
                         <Link
                           href={`/relato/${relato.slug}`}
-                          className="no-underline hover:underline !text-black"
+                          className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)]"
                         >
                           {relato.title}
                         </Link>
@@ -179,7 +179,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
                 <h3 className="text-2xl font-semibold mb-2">
                   <Link
                     href={`/articulo/${articulo.slug}`}
-                    className="no-underline hover:underline !text-black"
+                    className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)]"
                   >
                     {articulo.title}
                   </Link>
