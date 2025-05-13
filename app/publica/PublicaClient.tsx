@@ -398,7 +398,7 @@ export default function PublicaClient() {
             <p>
               1) Te mostraremos un cuento breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
               <HighlightStroke>
-                <a href="/criterios-editoriales" className="font-semibold !text-gray-700 hover:text-black">
+                <a href="/criterios-editoriales" className="font-semibold !text-black hover:text-[var(--color-gray-700)] dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-accent)]">
                   Ver criterios editoriales
                 </a>
               </HighlightStroke>
@@ -418,8 +418,8 @@ export default function PublicaClient() {
       </SectionContainer>
       {estado === 'pre_formulario' && (
         <SectionContainer>
-        <div className="prose prose-lg mx-auto max-w-3xl mt-8">
-          <p>
+        <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mt-8">
+          <p className="text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
             Nos comprometemos a leer con atención cada texto recibido. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
             Si tu relato es seleccionado, además de su <HighlightStroke>publicación</HighlightStroke>, te daremos acceso a una <strong>selección de ilustraciones especialmente creadas para acompañarlo, y le daremos difusión activa a través de nuestras redes sociales.</strong>
           </p>
