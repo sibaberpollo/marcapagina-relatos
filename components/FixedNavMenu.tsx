@@ -78,7 +78,7 @@ export default function FixedNavMenu({
       <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
         {/* Progress bar */}
         <div
-          className="h-1 bg-[#faff00]"
+          className="h-1 bg-primary-500"
           style={{ width: `${readingProgress}%` }}
         />
 
@@ -96,7 +96,7 @@ export default function FixedNavMenu({
                 />
               </Link>
             )}
-            <span className="font-medium text-gray-900">
+            <span className="font-medium text-gray-900 dark:text-gray-50">
               {shortenTitle(title)}{' '}
               {readingTime && (() => {
                 const mins = Math.ceil(readingTime.minutes)
@@ -112,12 +112,12 @@ export default function FixedNavMenu({
                       })
                       setModalOpen(true)
                     }}
-                    className="inline-flex items-center text-gray-900 hover:underline"
+                    className="inline-flex items-center text-gray-900 dark:text-gray-50 hover:underline"
                   >
-                    <span className="flex items-center px-2 py-0.5 rounded text-sm font-bold text-black">
+                    <span className="flex items-center px-2 py-0.5 rounded text-sm font-bold text-gray-900 dark:text-gray-50">
                       <span>(</span>
                       <span>{mins} min</span>
-                      <Clock className="mx-1 h-4 w-4 text-black" />
+                      <Clock className="mx-1 h-4 w-4 text-gray-900 dark:text-gray-50" />
                       <span>)</span>
                     </span>
                   </button>
@@ -176,10 +176,10 @@ export default function FixedNavMenu({
             (menuOpen ? 'max-h-60' : 'max-h-0')
           }
         >
-          <div className="bg-white dark:bg-gray-900 p-4 border-t">
-            <h3 className="text-lg font-medium mb-2">
+          <div className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
+            <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-50">
               {seriesName ? (
-                <>Más relatos de la serie <span className="text-gray-900">{seriesName}</span></>
+                <>Más relatos de la serie <span className="text-gray-900 dark:text-gray-50">{seriesName}</span></>
               ) : (
                 <>Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
                   <Link href={`/autor/${author}`} className="text-gray-500 hover:underline">
@@ -192,9 +192,9 @@ export default function FixedNavMenu({
               {sortedRelatedPosts.map((post) => (
                 <li key={post.slug}>
                   <Link
-                    href={`/${author}/${pathPrefix}/${post.slug}`}
+                    href={`/${pathPrefix}/${post.slug}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block hover:text-gray-700 hover:underline ${post.slug === slug ? 'font-semibold' : ''}`}
+                    className={`block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline ${post.slug === slug ? 'font-semibold' : ''}`}
                   >
                     {post.title}{' '}
                     {post.readingTime && `(${Math.ceil(post.readingTime.minutes)} min)`}
@@ -217,17 +217,17 @@ export default function FixedNavMenu({
               onClick={() => setModalOpen(false)}
             />
             <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-              <h2 className="text-lg font-semibold mb-4">
+              <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
                 Cosas que se hacen en ~{mins} {mins === 1 ? 'minuto' : 'minutos'}
               </h2>
-              <ul className="list-disc list-inside space-y-2 text-sm mb-4">
+              <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
                 {acts.map((act) => (
                   <li key={act}>{act}</li>
                 ))}
               </ul>
               <button
                 onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-black text-[#faff00] rounded hover:bg-gray-900"
+                className="px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
               >
                 Cerrar
               </button>
