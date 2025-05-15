@@ -13,6 +13,10 @@ interface Content {
   title: string;
   summary: string;
   series?: string;
+  isExternal?: boolean;
+  externalUrl?: string;
+  source?: string;
+  image?: string;
 }
 
 interface SeriesGroup {
@@ -176,21 +180,59 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
           <div className="space-y-8">
             {articulos.map((articulo) => (
               <div key={articulo.slug} className="border-b pb-6">
-                <h3 className="text-2xl font-semibold mb-2">
-                  <Link
-                    href={`/articulo/${articulo.slug}`}
-                    className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)]"
-                  >
-                    {articulo.title}
-                  </Link>
-                </h3>
-                <p className="text-gray-600 dark:text-gray-400 mb-2">{articulo.summary}</p>
-                <Link
-                  href={`/articulo/${articulo.slug}`}
-                  className="text-primary-500 font-medium"
-                >
-                  <HighlightStroke>Leer más &rarr;</HighlightStroke>
-                </Link>
+                <div className="flex flex-col md:flex-row gap-4">
+                  {articulo.image && (
+                    <div className="md:w-1/4 flex-shrink-0">
+                      <img 
+                        src={articulo.image} 
+                        alt={articulo.title}
+                        className="w-full aspect-square object-cover rounded-lg"
+                      />
+                    </div>
+                  )}
+                  <div className="flex-grow">
+                    <h3 className="text-2xl font-semibold mb-2">
+                      {articulo.isExternal ? (
+                        <a
+                          href={articulo.externalUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)] flex items-center"
+                        >
+                          {articulo.title}
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      ) : (
+                        <Link
+                          href={`/articulo/${articulo.slug}`}
+                          className="no-underline hover:underline !text-black dark:!text-[var(--color-text-dark)]"
+                        >
+                          {articulo.title}
+                        </Link>
+                      )}
+                    </h3>
+                    <p className="text-gray-600 dark:text-gray-400 mb-2">{articulo.summary}</p>
+                    {articulo.isExternal ? (
+                      <a
+                        href={articulo.externalUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-primary-500 font-medium flex items-center"
+                      >
+                        <HighlightStroke>Leer en {articulo.source} &rarr;</HighlightStroke>
+                      </a>
+                    ) : (
+                      <Link
+                        href={`/articulo/${articulo.slug}`}
+                        className="text-primary-500 font-medium"
+                      >
+                        <HighlightStroke>Leer más &rarr;</HighlightStroke>
+                      </Link>
+                    )}
+                  </div>
+                </div>
               </div>
             ))}
           </div>

@@ -7,6 +7,69 @@ import { notFound } from 'next/navigation'
 import AuthorTabContent from '@/components/AuthorTabContent'
 import { Suspense } from 'react'
 import { type Authors } from 'contentlayer/generated'
+import fs from 'fs'
+import path from 'path'
+
+// Interfaz para los artículos externos
+interface ExternalArticle {
+  id: string;
+  title: string;
+  url: string;
+  image?: string;
+  summary: string;
+  category: string;
+  date: string;
+  source: string;
+}
+
+// Interfaz para el contenido de tablas
+interface TabContent {
+  slug: string;
+  title: string;
+  summary: string;
+  date?: string; 
+  series?: string;
+  isExternal?: boolean;
+  externalUrl?: string;
+  source?: string;
+  image?: string;
+}
+
+// Cargar artículos externos desde el JSON
+function loadExternalArticles(authorSlug: string): ExternalArticle[] {
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'external-articles.json');
+    const fileContent = fs.readFileSync(filePath, 'utf8');
+    const data = JSON.parse(fileContent);
+    
+    // Verificar si tenemos artículos para este autor
+    if (data.authors && data.authors[authorSlug]) {
+      return data.authors[authorSlug].articles;
+    }
+    
+    return [];
+  } catch (error) {
+    console.error('Error cargando artículos externos:', error);
+    return [];
+  }
+}
+
+// Función para actualizar artículos externos (opcional, se puede llamar desde la interfaz)
+async function updateExternalArticles() {
+  try {
+    // Solo ejecutar en el servidor
+    if (typeof window === 'undefined') {
+      // Llamar al endpoint de actualización
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/update-external-articles`);
+      const data = await response.json();
+      return data.success;
+    }
+    return false;
+  } catch (error) {
+    console.error('Error actualizando artículos externos:', error);
+    return false;
+  }
+}
 
 // Generar rutas estáticas para todos los autores
 export async function generateStaticParams() {
@@ -49,16 +112,51 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     return notFound()
   }
   
-  // Obtenemos los artículos del autor
-  const articulosData = await getArticulosByAutor(slug);
+  // Determinar si debemos usar artículos externos desde el JSON
+  let articulos: TabContent[] = [];
   
-  // Formateamos los artículos para la UI (similar a relatos)
-  const articulos = articulosData.map(articulo => ({
-    slug: articulo.slug.current,
-    title: articulo.title,
-    summary: articulo.summary || '',
-    date: articulo.date
-  }));
+  if (slug === 'pino') {
+    // Para José Pino, cargar artículos desde el JSON
+    const externalArticles = loadExternalArticles('pino');
+    articulos = externalArticles.map(article => ({
+      slug: article.id, // Usamos el ID como slug
+      title: article.title,
+      summary: article.summary || '',
+      date: article.date,
+      image: article.image,
+      isExternal: true,
+      externalUrl: article.url,
+      source: article.source
+    }));
+    
+    // Opcionalmente, actualizar el archivo JSON (comentado por defecto para no hacer muchas peticiones)
+    // await updateExternalArticles();
+  } else {
+    // Para otros autores, seguir usando Sanity
+    const articulosData = await getArticulosByAutor(slug);
+    
+    // Formateamos los artículos para la UI
+    articulos = articulosData.map(articulo => {
+      // Determinar la fuente basado en la URL
+      let source = 'El Estímulo';
+      if (articulo.externalUrl && articulo.externalUrl.includes('/ub/')) {
+        source = 'Urbe Bikini';
+      } else if (articulo.source) {
+        source = articulo.source;
+      }
+      
+      return {
+        slug: articulo.slug.current,
+        title: articulo.title,
+        summary: articulo.summary || '',
+        date: articulo.date,
+        image: articulo.image,
+        isExternal: articulo.isExternal,
+        externalUrl: articulo.externalUrl,
+        source: source
+      };
+    });
+  }
   
   // Determinar el tab por defecto según el autor
   const defaultTab = (author.defaultTab === 'relatos' || author.defaultTab === 'series' || author.defaultTab === 'articulos') 

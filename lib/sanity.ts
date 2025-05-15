@@ -76,6 +76,9 @@ interface Articulo {
   author: Autor;
   date: string;
   body?: any;
+  isExternal?: boolean;
+  externalUrl?: string;
+  source?: string;
   readingTime?: {
     text: string;
     minutes: number;
@@ -563,6 +566,9 @@ export async function getArticulosByAutor(autorSlug: string): Promise<Articulo[]
         date,
         summary,
         image,
+        isExternal,
+        externalUrl,
+        source,
         "author": author-> {
           name,
           slug,
