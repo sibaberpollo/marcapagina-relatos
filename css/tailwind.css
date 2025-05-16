@@ -250,12 +250,12 @@ html.dark #minimize-handle {
 
 #progress-bar-component {
   height: 2px !important;
-  background-color: #816F50 !important;
+  background-color: var(--color-gray-950) !important;
   transition: width 0.3s !important;
 }
 
 html.dark #progress-bar-component {
-  background-color: #816F50 !important;
+  background-color: var(--color-accent) !important;
 }
 
 #menu-content-component {
