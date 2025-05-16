@@ -85,13 +85,13 @@ export default function Footer() {
       </div>
 
       <div className="mt-4 flex flex-col items-center">
-        <div className="mb-3 flex space-x-4">
+        <div className="mb-3 flex flex-col items-center space-y-2 sm:flex-row sm:justify-center sm:space-y-0 sm:space-x-6">
           <Link href="/">{siteMetadata.title}</Link>
           <Link href="/acerca-de">Acerca de</Link>
           <Link href="/publica">Publica</Link>
           <Link href="/criterios-editoriales">Criterios editoriales</Link>
         </div>
-        <div className="mb-2 flex space-x-2 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mb-2 flex flex-col items-center text-sm text-gray-500 dark:text-gray-400 sm:flex-row sm:space-x-2">
           <div>{`© ${new Date().getFullYear()}`}</div>
           <div>{` • `}</div>
           <Link href="/">{siteMetadata.title}</Link>
