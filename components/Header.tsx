@@ -18,7 +18,7 @@ const Header = () => {
 
   return (
     <header className={headerClass}>
-      <CustomLink href="/" aria-label={siteMetadata.headerTitle}>
+      <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="no-underline !no-underline !border-0">
         <div className="flex items-center justify-between">
           <div className="mr-3">
             <Logo className="fill-gray-900 dark:fill-white h-auto w-[150px]" />
