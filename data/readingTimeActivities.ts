@@ -19,6 +19,13 @@ export const readingTimeActivities: Record<number, string[]> = {
       'Encender y apagar una luz sin razón',
       'Silbar una melodía inventada',
       'Acariciar una planta o tela suave',
+    ],  
+    4: [
+      'Leer este texto',
+      'Imitar el sonido de un teléfono antiguo',
+      'Elegir un recuerdo y cambiarle un detalle importante',
+      'Contar cuántos enchufes hay en la habitación',
+      'Imaginar que el piso es lava',
     ],
     7: [
       'Leer este texto',
