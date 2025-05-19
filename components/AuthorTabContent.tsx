@@ -17,6 +17,7 @@ interface Content {
   externalUrl?: string;
   source?: string;
   image?: string;
+  status?: string;
 }
 
 interface SeriesGroup {
@@ -42,12 +43,16 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
   
   const [activeTab, setActiveTab] = useState<Tab>(initialTab);
 
+  // Filtrar relatos y artículos por estado
+  const publishedRelatos = relatos.filter(relato => relato.status === 'published' || !relato.status);
+  const publishedArticulos = articulos.filter(articulo => articulo.status === 'published' || !articulo.status);
+
   // Separar relatos en sueltos y series
-  const relatosSueltos = relatos.filter(relato => !relato.series);
+  const relatosSueltos = publishedRelatos.filter(relato => !relato.series);
   
   // Agrupar los relatos por serie
   const seriesMap: Map<string, Content[]> = new Map();
-  relatos.forEach(relato => {
+  publishedRelatos.forEach(relato => {
     if (relato.series) {
       if (!seriesMap.has(relato.series)) {
         seriesMap.set(relato.series, []);
@@ -159,7 +164,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
       )}
 
       {/* Contenido para el tab de Artículos */}
-      {activeTab === 'articulos' && articulos.length > 0 && (
+      {activeTab === 'articulos' && publishedArticulos.length > 0 && (
         <section className="mt-2">
           <div className="flex justify-between items-center mb-4">
             <h2 className="text-3xl font-bold mt-0 pt-0">No ficción</h2>
@@ -178,7 +183,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
             </button>
           </div>
           <div className="space-y-8">
-            {articulos.map((articulo) => (
+            {publishedArticulos.map((articulo) => (
               <div key={articulo.slug} className="border-b pb-6">
                 <div className="flex flex-col md:flex-row gap-4">
                   {articulo.image && (
@@ -246,7 +251,7 @@ export default function AuthorTabContent({ relatos, articulos, authorSlug, defau
       {activeTab === 'series' && seriesGroups.length === 0 && (
         <p className="text-gray-600 dark:text-gray-400">Este autor no tiene series de relatos.</p>
       )}
-      {activeTab === 'articulos' && articulos.length === 0 && (
+      {activeTab === 'articulos' && publishedArticulos.length === 0 && (
         <p className="text-gray-600 dark:text-gray-400">No hay artículos disponibles de este autor.</p>
       )}
     </div>

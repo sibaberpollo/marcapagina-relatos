@@ -42,6 +42,7 @@ interface Relato {
   category?: any;
   tags?: any[];
   body?: any;
+  status?: string;
   readingTime?: {
     text: string;
     minutes: number;
@@ -76,6 +77,7 @@ interface Articulo {
   author: Autor;
   date: string;
   body?: any;
+  status?: string;
   isExternal?: boolean;
   externalUrl?: string;
   source?: string;
@@ -222,6 +224,7 @@ export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
         image,
         series,
         seriesOrder,
+        status,
         "author": author-> {
           name,
           slug,
@@ -256,7 +259,8 @@ export async function getSeriesByAutor(autorSlug: string): Promise<any[]> {
           title,
           slug,
           date,
-          summary
+          summary,
+          status
         }
       }
     `, { autorSlug });
@@ -299,7 +303,8 @@ export async function getAutorData(slug: string) {
       slug: relato.slug.current,
       title: relato.title,
       summary: relato.summary || '',
-      series: undefined
+      series: undefined,
+      status: relato.status
     }));
     
     // Asociamos los relatos con sus series
@@ -566,6 +571,7 @@ export async function getArticulosByAutor(autorSlug: string): Promise<Articulo[]
         date,
         summary,
         image,
+        status,
         isExternal,
         externalUrl,
         source,
