@@ -4,11 +4,30 @@ import Link from './Link'
 interface FeaturedCardProps {
   title: string
   description: string
-  imgSrc: string
+  imgSrc?: string
   href: string
   authorImgSrc: string
   authorName: string
   authorHref: string
+  date?: string
+  wide?: boolean
+  className?: string
+  index?: number
+}
+
+const CARD_CONFIG = {
+  0: {
+    image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1748046084/brain_demo_lhkgye.png',
+    bgColor: '#efa106'
+  },
+  1: {
+    image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1748047707/escorpion_btlhku.png',
+    bgColor: '#ead00f'
+  },
+  2: {
+    image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1748048265/escribir_ar07tf.png',
+    bgColor: '#dccd9f'
+  }
 }
 
 const FeaturedCard = ({
@@ -19,65 +38,79 @@ const FeaturedCard = ({
   authorImgSrc,
   authorName,
   authorHref,
-}: FeaturedCardProps) => (
-  <div className="w-full mb-4">
-    <div
-      className="relative overflow-hidden rounded-lg border border-black border-4 bg-white dark:border-black dark:bg-gray-900 h-96"
-    >
-      <Link href={href} aria-label={`Link to ${title}`} className="block">
-        <div className="absolute inset-0">
+  date,
+  wide = false,
+  className = '',
+  index = 0
+}: FeaturedCardProps) => {
+  const config = CARD_CONFIG[index] || CARD_CONFIG[0]
+  
+  if (index === 2) {
+    return (
+      <div
+        className={`relative flex flex-col rounded-lg overflow-hidden w-full h-full ${className}`}
+        style={{ backgroundColor: config.bgColor }}
+      >
+        <div className="flex-1 flex items-center justify-center">
           <Image
             alt={title}
-            src={imgSrc}
-            className="object-cover object-center w-full h-full"
-            width={1200}
-            height={600}
+            src={config.image}
+            className="w-full h-full object-contain"
+            width={500}
+            height={500}
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
-      </Link>
-      
-      <div className="absolute bottom-0 left-0 p-6 w-full">
-        <div className="flex items-center">
-          <Link
-            href={authorHref}
-            className="mr-3"
-          >
-            <Image
-              alt={authorName}
-              src={authorImgSrc}
-              className="rounded-full border-2 border-white dark:border-gray-900"
-              width={60}
-              height={60}
-            />
+      </div>
+    )
+  }
+  
+  return (
+    <div
+      className={`relative flex flex-col rounded-lg overflow-hidden w-full h-full ${className}`}
+      style={{ backgroundColor: config.bgColor }}
+    >
+      <div className="flex-1 flex items-center justify-center">
+        <Image
+          alt={title}
+          src={config.image}
+          className="w-[300px] h-[300px] object-contain"
+          width={300}
+          height={300}
+        />
+      </div>
+      <div className="flex flex-col">
+        <div className="px-6 mb-4">
+          <Link href={href} aria-label={`Link to ${title}`} className="block w-full text-left">
+            <h1 className="text-2xl font-bold text-black mb-2 leading-tight">{title}</h1>
           </Link>
-          <div>
-            <Link
-              href={authorHref}
-              className="inline-block text-sm font-medium bg-black text-gray-100 px-2 py-1 rounded hover:underline"
-            >
-              {authorName}
-            </Link>
-            <Link href={href} aria-label={`Link to ${title}`}>
-              <h1 className="text-3xl font-bold text-white mb-1 hover:underline">
-                {title}
-              </h1>
-            </Link>
+          <p className="text-base text-black/90 line-clamp-2 text-left">{description}</p>
+        </div>
+        <div 
+          className="w-full px-6 py-4 relative"
+          style={{ backgroundColor: config.bgColor }}
+        >
+          <div className="absolute inset-0 bg-black/20"></div>
+          <div className="relative flex items-center gap-3">
+            <Image
+              src={authorImgSrc}
+              alt={authorName}
+              width={32}
+              height={32}
+              className="rounded-full contrast-150 grayscale brightness-110"
+            />
+            <div>
+              <Link href={authorHref} className="text-white font-medium text-left hover:underline">
+                {authorName}
+              </Link>
+              {date && (
+                <span className="text-white/80 text-xs mt-1 text-left block">{date}</span>
+              )}
+            </div>
           </div>
         </div>
-        <p className="mt-4 text-base text-gray-50 line-clamp-2">
-          {description}
-        </p>
-        <Link
-          href={href}
-          className="mt-4 inline-block text-base leading-6 font-medium text-white hover:text-gray-300"
-          aria-label={`Link to ${title}`}
-        >
-          Leer más &rarr;
-        </Link>
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export default FeaturedCard 
