@@ -58,7 +58,7 @@ const Header = () => {
 
           {/* Navegación y botón destacado (desktop) */}
           <div className="flex items-center gap-4 ml-auto">
-            <div className="hidden sm:flex items-center gap-4">
+            <div className="hidden lg:flex items-center gap-4">
               {navLinks.map((link) => (
                 <CustomLink
                   key={link.title}
@@ -75,9 +75,9 @@ const Header = () => {
                 Publica con nosotros
               </CustomLink>
             </div>
-            {/* Icono hamburguesa en móvil */}
+            {/* Icono hamburguesa en móvil y tablet */}
             <button
-              className="sm:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
+              className="lg:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
               aria-label="Abrir menú"
               onClick={() => setOpen(true)}
             >

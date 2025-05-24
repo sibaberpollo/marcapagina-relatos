@@ -2,8 +2,13 @@ import { getFeaturedAndNonFeaturedRelatos } from '../lib/sanity'
 // import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
 //import Card from '@/components/Card'
 import FeaturedCard from '@/components/FeaturedCard'
+import FeaturedSlider from '@/components/FeaturedSlider'
 import siteMetadata from '@/data/siteMetadata';
 import SectionContainer from '@/components/SectionContainer'
+import { Swiper, SwiperSlide } from 'swiper/react'
+import { Pagination } from 'swiper/modules'
+import 'swiper/css'
+import 'swiper/css/pagination'
 
 // Tipo común para ambos orígenes de datos
 interface CardProps {
@@ -34,6 +39,11 @@ export default async function Page() {
     console.error('Error al obtener datos de Sanity:', error);
   }
 
+  const allProjects = [
+    ...(featuredProject ? [featuredProject] : []),
+    ...nonFeaturedProjects.slice(0, 2)
+  ];
+
   return (
     <SectionContainer>
       <div className="space-y-2 pt-6 pb-4 md:space-y-5">
@@ -63,59 +73,30 @@ export default async function Page() {
         </p>
       </div>
       
-      {/* Grid de tres cards por fila */}
+      {/* Grid en desktop, Slider en móvil y tablet */}
       <div className="container">
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-          {/* Card destacada */}
-          {featuredProject && (
-            <div className="aspect-[9/16]">
-              <FeaturedCard
-                title={featuredProject.title}
-                description={featuredProject.description}
-                imgSrc={featuredProject.imgSrc}
-                href={featuredProject.href}
-                authorImgSrc={featuredProject.authorImgSrc}
-                authorName={featuredProject.authorName}
-                authorHref={featuredProject.authorHref}
-                className="h-full"
-                index={0}
-              />
-            </div>
-          )}
-          
-          {/* Primera card no-destacada */}
-          {nonFeaturedProjects.length > 0 && (
-            <div className="aspect-[9/16]">
-              <FeaturedCard
-                title={nonFeaturedProjects[0].title}
-                description={nonFeaturedProjects[0].description}
-                imgSrc={nonFeaturedProjects[0].imgSrc}
-                href={nonFeaturedProjects[0].href}
-                authorImgSrc={nonFeaturedProjects[0].authorImgSrc}
-                authorName={nonFeaturedProjects[0].authorName}
-                authorHref={nonFeaturedProjects[0].authorHref}
-                className="h-full"
-                index={1}
-              />
-            </div>
-          )}
+        {/* Slider para móvil y tablet */}
+        <div className="lg:hidden">
+          <FeaturedSlider projects={allProjects} />
+        </div>
 
-          {/* Segunda card no-destacada */}
-          {nonFeaturedProjects.length > 1 && (
-            <div className="aspect-[9/16]">
+        {/* Grid para desktop */}
+        <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+          {allProjects.map((project, index) => (
+            <div key={index} className="aspect-[4/5]">
               <FeaturedCard
-                title={nonFeaturedProjects[1].title}
-                description={nonFeaturedProjects[1].description}
-                imgSrc={nonFeaturedProjects[1].imgSrc}
-                href={nonFeaturedProjects[1].href}
-                authorImgSrc={nonFeaturedProjects[1].authorImgSrc}
-                authorName={nonFeaturedProjects[1].authorName}
-                authorHref={nonFeaturedProjects[1].authorHref}
+                title={project.title}
+                description={project.description}
+                imgSrc={project.imgSrc}
+                href={project.href}
+                authorImgSrc={project.authorImgSrc}
+                authorName={project.authorName}
+                authorHref={project.authorHref}
                 className="h-full"
-                index={2}
+                index={index}
               />
             </div>
-          )}
+          ))}
         </div>
       </div>
     </SectionContainer>
