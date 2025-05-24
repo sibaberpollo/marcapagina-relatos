@@ -31,6 +31,20 @@ const Header = () => {
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20 relative">
+          {/* Logo a la izquierda en móvil */}
+          <div className="flex items-center lg:hidden">
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle}>
+              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
+            </CustomLink>
+          </div>
+
+          {/* Logo centrado en desktop */}
+          <div className="hidden lg:flex flex-1 justify-center absolute left-0 right-0 pointer-events-none">
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="pointer-events-auto">
+              <Logo className="h-8 w-auto fill-gray-900 dark:fill-white" />
+            </CustomLink>
+          </div>
+
           {/* Redes sociales (desktop) */}
           <div className="flex items-center gap-4">
             {socialLinks.map((link) =>
@@ -47,13 +61,6 @@ const Header = () => {
                 </a>
               ) : null
             )}
-          </div>
-
-          {/* Logotipo centrado */}
-          <div className="flex-1 flex justify-center absolute left-0 right-0 pointer-events-none">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="pointer-events-auto">
-              <Logo className="h-10 w-auto mx-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
           </div>
 
           {/* Navegación y botón destacado (desktop) */}
@@ -75,13 +82,20 @@ const Header = () => {
                 Publica con nosotros
               </CustomLink>
             </div>
+            {/* Botón de publica en móvil y tablet */}
+            <CustomLink
+              href="/publica"
+              className="lg:hidden px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
+            >
+              Publica
+            </CustomLink>
             {/* Icono hamburguesa en móvil y tablet */}
             <button
               className="lg:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
               aria-label="Abrir menú"
               onClick={() => setOpen(true)}
             >
-              <Menu className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+              <Menu className="w-6 h-6 text-gray-700 dark:text-gray-200" />
             </button>
           </div>
 
@@ -107,13 +121,6 @@ const Header = () => {
                       {link.title}
                     </CustomLink>
                   ))}
-                  <CustomLink
-                    href="/publica"
-                    className="mt-4 px-6 py-3 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-xl"
-                    onClick={() => setOpen(false)}
-                  >
-                    Publica con nosotros
-                  </CustomLink>
                 </nav>
                 <div className="flex gap-8 mt-12">
                   {socialLinks.map((link) =>
