@@ -4,7 +4,6 @@ import Link from './Link'
 import siteMetadata from '@/data/siteMetadata'
 import SocialIcon from './social-icons'
 import HighlightStroke from './HighlightStroke'
-import PublishBanner from './PublishBanner'
 import { useTheme } from 'next-themes'
 import { 
   Github, 
@@ -52,7 +51,7 @@ export default function Footer() {
     <footer className="mb-20">    
       <div className="mt-12 mb-8 flex flex-col items-center md:flex-row">
         <div className="flex w-full justify-center">
-          <PublishBanner />
+          {/* PublishBanner removido */}
         </div>
       </div>
 

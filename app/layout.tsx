@@ -146,12 +146,10 @@ export default function RootLayout({
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <Header />
-          <SectionContainer>
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              <main className="mb-auto font-serif">{children}</main>
-            </SearchProvider>
-            <Footer />
-          </SectionContainer>
+          <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+            <main className="mb-auto font-serif">{children}</main>
+          </SearchProvider>
+          <Footer />
         </ThemeProviders>
       </body>
     </html>
