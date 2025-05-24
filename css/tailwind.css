@@ -7,7 +7,8 @@
 /* Core theme configuration */
 @theme {
   /* Font families */
-  --font-sans: var(--font-literata), ui-serif, Georgia, Cambria, 'Times New Roman', Times, serif;
+  --font-titles: var(--font-playfair), serif;
+  --font-body: var(--font-source-serif), serif;
 
   /* Colores principales */
   --color-accent: #faff00;        /* Amarillo fosforescente */
@@ -87,6 +88,18 @@
     border-radius: var(--radius-sm);
     outline-color: var(--color-primary-500);
   }
+
+  /* Títulos con Playfair Display */
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-titles);
+    font-weight: 700;
+    letter-spacing: var(--tracking-tight);
+  }
+
+  /* Cuerpo con Source Serif 4 */
+  html, body, p, li, blockquote, .font-serif {
+    font-family: var(--font-body);
+  }
 }
 
 @layer utilities {
@@ -103,9 +116,11 @@
     & :where(h1, h2) {
       font-weight: 700;
       letter-spacing: var(--tracking-tight);
+      font-family: var(--font-titles);
     }
     & h3 {
       font-weight: 600;
+      font-family: var(--font-titles);
     }
     & :where(code):not(pre code) {
       color: var(--color-indigo-500);
@@ -124,6 +139,7 @@
     }
     & :where(h1, h2, h3, h4, h5, h6) {
       color: var(--color-gray-100);
+      font-family: var(--font-titles);
     }
   }
 }

@@ -2,7 +2,7 @@ import 'css/tailwind.css'
 import 'pliny/search/algolia.css'
 import 'remark-github-blockquote-alert/alert.css'
 
-import { Literata } from 'next/font/google'
+import { Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import Header from '@/components/Header'
@@ -13,10 +13,15 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 
-const literata = Literata({
+const playfair = Playfair_Display({
   subsets: ['latin'],
+  variable: '--font-playfair',
   display: 'swap',
-  variable: '--font-literata',
+})
+const sourceSerif = Source_Serif_4({
+  subsets: ['latin'],
+  variable: '--font-source-serif',
+  display: 'swap',
 })
 
 export const metadata: Metadata = {
@@ -70,7 +75,7 @@ export default function RootLayout({
   return (
     <html
       lang={siteMetadata.language}
-      className={`${literata.variable} scroll-smooth`}
+      className={`scroll-smooth ${playfair.variable} ${sourceSerif.variable}`}
       suppressHydrationWarning
     >
       <head>
@@ -136,14 +141,14 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white"
+        className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
       >
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          <Header />
           <SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              <Header />
-              <main className="mb-auto">{children}</main>
+              <main className="mb-auto font-serif">{children}</main>
             </SearchProvider>
             <Footer />
           </SectionContainer>

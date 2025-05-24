@@ -4073,6 +4073,20 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@fontsource/playfair-display@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "@fontsource/playfair-display@npm:5.2.5"
+  checksum: e86081dbc6f58b05cddb38f9bc67dc110a2e06bdee22fba114a6649d28d871afeb06e73c75d801783e459fd5c5acdec2b7d52762733e53c3a564a0772973b5e1
+  languageName: node
+  linkType: hard
+
+"@fontsource/source-serif-pro@npm:^5.2.5":
+  version: 5.2.5
+  resolution: "@fontsource/source-serif-pro@npm:5.2.5"
+  checksum: c49425f1e79ba0efa7112bb75cd2000467c97c0eea5ee36ce46a499c93d187794bf88874257b14829b33f5629551a206c2d1653676593720b2ff0427b71ab587
+  languageName: node
+  linkType: hard
+
 "@fontsource/unbounded@npm:^5.2.5":
   version: 5.2.5
   resolution: "@fontsource/unbounded@npm:5.2.5"
@@ -4796,6 +4810,15 @@ __metadata:
   dependencies:
     fast-glob: 3.3.1
   checksum: 5cec3e2631bf959b91df5a1aa495b6f673a2894347441491c67459b26743f90d5e113c4caefe4fa46ef851628cf5543278dcaff21c3e75e9b73efcb9fab31cb7
+  languageName: node
+  linkType: hard
+
+"@next/font@npm:^14.2.15":
+  version: 14.2.15
+  resolution: "@next/font@npm:14.2.15"
+  peerDependencies:
+    next: "*"
+  checksum: a9b79a69ff810352e9dd5fb3480b6f5ecf77f397f214bf31a999c208cce5a82d1c1bb46d6fe1553d38953d3ce313365ce492793d85757920961043acde041391
   languageName: node
   linkType: hard
 
@@ -13792,12 +13815,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"lucide-react@npm:^0.503.0":
-  version: 0.503.0
-  resolution: "lucide-react@npm:0.503.0"
+"lucide-react@npm:^0.511.0":
+  version: 0.511.0
+  resolution: "lucide-react@npm:0.511.0"
   peerDependencies:
     react: ^16.5.1 || ^17.0.0 || ^18.0.0 || ^19.0.0
-  checksum: ff55ef2c62d4002fec95e5fbe0b83ff830300639473bd228165061c64c107f0867c9815e479c1e71751d7b2dd2aa9aff4830b9da9e2c5a6361e1331f4de2c9c6
+  checksum: b347d276c1a8cdc51f6ca44ef09d51a3a916bfb58ef0a0d55c729b1afb54877c1bbad981313984751ea13e4cc9903bfeae346f112184c94158a5a39274daea65
   languageName: node
   linkType: hard
 
@@ -18917,9 +18940,12 @@ __metadata:
     "@eslint/eslintrc": ^3.2.0
     "@eslint/js": ^9.16.0
     "@fontsource/literata": ^5.2.5
+    "@fontsource/playfair-display": ^5.2.5
+    "@fontsource/source-serif-pro": ^5.2.5
     "@fontsource/unbounded": ^5.2.5
     "@headlessui/react": 2.2.0
     "@next/bundle-analyzer": 15.2.4
+    "@next/font": ^14.2.15
     "@portabletext/react": ^3.2.1
     "@sanity/icons": ^3.7.0
     "@sanity/types": ^3.88.2
@@ -18950,7 +18976,7 @@ __metadata:
     husky: ^9.0.0
     image-size: 2.0.1
     lint-staged: ^13.0.0
-    lucide-react: ^0.503.0
+    lucide-react: ^0.511.0
     next: 15.2.4
     next-contentlayer2: 0.5.5
     next-sanity: ^9.11.0
