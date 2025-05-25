@@ -20,6 +20,9 @@ interface CardProps {
   authorImgSrc: string;
   authorName: string;
   authorHref: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
 }
 
 export default async function Page() {
@@ -94,8 +97,9 @@ export default async function Page() {
                   authorImgSrc={project.authorImgSrc}
                   authorName={project.authorName}
                   authorHref={project.authorHref}
-                  className="h-full"
-                  index={index}
+                  bgColor={project.bgColor}
+                  tags={project.tags}
+                  publishedAt={project.publishedAt}
                 />
               </div>
             ))}
@@ -111,7 +115,9 @@ export default async function Page() {
       </div>
 
       <SectionContainer>
-        {/* Aquí iría la siguiente sección */}
+        <div>
+          {/* Aquí iría la siguiente sección */}
+        </div>
       </SectionContainer>
     </>
   )

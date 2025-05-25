@@ -14,6 +14,9 @@ interface CardProps {
   authorImgSrc: string;
   authorName: string;
   authorHref: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
 }
 
 interface FeaturedSliderProps {
@@ -46,8 +49,9 @@ export default function FeaturedSlider({ projects }: FeaturedSliderProps) {
                 authorImgSrc={project.authorImgSrc}
                 authorName={project.authorName}
                 authorHref={project.authorHref}
-                className="h-full"
-                index={index}
+                bgColor={project.bgColor}
+                tags={project.tags}
+                publishedAt={project.publishedAt}
               />
             </div>
           </SwiperSlide>

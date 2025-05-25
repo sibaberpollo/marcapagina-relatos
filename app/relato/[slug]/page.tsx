@@ -22,11 +22,13 @@ const layouts = { PostSimple, PostLayout, PostBanner }
 const ptComponents = {
   types: {
     image: ({ value }: any) => (
-      <img
-        src={value.imageUrl || value.asset?.url}
-        alt={value.alt || ''}
-        className="w-full rounded-lg my-4"
-      />
+      <div className="w-full my-4 overflow-hidden rounded-lg">
+        <img
+          src={value.asset.url}
+          alt={value.alt || "Imagen del relato"}
+          className="w-full h-[120px] object-contain object-center"
+        />
+      </div>
     ),
     callout: ({ value }: any) => (
       <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
@@ -192,6 +194,7 @@ export default async function Page(props: {
     seriesOrder: serie
       ? relatosDeSerie.findIndex((r) => r.slug.current === slug) + 1
       : undefined,
+    bgColor: post.bgColor,
     body: {
       code: `
         function MDXContent() {

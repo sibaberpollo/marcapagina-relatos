@@ -49,6 +49,8 @@ interface Relato {
     time: number;
     words: number;
   };
+  bgColor?: string;
+  publishedAt?: string;
 }
 
 interface Portada {
@@ -64,6 +66,9 @@ interface ProyectoFormateado {
   authorImgSrc: string;
   authorName: string;
   authorHref: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
 }
 
 // Interfaz para Artículo
@@ -121,6 +126,10 @@ export async function getPortadaRelatos(): Promise<Portada | null> {
           slug,
           summary,
           image,
+          bgColor,
+          publishedAt,
+          date,
+          "tags": tags[]->title,
           "author": author-> {
             name,
             avatar,
@@ -285,6 +294,9 @@ function mapRelatoToProject(relato: Relato): ProyectoFormateado {
     authorImgSrc: relato.author?.avatar || '',
     authorName: relato.author?.name || '',
     authorHref: authorSlug ? `/autor/${authorSlug}` : '#',
+    bgColor: relato.bgColor || '#efa106',
+    tags: relato.tags || [],
+    publishedAt: relato.publishedAt || relato.date
   };
 }
 
@@ -368,8 +380,10 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
         title,
         slug,
         date,
+        publishedAt,
         summary,
         image,
+        bgColor,
         body,
         "author": author-> {
           name,
