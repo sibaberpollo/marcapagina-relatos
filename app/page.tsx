@@ -45,7 +45,7 @@ export default async function Page() {
 
   const allProjects = [
     ...(featuredProject ? [featuredProject] : []),
-    ...nonFeaturedProjects.slice(0, 2)
+    ...nonFeaturedProjects
   ];
 
   return (
@@ -78,16 +78,10 @@ export default async function Page() {
           </p>
         </div>
         
-        {/* Grid en desktop, Slider en móvil y tablet */}
-        <div className="container">
-          {/* Slider para móvil y tablet */}
-          <div className="lg:hidden">
-            <FeaturedSlider projects={allProjects} />
-          </div>
-
-          {/* Grid para desktop */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-6">
-            {allProjects.map((project, index) => (
+        {/* Primera fila: 3 relatos sin slider */}
+        <div className="container pb-6">
+          <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+            {allProjects.slice(0, 3).map((project, index) => (
               <div key={index} className="aspect-[4/5]">
                 <FeaturedCard
                   title={project.title}
@@ -108,15 +102,39 @@ export default async function Page() {
       </SectionContainer>
 
       {/* Banner de publicación a ancho completo */}
-      <div className="w-full bg-primary-500 dark:bg-primary-400 mt-12">
+      <div className="w-full bg-primary-500 dark:bg-primary-400">
         <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-12 flex justify-center">
           <PublishBanner />
         </div>
       </div>
 
       <SectionContainer>
-        <div>
-          {/* Aquí iría la siguiente sección */}
+        {/* Grid en desktop, Slider en móvil y tablet */}
+        <div className="container pt-12">
+          {/* Slider para móvil y tablet */}
+          <div className="lg:hidden">
+            <FeaturedSlider projects={allProjects.slice(3, 6)} />
+          </div>
+
+          {/* Grid para desktop */}
+          <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+            {allProjects.slice(3, 6).map((project, index) => (
+              <div key={index} className="aspect-[4/5]">
+                <FeaturedCard
+                  title={project.title}
+                  description={project.description}
+                  imgSrc={project.imgSrc}
+                  href={project.href}
+                  authorImgSrc={project.authorImgSrc}
+                  authorName={project.authorName}
+                  authorHref={project.authorHref}
+                  bgColor={project.bgColor}
+                  tags={project.tags}
+                  publishedAt={project.publishedAt}
+                />
+              </div>
+            ))}
+          </div>
         </div>
       </SectionContainer>
     </>
