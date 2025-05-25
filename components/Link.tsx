@@ -11,7 +11,8 @@ const CustomLink = ({ href, className = '', ...rest }: LinkProps & AnchorHTMLAtt
   const isInternalLink = href && href.startsWith('/')
   const isAnchorLink = href && href.startsWith('#')
   const isActive = isInternalLink && pathname === href
-  const activeClass = isActive ? 'border-b-2 border-accent' : ''
+  const shouldShowActiveBorder = isActive && !className.includes('decoration-none')
+  const activeClass = shouldShowActiveBorder ? 'border-b-2 border-accent' : ''
   const combinedClass = `${className} ${activeClass}`.trim()
 
   if (isInternalLink) {

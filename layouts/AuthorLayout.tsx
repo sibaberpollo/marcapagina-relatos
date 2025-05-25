@@ -2,6 +2,7 @@ import { ReactNode } from 'react'
 import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
+import SectionContainer from '@/components/SectionContainer'
 
 interface Props {
   children: ReactNode
@@ -12,7 +13,7 @@ export default function AuthorLayout({ children, content }: Props) {
   const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, website } = content
 
   return (
-    <>
+    <SectionContainer>
       <div>
         <div className="space-y-2 pt-6 pb-2 md:space-y-5">
           <h1 className="text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-6xl md:leading-14 dark:text-gray-100">
@@ -47,6 +48,6 @@ export default function AuthorLayout({ children, content }: Props) {
           </div>
         </div>
       </div>
-    </>
+    </SectionContainer>
   )
 }

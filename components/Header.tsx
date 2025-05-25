@@ -20,8 +20,8 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { title: 'Criterios Editoriales', href: '/criterios' },
-  { title: 'Acerca de', href: '/acerca' },
+  { title: 'Criterios Editoriales', href: '/criterios-editoriales' },
+  { title: 'Acerca de', href: '/acerca-de' },
 ];
 
 const Header = () => {
@@ -33,14 +33,14 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo a la izquierda en móvil */}
           <div className="flex items-center lg:hidden">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle}>
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
               <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
 
           {/* Logo centrado en desktop */}
           <div className="hidden lg:flex flex-1 justify-center absolute left-0 right-0 pointer-events-none">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="pointer-events-auto">
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="pointer-events-auto decoration-none">
               <Logo className="h-8 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
@@ -55,7 +55,7 @@ const Header = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label={link.label}
-                  className="text-gray-500 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400 transition-colors hidden sm:inline-flex"
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors hidden sm:inline-flex"
                 >
                   {link.icon}
                 </a>
@@ -70,7 +70,7 @@ const Header = () => {
                 <CustomLink
                   key={link.title}
                   href={link.href}
-                  className="font-medium text-gray-700 dark:text-gray-200 hover:text-primary-500 dark:hover:text-primary-400 px-3 py-2 rounded transition-colors"
+                  className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
                 >
                   {link.title}
                 </CustomLink>
@@ -115,7 +115,7 @@ const Header = () => {
                     <CustomLink
                       key={link.title}
                       href={link.href}
-                      className="font-medium text-gray-700 dark:text-gray-200 hover:text-primary-500 dark:hover:text-primary-400 px-2 py-2 rounded transition-colors"
+                      className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors"
                       onClick={() => setOpen(false)}
                     >
                       {link.title}
@@ -131,7 +131,7 @@ const Header = () => {
                         target="_blank"
                         rel="noopener noreferrer"
                         aria-label={link.label}
-                        className="text-gray-500 hover:text-primary-500 dark:text-gray-300 dark:hover:text-primary-400 transition-colors"
+                        className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
                       >
                         {link.icon}
                       </a>
