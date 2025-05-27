@@ -141,7 +141,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className="bg-white pl-[calc(100vw-100%)] text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
+        className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
       >
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />

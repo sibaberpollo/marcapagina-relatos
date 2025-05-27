@@ -31,6 +31,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/criterios-editoriales`, // la página de criterios editoriales
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/cronologico`, // la página de criterios editoriales
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity

@@ -20,7 +20,8 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { title: 'Criterios Editoriales', href: '/criterios-editoriales' },
+  { title: 'Todos los relatos', href: '/cronologico' },
+  { title: 'Criterios', href: '/criterios-editoriales' },
   { title: 'Acerca de', href: '/acerca-de' },
 ];
 
@@ -79,7 +80,7 @@ const Header = () => {
                 href="/publica"
                 className="ml-2 px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
               >
-                Publica con nosotros
+                Publica
               </CustomLink>
             </div>
             {/* Botón de publica en móvil y tablet */}
