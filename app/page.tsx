@@ -5,6 +5,8 @@ import FeaturedCard from '@/components/FeaturedCard'
 import FeaturedSlider from '@/components/FeaturedSlider'
 import siteMetadata from '@/data/siteMetadata';
 import SectionContainer from '@/components/SectionContainer'
+import ViewToggle from '@/components/ViewToggle'
+import ClientRedirect from '@/components/ClientRedirect'
 import { Swiper, SwiperSlide } from 'swiper/react'
 import { Pagination } from 'swiper/modules'
 import 'swiper/css'
@@ -50,6 +52,7 @@ export default async function Page() {
 
   return (
     <>
+      <ClientRedirect />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
           <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
@@ -78,11 +81,14 @@ export default async function Page() {
           </p>
         </div>
         
+        {/* Botones de cambio de vista */}
+        <ViewToggle />
+        
         {/* Primera fila: 3 relatos sin slider */}
         <div className="container pb-6">
-          <div className="grid grid-cols-1 gap-0 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
             {allProjects.slice(0, 3).map((project, index) => (
-              <div key={index} className="aspect-[4/5]">
+              <div key={index} className="flex">
                 <FeaturedCard
                   title={project.title}
                   description={project.description}
@@ -119,7 +125,7 @@ export default async function Page() {
           {/* Grid para desktop */}
           <div className="hidden lg:grid lg:grid-cols-3 gap-6">
             {allProjects.slice(3, 6).map((project, index) => (
-              <div key={index} className="aspect-[4/5]">
+              <div key={index} className="flex">
                 <FeaturedCard
                   title={project.title}
                   description={project.description}

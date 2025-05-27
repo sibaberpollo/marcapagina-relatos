@@ -40,7 +40,7 @@ export default function FeaturedSlider({ projects }: FeaturedSliderProps) {
       >
         {projects.map((project, index) => (
           <SwiperSlide key={index}>
-            <div className="aspect-[4/5]">
+            <div className="flex">
               <FeaturedCard
                 title={project.title}
                 description={project.description}

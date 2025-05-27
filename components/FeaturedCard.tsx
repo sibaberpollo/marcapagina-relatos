@@ -32,13 +32,13 @@ export default function FeaturedCard({
   const relativeTime = getRelativeTime(publishedAt)
 
   return (
-    <div className="group relative">
+    <div className="group relative h-full">
       <Link href={href} aria-label={`Link to ${title}`} className="block w-full h-full">
         <div 
           className="relative flex flex-col rounded-lg overflow-hidden w-full h-full cursor-pointer hover:scale-105 transition-transform duration-200" 
           style={{ backgroundColor: bgColor }}
         >
-          <div className="flex-1 flex items-center justify-center relative">
+          <div className="flex-1 flex items-center justify-center relative min-h-[280px]">
             <div className="absolute top-4 left-4 z-10 flex gap-2">
               {tags && tags.length > 0 && tags.map((tag) => (
                 <span
@@ -57,7 +57,7 @@ export default function FeaturedCard({
               height={280}
             />
           </div>
-          <div className="flex flex-col">
+          <div className="flex flex-col mt-auto">
             <div className="px-6 mb-2">
               <h1 className="text-2xl font-bold text-black mb-1 leading-tight">{title}</h1>
               <p className="text-base text-black/90 line-clamp-2 text-left">{description}</p>

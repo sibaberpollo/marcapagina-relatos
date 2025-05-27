@@ -748,4 +748,32 @@ export async function getDesafioById(id: string): Promise<Desafio | null> {
     console.error(`Error al obtener desafío "${id}" desde Sanity:`, error);
     throw error; // Re-lanzar para que el componente pueda manejarlo
   }
+}
+
+// Función para obtener todos los relatos para la vista cronológica
+export async function getAllRelatosForChronological(): Promise<ProyectoFormateado[]> {
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato"] | order(publishedAt desc, date desc) {
+        title,
+        slug,
+        summary,
+        image,
+        bgColor,
+        publishedAt,
+        date,
+        "tags": tags[]->title,
+        "author": author-> {
+          name,
+          avatar,
+          slug
+        }
+      }
+    `);
+    
+    return relatos.map(mapRelatoToProject);
+  } catch (error) {
+    console.error('Error al obtener todos los relatos:', error);
+    return [];
+  }
 } 
