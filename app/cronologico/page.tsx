@@ -19,7 +19,15 @@ interface RelatoData {
   publishedAt: string
 }
 
-export default async function CronologicoPage() {
+interface PageProps {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function CronologicoPage({ searchParams }: PageProps) {
+  // Obtener el parámetro de página
+  const params = await searchParams
+  const currentPage = Number(params.page) || 1
+  
   // Obtener TODOS los relatos desde Sanity
   const allRelatos = await getAllRelatosForChronological()
   
@@ -62,6 +70,7 @@ export default async function CronologicoPage() {
           <ChronologicalLayout 
             items={allRelatos}
             itemsPerPage={10}
+            currentPage={currentPage}
           />
         </div>
       </SectionContainer>

@@ -1,7 +1,6 @@
 'use client'
 
 import Link from '@/components/Link'
-import { useSearchParams } from 'next/navigation'
 
 interface RelatoItem {
   title: string
@@ -14,15 +13,14 @@ interface RelatoItem {
 interface ChronologicalLayoutProps {
   items: RelatoItem[]
   itemsPerPage?: number
+  currentPage?: number
 }
 
 export default function ChronologicalLayout({ 
   items, 
-  itemsPerPage = 10 
+  itemsPerPage = 10,
+  currentPage = 1
 }: ChronologicalLayoutProps) {
-  const searchParams = useSearchParams()
-  const currentPage = Number(searchParams.get('page')) || 1
-  
   const totalPages = Math.ceil(items.length / itemsPerPage)
   
   const startIndex = (currentPage - 1) * itemsPerPage
