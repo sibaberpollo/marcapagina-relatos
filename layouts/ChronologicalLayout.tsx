@@ -63,7 +63,9 @@ export default function ChronologicalLayout({
                   </Link>
                 </h2>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Por: {item.authorName}
+                  Por: <Link href={`/autor/${item.authorName.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-primary-600 dark:hover:text-primary-400">
+                    {item.authorName}
+                  </Link>
                 </div>
                 <p className="text-gray-600 dark:text-gray-400">
                   {item.description}

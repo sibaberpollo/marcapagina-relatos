@@ -19,7 +19,7 @@ export default function ViewToggle() {
         }`}
       >
         <LayoutGrid className="w-4 h-4" />
-        Por cards
+        Destacados
       </Link>
       <Link
         href="/cronologico"
