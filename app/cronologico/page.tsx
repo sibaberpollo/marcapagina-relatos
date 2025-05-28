@@ -1,9 +1,11 @@
 import { getAllRelatosForChronological } from '../../lib/sanity'
-import ChronologicalLayout from '@/layouts/ChronologicalLayout'
+import ChronologicalView from '@/components/ChronologicalView'
 import siteMetadata from '@/data/siteMetadata'
 import SectionContainer from '@/components/SectionContainer'
 import ViewToggle from '@/components/ViewToggle'
 import SlowConnectionBanner from '@/components/SlowConnectionBanner'
+import { Suspense } from 'react'
+import LoadingSpinner from '@/components/LoadingSpinner'
 
 // Interfaz para los datos del relato
 interface RelatoData {
@@ -67,7 +69,7 @@ export default async function CronologicoPage({ searchParams }: PageProps) {
         
         {/* Vista cronológica */}
         <div className="container">
-          <ChronologicalLayout 
+          <ChronologicalView 
             items={allRelatos}
             itemsPerPage={10}
             currentPage={currentPage}
