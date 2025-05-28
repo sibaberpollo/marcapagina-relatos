@@ -5,6 +5,7 @@ import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
 import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
+import ThemeToggle from './ThemeToggle'
 
 const socialLinks = [
   {
@@ -62,7 +63,7 @@ const Header = () => {
           </div>
 
           {/* Navegación y botón destacado */}
-          <div className="flex items-center gap-6 ml-auto">
+          <div className="flex items-center gap-2 ml-auto">
             <div className="hidden lg:flex items-center gap-6">
               {navLinks.map((link) => (
                 <CustomLink
@@ -73,6 +74,7 @@ const Header = () => {
                   {link.title}
                 </CustomLink>
               ))}
+              <ThemeToggle />
               <CustomLink
                 href="/publica"
                 className="ml-2 px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
@@ -81,12 +83,15 @@ const Header = () => {
               </CustomLink>
             </div>
             {/* Botón de publica en móvil y tablet */}
-            <CustomLink
-              href="/publica"
-              className="lg:hidden px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
-            >
-              Publica
-            </CustomLink>
+            <div className="lg:hidden flex items-center gap-1">
+              <CustomLink
+                href="/publica"
+                className="px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
+              >
+                Publica
+              </CustomLink>
+              <ThemeToggle />
+            </div>
             {/* Icono hamburguesa en móvil y tablet */}
             <button
               className="lg:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"

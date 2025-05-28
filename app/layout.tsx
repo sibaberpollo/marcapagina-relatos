@@ -12,6 +12,7 @@ import siteMetadata from '@/data/siteMetadata'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
+import { ThemeProvider } from 'next-themes'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -143,14 +144,16 @@ export default function RootLayout({
       <body
         className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
       >
-        <ThemeProviders>
-          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-          <Header />
-          <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-            <main className="mb-auto font-serif">{children}</main>
-          </SearchProvider>
-          <Footer />
-        </ThemeProviders>
+        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+          <ThemeProviders>
+            <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+            <Header />
+            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              <main className="mb-auto font-serif">{children}</main>
+            </SearchProvider>
+            <Footer />
+          </ThemeProviders>
+        </ThemeProvider>
       </body>
     </html>
   )
