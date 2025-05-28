@@ -2,7 +2,7 @@
 
 import { MetadataRoute } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllRelatos, getAllArticulos, getAllAutores } from '../lib/sanity'
+import { getAllRelatos, getAllArticulos, getAllAutores, getAllMicrocuentos } from '../lib/sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Asegurarse de que la URL no termine con slash
@@ -58,6 +58,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: today,
   }))
 
+  // Obtener todos los microcuentos desde Sanity
+  const microcuentos = await getAllMicrocuentos()
+  const microcuentosRoutes = microcuentos.map((microcuento) => ({
+    url: `${siteUrl}/microcuento/${microcuento.href.split('/').pop()}`,
+    lastModified: microcuento.publishedAt || today,
+  }))
+
   // Unir todas las rutas en el sitemap
-  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes]
+  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes, ...microcuentosRoutes]
 }

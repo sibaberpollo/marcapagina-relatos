@@ -2611,6 +2611,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@babel/runtime@npm:^7.27.3":
+  version: 7.27.3
+  resolution: "@babel/runtime@npm:7.27.3"
+  checksum: 4eadd745756c9de7a9bba1b2b138b8b99f34aa544cf69c7e6fd1d2a120ba6d31580e93f00657145add7a8945db8ffea5ef7fdbe18f0f0f8e82f2929cb56a0d61
+  languageName: node
+  linkType: hard
+
 "@babel/template@npm:^7.25.9, @babel/template@npm:^7.26.9, @babel/template@npm:^7.27.0":
   version: 7.27.0
   resolution: "@babel/template@npm:7.27.0"
@@ -8518,6 +8525,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"charenc@npm:0.0.2":
+  version: 0.0.2
+  resolution: "charenc@npm:0.0.2"
+  checksum: 81dcadbe57e861d527faf6dd3855dc857395a1c4d6781f4847288ab23cffb7b3ee80d57c15bba7252ffe3e5e8019db767757ee7975663ad2ca0939bb8fcaf2e5
+  languageName: node
+  linkType: hard
+
 "chokidar@npm:^3.5.3":
   version: 3.6.0
   resolution: "chokidar@npm:3.6.0"
@@ -8983,6 +8997,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"core-js-pure@npm:^3.42.0":
+  version: 3.42.0
+  resolution: "core-js-pure@npm:3.42.0"
+  checksum: 37f2488e810db5ea23f623458b8d5861a5a858cde1b4d5777c89b531b00775a3df2cf814f69af0d9d16a421094f6c640c4466b9f86a8580d65263e3219c75440
+  languageName: node
+  linkType: hard
+
 "core-util-is@npm:^1.0.3, core-util-is@npm:~1.0.0":
   version: 1.0.3
   resolution: "core-util-is@npm:1.0.3"
@@ -9055,6 +9076,13 @@ __metadata:
     shebang-command: ^2.0.0
     which: ^2.0.1
   checksum: 8d306efacaf6f3f60e0224c287664093fa9185680b2d195852ba9a863f85d02dcc737094c6e512175f8ee0161f9b87c73c6826034c2422e39de7d6569cf4503b
+  languageName: node
+  linkType: hard
+
+"crypt@npm:0.0.2":
+  version: 0.0.2
+  resolution: "crypt@npm:0.0.2"
+  checksum: baf4c7bbe05df656ec230018af8cf7dbe8c14b36b98726939cef008d473f6fe7a4fad906cfea4062c93af516f1550a3f43ceb4d6615329612c6511378ed9fe34
   languageName: node
   linkType: hard
 
@@ -12573,6 +12601,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"is-buffer@npm:~1.1.6":
+  version: 1.1.6
+  resolution: "is-buffer@npm:1.1.6"
+  checksum: 4a186d995d8bbf9153b4bd9ff9fd04ae75068fe695d29025d25e592d9488911eeece84eefbd8fa41b8ddcc0711058a71d4c466dcf6f1f6e1d83830052d8ca707
+  languageName: node
+  linkType: hard
+
 "is-bun-module@npm:^2.0.0":
   version: 2.0.0
   resolution: "is-bun-module@npm:2.0.0"
@@ -12833,6 +12868,13 @@ __metadata:
     has-tostringtag: ^1.0.2
     hasown: ^2.0.2
   checksum: 99ee0b6d30ef1bb61fa4b22fae7056c6c9b3c693803c0c284ff7a8570f83075a7d38cda53b06b7996d441215c27895ea5d1af62124562e13d91b3dbec41a5e13
+  languageName: node
+  linkType: hard
+
+"is-retina@npm:^1.0.3":
+  version: 1.0.3
+  resolution: "is-retina@npm:1.0.3"
+  checksum: a78870de9e9fcc0b46ec0a184a965958853ebfed2a90ddc0beb15c2c125b8fa6a6035bc72b4fa6422f3bef37c50c36a71cde7f31a35699bd4de3785a6210ba21
   languageName: node
   linkType: hard
 
@@ -13910,6 +13952,17 @@ __metadata:
   version: 0.1.1
   resolution: "md5-o-matic@npm:0.1.1"
   checksum: 3a74811620d45f1cee5bfb037ae2cf55600dc2107d6bfedb297a5196365a63d24da218ee137cbcd3ffe53bbc653a335ea305a835fd66af1e892f95197fc04bb7
+  languageName: node
+  linkType: hard
+
+"md5@npm:^2.0.0":
+  version: 2.3.0
+  resolution: "md5@npm:2.3.0"
+  dependencies:
+    charenc: 0.0.2
+    crypt: 0.0.2
+    is-buffer: ~1.1.6
+  checksum: a63cacf4018dc9dee08c36e6f924a64ced735b37826116c905717c41cebeb41a522f7a526ba6ad578f9c80f02cb365033ccd67fe186ffbcc1a1faeb75daa9b6e
   languageName: node
   linkType: hard
 
@@ -16460,6 +16513,21 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-avatar@npm:^5.0.3":
+  version: 5.0.3
+  resolution: "react-avatar@npm:5.0.3"
+  dependencies:
+    is-retina: ^1.0.3
+    md5: ^2.0.0
+  peerDependencies:
+    "@babel/runtime": ">=7"
+    core-js-pure: ">=3"
+    prop-types: ^15.0.0 || ^16.0.0
+    react: ^15.0.0 || ^16.0.0 || ^17.0.0 || ^18.0.0
+  checksum: d2da02dd62f0d33686462be49f11bd055c5fa3c56fb18bf7da09922ab25a14110c0ebff9e8a54b2a27f84415f7ade7757ce6c71c6caa348d054ef370d38e9285
+  languageName: node
+  linkType: hard
+
 "react-clientside-effect@npm:^1.2.7":
   version: 1.2.7
   resolution: "react-clientside-effect@npm:1.2.7"
@@ -18944,6 +19012,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "tailwind-nextjs-starter-blog@workspace:."
   dependencies:
+    "@babel/runtime": ^7.27.3
     "@eslint/eslintrc": ^3.2.0
     "@eslint/js": ^9.16.0
     "@fontsource/literata": ^5.2.5
@@ -18968,6 +19037,7 @@ __metadata:
     "@vercel/analytics": ^1.5.0
     body-scroll-lock: ^4.0.0-beta.0
     contentlayer2: 0.5.5
+    core-js-pure: ^3.42.0
     cross-env: ^7.0.3
     esbuild: 0.25.2
     eslint: ^9.14.0
@@ -18993,7 +19063,9 @@ __metadata:
     postcss: ^8.4.24
     prettier: ^3.0.0
     prettier-plugin-tailwindcss: ^0.6.11
+    prop-types: ^15.8.1
     react: 19.0.0
+    react-avatar: ^5.0.3
     react-dom: 19.0.0
     react-is: ^19.1.0
     reading-time: 1.5.0

@@ -1,4 +1,4 @@
-import { getFeaturedAndNonFeaturedRelatos } from '../lib/sanity'
+import { getFeaturedAndNonFeaturedRelatos, getAllMicrocuentos } from '../lib/sanity'
 // import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
 //import Card from '@/components/Card'
 import FeaturedCard from '@/components/FeaturedCard'
@@ -12,6 +12,8 @@ import { Pagination } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/pagination'
 import PublishBanner from '@/components/PublishBanner'
+import MicrocuentoCard from '@/components/MicrocuentoCard'
+import HighlightStroke from '@/components/HighlightStroke'
 
 // Tipo común para ambos orígenes de datos
 interface CardProps {
@@ -27,10 +29,35 @@ interface CardProps {
   publishedAt: string;
 }
 
+interface Proyecto {
+  title: string
+  description: string
+  imgSrc: string
+  href: string
+  authorImgSrc: string
+  authorName: string
+  authorHref: string
+  bgColor: string
+  tags: string[]
+  publishedAt: string
+}
+
+interface MicrocuentoData {
+  title: string
+  author: string
+  description: string
+  imgSrc: string
+  href: string
+  bgColor: string
+  tags: string[]
+  publishedAt: string
+}
+
 export default async function Page() {
   // Obtener datos desde Sanity
   let featuredProject: CardProps | null = null;
   let nonFeaturedProjects: CardProps[] = [];
+  const allMicrocuentos = await getAllMicrocuentos();
   
   try {
     console.log('Obteniendo datos desde Sanity');
@@ -142,6 +169,33 @@ export default async function Page() {
             ))}
           </div>
         </div>
+
+        {/* Sección de Microcuentos */}
+        {allMicrocuentos.length > 0 && (
+          <div className="container pt-16 pb-12">
+            <div className="mb-8">
+              <h2 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-4xl md:leading-10">
+                Microcuentos
+              </h2>
+            </div>
+            
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 auto-rows-fr">
+              {allMicrocuentos.slice(0, 6).map((microcuento, index) => (
+                <div key={index} className="flex h-full">
+                  <MicrocuentoCard
+                    title={microcuento.title}
+                    author={microcuento.author}
+                    description={microcuento.description}
+                    imgSrc={microcuento.imgSrc}
+                    href={microcuento.href}
+                    bgColor={microcuento.bgColor}
+                    tags={microcuento.tags}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
       </SectionContainer>
     </>
   )

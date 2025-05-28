@@ -94,6 +94,34 @@ interface Articulo {
   };
 }
 
+// Interfaz para Microcuento
+interface Microcuento {
+  title: string;
+  slug: {
+    current: string;
+  };
+  author: string;
+  description: string;
+  summary: string;
+  publishedAt: string;
+  image?: string;
+  bgColor: string;
+  body: any;
+  tags?: any[];
+}
+
+interface MicrocuentoFormateado {
+  title: string;
+  author: string;
+  description: string;
+  summary: string;
+  imgSrc: string;
+  href: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
+}
+
 // Interfaz para el desafío
 interface Desafio {
   titulo: string;
@@ -775,5 +803,124 @@ export async function getAllRelatosForChronological(): Promise<ProyectoFormatead
   } catch (error) {
     console.error('Error al obtener todos los relatos:', error);
     return [];
+  }
+}
+
+// Función para mapear un microcuento de Sanity al formato que espera la UI
+function mapMicrocuentoToFormatted(microcuento: Microcuento): MicrocuentoFormateado {
+  return {
+    title: microcuento.title,
+    author: microcuento.author,
+    description: microcuento.description,
+    summary: microcuento.summary,
+    imgSrc: microcuento.image || '',
+    href: `/microcuento/${microcuento.slug?.current}`,
+    bgColor: microcuento.bgColor || '#efa106',
+    tags: microcuento.tags || [],
+    publishedAt: microcuento.publishedAt
+  };
+}
+
+// Función para obtener todos los microcuentos
+export async function getAllMicrocuentos(): Promise<MicrocuentoFormateado[]> {
+  try {
+    const microcuentos = await client.fetch(`
+      *[_type == "microcuento"] | order(publishedAt desc) {
+        title,
+        slug,
+        author,
+        description,
+        summary,
+        publishedAt,
+        image,
+        bgColor,
+        "tags": tags[]->title
+      }
+    `);
+    
+    return microcuentos.map(mapMicrocuentoToFormatted);
+  } catch (error) {
+    console.error('Error al obtener microcuentos:', error);
+    return [];
+  }
+}
+
+// Función para obtener un microcuento por su slug
+export async function getMicrocuentoBySlug(slug: string): Promise<Microcuento | null> {
+  try {
+    const microcuento = await client.fetch(`
+      *[_type == "microcuento" && slug.current == $slug][0] {
+        title,
+        slug,
+        author,
+        description,
+        summary,
+        publishedAt,
+        image,
+        bgColor,
+        body,
+        "tags": tags[]->title
+      }
+    `, { slug });
+    
+    return microcuento;
+  } catch (error) {
+    console.error(`Error al obtener microcuento "${slug}" desde Sanity:`, error);
+    return null;
+  }
+}
+
+// Función para obtener todos los slugs de microcuentos
+export async function getAllMicrocuentoSlugs(): Promise<string[]> {
+  try {
+    const slugs = await client.fetch(`
+      *[_type == "microcuento"] {
+        "slug": slug.current
+      }
+    `);
+    return slugs.map((item: any) => item.slug);
+  } catch (error) {
+    console.error('Error al obtener slugs de microcuentos:', error);
+    return [];
+  }
+}
+
+// Función para obtener microcuentos relacionados (anterior/siguiente)
+export async function getRelatedMicrocuentos(slug: string): Promise<{
+  prev: Microcuento | null;
+  next: Microcuento | null;
+}> {
+  try {
+    // Primero obtenemos el microcuento actual para saber su fecha
+    const currentMicrocuento = await client.fetch(`
+      *[_type == "microcuento" && slug.current == $slug][0] {
+        publishedAt
+      }
+    `, { slug });
+
+    if (!currentMicrocuento) {
+      return { prev: null, next: null };
+    }
+
+    // Obtener el anterior (más antiguo)
+    const prev = await client.fetch(`
+      *[_type == "microcuento" && publishedAt < $publishedAt] | order(publishedAt desc)[0] {
+        title,
+        slug
+      }
+    `, { publishedAt: currentMicrocuento.publishedAt });
+
+    // Obtener el siguiente (más reciente)
+    const next = await client.fetch(`
+      *[_type == "microcuento" && publishedAt > $publishedAt] | order(publishedAt asc)[0] {
+        title,
+        slug
+      }
+    `, { publishedAt: currentMicrocuento.publishedAt });
+
+    return { prev, next };
+  } catch (error) {
+    console.error(`Error al obtener microcuentos relacionados para "${slug}":`, error);
+    return { prev: null, next: null };
   }
 } 
