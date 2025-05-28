@@ -3,19 +3,23 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, X, Menu, X as Close } from 'lucide-react'
+import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
 
 const socialLinks = [
   {
     href: siteMetadata.instagram,
     label: 'Instagram',
-    icon: <Instagram className="w-6 h-6" />,
+    icon: <Instagram className="w-5 h-5" />,
   },
   {
     href: siteMetadata.twitter,
     label: 'X',
-    icon: <X className="w-6 h-6" />,
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+    ),
   },
 ];
 
@@ -32,22 +36,8 @@ const Header = () => {
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20 relative">
-          {/* Logo a la izquierda en móvil */}
-          <div className="flex items-center lg:hidden">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
-          </div>
-
-          {/* Logo centrado en desktop */}
-          <div className="hidden lg:flex flex-1 justify-center absolute left-0 right-0 pointer-events-none">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="pointer-events-auto decoration-none">
-              <Logo className="h-8 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
-          </div>
-
-          {/* Redes sociales (desktop) */}
-          <div className="flex items-center gap-4">
+          {/* Redes sociales */}
+          <div className="flex items-center gap-6">
             {socialLinks.map((link) =>
               link.href ? (
                 <a
@@ -64,9 +54,16 @@ const Header = () => {
             )}
           </div>
 
-          {/* Navegación y botón destacado (desktop) */}
-          <div className="flex items-center gap-4 ml-auto">
-            <div className="hidden lg:flex items-center gap-4">
+          {/* Logo */}
+          <div className="flex items-center mx-0 lg:mx-12 -mt-1">
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
+              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
+            </CustomLink>
+          </div>
+
+          {/* Navegación y botón destacado */}
+          <div className="flex items-center gap-6 ml-auto">
+            <div className="hidden lg:flex items-center gap-6">
               {navLinks.map((link) => (
                 <CustomLink
                   key={link.title}
@@ -96,7 +93,7 @@ const Header = () => {
               aria-label="Abrir menú"
               onClick={() => setOpen(true)}
             >
-              <Menu className="w-6 h-6 text-gray-700 dark:text-gray-200" />
+              <Menu className="w-5 h-5 text-gray-700 dark:text-gray-200" />
             </button>
           </div>
 
@@ -109,7 +106,7 @@ const Header = () => {
                   aria-label="Cerrar menú"
                   onClick={() => setOpen(false)}
                 >
-                  <Close className="w-7 h-7 text-gray-700 dark:text-gray-200" />
+                  <Close className="w-6 h-6 text-gray-700 dark:text-gray-200" />
                 </button>
                 <nav className="flex flex-col gap-8 text-2xl items-center w-full mt-12">
                   {navLinks.map((link) => (
