@@ -14,6 +14,7 @@ import 'swiper/css/pagination'
 import PublishBanner from '@/components/PublishBanner'
 import MicrocuentoCard from '@/components/MicrocuentoCard'
 import HighlightStroke from '@/components/HighlightStroke'
+import Image from 'next/image'
 
 // Tipo común para ambos orígenes de datos
 interface CardProps {
@@ -174,9 +175,15 @@ export default async function Page() {
         {allMicrocuentos.length > 0 && (
           <div className="container pt-16 pb-12">
             <div className="mb-8">
-              <h2 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-4xl md:leading-10">
-                Microcuentos
-              </h2>
+              <h2 className="sr-only">Microcuentos</h2>
+              <Image 
+                src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748448325/microcuentos_h1_ttuzc5.png"
+                alt="Microcuentos"
+                className="h-8 sm:h-10 md:h-12 w-auto"
+                width={300}
+                height={60}
+                priority
+              />
             </div>
             
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 auto-rows-fr">
