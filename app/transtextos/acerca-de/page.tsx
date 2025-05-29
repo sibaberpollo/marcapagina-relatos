@@ -1,6 +1,7 @@
 import { getSiteBySlug } from '../../../lib/sanity'
 import SectionContainer from '@/components/SectionContainer'
 import SlowConnectionBanner from '@/components/SlowConnectionBanner'
+import { PageSEO } from '@/components/SEO'
 
 export default async function TranstextosAcercaDePage() {
   // Obtener información del sitio Transtextos
@@ -8,6 +9,13 @@ export default async function TranstextosAcercaDePage() {
   
   return (
     <>
+      <PageSEO
+        title={`Acerca de ${siteInfo?.title || 'Transtextos'}`}
+        description={siteInfo?.description || 'Relatos y narrativas de Transtextos'}
+        ogType="website"
+        ogImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1748548890/share_hongo_sjugcw.jpg"
+        twImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1748548890/share_hongo_sjugcw.jpg"
+      />
       <SlowConnectionBanner />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">

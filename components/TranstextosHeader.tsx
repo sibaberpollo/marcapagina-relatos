@@ -8,7 +8,7 @@ import ThemeToggle from './ThemeToggle'
 
 const socialLinks = [
   {
-    href: "https://www.instagram.com/transtextos/",
+    href: "https://www.instagram.com/transtextosig/",
     label: 'Instagram',
     icon: <Instagram className="w-5 h-5" />,
   },
@@ -49,6 +49,24 @@ const TranstextosHeader = () => {
             </div>
           </CustomLink>
 
+          {/* Redes sociales alineadas a la izquierda (después del botón de volver) */}
+          <div className="hidden md:flex items-center gap-4 ml-[56px]">
+            {socialLinks.map((link) =>
+              link.href ? (
+                <a
+                  key={link.label}
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={link.label}
+                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
+                >
+                  {link.icon}
+                </a>
+              ) : null
+            )}
+          </div>
+
           {/* Logo Transtextos centrado */}
           <div className="absolute left-1/2 transform -translate-x-1/2">
             <CustomLink href="/transtextos" aria-label="Transtextos" className="decoration-none">
@@ -62,26 +80,8 @@ const TranstextosHeader = () => {
             </CustomLink>
           </div>
 
-          {/* Navegación y redes sociales alineadas a la derecha */}
+          {/* Navegación alineada a la derecha */}
           <div className="flex items-center gap-2 ml-auto">
-            {/* Redes sociales */}
-            <div className="hidden md:flex items-center gap-4 mr-4">
-              {socialLinks.map((link) =>
-                link.href ? (
-                  <a
-                    key={link.label}
-                    href={link.href}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    aria-label={link.label}
-                    className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
-                  >
-                    {link.icon}
-                  </a>
-                ) : null
-              )}
-            </div>
-
             {/* Navegación desktop */}
             <div className="hidden lg:flex items-center gap-4">
               {navLinks.map((link) => (

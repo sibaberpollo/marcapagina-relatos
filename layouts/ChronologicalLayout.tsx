@@ -7,6 +7,7 @@ interface RelatoItem {
   description: string
   href: string
   authorName: string
+  authorHref: string
   publishedAt: string
 }
 
@@ -97,11 +98,11 @@ export default function ChronologicalLayout({
                   </Link>
                 </h2>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Por: <Link href={`/autor/${item.authorName.toLowerCase().replace(/\s+/g, '-')}`} className="hover:text-primary-600 dark:hover:text-primary-400">
+                  Por: <Link href={item.authorHref} className="hover:text-primary-600 dark:hover:text-primary-400">
                     {item.authorName}
                   </Link>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400">
+                <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
                   {item.description}
                 </p>
               </div>
