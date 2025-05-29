@@ -97,7 +97,11 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
             <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
               {/* Autor */}
               <div className="flex items-center gap-3 mb-6">
-                <AutoAvatar name={author} size={40} />
+                <AutoAvatar 
+                  name={author} 
+                  size={40} 
+                  className="h-10 w-10 rounded-full bg-black text-white font-titles text-xl flex items-center justify-center"
+                />
                 <span className="text-gray-700 dark:text-gray-300 font-medium">
                   {author}
                 </span>

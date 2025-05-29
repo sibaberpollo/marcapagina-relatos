@@ -175,6 +175,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     linkedin: author.linkedin || '',
     github: author.github || '',
     website: author.website || '',
+    instagram: author.instagram || '',
+    sitios: author.sitios || [],
     // Propiedades adicionales requeridas por el tipo Authors
     type: 'Authors',
     defaultTab: author.defaultTab || 'relatos',

@@ -3,6 +3,7 @@ import type { Authors } from 'contentlayer/generated'
 import SocialIcon from '@/components/social-icons'
 import Image from '@/components/Image'
 import SectionContainer from '@/components/SectionContainer'
+import AutoAvatar from '@/components/AutoAvatar'
 
 interface Props {
   children: ReactNode
@@ -10,7 +11,10 @@ interface Props {
 }
 
 export default function AuthorLayout({ children, content }: Props) {
-  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, website } = content
+  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, website, instagram, sitios } = content
+
+  // Determinar si el autor es de Marcapágina
+  const isMarcapaginaAuthor = !sitios || sitios.length === 0 || sitios.includes('marcapagina')
 
   return (
     <SectionContainer>
@@ -22,7 +26,7 @@ export default function AuthorLayout({ children, content }: Props) {
         </div>
         <div className="items-start space-y-2 xl:grid xl:grid-cols-3 xl:space-y-0 xl:gap-x-8">
           <div className="flex flex-col items-center space-x-2 pt-8">
-            {avatar && (
+            {avatar ? (
               <Image
                 src={avatar}
                 alt="avatar"
@@ -30,8 +34,19 @@ export default function AuthorLayout({ children, content }: Props) {
                 height={192}
                 className="h-48 w-48 rounded-full"
               />
+            ) : (
+              <AutoAvatar
+                name={name}
+                size={192}
+                className="h-48 w-48 rounded-full bg-black text-white font-titles text-5xl flex items-center justify-center"
+              />
             )}
             <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight">{name}</h3>
+            {!isMarcapaginaAuthor && sitios && sitios.length > 0 && (
+              <div className="text-gray-500 dark:text-gray-400">
+                {sitios[0]}
+              </div>
+            )}
             <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
             <div className="text-gray-500 dark:text-gray-400">{company}</div>
             <div className="flex space-x-3 pt-6">
@@ -40,6 +55,7 @@ export default function AuthorLayout({ children, content }: Props) {
               <SocialIcon kind="linkedin" href={linkedin} />
               <SocialIcon kind="x" href={twitter} />
               <SocialIcon kind="bluesky" href={bluesky} />
+              {instagram && <SocialIcon kind="instagram" href={instagram} />}
               <SocialIcon kind="website" href={website} />
             </div>
           </div>

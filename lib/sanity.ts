@@ -25,6 +25,8 @@ interface Autor {
   bluesky?: string;
   bio?: string;
   defaultTab?: string;
+  instagram?: string;
+  sitios?: string;
   slug: {
     current: string;
   };
@@ -212,7 +214,9 @@ export async function getAllAutores(): Promise<Autor[]> {
         linkedin,
         github,
         website,
-        defaultTab
+        defaultTab,
+        instagram,
+        "sitios": sitios[]->title
       }
     `);
     return autores;
@@ -238,7 +242,9 @@ export async function getAutorBySlug(slug: string): Promise<Autor | null> {
         linkedin,
         github,
         website,
-        defaultTab
+        defaultTab,
+        instagram,
+        "sitios": sitios[]->title
       }
     `, { slug });
     
