@@ -7,6 +7,8 @@ import siteMetadata from '@/data/siteMetadata'
 import seriesMetadata from '@/data/seriesMetadata'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Header from '@/components/Header'
+import TranstextosHeader from '@/components/TranstextosHeader'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
@@ -108,6 +110,9 @@ export default async function Page(props: {
   const { slug } = params
   const post = await getRelatoBySlug(slug)
   if (!post) return notFound()
+
+  // Detectar si el relato pertenece a Transtextos
+  const isTranstextos = post.site?.slug?.current === 'transtextos'
 
   const autorRelatos = await getRelatosByAutor(post.author.slug.current)
   const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
@@ -228,6 +233,9 @@ export default async function Page(props: {
 
   return (
     <>
+      {/* Mostrar el header apropiado según el sitio */}
+      {isTranstextos ? <TranstextosHeader /> : <Header />}
+      
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
