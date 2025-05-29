@@ -5,7 +5,7 @@ import 'remark-github-blockquote-alert/alert.css'
 import { Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
-import Header from '@/components/Header'
+import ConditionalHeader from '@/components/ConditionalHeader'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
@@ -147,7 +147,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-            <Header />
+            <ConditionalHeader />
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
               <main className="mb-auto font-serif">{children}</main>
             </SearchProvider>

@@ -53,6 +53,13 @@ interface Relato {
   };
   bgColor?: string;
   publishedAt?: string;
+  site?: {
+    title: string;
+    slug: {
+      current: string;
+    };
+    description: string;
+  };
 }
 
 interface Portada {
@@ -145,11 +152,20 @@ interface Desafio {
   mensajeError: string;
 }
 
+// Interfaz para Site
+interface Site {
+  title: string;
+  description: string;
+  slug: {
+    current: string;
+  };
+}
+
 // Función para obtener los relatos de la portada
 export async function getPortadaRelatos(): Promise<Portada | null> {
   try {
     const result = await client.fetch(`
-      *[_type == "portada"][0] {
+      *[_type == "portada" && (!defined(site) || site->slug.current != "transtextos")][0] {
         pageTitle,
         "relatos": relatos[] -> {
           title,
@@ -434,7 +450,12 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
         "tags": tags[]->title,
         "seriesObj": series->{name, title},
         series,
-        seriesOrder
+        seriesOrder,
+        "site": site-> {
+          title,
+          slug,
+          description
+        }
       }
     `, { slug });
     
@@ -788,7 +809,7 @@ export async function getDesafioById(id: string): Promise<Desafio | null> {
 export async function getAllRelatosForChronological(): Promise<ProyectoFormateado[]> {
   try {
     const relatos = await client.fetch(`
-      *[_type == "relato" && status == "published"] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+      *[_type == "relato" && status == "published" && (!defined(site) || site->slug.current != "transtextos")] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
         title,
         slug,
         summary,
@@ -928,5 +949,108 @@ export async function getRelatedMicrocuentos(slug: string): Promise<{
   } catch (error) {
     console.error(`Error al obtener microcuentos relacionados para "${slug}":`, error);
     return { prev: null, next: null };
+  }
+}
+
+// Función para obtener información de un sitio por slug
+export async function getSiteBySlug(slug: string): Promise<Site | null> {
+  try {
+    const site = await client.fetch(`
+      *[_type == "site" && slug.current == $slug][0] {
+        title,
+        description,
+        slug
+      }
+    `, { slug });
+    
+    return site;
+  } catch (error) {
+    console.error(`Error al obtener sitio "${slug}" desde Sanity:`, error);
+    return null;
+  }
+}
+
+// Función para obtener todos los relatos filtrados por sitio para la vista cronológica
+export async function getAllRelatosForChronologicalBySite(siteSlug: string): Promise<ProyectoFormateado[]> {
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && status == "published" && site->slug.current == $siteSlug] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+        title,
+        slug,
+        summary,
+        image,
+        bgColor,
+        publishedAt,
+        date,
+        "tags": tags[]->title,
+        "author": author-> {
+          name,
+          avatar,
+          slug
+        }
+      }
+    `, { siteSlug });
+    
+    return relatos.map(mapRelatoToProject);
+  } catch (error) {
+    console.error(`Error al obtener relatos para sitio "${siteSlug}":`, error);
+    return [];
+  }
+}
+
+// Función para obtener relatos de la portada filtrados por sitio
+export async function getPortadaRelatosBySite(siteSlug: string): Promise<Portada | null> {
+  try {
+    const result = await client.fetch(`
+      *[_type == "portada" && site->slug.current == $siteSlug][0] {
+        pageTitle,
+        "relatos": relatos[] -> {
+          title,
+          slug,
+          summary,
+          image,
+          bgColor,
+          publishedAt,
+          date,
+          "tags": tags[]->title,
+          "author": author-> {
+            name,
+            avatar,
+            slug
+          }
+        }
+      }
+    `, { siteSlug });
+    return result;
+  } catch (error) {
+    console.error(`Error al consultar portada de sitio "${siteSlug}":`, error);
+    return null;
+  }
+}
+
+// Función para obtener relatos relacionados filtrados por sitio
+export async function getRelatedRelatosBySite(slug: string, siteSlug: string, limit: number = 3): Promise<Relato[]> {
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && slug.current != $slug && site->slug.current == $siteSlug][0...${limit}] {
+        title,
+        slug,
+        date,
+        summary,
+        image,
+        series,
+        seriesOrder,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        }
+      }
+    `, { slug, siteSlug });
+    
+    return relatos;
+  } catch (error) {
+    console.error(`Error al obtener relatos relacionados para "${slug}" en sitio "${siteSlug}":`, error);
+    return [];
   }
 } 
