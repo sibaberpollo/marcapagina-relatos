@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import Link from 'next/link'
 import Image from 'next/image'
+import AutoAvatar from '@/components/AutoAvatar'
 import { readingTimeActivities } from '@/data/readingTimeActivities'
 import { Clock } from 'lucide-react'
 
@@ -85,7 +86,7 @@ export default function FixedNavMenu({
         {/* Main row: avatar, title, reading time, toggle button */}
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center space-x-2">
-            {authorAvatar && (
+            {authorAvatar ? (
               <Link href={`/autor/${author}`}> 
                 <Image
                   src={authorAvatar}
@@ -95,7 +96,15 @@ export default function FixedNavMenu({
                   className="rounded-full"
                 />
               </Link>
-            )}
+            ) : authorName ? (
+              <Link href={`/autor/${author}`}>
+                <AutoAvatar 
+                  name={authorName} 
+                  size={32} 
+                  className="h-8 w-8 rounded-full bg-black text-white font-titles text-sm flex items-center justify-center"
+                />
+              </Link>
+            ) : null}
             <span className="font-medium text-gray-900 dark:text-gray-50">
               {shortenTitle(title)}{' '}
               {readingTime && (() => {

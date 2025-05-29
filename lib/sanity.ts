@@ -788,7 +788,7 @@ export async function getDesafioById(id: string): Promise<Desafio | null> {
 export async function getAllRelatosForChronological(): Promise<ProyectoFormateado[]> {
   try {
     const relatos = await client.fetch(`
-      *[_type == "relato" && status == "published"] | order(publishedAt desc, date desc) {
+      *[_type == "relato" && status == "published"] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
         title,
         slug,
         summary,
