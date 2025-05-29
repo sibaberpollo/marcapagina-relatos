@@ -102,7 +102,7 @@ export default function ChronologicalLayout({
                     {item.authorName}
                   </Link>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 line-clamp-3">
+                <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
                   {item.description}
                 </p>
               </div>

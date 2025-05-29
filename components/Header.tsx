@@ -38,6 +38,12 @@ const Header = () => {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20 relative">
           {/* Redes sociales */}
+          {/* Logo */}
+          <div className="flex items-center mx-0 lg:mx-12 -mt-1">
+            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
+              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
+            </CustomLink>
+          </div>
           <div className="flex items-center gap-6">
             {socialLinks.map((link) =>
               link.href ? (
@@ -54,14 +60,6 @@ const Header = () => {
               ) : null
             )}
           </div>
-
-          {/* Logo */}
-          <div className="flex items-center mx-0 lg:mx-12 -mt-1">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
-          </div>
-
           {/* Navegación y botón destacado */}
           <div className="flex items-center gap-2 ml-auto">
             <div className="hidden lg:flex items-center gap-6">
