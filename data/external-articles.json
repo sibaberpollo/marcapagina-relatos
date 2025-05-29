@@ -1,119 +1,112 @@
-{
-  "authors": {
-    "pino": {
-      "lastUpdated": "2025-05-15T23:43:36.662Z",
-      "articles": [
-        {
-          "id": "964092",
-          "title": "¿Que hace una delivery venezolana en \"El Eternauta\"? Sobrevivir, como siempre",
-          "url": "https://elestimulo.com/ub/opinion/2025-05-15/venezolana-en-el-eternauta/",
-          "image": "https://media.elestimulo.com/uploads/2025/05/eternauta-orianna-1a-520x380.webp",
-          "summary": "",
-          "category": "Opinión",
-          "date": "2025-05-15T17:50:19.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "949835",
-          "title": "Dime que nunca has visto el Festival de Viña sin decirme que nunca has visto el Festival de Viña",
-          "url": "https://elestimulo.com/ub/opinion/2025-02-25/festival-de-vina-gegorge-harris/",
-          "image": "https://media.elestimulo.com/uploads/2025/02/UB-George-Harris-25fEB.2025-Destacado-520x380.webp",
-          "summary": "¿A qué va un humorista venezolano al Festival de Viña? A ser quemado... En la Quinta Vergara siempre demandan sacrificios",
-          "category": "Opinión",
-          "date": "2025-02-25T11:17:30.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "939214",
-          "title": "La insípida \"Cien años de soledad\" te hace suspirar por \"Las Juanas\"",
-          "url": "https://elestimulo.com/ub/opinion/2024-12-27/cien-anos-de-soledad-netflix-2/",
-          "image": "https://media.elestimulo.com/uploads/2024/12/cienanos-2a-520x380.jpg",
-          "summary": "Los responsables de \"Cien años de soledad\" confundieron el realismo mágico con ponerlo todo en sepia",
-          "category": "Opinión",
-          "date": "2024-12-27T08:32:00.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "936621",
-          "title": "Chile: el reclamo de #justiciaparalvarito y la xenofobia real",
-          "url": "https://elestimulo.com/opinion/2024-12-11/xenofobia-chile-venezolanos/",
-          "image": "https://media.elestimulo.com/uploads/2024/12/XENOFOBIA-C-2--520x380.jpg",
-          "summary": "El terrible accidente ocurrido a un niño en un colegio chileno fue manipulado para atizar la xenofobia contra los venezolanos",
-          "category": "Opinión",
-          "date": "2024-12-11T14:56:12.000Z",
-          "source": "El Estímulo"
-        },
-        {
-          "id": "925986",
-          "title": "Navidad con Halloween, arbolitos sin actas",
-          "url": "https://elestimulo.com/opinion/2024-10-19/venezuela-navidad-en-octubre/",
-          "image": "https://media.elestimulo.com/uploads/2024/10/EE-Navidad-opinion-DESTACADO-520x380.jpg",
-          "summary": "Se festeja por decreto en pleno octubre una Navidad que pretende hacernos mirar a otro lado, tal como lo hacen los aliados internacionales, esos revolucionarios que más bien parecen socios comerciales",
-          "category": "Opinión",
-          "date": "2024-10-19T14:21:17.000Z",
-          "source": "El Estímulo"
-        },
-        {
-          "id": "923472",
-          "title": "Hype total: Ca7riel y Paco Amoroso la rompen con su Tiny Desk",
-          "url": "https://elestimulo.com/ub/melomania/2024-10-09/ca7riel-y-paco-amoroso-tiny/",
-          "image": "https://media.elestimulo.com/uploads/2024/10/ca7riel-y-paco-520x380.jpg",
-          "summary": "Si has prestado atención, no puedes sorprenderte del éxito de Ca7riel y Paco Amoroso y de la fiebre que ha disparado su participación en Tiny Desk. ¿Qué es lo que tienen este par de argentinos inclasificables?",
-          "category": "Melomanía",
-          "date": "2024-10-09T16:44:02.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "917456",
-          "title": "El realismo mágico llegó al streaming: ¿será Netflix la nueva Editorial Sudamericana?",
-          "url": "https://elestimulo.com/ub/opinion/2024-09-16/el-realismo-magico-llego-al-streaming/",
-          "image": "https://media.elestimulo.com/uploads/2024/09/cienanosdesoledad-netflix-2a-520x380.jpg",
-          "summary": "¿Así como la editorial que obtuvo el manuscrito de \"Cien años de soledad\" será Netflix el nuevo epicentro de una versión streaming del boom latinoamericano?",
-          "category": "Opinión",
-          "date": "2024-09-16T08:05:00.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "916005",
-          "title": "Ametralladoras y martinis: la liberación de París según Hemingway",
-          "url": "https://elestimulo.com/ub/opinion/2024-09-10/hemingway-en-paris-ritz/",
-          "image": "https://media.elestimulo.com/uploads/2024/09/hemingway-520x380.jpeg",
-          "summary": "Llegó tarde a la liberación de la ciudad, de modo que le tocó hacer otro trabajo duro: así fue como Ernest Hemingway salvó a un ícono de París a fuerza de dry martinis",
-          "category": "Opinión",
-          "date": "2024-09-10T17:13:18.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "915204",
-          "title": "Terraplanismo de izquierda: el comodín ideológico",
-          "url": "https://elestimulo.com/opinion/2024-09-06/terraplanismo-de-izquierda-ideologias/",
-          "image": "https://media.elestimulo.com/uploads/2024/09/che-ortega-sandino-afp-1a-520x380.jpg",
-          "summary": "Cuando hay necesidad de justificar lo injustificable y de negar la realidad, las posiciones extremas o acomodaticias apelan a su terraplanismo: la Tierra es plana, el Che no era homofóbico, no hay contradicción en una \"democracia\" que acumula presos políticos. Y así por el estilo",
-          "category": "Opinión",
-          "date": "2024-09-06T13:06:00.000Z",
-          "source": "El Estímulo"
-        },
-        {
-          "id": "912424",
-          "title": "Macedonia del Norte, la guía de viajes que no sabías que necesitabas",
-          "url": "https://elestimulo.com/ub/viciosidades/2024-08-26/macedonia-del-norte-guia-hackeo/",
-          "image": "https://media.elestimulo.com/uploads/2024/08/Macedonia-Hide-the-Pain-Harold-Meme-Captain-1024x576-1-520x380.jpg",
-          "summary": "Lo nombraron y de repente media Venezuela buscando en Google: Macedonia del Norte. José Pino se puso a curiosear sobre ese país y reunió algunos tips porque por allá no todo es \"hackeo\"",
-          "category": "Viciosidades",
-          "date": "2024-08-26T16:12:42.000Z",
-          "source": "Urbe Bikini"
-        },
-        {
-          "id": "911294",
-          "title": "La hipocresía del \"dictadurasplaining\"",
-          "url": "https://elestimulo.com/opinion/2024-08-21/asi-es-dictadurasplaining/",
-          "image": "https://media.elestimulo.com/uploads/2024/08/EE-Destacado-dictadurasplaning-520x380.jpg",
-          "summary": "En Chile se encontró de frente con el \"dictadurasplaining\" que te quiere ilustrar sobre lo que sí es una verdadera dictadura porque la que tienes en tu país no califica según sus criterios ideológicos y conveniencias. Y desde allá, José Pino advierte sobre esta evidente forma de relativismo moral",
-          "category": "Opinión",
-          "date": "2024-08-21T11:48:56.000Z",
-          "source": "El Estímulo"
-        }
-      ]
-    }
+[
+  {
+    "id": "964092",
+    "title": "¿Que hace una delivery venezolana en \"El Eternauta\"? Sobrevivir, como siempre",
+    "url": "https://elestimulo.com/ub/opinion/2025-05-15/venezolana-en-el-eternauta/",
+    "image": "https://media.elestimulo.com/uploads/2025/05/eternauta-orianna-1a-520x380.webp",
+    "summary": "",
+    "category": "Opinión",
+    "date": "2025-05-15T17:50:19.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "949835",
+    "title": "Dime que nunca has visto el Festival de Viña sin decirme que nunca has visto el Festival de Viña",
+    "url": "https://elestimulo.com/ub/opinion/2025-02-25/festival-de-vina-gegorge-harris/",
+    "image": "https://media.elestimulo.com/uploads/2025/02/UB-George-Harris-25fEB.2025-Destacado-520x380.webp",
+    "summary": "¿A qué va un humorista venezolano al Festival de Viña? A ser quemado... En la Quinta Vergara siempre demandan sacrificios",
+    "category": "Opinión",
+    "date": "2025-02-25T11:17:30.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "939214",
+    "title": "La insípida \"Cien años de soledad\" te hace suspirar por \"Las Juanas\"",
+    "url": "https://elestimulo.com/ub/opinion/2024-12-27/cien-anos-de-soledad-netflix-2/",
+    "image": "https://media.elestimulo.com/uploads/2024/12/cienanos-2a-520x380.jpg",
+    "summary": "Los responsables de \"Cien años de soledad\" confundieron el realismo mágico con ponerlo todo en sepia",
+    "category": "Opinión",
+    "date": "2024-12-27T08:32:00.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "936621",
+    "title": "Chile: el reclamo de #justiciaparalvarito y la xenofobia real",
+    "url": "https://elestimulo.com/opinion/2024-12-11/xenofobia-chile-venezolanos/",
+    "image": "https://media.elestimulo.com/uploads/2024/12/XENOFOBIA-C-2--520x380.jpg",
+    "summary": "El terrible accidente ocurrido a un niño en un colegio chileno fue manipulado para atizar la xenofobia contra los venezolanos",
+    "category": "Opinión",
+    "date": "2024-12-11T14:56:12.000Z",
+    "source": "El Estímulo"
+  },
+  {
+    "id": "925986",
+    "title": "Navidad con Halloween, arbolitos sin actas",
+    "url": "https://elestimulo.com/opinion/2024-10-19/venezuela-navidad-en-octubre/",
+    "image": "https://media.elestimulo.com/uploads/2024/10/EE-Navidad-opinion-DESTACADO-520x380.jpg",
+    "summary": "Se festeja por decreto en pleno octubre una Navidad que pretende hacernos mirar a otro lado, tal como lo hacen los aliados internacionales, esos revolucionarios que más bien parecen socios comerciales",
+    "category": "Opinión",
+    "date": "2024-10-19T14:21:17.000Z",
+    "source": "El Estímulo"
+  },
+  {
+    "id": "923472",
+    "title": "Hype total: Ca7riel y Paco Amoroso la rompen con su Tiny Desk",
+    "url": "https://elestimulo.com/ub/melomania/2024-10-09/ca7riel-y-paco-amoroso-tiny/",
+    "image": "https://media.elestimulo.com/uploads/2024/10/ca7riel-y-paco-520x380.jpg",
+    "summary": "Si has prestado atención, no puedes sorprenderte del éxito de Ca7riel y Paco Amoroso y de la fiebre que ha disparado su participación en Tiny Desk. ¿Qué es lo que tienen este par de argentinos inclasificables?",
+    "category": "Melomanía",
+    "date": "2024-10-09T16:44:02.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "917456",
+    "title": "El realismo mágico llegó al streaming: ¿será Netflix la nueva Editorial Sudamericana?",
+    "url": "https://elestimulo.com/ub/opinion/2024-09-16/el-realismo-magico-llego-al-streaming/",
+    "image": "https://media.elestimulo.com/uploads/2024/09/cienanosdesoledad-netflix-2a-520x380.jpg",
+    "summary": "¿Así como la editorial que obtuvo el manuscrito de \"Cien años de soledad\" será Netflix el nuevo epicentro de una versión streaming del boom latinoamericano?",
+    "category": "Opinión",
+    "date": "2024-09-16T08:05:00.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "916005",
+    "title": "Ametralladoras y martinis: la liberación de París según Hemingway",
+    "url": "https://elestimulo.com/ub/opinion/2024-09-10/hemingway-en-paris-ritz/",
+    "image": "https://media.elestimulo.com/uploads/2024/09/hemingway-520x380.jpeg",
+    "summary": "Llegó tarde a la liberación de la ciudad, de modo que le tocó hacer otro trabajo duro: así fue como Ernest Hemingway salvó a un ícono de París a fuerza de dry martinis",
+    "category": "Opinión",
+    "date": "2024-09-10T17:13:18.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "915204",
+    "title": "Terraplanismo de izquierda: el comodín ideológico",
+    "url": "https://elestimulo.com/opinion/2024-09-06/terraplanismo-de-izquierda-ideologias/",
+    "image": "https://media.elestimulo.com/uploads/2024/09/che-ortega-sandino-afp-1a-520x380.jpg",
+    "summary": "Cuando hay necesidad de justificar lo injustificable y de negar la realidad, las posiciones extremas o acomodaticias apelan a su terraplanismo: la Tierra es plana, el Che no era homofóbico, no hay contradicción en una \"democracia\" que acumula presos políticos. Y así por el estilo",
+    "category": "Opinión",
+    "date": "2024-09-06T13:06:00.000Z",
+    "source": "El Estímulo"
+  },
+  {
+    "id": "912424",
+    "title": "Macedonia del Norte, la guía de viajes que no sabías que necesitabas",
+    "url": "https://elestimulo.com/ub/viciosidades/2024-08-26/macedonia-del-norte-guia-hackeo/",
+    "image": "https://media.elestimulo.com/uploads/2024/08/Macedonia-Hide-the-Pain-Harold-Meme-Captain-1024x576-1-520x380.jpg",
+    "summary": "Lo nombraron y de repente media Venezuela buscando en Google: Macedonia del Norte. José Pino se puso a curiosear sobre ese país y reunió algunos tips porque por allá no todo es \"hackeo\"",
+    "category": "Viciosidades",
+    "date": "2024-08-26T16:12:42.000Z",
+    "source": "Urbe Bikini"
+  },
+  {
+    "id": "911294",
+    "title": "La hipocresía del \"dictadurasplaining\"",
+    "url": "https://elestimulo.com/opinion/2024-08-21/asi-es-dictadurasplaining/",
+    "image": "https://media.elestimulo.com/uploads/2024/08/EE-Destacado-dictadurasplaning-520x380.jpg",
+    "summary": "En Chile se encontró de frente con el \"dictadurasplaining\" que te quiere ilustrar sobre lo que sí es una verdadera dictadura porque la que tienes en tu país no califica según sus criterios ideológicos y conveniencias. Y desde allá, José Pino advierte sobre esta evidente forma de relativismo moral",
+    "category": "Opinión",
+    "date": "2024-08-21T11:48:56.000Z",
+    "source": "El Estímulo"
   }
-}
+]

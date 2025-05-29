@@ -1,49 +1,21 @@
 import 'css/prism.css'
 import 'katex/dist/katex.css'
 
-import { components } from '@/components/MDXComponents'
-import { MDXLayoutRenderer } from 'pliny/mdx-components'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
 import { notFound } from 'next/navigation'
-import Link from 'next/link'
+import Header from '@/components/Header'
+import TranstextosHeader from '@/components/TranstextosHeader'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { getArticuloBySlug, getArticulosByAutor, getAllArticulos } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
+import { ptComponents } from '@/components/PortableTextComponents'
 
 const defaultLayout = 'PostLayout'
 const layouts = { PostSimple, PostLayout, PostBanner }
-
-// Componentes personalizados para el PortableText de Sanity
-const ptComponents = {
-  types: {
-    image: ({value}: any) => (
-      <img 
-        src={value.imageUrl || value.asset?.url} 
-        alt={value.alt || ''} 
-        className="w-full rounded-lg my-4"
-      />
-    ),
-    callout: ({value}: any) => (
-      <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
-        <p className="italic">{value.text}</p>
-      </div>
-    )
-  },
-  marks: {
-    link: ({value, children}: any) => {
-      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined
-      return (
-        <a href={value?.href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : ''}>
-          {children}
-        </a>
-      )
-    }
-  }
-} as any // Usamos as any para evitar errores de tipado
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>

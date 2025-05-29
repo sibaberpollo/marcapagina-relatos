@@ -40,11 +40,11 @@ function loadExternalArticles(authorSlug: string): ExternalArticle[] {
   try {
     const filePath = path.join(process.cwd(), 'data', 'external-articles.json');
     const fileContent = fs.readFileSync(filePath, 'utf8');
-    const data = JSON.parse(fileContent);
+    const articles = JSON.parse(fileContent);
     
-    // Verificar si tenemos artículos para este autor
-    if (data.authors && data.authors[authorSlug]) {
-      return data.authors[authorSlug].articles;
+    // El archivo ahora es un array directo de artículos
+    if (Array.isArray(articles)) {
+      return articles;
     }
     
     return [];

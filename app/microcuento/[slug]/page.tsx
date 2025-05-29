@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import { getMicrocuentoBySlug, getRelatedMicrocuentos, getAllMicrocuentoSlugs } from '@/lib/sanity'
 import AlternativeLayout from '@/layouts/AlternativeLayout'
 import { PortableText } from '@portabletext/react'
+import { ptComponents } from '@/components/PortableTextComponents'
 import siteMetadata from '@/data/siteMetadata'
 
 interface PageProps {
@@ -60,7 +61,7 @@ export default async function MicrocuentoPage({ params }: PageProps) {
       prev={prev || undefined}
       next={next || undefined}
     >
-      <PortableText value={microcuento.body} />
+      <PortableText value={microcuento.body} components={ptComponents} />
     </AlternativeLayout>
   )
 } 

@@ -219,6 +219,24 @@ export const Authors = defineDocumentType(() => ({
   computedFields,
 }))
 
+// External articles en external-articles.json
+// COMENTADO: Se lee manualmente en app/autor/[slug]/page.tsx
+// export const ExternalArticle = defineDocumentType(() => ({
+//   name: 'ExternalArticle',
+//   filePathPattern: 'external-articles.json',
+//   contentType: 'data',
+//   fields: {
+//     id: { type: 'string', required: true },
+//     title: { type: 'string', required: true },
+//     url: { type: 'string', required: true },
+//     image: { type: 'string', required: false },
+//     summary: { type: 'string', required: true },
+//     category: { type: 'string', required: true },
+//     date: { type: 'string', required: true },
+//     source: { type: 'string', required: true }
+//   }
+// }))
+
 export default makeSource({
   contentDirPath: 'data',
   documentTypes: [Blog, Relato, Articulo, Authors],

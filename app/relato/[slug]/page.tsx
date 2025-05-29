@@ -13,49 +13,12 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import CustomTooltip from '@/components/CustomTooltip'
 import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
+import { ptComponents } from '@/components/PortableTextComponents'
 
 const defaultLayout = 'PostLayout'
 const layouts = { PostSimple, PostLayout, PostBanner }
-
-// Componentes personalizados para el PortableText de Sanity
-const ptComponents = {
-  types: {
-    image: ({ value }: any) => (
-      <div className="w-full my-4 overflow-hidden rounded-lg">
-        <img
-          src={value.asset.url}
-          alt={value.alt || "Imagen del relato"}
-          className="w-full h-[120px] object-contain object-center"
-        />
-      </div>
-    ),
-    callout: ({ value }: any) => (
-      <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
-        <p className="italic">{value.text}</p>
-      </div>
-    )
-  },
-  marks: {
-    link: ({ value, children }: any) => {
-      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined
-      return (
-        <a
-          href={value?.href}
-          target={target}
-          rel={target === '_blank' ? 'noopener noreferrer' : undefined}
-        >
-          {children}
-        </a>
-      )
-    },
-    tooltip: ({ value, children }: any) => {
-      return <CustomTooltip text={String(children)} tooltip={value.tooltipText} />
-    }
-  }
-} as any
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>

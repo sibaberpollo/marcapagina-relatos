@@ -1,35 +1,8 @@
 import React, { useEffect } from 'react'
-import Image from 'next/image'
 import Link from 'next/link'
+import Image from 'next/image'
 import { PortableText } from '@portabletext/react'
-
-// Componentes personalizados para el PortableText de Sanity
-const ptComponents = {
-  types: {
-    image: ({value}: any) => (
-      <img 
-        src={value.imageUrl || value.asset?.url} 
-        alt={value.alt || ''} 
-        className="w-full rounded-lg my-4"
-      />
-    ),
-    callout: ({value}: any) => (
-      <div className="p-4 bg-gray-100 dark:bg-gray-800 rounded-lg my-4">
-        <p className="italic">{value.text}</p>
-      </div>
-    )
-  },
-  marks: {
-    link: ({value, children}: any) => {
-      const target = (value?.href || '').startsWith('http') ? '_blank' : undefined
-      return (
-        <a href={value?.href} target={target} rel={target === '_blank' ? 'noopener noreferrer' : ''}>
-          {children}
-        </a>
-      )
-    }
-  }
-} as any
+import { ptComponents } from './PortableTextComponents'
 
 type RelatoDesafioProps = {
   relato: any
