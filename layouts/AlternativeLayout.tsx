@@ -93,7 +93,7 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
               </div>
             </div>
 
-            {/* Footer */}
+            {/* Footer import */}
             <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
               {/* Autor */}
               <div className="flex items-center gap-3 mb-6">
