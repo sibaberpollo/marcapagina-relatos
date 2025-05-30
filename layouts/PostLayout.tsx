@@ -1,5 +1,5 @@
 // layouts/PostLayout.tsx
-import { ReactNode } from 'react'
+import React, { ReactNode } from 'react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import type { Authors } from 'contentlayer/generated'
 import Comments from '@/components/Comments'
@@ -33,7 +33,12 @@ interface LayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children }: LayoutProps) {
+interface PostLayoutProps extends LayoutProps {
+  showDropCap?: boolean;
+  autor?: { name: string; slug: string } | null;
+}
+
+export default function PostLayout({ content, authorDetails, next, prev, children, showDropCap = true, autor }: PostLayoutProps) {
   const { filePath, path, slug, date, title, tags, series, image, bgColor, publishedAt } = content as any
   const relativeTime = publishedAt ? getRelativeTime(publishedAt) : null
   // Determinar si es relato o artículo según la ruta
@@ -71,6 +76,17 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     </dd>
                   </div>
                 </dl>
+                {autor && autor.name && autor.slug && (
+                  <div className="mb-2 text-[16px] font-semibold text-gray-900 dark:text-gray-100 flex justify-center">
+                    <a
+                      href={`/autor/${autor.slug}`}
+                      className="hover:underline text-gray-900 dark:text-gray-100 text-center"
+                      style={{ display: 'inline-block' }}
+                    >
+                      {autor.name}
+                    </a>
+                  </div>
+                )}
                 <div>
                   <PageTitle>{title}</PageTitle>
                 </div>
@@ -144,38 +160,69 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
 
               <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
                 <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                  <div className="prose prose-lg max-w-none">
-                    <div 
-                      className="first-letter:float-left first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:leading-[0.8]"
-                      style={{ 
-                        '--tw-first-letter-color': bgColor
-                      } as any}
-                    >
-                      <style dangerouslySetInnerHTML={{ __html: `
-                        .prose > div::first-letter {
-                          color: ${bgColor} !important;
+                  {showDropCap ? (
+                    <div className="prose dark:prose-invert max-w-none">
+                      {(() => {
+                        // Si children es un solo div (como PortableText suele hacer), aplica drop-cap al primer <p>
+                        if (
+                          children &&
+                          typeof children === 'object' &&
+                          'type' in children &&
+                          children.type === 'div' &&
+                          Array.isArray(children.props?.children)
+                        ) {
+                          const innerChildren = children.props.children;
+                          return (
+                            <div {...children.props}>
+                              {innerChildren.map((child, idx) => {
+                                if (idx === 0 && React.isValidElement(child) && child.type === 'p') {
+                                  const childEl = child as React.ReactElement<{ className?: string }>;
+                                  return React.cloneElement(childEl, {
+                                    className: (childEl.props.className || '') + ' drop-cap',
+                                  });
+                                }
+                                return child;
+                              })}
+                            </div>
+                          );
                         }
-                      `}} />
-                      {children}
+                        // Si es un array de elementos
+                        if (Array.isArray(children) && children.length > 0) {
+                          return (
+                            <>
+                              {React.isValidElement(children[0])
+                                ? React.cloneElement(children[0], {
+                                    className: (children[0].props.className || '') + ' drop-cap',
+                                  })
+                                : children[0]}
+                              {children.slice(1)}
+                            </>
+                          );
+                        }
+                        // Caso simple
+                        return children;
+                      })()}
                     </div>
-                    {tags && tags.length > 0 && (
-                      <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-                        <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
-                          Tags
-                        </h2>
-                        <div className="flex flex-wrap gap-2">
-                          {tags.map((tag: string) => (
-                            <span
-                              key={tag}
-                              className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-black text-white"
-                            >
-                              {tag}
-                            </span>
-                          ))}
-                        </div>
+                  ) : (
+                    <div className="prose dark:prose-invert max-w-none">{children}</div>
+                  )}
+                  {tags && tags.length > 0 && (
+                    <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
+                      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+                        Tags
+                      </h2>
+                      <div className="flex flex-wrap gap-2">
+                        {tags.map((tag: string) => (
+                          <span
+                            key={tag}
+                            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-black text-white"
+                          >
+                            {tag}
+                          </span>
+                        ))}
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
                 </div>
               </div>
 

@@ -1,4 +1,5 @@
 import { createClient } from 'next-sanity';
+import { cleanEmoji } from './cleanEmoji';
 
 export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -60,6 +61,7 @@ interface Relato {
     };
     description: string;
   };
+  showDropCap?: boolean;
 }
 
 interface Portada {
@@ -451,6 +453,7 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
         "seriesObj": series->{name, title},
         series,
         seriesOrder,
+        showDropCap,
         "site": site-> {
           title,
           slug,
@@ -460,6 +463,8 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
     `, { slug });
     
     if (relato) {
+      // Limpiar título de emojis
+      relato.title = cleanEmoji(relato.title);
       // Calcular tiempo de lectura basado en el contenido
       relato.readingTime = calcularTiempoLectura(relato.body);
     }
@@ -562,7 +567,7 @@ export async function getSerieDeRelato(slug: string): Promise<{
     
     return {
       serie,
-      relatosDeSerie: serie.relatos
+      relatosDeSerie: serie.relatos.map(r => ({ ...r, title: cleanEmoji(r.title) }))
     };
   } catch (error) {
     console.error(`Error al obtener serie para el relato "${slug}":`, error);

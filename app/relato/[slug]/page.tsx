@@ -1,6 +1,7 @@
 // app/relato/[slug]/page.tsx
 import 'css/prism.css'
 import 'katex/dist/katex.css'
+import 'css/drop-cap.css'
 
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
@@ -79,6 +80,10 @@ export default async function Page(props: {
 
   const autorRelatos = await getRelatosByAutor(post.author.slug.current)
   const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
+
+  // Nuevo: preparar props para el layout
+  const showDropCap = post.showDropCap === true
+  const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null;
 
   let prev: { path: string; title: string } | undefined
   let next: { path: string; title: string } | undefined
@@ -208,6 +213,8 @@ export default async function Page(props: {
         authorDetails={authorDetails}
         next={next}
         prev={prev}
+        autor={autor}
+        showDropCap={showDropCap}
       >
         <div className="prose dark:prose-invert max-w-none">
           <PortableText value={post.body} components={ptComponents} />
