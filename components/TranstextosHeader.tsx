@@ -26,6 +26,7 @@ const socialLinks = [
 const navLinks = [
   { title: '← Marcapágina', href: '/' },
   { title: 'Inicio', href: '/transtextos' },
+  { title: 'Autores', href: '/autores?filter=transtextos' },
   { title: 'Acerca de Transtextos', href: '/transtextos/acerca-de' },
 ];
 

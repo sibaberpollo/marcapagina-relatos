@@ -27,7 +27,8 @@ const socialLinks = [
 const navLinks = [
   { title: 'Todos los relatos', href: '/cronologico' },
   { title: 'Criterios', href: '/criterios-editoriales' },
-  { title: 'Transtextos →', href: '/transtextos' },
+  { title: 'Transtextos', href: '/transtextos' },
+  { title: 'Autores', href: '/autores' },
   { title: 'Acerca de', href: '/acerca-de' },
 ];
 

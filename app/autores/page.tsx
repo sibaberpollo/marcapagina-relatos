@@ -9,11 +9,11 @@ export const metadata = genPageMetadata({
 })
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function AutoresPage({ searchParams }: PageProps) {
-  const params = await Promise.resolve(searchParams)
+  const params = await searchParams
   const filter = (params.filter as string) || 'todos'
   const allAutores = await getAllAutores()
   
