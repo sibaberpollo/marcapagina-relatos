@@ -28,6 +28,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: today,
     },
     {
+      url: `${siteUrl}/autores`, // la nueva página de autores
+      lastModified: today,
+    },
+    {
       url: `${siteUrl}/criterios-editoriales`, // la página de criterios editoriales
       lastModified: today,
     },
