@@ -95,7 +95,7 @@ export default async function Page() {
               Bienvenido a <strong>MarcaPágina</strong>, antes una revista de literatura, ahora una app para leer literatura. Más de{' '}
               <strong>
                 <a
-                  href="/transtextos/"
+                  href="/cronologico/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                 >300 relatos de ficción contemporánea
                 </a></strong> y <strong>microcuentos</strong>. Explora historias inéditas, escritas por autores emergentes de América Latina.
