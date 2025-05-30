@@ -1,7 +1,34 @@
 import { getSiteBySlug } from '../../../lib/sanity'
 import SectionContainer from '@/components/SectionContainer'
 import SlowConnectionBanner from '@/components/SlowConnectionBanner'
-import { PageSEO } from '@/components/SEO'
+import { genPageMetadata } from 'app/seo'
+import type { Metadata } from 'next'
+
+export const revalidate = 60 // opcional: cachea SSR 60s
+
+/** Genera la metadata para SEO y Open Graph */
+export async function generateMetadata(): Promise<Metadata> {
+  const siteInfo = await getSiteBySlug('transtextos')
+  const isTranstextos = siteInfo?.slug?.current === 'transtextos'
+
+  const title = isTranstextos
+    ? 'Transtextos: relatos y narrativa contemporánea | marcapagina.page'
+    : `Acerca de ${siteInfo?.title || 'Transtextos'}`
+
+  const description = isTranstextos
+    ? 'Editado desde Buenos Aires, Barcelona y Caracas. Fundado por Javier Miranda-Luque (1959–2023), Transtextos publica relatos propios y de autores invitados.'
+    : siteInfo?.description || 'Relatos y narrativas de Transtextos'
+
+  const ogImage =
+    'https://res.cloudinary.com/dx98vnos1/image/upload/v1748548890/share_hongo_sjugcw.jpg'
+
+  return genPageMetadata({
+    title,
+    description,
+    openGraph: { images: [ogImage] },
+    twitter:   { images: [ogImage] },
+  })
+}
 
 export default async function TranstextosAcercaDePage() {
   // Obtener información del sitio Transtextos
@@ -9,13 +36,6 @@ export default async function TranstextosAcercaDePage() {
   
   return (
     <>
-      <PageSEO
-        title={`Acerca de ${siteInfo?.title || 'Transtextos'}`}
-        description={siteInfo?.description || 'Relatos y narrativas de Transtextos'}
-        ogType="website"
-        ogImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1748548890/share_hongo_sjugcw.jpg"
-        twImage="https://res.cloudinary.com/dx98vnos1/image/upload/v1748548890/share_hongo_sjugcw.jpg"
-      />
       <SlowConnectionBanner />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
