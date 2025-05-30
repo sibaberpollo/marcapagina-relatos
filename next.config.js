@@ -65,7 +65,6 @@ module.exports = () => {
     trailingSlash: false,
     pageExtensions: ['ts', 'tsx', 'js', 'jsx', 'md', 'mdx'],
 
-    // Configuración de ESLint
     eslint: {
       dirs: ['app', 'components', 'layouts', 'scripts'],
       ignoreDuringBuilds: true,
@@ -87,6 +86,22 @@ module.exports = () => {
         {
           source: '/(.*)',
           headers: securityHeaders,
+        },
+      ]
+    },
+
+    async redirects() {
+      return [
+        {
+          source: '/',
+          has: [
+            {
+              type: 'host',
+              value: 'transtextos.marcapagina.page',
+            },
+          ],
+          destination: 'https://www.marcapagina.page/transtextos',
+          permanent: true,
         },
       ]
     },
