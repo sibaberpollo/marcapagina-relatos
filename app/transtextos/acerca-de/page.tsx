@@ -16,7 +16,7 @@ export async function generateMetadata(): Promise<Metadata> {
     : `Acerca de ${siteInfo?.title || 'Transtextos'}`
 
   const description = isTranstextos
-    ? 'Editado desde Buenos Aires, Barcelona y Caracas. Fundado por Javier Miranda-Luque (1959–2023), Transtextos publica relatos propios y de autores invitados.'
+    ? 'Desde 2023, Transtextos funciona como archivo literario del proyecto fundado por Javier Miranda-Luque (1959–2023). Relatos desde Buenos Aires, Barcelona y Caracas.'
     : siteInfo?.description || 'Relatos y narrativas de Transtextos'
 
   const ogImage =
@@ -26,14 +26,13 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     openGraph: { images: [ogImage] },
-    twitter:   { images: [ogImage] },
+    twitter: { images: [ogImage] },
   })
 }
 
 export default async function TranstextosAcercaDePage() {
-  // Obtener información del sitio Transtextos
   const siteInfo = await getSiteBySlug('transtextos')
-  
+
   return (
     <>
       <SlowConnectionBanner />
@@ -43,39 +42,50 @@ export default async function TranstextosAcercaDePage() {
             Acerca de {siteInfo?.title || 'Transtextos'}
           </h1>
         </div>
-        
-        <div className="prose dark:prose-invert max-w-none">
+
+        <div className="prose dark:prose-invert max-w-none [&_a]:!text-black dark:[&_a]:text-white [&_a:hover]:!text-gray-600 dark:[&_a:hover]:text-gray-400">
           <div className="text-lg leading-7 text-gray-700 dark:text-gray-300 space-y-6">
-            {siteInfo?.description ? (
-              <p>{siteInfo.description}</p>
-            ) : (
-              <div>
-                <p>
-                  Transtextos es una plataforma dedicada a la narrativa contemporánea, 
-                  donde convergen diferentes voces y estilos literarios.
-                </p>
-                
-                <p>
-                  Nuestro objetivo es crear un espacio de encuentro entre autores y lectores, 
-                  promoviendo la diversidad narrativa y la experimentación literaria.
-                </p>
-                
-                <p>
-                  Cada relato publicado en Transtextos ha sido cuidadosamente seleccionado 
-                  por su calidad literaria y su capacidad de conectar con los lectores 
-                  a través de historias únicas y memorables.
-                </p>
-              </div>
-            )}
-            
-            <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-              <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-gray-50">
-                Colaboración
-              </h2>
+            <div>
               <p>
-                Si estás interesado en contribuir con tus relatos o formar parte de la 
-                comunidad de Transtextos, no dudes en contactarnos. Siempre estamos 
-                buscando nuevas voces que enriquezcan nuestra plataforma.
+                <strong>Transtextos</strong> es un archivo literario de relatos, 
+                cuentos breves y textos contemporáneos iniciado por el escritor y 
+                periodista{' '}
+                <a
+                  href="https://es.wikipedia.org/wiki/Javier_Miranda_Luque"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  Javier Miranda-Luque (1959–2023)
+                </a>
+                . Desde 2023, funciona como subsitio de{' '}
+                <a
+                  href="https://www.marcapagina.page"
+                >
+                  MarcaPágina
+                </a>
+                .
+              </p>
+
+              <p>
+                Editado entre Buenos Aires, Barcelona y Caracas, el archivo 
+                conserva la apuesta de Javier por una literatura experimental, 
+                plural y disponible en línea de forma libre, incluyendo relatos 
+                inéditos de él y de colaboradores invitados.
+              </p>
+
+              <p>
+                Su propuesta nació de la intuición de que el lenguaje escrito 
+                podía volver a ser un laboratorio de intensidad, si se aprovechaban 
+                las posibilidades de los nuevos medios y se liberaba a los textos 
+                del corsé editorial tradicional. 
+              </p>
+
+              <p>
+                Si deseas contribuir, puedes revisar nuestra{' '}
+                <a href="https://www.marcapagina.page/publica">
+                  convocatoria abierta
+                </a>
+                .
               </p>
             </div>
           </div>
@@ -83,4 +93,4 @@ export default async function TranstextosAcercaDePage() {
       </SectionContainer>
     </>
   )
-} 
+}
