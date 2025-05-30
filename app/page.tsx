@@ -82,33 +82,27 @@ export default async function Page() {
     <>
       <ClientRedirect />
       <SectionContainer>
-        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
+      <div className="space-y-2 pt-6 pb-4 md:space-y-5">
+          <h1
+            className="text-xl leading-8 font-extrabold tracking-tight text-gray-900
+                      dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
+          >
             Relatos
           </h1>
-          <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-            {(() => {
-              const desc = siteMetadata.descriptionRich;
-              const match = desc.match(/(.*?)(\(2009 ~ 2014 → 2025 ➔ ∞\))/);
-              if (match) {
-                const HighlightStroke = require('@/components/HighlightStroke').default;
-                return <>
-                  {match[1]}
-                  <HighlightStroke>
-                    <a
-                      href="/acerca-de/"
-                      className="hover:text-gray-800 dark:text-gray-900"
-                    >
-                      {match[2]}
-                    </a>
-                  </HighlightStroke>
-                </>;
-              }
-              return desc;
-            })()}
-          </p>
+
+          <div className="prose dark:prose-invert max-w-none mb-4">
+            <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
+              Bienvenido a <strong>MarcaPágina</strong>, antes una revista de literatura, ahora una app para leer literatura. Más de{' '}
+              <strong>
+                <a
+                  href="/transtextos/"
+                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
+                >300 relatos de ficción contemporánea
+                </a></strong> y <strong>microcuentos</strong>. Explora historias inéditas, escritas por autores emergentes de América Latina.
+            </p>
+          </div>
         </div>
-        
+          
         {/* Botones de cambio de vista */}
         <ViewToggle />
         
