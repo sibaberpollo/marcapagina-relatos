@@ -169,12 +169,13 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           typeof children === 'object' &&
                           'type' in children &&
                           children.type === 'div' &&
-                          Array.isArray(children.props?.children)
+                          React.isValidElement(children) &&
+                          React.isValidElement(children) && Array.isArray((children as React.ReactElement<any>).props?.children)
                         ) {
-                          const innerChildren = children.props.children;
+                          const innerChildren = (children as React.ReactElement<any>).props.children;
                           return (
-                            <div {...children.props}>
-                              {innerChildren.map((child, idx) => {
+                            <div {...(children as React.ReactElement<any>).props}>
+                              {(innerChildren as React.ReactNode[]).map((child, idx) => {
                                 if (idx === 0 && React.isValidElement(child) && child.type === 'p') {
                                   const childEl = child as React.ReactElement<{ className?: string }>;
                                   return React.cloneElement(childEl, {
@@ -191,9 +192,12 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                           return (
                             <>
                               {React.isValidElement(children[0])
-                                ? React.cloneElement(children[0], {
-                                    className: (children[0].props.className || '') + ' drop-cap',
-                                  })
+                                ? React.cloneElement(
+                                    children[0] as React.ReactElement<{ className?: string }>,
+                                    {
+                                      className: ((children[0] as React.ReactElement<{ className?: string }> ).props.className || '') + ' drop-cap',
+                                    }
+                                  )
                                 : children[0]}
                               {children.slice(1)}
                             </>
