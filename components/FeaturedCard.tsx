@@ -3,6 +3,7 @@
 import Image from './Image'
 import Link from './Link'
 import { getRelativeTime } from '@/lib/time'
+import { toVersal } from '@/lib/utils'
 
 interface FeaturedCardProps {
   title: string
@@ -30,6 +31,7 @@ export default function FeaturedCard({
   publishedAt
 }: FeaturedCardProps) {
   const relativeTime = getRelativeTime(publishedAt)
+  const formattedTitle = toVersal(title)
 
   return (
     <div className="group relative h-full">
@@ -59,7 +61,11 @@ export default function FeaturedCard({
           </div>
           <div className="flex flex-col mt-auto">
             <div className="px-6 mb-2">
-              <h1 className="text-2xl font-bold text-black mb-1 leading-tight">{title}</h1>
+              <h2 className="text-xl font-bold leading-8 tracking-tight">
+                <Link href={href} className="text-gray-900 dark:text-gray-100">
+                  {formattedTitle}
+                </Link>
+              </h2>
               <p className="text-base text-black/90 line-clamp-2 text-left">{description}</p>
             </div>
             <div 

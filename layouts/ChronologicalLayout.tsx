@@ -1,6 +1,7 @@
 'use client'
 
 import Link from '@/components/Link'
+import { toVersal } from '@/lib/utils'
 
 interface RelatoItem {
   title: string
@@ -73,6 +74,7 @@ export default function ChronologicalLayout({
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       {currentItems.map((item, index) => {
         const { day, month } = formatDate(item.publishedAt)
+        const formattedTitle = toVersal(item.title)
         
         return (
           <article key={index} className="py-6">
@@ -94,7 +96,7 @@ export default function ChronologicalLayout({
                     href={item.href}
                     className="text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400"
                   >
-                    {item.title}
+                    {formattedTitle}
                   </Link>
                 </h2>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
