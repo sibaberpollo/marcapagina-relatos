@@ -3,7 +3,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, Menu, X as Close } from 'lucide-react'
+import { Instagram, Menu, X as Close, Rss } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 
@@ -27,7 +27,11 @@ const socialLinks = [
 const navLinks = [
   { title: 'Todos los relatos', href: '/cronologico' },
   { title: 'Criterios', href: '/criterios-editoriales' },
-  { title: 'Transtextos', href: '/transtextos' },
+  { 
+    title: 'Transtextos', 
+    href: '/transtextos',
+    icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />
+  },
   { title: 'Autores', href: '/autores' },
   { title: 'Acerca de', href: '/acerca-de' },
 ];
@@ -71,7 +75,10 @@ const Header = () => {
                   href={link.href}
                   className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
                 >
-                  {link.title}
+                  <span className="flex items-center">
+                    {link.title}
+                    {link.icon}
+                  </span>
                 </CustomLink>
               ))}
               <ThemeToggle />
@@ -121,7 +128,10 @@ const Header = () => {
                       className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors"
                       onClick={() => setOpen(false)}
                     >
-                      {link.title}
+                      <span className="flex items-center">
+                        {link.title}
+                        {link.icon}
+                      </span>
                     </CustomLink>
                   ))}
                 </nav>

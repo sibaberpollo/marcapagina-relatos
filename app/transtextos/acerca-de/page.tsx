@@ -57,11 +57,11 @@ export default async function TranstextosAcercaDePage() {
                 >
                   Javier Miranda-Luque (1959–2023)
                 </a>
-                . Ahora funcionará como subsitio de{' '}
+                . Ahora funcionará como subsitio de la aplicación{' '}
                 <a
                   href="https://www.marcapagina.page"
                 >
-                  MarcaPágina
+                   MarcaPágina
                 </a>
                 .
               </p>
