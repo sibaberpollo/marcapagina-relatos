@@ -144,7 +144,7 @@ export default function RootLayout({
       <body
         className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
       >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
+        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
