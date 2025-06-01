@@ -181,7 +181,7 @@ export default async function Page() {
             </div>
             
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 auto-rows-fr">
-              {allMicrocuentos.slice(0, 6).map((microcuento, index) => (
+              {allMicrocuentos.slice(0, 3).map((microcuento, index) => (
                 <div key={index} className="flex h-full">
                   <MicrocuentoCard
                     title={microcuento.title}
