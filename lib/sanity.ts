@@ -1,5 +1,6 @@
 import { createClient } from 'next-sanity';
 import { cleanEmoji } from './cleanEmoji';
+import { toVersal } from './utils';
 
 export const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID;
 export const dataset = process.env.NEXT_PUBLIC_SANITY_DATASET;
@@ -296,7 +297,11 @@ export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
       }
     `, { autorSlug });
     
-    return relatos;
+    // Limpiar títulos de emojis y convertir a versales
+    return relatos.map(relato => ({
+      ...relato,
+      title: toVersal(cleanEmoji(relato.title))
+    }));
   } catch (error) {
     console.error(`Error al obtener relatos del autor "${autorSlug}" desde Sanity:`, error);
     return [];
@@ -339,7 +344,7 @@ function mapRelatoToProject(relato: Relato): ProyectoFormateado {
   const authorSlug = relato.author?.slug?.current || '';
   
   return {
-    title: relato.title,
+    title: toVersal(cleanEmoji(relato.title)),
     description: relato.summary || '',
     imgSrc: relato.image || '',
     href: `/relato/${relato.slug?.current}`,
@@ -463,8 +468,8 @@ export async function getRelatoBySlug(slug: string): Promise<Relato | null> {
     `, { slug });
     
     if (relato) {
-      // Limpiar título de emojis
-      relato.title = cleanEmoji(relato.title);
+      // Limpiar título de emojis y convertir a versales
+      relato.title = toVersal(cleanEmoji(relato.title));
       // Calcular tiempo de lectura basado en el contenido
       relato.readingTime = calcularTiempoLectura(relato.body);
     }
@@ -601,6 +606,8 @@ export async function getArticuloBySlug(slug: string): Promise<Articulo | null> 
     `, { slug });
     
     if (articulo) {
+      // Limpiar título de emojis y convertir a versales
+      articulo.title = toVersal(cleanEmoji(articulo.title));
       // Calcular tiempo de lectura basado en el contenido
       articulo.readingTime = calcularTiempoLectura(articulo.body);
     }
@@ -657,7 +664,11 @@ export async function getArticulosByAutor(autorSlug: string): Promise<Articulo[]
       }
     `, { autorSlug });
     
-    return articulos;
+    // Limpiar títulos de emojis y convertir a versales
+    return articulos.map(articulo => ({
+      ...articulo,
+      title: toVersal(cleanEmoji(articulo.title))
+    }));
   } catch (error) {
     console.error(`Error al obtener artículos del autor "${autorSlug}" desde Sanity:`, error);
     return [];
@@ -841,7 +852,7 @@ export async function getAllRelatosForChronological(): Promise<ProyectoFormatead
 // Función para mapear un microcuento de Sanity al formato que espera la UI
 function mapMicrocuentoToFormatted(microcuento: Microcuento): MicrocuentoFormateado {
   return {
-    title: microcuento.title,
+    title: cleanEmoji(microcuento.title),
     author: microcuento.author,
     description: microcuento.description,
     summary: microcuento.summary,
@@ -894,6 +905,11 @@ export async function getMicrocuentoBySlug(slug: string): Promise<Microcuento | 
         "tags": tags[]->title
       }
     `, { slug });
+    
+    if (microcuento) {
+      // Limpiar título de emojis
+      microcuento.title = cleanEmoji(microcuento.title);
+    }
     
     return microcuento;
   } catch (error) {
