@@ -238,7 +238,7 @@ export async function getAllAutores(): Promise<Autor[]> {
         "sitios": sitios[]->title
       }
     `);
-    return autores;
+    return autores.sort((a: any, b: any) => a.name.localeCompare(b.name));
   } catch (error) {
     console.error('Error al obtener autores desde Sanity:', error);
     return [];
