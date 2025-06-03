@@ -4,8 +4,6 @@ import siteMetadata from '@/data/siteMetadata'
 import SectionContainer from '@/components/SectionContainer'
 import ViewToggle from '@/components/ViewToggle'
 import SlowConnectionBanner from '@/components/SlowConnectionBanner'
-import { Suspense } from 'react'
-import LoadingSpinner from '@/components/LoadingSpinner'
 import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({
