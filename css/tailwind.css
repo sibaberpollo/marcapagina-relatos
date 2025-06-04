@@ -1,4 +1,4 @@
-@import 'tailwindcss';
+@import "tailwindcss";
 @plugin "@tailwindcss/forms";
 @plugin '@tailwindcss/typography';
 @source '../node_modules/pliny';
@@ -11,41 +11,47 @@
   --font-body: var(--font-source-serif), serif;
 
   /* Colores principales */
-  --color-accent: #faff00;        /* Amarillo fosforescente */
-  --color-accent-hover: #e0e500;  /* Amarillo fosforescente hover */
-  --color-accent-dark: #c0c000;   /* Amarillo fosforescente en modo oscuro */
-  
+  --color-accent: #faff00; /* Amarillo fosforescente */
+  --color-accent-hover: #e0e500; /* Amarillo fosforescente hover */
+  --color-accent-dark: #c0c000; /* Amarillo fosforescente en modo oscuro */
+
   /* Kraft-inspired primary (cálido, terroso, papel) */
-  --color-primary-50:  #ffffd0;   /* amarillo muy claro */
+  --color-primary-50: #ffffd0; /* amarillo muy claro */
   --color-primary-100: #ffffc0;
   --color-primary-200: #ffffa0;
   --color-primary-300: #ffff80;
-  --color-primary-400: #ffff40;   /* amarillo brillante */
-  --color-primary-500: var(--color-accent);   /* amarillo fluorescente (base) */
-  --color-primary-600: var(--color-accent-hover);   /* amarillo más saturado */
-  --color-primary-700: var(--color-accent-dark);   /* amarillo con verde */
-  --color-primary-800: #a0a000;   /* ocre */
-  --color-primary-900: #808000;   /* oliva */
-  --color-primary-950: #606000;   /* verde oliva oscuro */
+  --color-primary-400: #ffff40; /* amarillo brillante */
+  --color-primary-500: var(--color-accent); /* amarillo fluorescente (base) */
+  --color-primary-600: var(--color-accent-hover); /* amarillo más saturado */
+  --color-primary-700: var(--color-accent-dark); /* amarillo con verde */
+  --color-primary-800: #a0a000; /* ocre */
+  --color-primary-900: #808000; /* oliva */
+  --color-primary-950: #606000; /* verde oliva oscuro */
 
   /* Neutros tipo carbón / tinta / papel */
-  --color-gray-50:  oklch(0.96 0 270);  /* gris papel - fondo claro */
-  --color-gray-100: oklch(0.90 0 270);
-  --color-gray-200: oklch(0.80 0 270);
-  --color-gray-300: oklch(0.70 0 270);
-  --color-gray-400: oklch(0.60 0 270);
-  --color-gray-500: oklch(0.50 0 270);  /* neutral */
-  --color-gray-600: oklch(0.40 0 270);  /* carbón */
-  --color-gray-700: oklch(0.30 0 270);  /* tinta */
-  --color-gray-800: oklch(0.20 0 270);  /* casi negro */
-  --color-gray-900: oklch(0.10 0 270);  /* negro profundo */
-  --color-gray-950: oklch(0.05 0 270);  /* negro absoluto */
+  --color-gray-50: oklch(0.96 0 270); /* gris papel - fondo claro */
+  --color-gray-100: oklch(0.9 0 270);
+  --color-gray-200: oklch(0.8 0 270);
+  --color-gray-300: oklch(0.7 0 270);
+  --color-gray-400: oklch(0.6 0 270);
+  --color-gray-500: oklch(0.5 0 270); /* neutral */
+  --color-gray-600: oklch(0.4 0 270); /* carbón */
+  --color-gray-700: oklch(0.3 0 270); /* tinta */
+  --color-gray-800: oklch(0.2 0 270); /* casi negro */
+  --color-gray-900: oklch(0.1 0 270); /* negro profundo */
+  --color-gray-950: oklch(0.05 0 270); /* negro absoluto */
 
   /* Variables específicas para facilitar uso */
-  --color-bg-light: var(--color-gray-50);      /* Fondo en modo claro */
-  --color-bg-dark: var(--color-gray-900);      /* Fondo en modo oscuro */
-  --color-text-light: var(--color-gray-900);   /* Texto en modo claro */
-  --color-text-dark: var(--color-gray-50);     /* Texto en modo oscuro */
+  --color-bg-light: var(--color-gray-50); /* Fondo en modo claro */
+  --color-bg-dark: var(--color-gray-900); /* Fondo en modo oscuro */
+  --color-text-light: var(--color-gray-900); /* Texto en modo claro */
+  --color-text-dark: var(--color-gray-50); /* Texto en modo oscuro */
+
+  /* Colores de enlaces */
+  --color-link-light: var(--color-text-light); /* Enlaces en modo claro */
+  --color-link-light-hover: var(--color-gray-700);
+  --color-link-dark: var(--color-accent); /* Enlaces en modo oscuro */
+  --color-link-dark-hover: var(--color-accent-hover);
 
   /* Line heights */
   --line-height-11: 2.75rem;
@@ -58,7 +64,6 @@
   --z-70: 70;
   --z-80: 80;
 }
-
 
 /*
   The default border color has changed to `currentColor` in Tailwind CSS v4,
@@ -90,27 +95,63 @@
   }
 
   /* Títulos con Playfair Display */
-  h1, h2, h3, h4, h5, h6 {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     font-family: var(--font-titles);
     font-weight: 700;
     letter-spacing: var(--tracking-tight);
   }
 
   /* Cuerpo con Source Serif 4 */
-  html, body, p, li, blockquote, .font-serif {
+  html,
+  body,
+  p,
+  li,
+  blockquote,
+  .font-serif {
     font-family: var(--font-body);
+  }
+
+  body {
+    color: var(--color-text-light);
+    background-color: var(--color-bg-light);
+  }
+
+  html.dark body {
+    color: var(--color-text-dark);
+    background-color: var(--color-bg-dark);
+  }
+
+  a {
+    color: var(--color-link-light);
+  }
+
+  a:hover {
+    color: var(--color-link-light-hover);
+  }
+
+  html.dark a {
+    color: var(--color-link-dark);
+  }
+
+  html.dark a:hover {
+    color: var(--color-link-dark-hover);
   }
 }
 
 @layer utilities {
   .prose {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-link-light);
       &:hover {
-        color: var(--color-primary-600);
+        color: var(--color-link-light-hover);
       }
       & code {
-        color: var(--color-primary-400);
+        color: var(--color-link-light-hover);
       }
     }
     & :where(h1, h2) {
@@ -129,12 +170,12 @@
 
   .prose-invert {
     & a {
-      color: var(--color-primary-500);
+      color: var(--color-link-dark);
       &:hover {
-        color: var(--color-primary-400);
+        color: var(--color-link-dark-hover);
       }
       & code {
-        color: var(--color-primary-400);
+        color: var(--color-link-dark-hover);
       }
     }
     & :where(h1, h2, h3, h4, h5, h6) {
@@ -359,7 +400,9 @@ html.dark #menu-button:hover {
   visibility: visible !important;
   opacity: 1 !important;
   transform-origin: bottom right !important;
-  transition: transform 0.2s ease-out, opacity 0.2s ease-out !important;
+  transition:
+    transform 0.2s ease-out,
+    opacity 0.2s ease-out !important;
 }
 
 #story-menu.hidden {
@@ -418,7 +461,7 @@ html.dark .story-menu-item.active {
 }
 
 .story-menu-item.active::before {
-  content: '' !important;
+  content: "" !important;
   position: absolute !important;
   left: 0 !important;
   top: 0 !important;
