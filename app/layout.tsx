@@ -9,6 +9,7 @@ import ConditionalHeader from '@/components/ConditionalHeader'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
+import OrganizationSchema from '@/components/OrganizationSchema'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
@@ -140,6 +141,7 @@ export default function RootLayout({
           type="application/rss+xml"
           href={`${basePath}/feed.xml`}
         />
+        <OrganizationSchema />
       </head>
       <body className="antialiased font-serif">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
