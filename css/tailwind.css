@@ -12,7 +12,7 @@
 
   /* Colores principales */
   --color-accent: #faff00; /* Amarillo fosforescente */
-  --color-accent-hover: #e0e500; /* Amarillo fosforescente hover */
+  --color-accent-hover: #faff00; /* Mantener amarillo puro en hover */
   --color-accent-dark: #c0c000; /* Amarillo fosforescente en modo oscuro */
 
   /* Kraft-inspired primary (cálido, terroso, papel) */
@@ -50,8 +50,8 @@
   /* Colores de enlaces */
   --color-link-light: var(--color-text-light); /* Enlaces en modo claro */
   --color-link-light-hover: var(--color-gray-700);
-  --color-link-dark: var(--color-text-dark); /* Enlaces en modo oscuro */
-  --color-link-dark-hover: var(--color-gray-300);
+  --color-link-dark: var(--color-accent); /* Enlaces en modo oscuro - amarillo */
+  --color-link-dark-hover: var(--color-accent-hover); /* Hover en modo oscuro */
 
   /* Line heights */
   --line-height-11: 2.75rem;

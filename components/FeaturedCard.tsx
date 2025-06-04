@@ -34,7 +34,7 @@ export default function FeaturedCard({
   const formattedTitle = toVersal(title)
 
   return (
-    <div className="group relative h-full">
+    <div className="group relative h-full [&_a]:!text-gray-900 dark:[&_a]:!text-gray-900">
       <Link href={href} aria-label={`Link to ${title}`} className="block w-full h-full">
         <div 
           className="relative flex flex-col rounded-lg overflow-hidden w-full h-full cursor-pointer hover:scale-105 transition-transform duration-200" 

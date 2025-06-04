@@ -1,6 +1,7 @@
 import { getSiteBySlug } from '../../../lib/sanity'
 import SectionContainer from '@/components/SectionContainer'
 import SlowConnectionBanner from '@/components/SlowConnectionBanner'
+import Link from '@/components/Link'
 import { genPageMetadata } from 'app/seo'
 import type { Metadata } from 'next'
 
@@ -43,21 +44,21 @@ export default async function TranstextosAcercaDePage() {
           </h1>
         </div>
 
-        <div className="prose dark:prose-invert max-w-none">
+        <div className="prose dark:prose-invert max-w-none [&_a]:!text-gray-900 [&_a]:!no-underline hover:[&_a]:!underline dark:[&_a]:![color:#faff00] dark:hover:[&_a]:![color:#faff00]">
           <div className="text-lg leading-7 text-gray-700 dark:text-gray-300 space-y-6">
             <div>
               <p>
                 Transtextos es un archivo literario de relatos, cuentos breves y
-                textos contemporáneos iniciado por el escritor y periodista
-                <a
+                textos contemporáneos iniciado por el escritor y periodista{' '}
+                <Link
                   href="https://es.wikipedia.org/wiki/Javier_Miranda_Luque"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   Javier Miranda-Luque (1959–2023)
-                </a>
-                . Ahora funcionará como subsitio de la aplicación
-                <a href="https://www.marcapagina.page">MarcaPágina</a>.
+                </Link>
+                . Ahora funcionará como subsitio de la aplicación{' '}
+                <Link href="https://www.marcapagina.page">MarcaPágina</Link>.
               </p>
 
               <p>
@@ -76,9 +77,9 @@ export default async function TranstextosAcercaDePage() {
 
               <p>
                 Si deseas contribuir, puedes revisar nuestra{' '}
-                <a href="https://www.marcapagina.page/publica">
+                <Link href="https://www.marcapagina.page/publica">
                   convocatoria abierta
-                </a>
+                </Link>
                 .
               </p>
             </div>
