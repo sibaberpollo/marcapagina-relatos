@@ -50,8 +50,8 @@
   /* Colores de enlaces */
   --color-link-light: var(--color-text-light); /* Enlaces en modo claro */
   --color-link-light-hover: var(--color-gray-700);
-  --color-link-dark: var(--color-accent); /* Enlaces en modo oscuro */
-  --color-link-dark-hover: var(--color-accent-hover);
+  --color-link-dark: var(--color-text-dark); /* Enlaces en modo oscuro */
+  --color-link-dark-hover: var(--color-gray-300);
 
   /* Line heights */
   --line-height-11: 2.75rem;

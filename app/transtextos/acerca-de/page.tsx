@@ -47,9 +47,8 @@ export default async function TranstextosAcercaDePage() {
           <div className="text-lg leading-7 text-gray-700 dark:text-gray-300 space-y-6">
             <div>
               <p>
-                <strong>Transtextos</strong> es un archivo literario de relatos, 
-                cuentos breves y textos contemporáneos iniciado por el escritor y 
-                periodista{' '}
+                Transtextos es un archivo literario de relatos, cuentos breves y
+                textos contemporáneos iniciado por el escritor y periodista
                 <a
                   href="https://es.wikipedia.org/wiki/Javier_Miranda_Luque"
                   target="_blank"
@@ -57,13 +56,8 @@ export default async function TranstextosAcercaDePage() {
                 >
                   Javier Miranda-Luque (1959–2023)
                 </a>
-                . Ahora funcionará como subsitio de la aplicación{' '}
-                <a
-                  href="https://www.marcapagina.page"
-                >
-                   MarcaPágina
-                </a>
-                .
+                . Ahora funcionará como subsitio de la aplicación
+                <a href="https://www.marcapagina.page">MarcaPágina</a>.
               </p>
 
               <p>
