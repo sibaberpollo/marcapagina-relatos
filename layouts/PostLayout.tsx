@@ -14,6 +14,7 @@ import ScrollTopAndComment from "@/components/ScrollTopAndComment";
 import { PageSEO } from "@/components/SEO";
 import { getRelativeTime } from "@/lib/time";
 import FeaturedSlider from "@/components/FeaturedSlider";
+import FeaturedCard from "@/components/FeaturedCard";
 import { getFeaturedAndNonFeaturedRelatos } from "@/lib/sanity";
 
 const editUrl = (path: string) =>
@@ -295,10 +296,30 @@ export default async function PostLayout({
               <footer>
                 {sliderPosts.length > 0 && (
                   <div className="mb-8">
-                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+                    <h1 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
                       También en portada:
-                    </h2>
-                    <FeaturedSlider projects={sliderPosts} />
+                    </h1>
+                    <div className="lg:hidden">
+                      <FeaturedSlider projects={sliderPosts} />
+                    </div>
+                    <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+                      {sliderPosts.slice(0, 3).map((project, index) => (
+                        <div key={index} className="flex">
+                          <FeaturedCard
+                            title={project.title}
+                            description={project.description}
+                            imgSrc={project.imgSrc}
+                            href={project.href}
+                            authorImgSrc={project.authorImgSrc}
+                            authorName={project.authorName}
+                            authorHref={project.authorHref}
+                            bgColor={project.bgColor}
+                            tags={project.tags}
+                            publishedAt={project.publishedAt}
+                          />
+                        </div>
+                      ))}
+                    </div>
                   </div>
                 )}
                 <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
