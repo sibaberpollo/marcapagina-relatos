@@ -26,7 +26,7 @@ export default function PublishBanner() {
         {/* Texto - abajo en móvil, derecha en desktop */}
         <div className="order-2 md:order-2 flex-1 text-left">
           <p className="text-lg mb-2">
-            <strong>¿Te gustaría publicar tu relato en <Link href="https://marcapagina.page" className="text-black underline hover:text-gray-700">marcapagina.page</Link>?</strong>
+            <strong>¿Te gustaría publicar tu relato en <Link href="https://www.marcapagina.page" className="text-black underline hover:text-gray-700">marcapagina.page</Link>?</strong>
           </p>
           <p className="mb-4">En Marcapágina buscamos nuevas voces y relatos. Si tienes un texto que quieras compartir, ¡anímate a enviarlo!</p>
           <Link
