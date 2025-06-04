@@ -294,34 +294,6 @@ export default async function PostLayout({
               </div>
 
               <footer>
-                {sliderPosts.length > 0 && (
-                  <div className="mb-8">
-                    <h1 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
-                      También en portada:
-                    </h1>
-                    <div className="lg:hidden">
-                      <FeaturedSlider projects={sliderPosts} />
-                    </div>
-                    <div className="hidden lg:grid lg:grid-cols-3 gap-6">
-                      {sliderPosts.slice(0, 3).map((project, index) => (
-                        <div key={index} className="flex">
-                          <FeaturedCard
-                            title={project.title}
-                            description={project.description}
-                            imgSrc={project.imgSrc}
-                            href={project.href}
-                            authorImgSrc={project.authorImgSrc}
-                            authorName={project.authorName}
-                            authorHref={project.authorHref}
-                            bgColor={project.bgColor}
-                            tags={project.tags}
-                            publishedAt={project.publishedAt}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
                   {(next || prev) && (
                     <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
@@ -362,6 +334,38 @@ export default async function PostLayout({
           </div>
         </article>
       </SectionContainer>
+      
+      {/* Sección "También en portada" al ancho completo */}
+      {sliderPosts.length > 0 && (
+        <SectionContainer>
+          <div className="-mt-16 mb-8">
+            <h1 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+              También en portada:
+            </h1>
+            <div className="lg:hidden">
+              <FeaturedSlider projects={sliderPosts} />
+            </div>
+            <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+              {sliderPosts.slice(0, 3).map((project, index) => (
+                <div key={index} className="flex">
+                  <FeaturedCard
+                    title={project.title}
+                    description={project.description}
+                    imgSrc={project.imgSrc}
+                    href={project.href}
+                    authorImgSrc={project.authorImgSrc}
+                    authorName={project.authorName}
+                    authorHref={project.authorHref}
+                    bgColor={project.bgColor}
+                    tags={project.tags}
+                    publishedAt={project.publishedAt}
+                  />
+                </div>
+              ))}
+            </div>
+          </div>
+        </SectionContainer>
+      )}
     </div>
   );
 }
