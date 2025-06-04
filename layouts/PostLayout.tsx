@@ -159,7 +159,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
               </dl>
 
               <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
-                <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                <div
+                  id="post-content"
+                  className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
+                >
                   {showDropCap ? (
                     <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!text-gray-800 [&_a]:!no-underline hover:[&_a]:!underline dark:[&_a]:!text-yellow-400 dark:hover:[&_a]:!text-yellow-300">
                       {(() => {

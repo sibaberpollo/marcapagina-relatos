@@ -61,8 +61,21 @@ export default function FixedNavMenu({
   useEffect(() => {
     function updateProgress() {
       const scrollY = window.scrollY
-      const fullHeight = document.documentElement.scrollHeight - window.innerHeight
-      setReadingProgress(fullHeight ? (scrollY / fullHeight) * 100 : 0)
+      const content = document.getElementById('post-content')
+      if (content) {
+        const contentTop = content.getBoundingClientRect().top + window.scrollY
+        const maxScroll = contentTop + content.offsetHeight - window.innerHeight
+        if (scrollY <= contentTop) {
+          setReadingProgress(0)
+        } else if (scrollY >= maxScroll) {
+          setReadingProgress(100)
+        } else {
+          setReadingProgress(((scrollY - contentTop) / (maxScroll - contentTop)) * 100)
+        }
+      } else {
+        const fullHeight = document.documentElement.scrollHeight - window.innerHeight
+        setReadingProgress(fullHeight ? (scrollY / fullHeight) * 100 : 0)
+      }
     }
     updateProgress()
     window.addEventListener('scroll', updateProgress)
@@ -79,6 +92,7 @@ export default function FixedNavMenu({
       <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
         {/* Progress bar */}
         <div
+          id="progress-bar-component"
           className="h-1 bg-[var(--color-gray-950)] dark:bg-[var(--color-accent)]"
           style={{ width: `${readingProgress}%` }}
         />
@@ -109,6 +123,7 @@ export default function FixedNavMenu({
               {shortenTitle(title)}{' '}
               {readingTime && (() => {
                 const mins = Math.ceil(readingTime.minutes)
+                const remaining = Math.max(Math.ceil(mins * (1 - readingProgress / 100)), 0)
                 const acts = readingTimeActivities[mins] || []
                 return acts.length ? (
                   <button
@@ -125,7 +140,7 @@ export default function FixedNavMenu({
                   >
                     <span className="flex items-center px-2 py-0.5 rounded text-sm font-bold text-gray-900 dark:text-gray-50">
                       <span>(</span>
-                      <span>{mins} min</span>
+                      <span>{remaining} min</span>
                       <Clock className="mx-1 h-4 w-4 text-gray-900 dark:text-gray-50" />
                       <span>)</span>
                     </span>
@@ -133,7 +148,7 @@ export default function FixedNavMenu({
                 ) : (
                   <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-bold ml-1">
                     <span>(</span>
-                    <span>{mins} min</span>
+                    <span>{remaining} min</span>
                     <Clock className="mx-1 h-4 w-4" />
                     <span>)</span>
                   </span>
