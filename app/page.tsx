@@ -6,17 +6,11 @@ import {
 //import Card from '@/components/Card'
 import FeaturedCard from "@/components/FeaturedCard";
 import FeaturedSlider from "@/components/FeaturedSlider";
-import siteMetadata from "@/data/siteMetadata";
 import SectionContainer from "@/components/SectionContainer";
 import ViewToggle from "@/components/ViewToggle";
 import ClientRedirect from "@/components/ClientRedirect";
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Pagination } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/pagination";
 import PublishBanner from "@/components/PublishBanner";
 import MicrocuentoCard from "@/components/MicrocuentoCard";
-import HighlightStroke from "@/components/HighlightStroke";
 import Image from "next/image";
 
 // Tipo común para ambos orígenes de datos
@@ -207,12 +201,6 @@ export default async function Page() {
         )}
       </SectionContainer>
 
-      {/* Slider con destacados */}
-      <SectionContainer>
-        <div className="container pt-12">
-          <FeaturedSlider projects={allProjects.slice(0, 6)} />
-        </div>
-      </SectionContainer>
     </>
   );
 }

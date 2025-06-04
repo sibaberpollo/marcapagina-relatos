@@ -292,13 +292,15 @@ export default async function PostLayout({
                 </div>
               </div>
 
-              {sliderPosts.length > 0 && (
-                <div className="mt-10">
-                  <FeaturedSlider projects={sliderPosts} />
-                </div>
-              )}
-
               <footer>
+                {sliderPosts.length > 0 && (
+                  <div className="mb-8">
+                    <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+                      También en portada:
+                    </h2>
+                    <FeaturedSlider projects={sliderPosts} />
+                  </div>
+                )}
                 <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
                   {(next || prev) && (
                     <div className="flex justify-between py-4 xl:block xl:space-y-8 xl:py-8">
