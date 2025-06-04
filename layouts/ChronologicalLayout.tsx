@@ -90,15 +90,12 @@ export default function ChronologicalLayout({
               {/* Columna de contenido */}
               <div>
                 <h2 className="text-xl md:text-2xl font-bold mb-2">
-                  <Link
-                    href={item.href}
-                    className="text-gray-900 dark:text-gray-100 hover:text-primary-600 dark:hover:text-primary-400"
-                  >
+                  <Link href={item.href} className="hover:underline">
                     {item.title}
                   </Link>
                 </h2>
                 <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Por: <Link href={item.authorHref} className="hover:text-primary-600 dark:hover:text-primary-400">
+                  Por: <Link href={item.authorHref} className="hover:underline">
                     {item.authorName}
                   </Link>
                 </div>

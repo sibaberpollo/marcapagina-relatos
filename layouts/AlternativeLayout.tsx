@@ -131,9 +131,9 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                 <div className="flex justify-between items-center">
                   <div className="flex-1">
                     {prev && (
-                      <Link 
+                      <Link
                         href={`/microcuento/${prev.slug.current}`}
-                        className="text-left text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                        className="text-left hover:underline transition-colors"
                       >
                         <div className="text-xs uppercase tracking-wide mb-1">Anterior</div>
                         <div className="font-medium">{prev.title}</div>
@@ -143,9 +143,9 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                   
                   <div className="flex-1 text-right">
                     {next && (
-                      <Link 
+                      <Link
                         href={`/microcuento/${next.slug.current}`}
-                        className="text-right text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 transition-colors"
+                        className="text-right hover:underline transition-colors"
                       >
                         <div className="text-xs uppercase tracking-wide mb-1">Siguiente</div>
                         <div className="font-medium">{next.title}</div>

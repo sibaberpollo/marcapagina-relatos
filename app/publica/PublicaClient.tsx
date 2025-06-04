@@ -398,7 +398,7 @@ export default function PublicaClient() {
             <p>
               1) Te mostraremos un cuento breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
               <HighlightStroke>
-                <a href="/criterios-editoriales" className="font-semibold !text-black hover:text-[var(--color-gray-700)] dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-accent)]">
+                <a href="/criterios-editoriales" className="font-semibold hover:underline">
                   Ver criterios editoriales
                 </a>
               </HighlightStroke>

@@ -162,21 +162,15 @@ export default async function PostLayout({
                         )}
                         <dl className="text-sm leading-5 font-medium whitespace-nowrap">
                           <dt className="sr-only">Name</dt>
-                          <dd className="text-black">
-                            <Link
-                              href={`/autor/${author.slug}`}
-                              className="text-black hover:text-gray-700"
-                            >
+                          <dd>
+                            <Link href={`/autor/${author.slug}`} className="hover:underline">
                               {author.name}
                             </Link>
                           </dd>
                           <dt className="sr-only">Twitter</dt>
                           <dd>
                             {author.twitter && (
-                              <Link
-                                href={author.twitter}
-                                className="text-black hover:text-gray-700"
-                              >
+                              <Link href={author.twitter} className="hover:underline">
                                 {author.twitter
                                   .replace("https://twitter.com/", "@")
                                   .replace("https://x.com/", "@")}
@@ -196,7 +190,7 @@ export default async function PostLayout({
                   className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
                 >
                   {showDropCap ? (
-                    <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!text-gray-800 [&_a]:!no-underline hover:[&_a]:!underline dark:[&_a]:!text-yellow-400 dark:hover:[&_a]:!text-yellow-300">
+                    <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!no-underline hover:[&_a]:underline">
                       {(() => {
                         // Si children es un solo div (como PortableText suele hacer), aplica drop-cap al primer <p>
                         if (
@@ -269,7 +263,7 @@ export default async function PostLayout({
                       })()}
                     </div>
                   ) : (
-                    <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!text-gray-800 [&_a]:!no-underline hover:[&_a]:!underline dark:[&_a]:!text-yellow-400 dark:hover:[&_a]:!text-yellow-300">
+                    <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!no-underline hover:[&_a]:underline">
                       {children}
                     </div>
                   )}
@@ -302,7 +296,7 @@ export default async function PostLayout({
                           <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                             {prevLabel}
                           </h2>
-                          <div className="text-black hover:text-gray-700">
+                          <div>
                             <Link href={`/${prev.path}`}>{prev.title}</Link>
                           </div>
                         </div>
@@ -312,7 +306,7 @@ export default async function PostLayout({
                           <h2 className="text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                             {nextLabel}
                           </h2>
-                          <div className="text-black hover:text-gray-700">
+                          <div>
                             <Link href={`/${next.path}`}>{next.title}</Link>
                           </div>
                         </div>

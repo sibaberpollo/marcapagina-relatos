@@ -43,7 +43,7 @@ export default async function TranstextosAcercaDePage() {
           </h1>
         </div>
 
-        <div className="prose dark:prose-invert max-w-none [&_a]:!text-black dark:[&_a]:text-white [&_a:hover]:!text-gray-600 dark:[&_a:hover]:text-gray-400">
+        <div className="prose dark:prose-invert max-w-none">
           <div className="text-lg leading-7 text-gray-700 dark:text-gray-300 space-y-6">
             <div>
               <p>

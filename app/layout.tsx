@@ -141,9 +141,7 @@ export default function RootLayout({
           href={`${basePath}/feed.xml`}
         />
       </head>
-      <body
-        className="bg-white text-black antialiased dark:bg-gray-950 dark:text-white font-serif"
-      >
+      <body className="antialiased font-serif">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />

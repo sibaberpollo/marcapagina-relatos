@@ -245,10 +245,7 @@ export default async function Page(props: {
                       relato.slug === slug ? 'bg-[#faff00]' : 'bg-white'
                     }`}
                   />
-                  <Link
-                    href={`/relato/${relato.slug}`}
-                    className="block hover:text-gray-700 dark:hover:text-gray-300"
-                  >
+                  <Link href={`/relato/${relato.slug}`} className="block hover:underline">
                     <div className="flex items-center">
                       <span className="font-medium text-black dark:text-white">
                         {relato.order}. {relato.title}

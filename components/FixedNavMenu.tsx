@@ -206,7 +206,7 @@ export default function FixedNavMenu({
                 <>Más relatos de la serie <span className="text-gray-900 dark:text-gray-50">{seriesName}</span></>
               ) : (
                 <>Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
-                  <Link href={`/autor/${author}`} className="text-gray-500 hover:underline">
+                  <Link href={`/autor/${author}`} className="hover:underline">
                     {authorName}
                   </Link>
                 </>
@@ -218,7 +218,7 @@ export default function FixedNavMenu({
                   <Link
                     href={`/${pathPrefix}/${post.slug}`}
                     onClick={() => setMenuOpen(false)}
-                    className={`block text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 hover:underline ${post.slug === slug ? 'font-semibold' : ''}`}
+                    className={`block hover:underline ${post.slug === slug ? 'font-semibold' : ''}`}
                   >
                     {post.title}{' '}
                     {post.readingTime && `(${Math.ceil(post.readingTime.minutes)} min)`}
