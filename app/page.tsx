@@ -1,20 +1,23 @@
-import { getFeaturedAndNonFeaturedRelatos, getAllMicrocuentos } from '../lib/sanity'
+import {
+  getFeaturedAndNonFeaturedRelatos,
+  getAllMicrocuentos,
+} from "../lib/sanity";
 // import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
 //import Card from '@/components/Card'
-import FeaturedCard from '@/components/FeaturedCard'
-import FeaturedSlider from '@/components/FeaturedSlider'
-import siteMetadata from '@/data/siteMetadata';
-import SectionContainer from '@/components/SectionContainer'
-import ViewToggle from '@/components/ViewToggle'
-import ClientRedirect from '@/components/ClientRedirect'
-import { Swiper, SwiperSlide } from 'swiper/react'
-import { Pagination } from 'swiper/modules'
-import 'swiper/css'
-import 'swiper/css/pagination'
-import PublishBanner from '@/components/PublishBanner'
-import MicrocuentoCard from '@/components/MicrocuentoCard'
-import HighlightStroke from '@/components/HighlightStroke'
-import Image from 'next/image'
+import FeaturedCard from "@/components/FeaturedCard";
+import FeaturedSlider from "@/components/FeaturedSlider";
+import siteMetadata from "@/data/siteMetadata";
+import SectionContainer from "@/components/SectionContainer";
+import ViewToggle from "@/components/ViewToggle";
+import ClientRedirect from "@/components/ClientRedirect";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination } from "swiper/modules";
+import "swiper/css";
+import "swiper/css/pagination";
+import PublishBanner from "@/components/PublishBanner";
+import MicrocuentoCard from "@/components/MicrocuentoCard";
+import HighlightStroke from "@/components/HighlightStroke";
+import Image from "next/image";
 
 // Tipo común para ambos orígenes de datos
 interface CardProps {
@@ -31,27 +34,27 @@ interface CardProps {
 }
 
 interface Proyecto {
-  title: string
-  description: string
-  imgSrc: string
-  href: string
-  authorImgSrc: string
-  authorName: string
-  authorHref: string
-  bgColor: string
-  tags: string[]
-  publishedAt: string
+  title: string;
+  description: string;
+  imgSrc: string;
+  href: string;
+  authorImgSrc: string;
+  authorName: string;
+  authorHref: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
 }
 
 interface MicrocuentoData {
-  title: string
-  author: string
-  description: string
-  imgSrc: string
-  href: string
-  bgColor: string
-  tags: string[]
-  publishedAt: string
+  title: string;
+  author: string;
+  description: string;
+  imgSrc: string;
+  href: string;
+  bgColor: string;
+  tags: string[];
+  publishedAt: string;
 }
 
 export default async function Page() {
@@ -59,30 +62,30 @@ export default async function Page() {
   let featuredProject: CardProps | null = null;
   let nonFeaturedProjects: CardProps[] = [];
   const allMicrocuentos = await getAllMicrocuentos();
-  
+
   try {
-    console.log('Obteniendo datos desde Sanity');
+    console.log("Obteniendo datos desde Sanity");
     const { featured, nonFeatured } = await getFeaturedAndNonFeaturedRelatos();
     featuredProject = featured;
     nonFeaturedProjects = nonFeatured;
-    console.log('Datos obtenidos de Sanity:', { 
-      featuredProject: featuredProject?.title, 
-      nonFeaturedCount: nonFeaturedProjects.length 
+    console.log("Datos obtenidos de Sanity:", {
+      featuredProject: featuredProject?.title,
+      nonFeaturedCount: nonFeaturedProjects.length,
     });
   } catch (error) {
-    console.error('Error al obtener datos de Sanity:', error);
+    console.error("Error al obtener datos de Sanity:", error);
   }
 
   const allProjects = [
     ...(featuredProject ? [featuredProject] : []),
-    ...nonFeaturedProjects
+    ...nonFeaturedProjects,
   ];
 
   return (
     <>
       <ClientRedirect />
       <SectionContainer>
-      <div className="space-y-2 pt-6 pb-4 md:space-y-5">
+        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
           <h1
             className="text-xl leading-8 font-extrabold tracking-tight text-gray-900
                       dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
@@ -92,20 +95,25 @@ export default async function Page() {
 
           <div className="prose dark:prose-invert max-w-none mb-4">
             <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-              Bienvenido a <strong>MarcaPágina</strong>, antes una revista de literatura, ahora una app para leer literatura. Más de{' '}
+              Bienvenido a <strong>MarcaPágina</strong>, antes una revista de
+              literatura, ahora una app para leer literatura. Más de{" "}
               <strong>
                 <a
                   href="/cronologico/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                >300 relatos de ficción contemporánea
-                </a></strong> y <strong>microcuentos</strong>. Explora historias inéditas, escritas por autores emergentes de América Latina.
+                >
+                  300 relatos de ficción contemporánea
+                </a>
+              </strong>{" "}
+              y <strong>microcuentos</strong>. Explora historias inéditas,
+              escritas por autores emergentes de América Latina.
             </p>
           </div>
         </div>
-          
+
         {/* Botones de cambio de vista */}
         <ViewToggle />
-        
+
         {/* Primera fila: 3 relatos sin slider */}
         <div className="container pb-6">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
@@ -170,7 +178,7 @@ export default async function Page() {
           <div className="container pt-16 pb-12">
             <div className="mb-8">
               <h2 className="sr-only">Microcuentos</h2>
-              <Image 
+              <Image
                 src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748448325/microcuentos_h1_ttuzc5.png"
                 alt="Microcuentos"
                 className="h-8 sm:h-10 md:h-12 w-auto"
@@ -179,7 +187,7 @@ export default async function Page() {
                 priority
               />
             </div>
-            
+
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 auto-rows-fr">
               {allMicrocuentos.slice(0, 3).map((microcuento, index) => (
                 <div key={index} className="flex h-full">
@@ -198,6 +206,13 @@ export default async function Page() {
           </div>
         )}
       </SectionContainer>
+
+      {/* Slider con destacados */}
+      <SectionContainer>
+        <div className="container pt-12">
+          <FeaturedSlider projects={allProjects.slice(0, 6)} />
+        </div>
+      </SectionContainer>
     </>
-  )
+  );
 }

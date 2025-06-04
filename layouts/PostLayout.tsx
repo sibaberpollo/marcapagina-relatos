@@ -1,36 +1,39 @@
 // layouts/PostLayout.tsx
-import React, { ReactNode } from 'react'
-import { CoreContent } from 'pliny/utils/contentlayer'
-import type { Authors } from 'contentlayer/generated'
-import Comments from '@/components/Comments'
-import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
-import Image from '@/components/Image'
-import Tag from '@/components/Tag'
-import siteMetadata from '@/data/siteMetadata'
-import seriesMetadata from '@/data/seriesMetadata'
-import ScrollTopAndComment from '@/components/ScrollTopAndComment'
-import { PageSEO } from '@/components/SEO'
-import { getRelativeTime } from '@/lib/time'
+import React, { ReactNode } from "react";
+import { CoreContent } from "pliny/utils/contentlayer";
+import type { Authors } from "contentlayer/generated";
+import Comments from "@/components/Comments";
+import Link from "@/components/Link";
+import PageTitle from "@/components/PageTitle";
+import SectionContainer from "@/components/SectionContainer";
+import Image from "@/components/Image";
+import Tag from "@/components/Tag";
+import siteMetadata from "@/data/siteMetadata";
+import seriesMetadata from "@/data/seriesMetadata";
+import ScrollTopAndComment from "@/components/ScrollTopAndComment";
+import { PageSEO } from "@/components/SEO";
+import { getRelativeTime } from "@/lib/time";
+import FeaturedSlider from "@/components/FeaturedSlider";
+import { getFeaturedAndNonFeaturedRelatos } from "@/lib/sanity";
 
-const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
+const editUrl = (path: string) =>
+  `${siteMetadata.siteRepo}/blob/main/data/${path}`;
 const discussUrl = (path: string) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
+  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`;
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
-  weekday: 'long',
-  year: 'numeric',
-  month: 'long',
-  day: 'numeric',
-}
+  weekday: "long",
+  year: "numeric",
+  month: "long",
+  day: "numeric",
+};
 
 interface LayoutProps {
-  content: CoreContent<any>
-  authorDetails: CoreContent<Authors>[]
-  next?: { path: string; title: string }
-  prev?: { path: string; title: string }
-  children: ReactNode
+  content: CoreContent<any>;
+  authorDetails: CoreContent<Authors>[];
+  next?: { path: string; title: string };
+  prev?: { path: string; title: string };
+  children: ReactNode;
 }
 
 interface PostLayoutProps extends LayoutProps {
@@ -38,16 +41,40 @@ interface PostLayoutProps extends LayoutProps {
   autor?: { name: string; slug: string } | null;
 }
 
-export default function PostLayout({ content, authorDetails, next, prev, children, showDropCap = true, autor }: PostLayoutProps) {
-  const { filePath, path, slug, date, title, tags, series, image, bgColor, publishedAt } = content as any
-  const relativeTime = publishedAt ? getRelativeTime(publishedAt) : null
+export default async function PostLayout({
+  content,
+  authorDetails,
+  next,
+  prev,
+  children,
+  showDropCap = true,
+  autor,
+}: PostLayoutProps) {
+  const {
+    filePath,
+    path,
+    slug,
+    date,
+    title,
+    tags,
+    series,
+    image,
+    bgColor,
+    publishedAt,
+  } = content as any;
+  const relativeTime = publishedAt ? getRelativeTime(publishedAt) : null;
   // Determinar si es relato o artículo según la ruta
-  const segments = path.split('/')
-  const type = segments[1] // 'relato' o 'articulo'
-  const isArticle = type === 'articulo'
-  const prevLabel = isArticle ? 'Artículo anterior' : 'Relato anterior'
-  const nextLabel = isArticle ? 'Próximo artículo' : 'Próximo relato'
-  const basePath = path.split('/')[0]
+  const segments = path.split("/");
+  const type = segments[1]; // 'relato' o 'articulo'
+  const isArticle = type === "articulo";
+  const prevLabel = isArticle ? "Artículo anterior" : "Relato anterior";
+  const nextLabel = isArticle ? "Próximo artículo" : "Próximo relato";
+  const basePath = path.split("/")[0];
+
+  const { featured, nonFeatured } = await getFeaturedAndNonFeaturedRelatos();
+  const sliderPosts = [...(featured ? [featured] : []), ...nonFeatured]
+    .slice(0, 6)
+    .filter((p) => p.href !== `/${path}`);
 
   return (
     <div className="relative">
@@ -69,9 +96,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <dt className="sr-only">Publicado</dt>
                     <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
                       {relativeTime && (
-                        <time dateTime={publishedAt}>
-                          {relativeTime}
-                        </time>
+                        <time dateTime={publishedAt}>{relativeTime}</time>
                       )}
                     </dd>
                   </div>
@@ -81,7 +106,7 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                     <a
                       href={`/autor/${autor.slug}`}
                       className="hover:underline text-gray-900 dark:text-gray-100 text-center"
-                      style={{ display: 'inline-block' }}
+                      style={{ display: "inline-block" }}
                     >
                       {autor.name}
                     </a>
@@ -97,7 +122,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 )}
                 {/* Imagen del relato opcional */}
                 {image && (
-                  <div className="relative w-full" style={{ backgroundColor: bgColor }}>
+                  <div
+                    className="relative w-full"
+                    style={{ backgroundColor: bgColor }}
+                  >
                     <div className="max-h-[500px] flex items-center justify-center">
                       <img
                         src={image}
@@ -118,7 +146,10 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                 <dd>
                   <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
                     {authorDetails.map((author) => (
-                      <li className="flex items-center space-x-2" key={author.name}>
+                      <li
+                        className="flex items-center space-x-2"
+                        key={author.name}
+                      >
                         {author.avatar && (
                           <Image
                             src={author.avatar}
@@ -146,8 +177,8 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                                 className="text-black hover:text-gray-700"
                               >
                                 {author.twitter
-                                  .replace('https://twitter.com/', '@')
-                                  .replace('https://x.com/', '@')}
+                                  .replace("https://twitter.com/", "@")
+                                  .replace("https://x.com/", "@")}
                               </Link>
                             )}
                           </dd>
@@ -169,24 +200,43 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                         // Si children es un solo div (como PortableText suele hacer), aplica drop-cap al primer <p>
                         if (
                           children &&
-                          typeof children === 'object' &&
-                          'type' in children &&
-                          children.type === 'div' &&
+                          typeof children === "object" &&
+                          "type" in children &&
+                          children.type === "div" &&
                           React.isValidElement(children) &&
-                          React.isValidElement(children) && Array.isArray((children as React.ReactElement<any>).props?.children)
+                          React.isValidElement(children) &&
+                          Array.isArray(
+                            (children as React.ReactElement<any>).props
+                              ?.children,
+                          )
                         ) {
-                          const innerChildren = (children as React.ReactElement<any>).props.children;
+                          const innerChildren = (
+                            children as React.ReactElement<any>
+                          ).props.children;
                           return (
-                            <div {...(children as React.ReactElement<any>).props}>
-                              {(innerChildren as React.ReactNode[]).map((child, idx) => {
-                                if (idx === 0 && React.isValidElement(child) && child.type === 'p') {
-                                  const childEl = child as React.ReactElement<{ className?: string }>;
-                                  return React.cloneElement(childEl, {
-                                    className: (childEl.props.className || '') + ' drop-cap',
-                                  });
-                                }
-                                return child;
-                              })}
+                            <div
+                              {...(children as React.ReactElement<any>).props}
+                            >
+                              {(innerChildren as React.ReactNode[]).map(
+                                (child, idx) => {
+                                  if (
+                                    idx === 0 &&
+                                    React.isValidElement(child) &&
+                                    child.type === "p"
+                                  ) {
+                                    const childEl =
+                                      child as React.ReactElement<{
+                                        className?: string;
+                                      }>;
+                                    return React.cloneElement(childEl, {
+                                      className:
+                                        (childEl.props.className || "") +
+                                        " drop-cap",
+                                    });
+                                  }
+                                  return child;
+                                },
+                              )}
                             </div>
                           );
                         }
@@ -196,10 +246,17 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                             <>
                               {React.isValidElement(children[0])
                                 ? React.cloneElement(
-                                    children[0] as React.ReactElement<{ className?: string }>,
+                                    children[0] as React.ReactElement<{
+                                      className?: string;
+                                    }>,
                                     {
-                                      className: ((children[0] as React.ReactElement<{ className?: string }> ).props.className || '') + ' drop-cap',
-                                    }
+                                      className:
+                                        ((
+                                          children[0] as React.ReactElement<{
+                                            className?: string;
+                                          }>
+                                        ).props.className || "") + " drop-cap",
+                                    },
                                   )
                                 : children[0]}
                               {children.slice(1)}
@@ -234,6 +291,12 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
                   )}
                 </div>
               </div>
+
+              {sliderPosts.length > 0 && (
+                <div className="mt-10">
+                  <FeaturedSlider projects={sliderPosts} />
+                </div>
+              )}
 
               <footer>
                 <div className="divide-gray-200 text-sm leading-5 font-medium xl:col-start-1 xl:row-start-2 xl:divide-y dark:divide-gray-700">
@@ -277,5 +340,5 @@ export default function PostLayout({ content, authorDetails, next, prev, childre
         </article>
       </SectionContainer>
     </div>
-  )
+  );
 }
