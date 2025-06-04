@@ -7,7 +7,7 @@ const siteMetadata = {
   descriptionRich: 'Textos de gente que escribe cuando nadie los ve (2009 ~ 2014 → 2025 ➔ ∞)',
   language: 'es-ES',
   theme: 'system', // system, dark or light
-  siteUrl: 'https://marcapagina.page/',
+  siteUrl: 'https://www.marcapagina.page/',
   siteRepo: 'https://github.com/sibaberpollo/marcapagina-relatos',
   siteLogo: `${process.env.BASE_PATH || ''}/static/images/logo.png`,
   socialBanner: `${process.env.BASE_PATH || ''}/static/images/marcapagina_card.png`,
