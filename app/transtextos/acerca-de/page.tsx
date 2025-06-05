@@ -4,9 +4,6 @@ import SlowConnectionBanner from '@/components/SlowConnectionBanner'
 import Link from '@/components/Link'
 import { genPageMetadata } from 'app/seo'
 import type { Metadata } from 'next'
-import { getSiteInfo } from '@/lib/sanity'
-import { PortableText } from '@portabletext/react'
-import { portableTextComponents } from '@/components/PortableTextComponents'
 
 export const revalidate = 60 // opcional: cachea SSR 60s
 
