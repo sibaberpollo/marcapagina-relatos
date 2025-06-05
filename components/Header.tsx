@@ -3,7 +3,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, Menu, X as Close, Rss } from 'lucide-react'
+import { Instagram, Menu, X as Close, Rss, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 
@@ -94,12 +94,15 @@ const Header = () => {
               <div className="relative">
                 <button
                   onClick={() => setPublishOpen(!publishOpen)}
-                  className="ml-2 px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
+                  className="ml-2 flex items-center px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
                 >
-                  Publicar &gt;
+                  Publicar
+                  <ChevronDown
+                    className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
+                  />
                 </button>
                 {publishOpen && (
-                  <div className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50">
+                  <div className="absolute right-0 z-50 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
                     <CustomLink
                       href="/publica"
                       className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
@@ -122,12 +125,15 @@ const Header = () => {
             <div className="lg:hidden flex items-center gap-1 relative">
               <button
                 onClick={() => setPublishOpen(!publishOpen)}
-                className="px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
+                className="flex items-center px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
               >
-                Publicar &gt;
+                Publicar
+                <ChevronDown
+                  className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
+                />
               </button>
               {publishOpen && (
-                <div className="absolute right-0 mt-2 w-40 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-md shadow-lg z-50">
+                <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
                   <CustomLink
                     href="/publica"
                     className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
