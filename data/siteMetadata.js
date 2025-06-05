@@ -24,6 +24,7 @@ const siteMetadata = {
   medium: '',
   bluesky: 'https://bsky.app/profile/marcapagina.bsky.social',
   sanity: 'https://www.sanity.io/',
+  spotify: 'https://open.spotify.com/user/31qw54pngubgjwl3u4mcqkmpjtie',
   locale: 'es-ES',
   // set to true if you want a navbar fixed to the top
   stickyNav: false,

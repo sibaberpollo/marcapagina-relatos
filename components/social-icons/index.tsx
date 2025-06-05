@@ -13,6 +13,7 @@ import {
   Bluesky,
   Website,
   Sanity,
+  Spotify,
 } from './icons'
 
 const components = {
@@ -30,6 +31,7 @@ const components = {
   bluesky: Bluesky,
   website: Website,
   sanity: Sanity,
+  spotify: Spotify,
 }
 
 type SocialIconProps = {
