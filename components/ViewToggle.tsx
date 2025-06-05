@@ -4,7 +4,11 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { LayoutGrid, CalendarClock } from 'lucide-react'
 
-export default function ViewToggle() {
+interface ViewToggleProps {
+  total?: number
+}
+
+export default function ViewToggle({ total }: ViewToggleProps) {
   const pathname = usePathname()
   const isChronological = pathname === '/cronologico'
 
@@ -30,7 +34,7 @@ export default function ViewToggle() {
         }`}
       >
         <CalendarClock className="w-4 h-4" />
-        Cronológica
+        {`Todos${typeof total === 'number' ? ` (${total})` : ''}`}
       </Link>
     </div>
   )

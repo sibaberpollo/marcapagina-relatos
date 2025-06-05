@@ -56,7 +56,7 @@ export default async function CronologicoPage({ searchParams }: PageProps) {
 </p>
         </div>
         {/* Botones de cambio de vista */}
-        <ViewToggle />
+        <ViewToggle total={allRelatos.length} />
         
         {/* Vista cronológica */}
         <div className="container">
