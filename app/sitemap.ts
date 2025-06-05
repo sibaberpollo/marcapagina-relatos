@@ -40,6 +40,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: today,
     },
     {
+      url: `${siteUrl}/playlist`, // página de playlist
+      lastModified: today,
+    },
+    {
       url: `${siteUrl}/transtextos`, // página principal de Transtextos
       lastModified: today,
     },

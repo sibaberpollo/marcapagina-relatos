@@ -42,6 +42,7 @@ const navLinks = [
     icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />,
   },
   { title: 'Autores', href: '/autores' },
+  { title: 'Playlist', href: '/playlist' },
   { title: 'Acerca de', href: '/acerca-de' },
 ];
 
