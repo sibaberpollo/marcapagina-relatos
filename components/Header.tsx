@@ -3,9 +3,10 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, Menu, X as Close, Rss, ChevronDown } from 'lucide-react'
+import { Instagram, Menu, X as Close, Rss } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
+import PublishDropdown from './PublishDropdown'
 
 const socialLinks = [
   {
@@ -46,19 +47,19 @@ const navLinks = [
 
 const Header = () => {
   const [open, setOpen] = useState(false)
-  const [publishOpen, setPublishOpen] = useState(false)
 
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20 relative">
-          {/* Redes sociales */}
           {/* Logo */}
           <div className="flex items-center mx-0 lg:mx-12 -mt-1">
             <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
               <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
+          
+          {/* Redes sociales */}
           <div className="flex items-center gap-6">
             {socialLinks.map((link) =>
               link.href ? (
@@ -75,8 +76,10 @@ const Header = () => {
               ) : null
             )}
           </div>
+          
           {/* Navegación y botón destacado */}
           <div className="flex items-center gap-2 ml-auto">
+            {/* Navegación desktop */}
             <div className="hidden lg:flex items-center gap-6">
               {navLinks.map((link) => (
                 <CustomLink
@@ -91,67 +94,15 @@ const Header = () => {
                 </CustomLink>
               ))}
               <ThemeToggle />
-              <div className="relative">
-                <button
-                  onClick={() => setPublishOpen(!publishOpen)}
-                  className="ml-2 flex items-center px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
-                >
-                  Publicar
-                  <ChevronDown
-                    className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
-                  />
-                </button>
-                {publishOpen && (
-                  <div className="absolute right-0 z-50 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
-                    <CustomLink
-                      href="/publica"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
-                      onClick={() => setPublishOpen(false)}
-                    >
-                      Formulario
-                    </CustomLink>
-                    <CustomLink
-                      href="/criterios-editoriales"
-                      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
-                      onClick={() => setPublishOpen(false)}
-                    >
-                      Criterios editoriales
-                    </CustomLink>
-                  </div>
-                )}
-              </div>
+              <PublishDropdown isMobile={false} />
             </div>
-            {/* Botón de publica en móvil y tablet */}
-            <div className="lg:hidden flex items-center gap-1 relative">
-              <button
-                onClick={() => setPublishOpen(!publishOpen)}
-                className="flex items-center px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
-              >
-                Publicar
-                <ChevronDown
-                  className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-              {publishOpen && (
-                <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
-                  <CustomLink
-                    href="/publica"
-                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
-                    onClick={() => setPublishOpen(false)}
-                  >
-                    Formulario
-                  </CustomLink>
-                  <CustomLink
-                    href="/criterios-editoriales"
-                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
-                    onClick={() => setPublishOpen(false)}
-                  >
-                    Criterios editoriales
-                  </CustomLink>
-                </div>
-              )}
+            
+            {/* Navegación móvil */}
+            <div className="lg:hidden flex items-center gap-1">
+              <PublishDropdown isMobile={true} />
               <ThemeToggle />
             </div>
+            
             {/* Icono hamburguesa en móvil y tablet */}
             <button
               className="lg:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
