@@ -17,7 +17,8 @@ const siteMetadata = {
   x: '',
   twitter: 'https://x.com/marcapaginapage',
   facebook: '',
-  youtube: '',
+  youtube:
+    'https://www.youtube.com/playlist?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel',
   linkedin: '',
   threads: 'https://www.threads.com/@marcapagina.page',
   instagram: 'https://www.instagram.com/marcapagina.page/',
