@@ -16,6 +16,7 @@ import { getRelativeTime } from "@/lib/time";
 import FeaturedSlider from "@/components/FeaturedSlider";
 import FeaturedCard from "@/components/FeaturedCard";
 import { getFeaturedAndNonFeaturedRelatos } from "@/lib/sanity";
+import ShareIcons from "@/components/ShareIcons";
 
 const editUrl = (path: string) =>
   `${siteMetadata.siteRepo}/blob/main/data/${path}`;
@@ -189,6 +190,7 @@ export default async function PostLayout({
                   id="post-content"
                   className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
                 >
+                  <ShareIcons title={title} slug={slug} className="mb-4" />
                   {showDropCap ? (
                     <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!no-underline hover:[&_a]:underline">
                       {(() => {
@@ -267,6 +269,7 @@ export default async function PostLayout({
                       {children}
                     </div>
                   )}
+                  <ShareIcons title={title} slug={slug} className="my-4" />
                   {tags && tags.length > 0 && (
                     <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
                       <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
