@@ -1,6 +1,7 @@
 import {
   getFeaturedAndNonFeaturedRelatos,
   getAllMicrocuentos,
+  getAllRelatosForChronological,
 } from "../lib/sanity";
 // import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
 //import Card from '@/components/Card'
@@ -56,6 +57,8 @@ export default async function Page() {
   let featuredProject: CardProps | null = null;
   let nonFeaturedProjects: CardProps[] = [];
   const allMicrocuentos = await getAllMicrocuentos();
+  const allRelatos = await getAllRelatosForChronological();
+  const totalRelatos = allRelatos.length;
 
   try {
     console.log("Obteniendo datos desde Sanity");
@@ -106,7 +109,7 @@ export default async function Page() {
         </div>
 
         {/* Botones de cambio de vista */}
-        <ViewToggle />
+        <ViewToggle total={totalRelatos} />
 
         {/* Primera fila: 3 relatos sin slider */}
         <div className="container pb-6">
