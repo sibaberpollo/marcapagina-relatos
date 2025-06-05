@@ -28,9 +28,21 @@ function sendGAEvent({
   }
 }
 
+function buildUTMUrl(source: string, slug: string): string {
+  const baseUrl = window.location.href.split('?')[0] // Remove existing query params
+  const utmParams = new URLSearchParams({
+    utm_source: source,
+    utm_medium: 'social',
+    utm_campaign: 'relato-compartido',
+    utm_content: slug
+  })
+  
+  return `${baseUrl}?${utmParams.toString()}`
+}
+
 export default function ShareIcons({ title, slug, className = '' }: ShareIconsProps) {
   const shareFacebook = () => {
-    const url = window.location.href
+    const url = buildUTMUrl('facebook', slug)
     window.open(
       `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`,
       '_blank',
@@ -40,7 +52,7 @@ export default function ShareIcons({ title, slug, className = '' }: ShareIconsPr
   }
 
   const shareTwitter = () => {
-    const url = window.location.href
+    const url = buildUTMUrl('twitter', slug)
     window.open(
       `https://twitter.com/intent/tweet?url=${encodeURIComponent(url)}&text=${encodeURIComponent(title)}`,
       '_blank',
@@ -50,48 +62,53 @@ export default function ShareIcons({ title, slug, className = '' }: ShareIconsPr
   }
 
   const shareWhatsApp = () => {
-    const url = window.location.href
+    const url = buildUTMUrl('whatsapp', slug)
     window.open(`https://wa.me/?text=${encodeURIComponent(url)}`, '_blank', 'noopener,noreferrer')
     sendGAEvent({ action: 'share_whatsapp', category: 'Share', label: slug })
   }
 
   const copyUrl = () => {
-    const url = window.location.href
+    const url = buildUTMUrl('copy', slug)
     navigator.clipboard.writeText(url)
     alert('Enlace copiado al portapapeles')
     sendGAEvent({ action: 'share_copy', category: 'Share', label: slug })
   }
 
   return (
-    <div className={`flex justify-around gap-4 ${className}`}>
-      <button
-        onClick={shareFacebook}
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-label="Facebook"
-      >
-        <Facebook className="h-5 w-5 text-[#1877F2]" />
-      </button>
-      <button
-        onClick={shareTwitter}
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-label="Twitter"
-      >
-        <Twitter className="h-5 w-5 text-[#1DA1F2]" />
-      </button>
-      <button
-        onClick={shareWhatsApp}
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-label="WhatsApp"
-      >
-        <MessageCircle className="h-5 w-5 text-[#25D366]" />
-      </button>
-      <button
-        onClick={copyUrl}
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
-        aria-label="Copiar"
-      >
-        <Copy className="h-5 w-5 text-gray-700 dark:text-gray-300" />
-      </button>
+    <div className={`${className}`}>
+      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+        Comparte ❤️
+      </p>
+      <div className="flex justify-around gap-4">
+        <button
+          onClick={shareFacebook}
+          className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          aria-label="Facebook"
+        >
+          <Facebook className="h-5 w-5 text-[#1877F2]" />
+        </button>
+        <button
+          onClick={shareTwitter}
+          className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          aria-label="Twitter"
+        >
+          <Twitter className="h-5 w-5 text-[#1DA1F2]" />
+        </button>
+        <button
+          onClick={shareWhatsApp}
+          className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          aria-label="WhatsApp"
+        >
+          <MessageCircle className="h-5 w-5 text-[#25D366]" />
+        </button>
+        <button
+          onClick={copyUrl}
+          className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+          aria-label="Copiar"
+        >
+          <Copy className="h-5 w-5 text-gray-700 dark:text-gray-300" />
+        </button>
+      </div>
     </div>
   )
 }
