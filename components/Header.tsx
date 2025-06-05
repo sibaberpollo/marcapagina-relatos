@@ -3,7 +3,7 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, Menu, X as Close, Rss } from 'lucide-react'
+import { Instagram, Menu, X as Close, Rss, ChevronDown } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 
@@ -35,11 +35,10 @@ const socialLinks = [
 
 const navLinks = [
   { title: 'Todos los relatos', href: '/cronologico' },
-  { title: 'Criterios', href: '/criterios-editoriales' },
-  { 
-    title: 'Transtextos', 
+  {
+    title: 'Transtextos',
     href: '/transtextos',
-    icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />
+    icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />,
   },
   { title: 'Autores', href: '/autores' },
   { title: 'Acerca de', href: '/acerca-de' },
@@ -47,6 +46,7 @@ const navLinks = [
 
 const Header = () => {
   const [open, setOpen] = useState(false)
+  const [publishOpen, setPublishOpen] = useState(false)
 
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
@@ -91,21 +91,65 @@ const Header = () => {
                 </CustomLink>
               ))}
               <ThemeToggle />
-              <CustomLink
-                href="/publica"
-                className="ml-2 px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
-              >
-                Publica
-              </CustomLink>
+              <div className="relative">
+                <button
+                  onClick={() => setPublishOpen(!publishOpen)}
+                  className="ml-2 flex items-center px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400"
+                >
+                  Publicar
+                  <ChevronDown
+                    className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                {publishOpen && (
+                  <div className="absolute right-0 z-50 mt-2 w-48 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
+                    <CustomLink
+                      href="/publica"
+                      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
+                      onClick={() => setPublishOpen(false)}
+                    >
+                      Formulario
+                    </CustomLink>
+                    <CustomLink
+                      href="/criterios-editoriales"
+                      className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
+                      onClick={() => setPublishOpen(false)}
+                    >
+                      Criterios editoriales
+                    </CustomLink>
+                  </div>
+                )}
+              </div>
             </div>
             {/* Botón de publica en móvil y tablet */}
-            <div className="lg:hidden flex items-center gap-1">
-              <CustomLink
-                href="/publica"
-                className="px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
+            <div className="lg:hidden flex items-center gap-1 relative">
+              <button
+                onClick={() => setPublishOpen(!publishOpen)}
+                className="flex items-center px-3 py-1.5 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400 text-sm"
               >
-                Publica
-              </CustomLink>
+                Publicar
+                <ChevronDown
+                  className={`w-4 h-4 ml-1 transition-transform ${publishOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              {publishOpen && (
+                <div className="absolute right-0 z-50 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none dark:bg-gray-800">
+                  <CustomLink
+                    href="/publica"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
+                    onClick={() => setPublishOpen(false)}
+                  >
+                    Formulario
+                  </CustomLink>
+                  <CustomLink
+                    href="/criterios-editoriales"
+                    className="block px-4 py-2 text-sm hover:bg-gray-100 dark:hover:bg-gray-900"
+                    onClick={() => setPublishOpen(false)}
+                  >
+                    Criterios editoriales
+                  </CustomLink>
+                </div>
+              )}
               <ThemeToggle />
             </div>
             {/* Icono hamburguesa en móvil y tablet */}
