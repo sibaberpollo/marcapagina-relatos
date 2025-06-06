@@ -55,17 +55,19 @@ export default function PlaylistPage() {
             <section className="mt-12 space-y-4">
               <h2 className="text-xl font-semibold">Canciones destacadas</h2>
               <ul className="list-disc list-inside space-y-1">
-                <li>🔥 <strong>Las Tumbas</strong> – Ismael Rivera <small>(nuevo)</small></li>
-                <li><strong>Bird's Lament</strong> – Moondog</li>
-                <li><strong>Mood Indigo</strong> – Duke Ellington</li>
-                <li><strong>Electric Relaxation</strong> – A Tribe Called Quest</li>
-                <li><strong>'Round Midnight</strong> – Thelonious Monk</li>
-                <li><strong>Midnight In A Perfect World</strong> – DJ Shadow</li>
-                <li><strong>Harlem Nocturne</strong> – Illinois Jacquet</li>
-                <li><strong>Blue in Green</strong> – Miles Davis, John Coltrane & Bill Evans</li>
-                <li><strong>Alone Together (Mono)</strong> – Chet Baker</li>
-                <li><strong>Roads</strong> – Portishead</li>
+                <li className="bg-muted/50 rounded-md px-3 py-1">
+                  🔥 <strong>Las Tumbas</strong> – Ismael Rivera <small>(nuevo)</small>
+                </li>
                 <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
+                <li><strong>Roads</strong> – Portishead</li>
+                <li><strong>Alone Together (Mono)</strong> – Chet Baker</li>
+                <li><strong>Blue in Green</strong> – Miles Davis, John Coltrane & Bill Evans</li>
+                <li><strong>Harlem Nocturne</strong> – Illinois Jacquet</li>
+                <li><strong>Midnight In A Perfect World</strong> – DJ Shadow</li>
+                <li><strong>'Round Midnight</strong> – Thelonious Monk</li>
+                <li><strong>Electric Relaxation</strong> – A Tribe Called Quest</li>
+                <li><strong>Mood Indigo</strong> – Duke Ellington</li>
+                <li><strong>Bird's Lament</strong> – Moondog</li>
               </ul>
             </section>
             <p className="mt-12">
