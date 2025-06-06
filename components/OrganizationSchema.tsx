@@ -18,11 +18,28 @@ export default function OrganizationSchema() {
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'Organization',
-    name: siteMetadata.title,
-    url: siteMetadata.siteUrl,
-    logo: siteMetadata.siteLogo,
-    ...(sameAs.length > 0 && { sameAs }),
+    '@graph': [
+      {
+        '@type': 'Organization',
+        '@id': siteMetadata.siteUrl,
+        name: siteMetadata.title,
+        url: siteMetadata.siteUrl,
+        logo: {
+          '@type': 'ImageObject',
+          url: siteMetadata.siteLogo,
+        },
+        ...(sameAs.length > 0 && { sameAs }),
+      },
+      {
+        '@type': 'WebSite',
+        '@id': `${siteMetadata.siteUrl}#website`,
+        url: siteMetadata.siteUrl,
+        name: siteMetadata.title,
+        publisher: { '@id': siteMetadata.siteUrl },
+        inLanguage: siteMetadata.language,
+        description: siteMetadata.description,
+      },
+    ],
   }
 
   return (

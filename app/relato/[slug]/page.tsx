@@ -11,6 +11,8 @@ import Link from 'next/link'
 import Header from '@/components/Header'
 import TranstextosHeader from '@/components/TranstextosHeader'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
+import Breadcrumbs from '@/components/Breadcrumbs'
+import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
@@ -203,7 +205,10 @@ export default async function Page(props: {
     <>
       {/* Mostrar el header apropiado según el sitio */}
       {isTranstextos ? <TranstextosHeader /> : <Header />}
-      
+      <SectionContainer>
+        <Breadcrumbs force />
+      </SectionContainer>
+
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
