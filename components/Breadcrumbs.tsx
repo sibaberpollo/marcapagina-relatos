@@ -3,12 +3,13 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
+import { useEffect, useState } from 'react'
 
 const labelMap: Record<string, string> = {
   relato: 'Relatos',
   articulo: 'Artículos',
   autores: 'Autores',
-  autor: 'Autor',
+  autor: 'Autores', // autor individual también debe enlazar a /autores
   'acerca-de': 'Acerca de',
   cronologico: 'Cronológico',
   playlist: 'Playlist',
@@ -26,22 +27,62 @@ function toTitleCase(str: string) {
     .join(' ')
 }
 
+// Función para obtener el nombre del autor desde Sanity
+async function getAuthorName(slug: string): Promise<string> {
+  try {
+    const response = await fetch(`/api/author/${slug}`)
+    if (response.ok) {
+      const data = await response.json()
+      return data.name || toTitleCase(slug)
+    }
+  } catch (error) {
+    console.error('Error fetching author name:', error)
+  }
+  return toTitleCase(slug)
+}
+
 export default function Breadcrumbs({ force = false }: { force?: boolean } = {}) {
   const pathname = usePathname()
+  const [authorName, setAuthorName] = useState<string>('')
+  
   if (!force && pathname.startsWith('/relato/')) return null
   const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) return null
+
+  // Obtener el nombre del autor si estamos en una página de autor
+  useEffect(() => {
+    if (segments[0] === 'autor' && segments.length > 1) {
+      getAuthorName(segments[1]).then(setAuthorName)
+    }
+  }, [segments])
 
   let crumbs: { href: string; label: string }[] = []
 
   if (segments[0] === 'relato' && segments.length > 1) {
     crumbs.push({ href: '/cronologico', label: 'Todos los Relatos' })
     crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
+  } else if (segments[0] === 'autor' && segments.length > 1) {
+    // Para páginas de autor individual: /autor/slug
+    crumbs.push({ href: '/autores', label: 'Autores' })
+    crumbs.push({ href: pathname, label: authorName || toTitleCase(segments[1]) })
+  } else if (segments[0] === 'autores' && segments.length > 1) {
+    // Para páginas de autor individual: /autores/slug (si existiera)
+    crumbs.push({ href: '/autores', label: 'Autores' })
+    crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
   } else {
-    crumbs = segments.map((seg, index) => ({
-      href: '/' + segments.slice(0, index + 1).join('/'),
-      label: formatLabel(seg),
-    }))
+    crumbs = segments.map((seg, index) => {
+      // Para /autor sin slug específico, enlazar a /autores
+      if (seg === 'autor' && index === 0) {
+        return {
+          href: '/autores',
+          label: formatLabel(seg),
+        }
+      }
+      return {
+        href: '/' + segments.slice(0, index + 1).join('/'),
+        label: formatLabel(seg),
+      }
+    })
   }
 
   const jsonLd = {
