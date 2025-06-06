@@ -19,17 +19,30 @@ function formatLabel(segment: string) {
   return labelMap[segment] || segment.replace(/-/g, ' ')
 }
 
-export default function Breadcrumbs() {
+function toTitleCase(str: string) {
+  return str
+    .split('-')
+    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
+    .join(' ')
+}
+
+export default function Breadcrumbs({ force = false }: { force?: boolean } = {}) {
   const pathname = usePathname()
+  if (!force && pathname.startsWith('/relato/')) return null
   const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) return null
 
-  const crumbs = segments.map((seg, index) => {
-    return {
+  let crumbs: { href: string; label: string }[] = []
+
+  if (segments[0] === 'relato' && segments.length > 1) {
+    crumbs.push({ href: '/cronologico', label: 'Todos los Relatos' })
+    crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
+  } else {
+    crumbs = segments.map((seg, index) => ({
       href: '/' + segments.slice(0, index + 1).join('/'),
       label: formatLabel(seg),
-    }
-  })
+    }))
+  }
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -52,7 +65,7 @@ export default function Breadcrumbs() {
 
   return (
     <>
-      <nav aria-label="Breadcrumb" className="mb-6 text-sm text-gray-500 dark:text-gray-400">
+      <nav aria-label="Breadcrumb" className="mt-4 mb-2 text-sm text-gray-500 dark:text-gray-400">
         <ol className="flex flex-wrap items-center gap-1">
           <li>
             <Link href="/" className="hover:underline">
