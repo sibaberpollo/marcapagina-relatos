@@ -52,10 +52,10 @@ export default function PlaylistPage() {
                 para leer un buen cuento, grabar un reel o simplemente no hacer nada.
               </p>
             </section>
-
             <section className="mt-12 space-y-4">
               <h2 className="text-xl font-semibold">Canciones destacadas</h2>
               <ul className="list-disc list-inside space-y-1">
+                <li>🔥 <strong>Las Tumbas</strong> – Ismael Rivera <small>(nuevo)</small></li>
                 <li><strong>Bird's Lament</strong> – Moondog</li>
                 <li><strong>Mood Indigo</strong> – Duke Ellington</li>
                 <li><strong>Electric Relaxation</strong> – A Tribe Called Quest</li>
@@ -68,7 +68,6 @@ export default function PlaylistPage() {
                 <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
               </ul>
             </section>
-
             <p className="mt-12">
               Escúchala también en{' '}
               <a
