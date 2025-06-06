@@ -27,38 +27,48 @@ function toTitleCase(str: string) {
     .join(' ')
 }
 
-// Mapeo estático de slugs de autor a nombres reales (los más comunes)
-const authorNames: Record<string, string> = {
-  'agarcia': 'Álvaro García',
-  'aglaiaberlutti': 'Aglaia Berlutti', 
-  'pino': 'José Pino',
-  'franzbaiz': 'Frank Baiz Quevedo',
-  'hbujanda': 'Héctor Bujanda',
-  'sollinares': 'Sol Linares',
-  'antoniogonzalez': 'Antonio González Mendiondo',
-  'luisfelix': 'Luis Félix Peña',
-  'motamendoza': 'M. M. J. Miguel',
-  'mquerales': 'Margarita Querales',
-  'jreyes': 'Johan Reyes',
-  'jgarciatamayo': 'Jorge García Tamayo',
-  'josearias': 'José Arias',
-  'luisgarmendia': 'Luis Garmendia'
+// Función para obtener el nombre del autor desde Sanity
+async function getAuthorName(slug: string): Promise<string> {
+  // Solo ejecutar en el navegador
+  if (typeof window === 'undefined') {
+    return toTitleCase(slug)
+  }
+  
+  try {
+    const response = await fetch(`/api/author/${slug}`)
+    if (response.ok) {
+      const data = await response.json()
+      return data.name || toTitleCase(slug)
+    }
+  } catch (error) {
+    console.error('Error fetching author name:', error)
+  }
+  return toTitleCase(slug)
 }
 
 export default function Breadcrumbs({ force = false }: { force?: boolean } = {}) {
   // ✅ TODOS LOS HOOKS AL PRINCIPIO - ANTES DE CUALQUIER EARLY RETURN
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
+  const [authorName, setAuthorName] = useState<string>('')
+
+  // Preparar segments una vez
+  const segments = pathname.split('/').filter(Boolean)
 
   useEffect(() => {
     setMounted(true)
   }, [])
 
+  // Obtener el nombre del autor solo después de que el componente esté montado
+  useEffect(() => {
+    if (mounted && segments[0] === 'autor' && segments.length > 1) {
+      getAuthorName(segments[1]).then(setAuthorName)
+    }
+  }, [mounted, segments])
+
   // ✅ EARLY RETURNS DESPUÉS DE TODOS LOS HOOKS
   if (!mounted) return null
   if (!force && pathname.startsWith('/relato/')) return null
-  
-  const segments = pathname.split('/').filter(Boolean)
   if (segments.length === 0) return null
 
   let crumbs: { href: string; label: string }[] = []
@@ -69,9 +79,7 @@ export default function Breadcrumbs({ force = false }: { force?: boolean } = {})
   } else if (segments[0] === 'autor' && segments.length > 1) {
     // Para páginas de autor individual: /autor/slug
     crumbs.push({ href: '/autores', label: 'Autores' })
-    // Usar el nombre real si está disponible, sino usar toTitleCase del slug
-    const authorName = authorNames[segments[1]] || toTitleCase(segments[1])
-    crumbs.push({ href: pathname, label: authorName })
+    crumbs.push({ href: pathname, label: authorName || toTitleCase(segments[1]) })
   } else if (segments[0] === 'autores' && segments.length > 1) {
     // Para páginas de autor individual: /autores/slug (si existiera)
     crumbs.push({ href: '/autores', label: 'Autores' })
