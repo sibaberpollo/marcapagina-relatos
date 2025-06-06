@@ -158,8 +158,8 @@ export default async function Page(props: {
     tags: post.tags || [],
     draft: false,
     summary: post.summary || '',
-    images: post.image ? [post.image] : [],
-    image: post.image,
+    images: isTranstextos ? [] : post.image ? [post.image] : [],
+    image: isTranstextos ? undefined : post.image,
     authors: [post.author.name],
     slug: post.slug.current,
     path: `relato/${post.slug.current}`,
@@ -185,7 +185,7 @@ export default async function Page(props: {
     datePublished: post.date,
     dateModified: post.date,
     description: post.summary,
-    image: post.image,
+    image: isTranstextos ? undefined : post.image,
     url: siteMetadata.siteUrl + `/relato/${slug}`,
     author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
   }
