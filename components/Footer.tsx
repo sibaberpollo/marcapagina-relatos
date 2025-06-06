@@ -27,6 +27,7 @@ export default function Footer() {
               <SocialIcon kind="sanity" href={siteMetadata.sanity} size={6} />
               <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
               <SocialIcon kind="spotify" href={siteMetadata.spotify} size={6} />
+              <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
               <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
               <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
               <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
@@ -39,6 +40,7 @@ export default function Footer() {
                 <SocialIcon kind="sanity" href={siteMetadata.sanity} size={6} />
                 <SocialIcon kind="instagram" href={siteMetadata.instagram} size={6} />
                 <SocialIcon kind="spotify" href={siteMetadata.spotify} size={6} />
+                <SocialIcon kind="youtube" href={siteMetadata.youtube} size={6} />
                 <SocialIcon kind="bluesky" href={siteMetadata.bluesky} size={6} />
                 <SocialIcon kind="threads" href={siteMetadata.threads} size={6} />
                 <SocialIcon kind="twitter" href={siteMetadata.twitter} size={6} />
