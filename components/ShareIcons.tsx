@@ -79,8 +79,8 @@ export default function ShareIcons({ title, slug, className = '' }: ShareIconsPr
 
   return (
     <div className={`${className}`}>
-      <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
-        Comparte ❤️
+      <p className="text-center text-sm font-small text-gray-500 dark:text-gray-300 mb-3">
+        COMPARTE
       </p>
       <div className="flex justify-around gap-4">
         <button
