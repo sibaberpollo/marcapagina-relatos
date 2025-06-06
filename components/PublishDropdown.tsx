@@ -42,7 +42,7 @@ export default function PublishDropdown({ isMobile = false }: PublishDropdownPro
         onClick={() => setIsOpen(!isOpen)}
         className={buttonClasses}
       >
-        Publicar
+        Publica
         <ChevronDown
           className={`w-4 h-4 ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`}
         />
