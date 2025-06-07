@@ -1,12 +1,12 @@
 "use client";
 
 import siteMetadata from '@/data/siteMetadata'
-import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
 import { Instagram, Menu, X as Close, Rss } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
+import NewLogo from './newLogo'
 
 const socialLinks = [
   {
@@ -64,9 +64,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
           <div className="flex items-center mx-0 lg:mx-12 -mt-1">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
+            <NewLogo />
           </div>
           
           {/* Redes sociales */}

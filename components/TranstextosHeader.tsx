@@ -5,6 +5,7 @@ import CustomLink from './Link'
 import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
+import NewLogo from './newLogo'
 
 const socialLinks = [
   {
@@ -38,18 +39,7 @@ const TranstextosHeader = () => {
       <div className="max-w-screen-2xl mx-auto ">
         <div className="flex items-center justify-between h-16 relative pl-[56px]">
           {/* Botón volver a Marcapágina - del alto completo, pegado a la izquierda, fondo amarillo, solo texto */}
-          <CustomLink 
-            href="/" 
-            className="h-full flex items-stretch absolute left-0 top-0 z-10"
-            aria-label="Volver a Marcapágina"
-            style={{margin:0,padding:0}}
-          >
-            <div className="h-full w-[56px] bg-[#faff00] flex items-center justify-center pr-3">
-              <span className="text-3xl font-extrabold text-black select-none font-mono" style={{letterSpacing: '-5px'}}>
-                :<span style={{letterSpacing: '-10px'}}>//</span>
-              </span>
-            </div>
-          </CustomLink>
+          <NewLogo />
 
           {/* Redes sociales alineadas a la izquierda (después del botón de volver) */}
           <div className="hidden md:flex items-center gap-4 ml-[56px]">
