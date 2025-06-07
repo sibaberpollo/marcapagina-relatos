@@ -10,16 +10,16 @@ const NewLogo = ({ square = false }: NewLogoProps) => {
   return (
     <CustomLink
       href="/"
-      className={`h-full flex absolute left-0 top-0 z-10 ${
+      className={`absolute left-0 top-0 bottom-0 flex ${
         square ? 'items-center' : 'items-stretch'
-      }`}
+      } z-10`}
       aria-label="Volver a Marcapágina"
       style={{ margin: 0, padding: 0 }}
     >
       <div
         className={`${
-          square ? 'h-[56px] w-[56px]' : 'h-full w-[56px]'
-        } bg-[#faff00] flex items-center justify-center pr-3`}
+          square ? 'h-full aspect-square' : 'h-full w-[56px]'
+        } bg-[#faff00] flex items-center justify-center`}
       >
         <span
           className="text-3xl font-extrabold text-black select-none font-mono"
