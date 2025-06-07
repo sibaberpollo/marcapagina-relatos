@@ -64,7 +64,7 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 relative pl-[56px]">
           {/* Logo */}
           <div className="flex items-center mx-0 lg:mx-12 -mt-1">
-            <NewLogo />
+            <NewLogo square />
           </div>
           
           {/* Redes sociales */}
