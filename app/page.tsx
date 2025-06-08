@@ -13,6 +13,8 @@ import ClientRedirect from "@/components/ClientRedirect";
 import PublishBanner from "@/components/PublishBanner";
 import MicrocuentoCard from "@/components/MicrocuentoCard";
 import Image from "next/image";
+import Logo from '@/data/logo.svg'
+import ExpandableText from '@/components/ExpandableText'
 
 // Tipo común para ambos orígenes de datos
 interface CardProps {
@@ -83,29 +85,54 @@ export default async function Page() {
       <ClientRedirect />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1
-            className="text-xl leading-8 font-extrabold tracking-tight text-gray-900
-                      dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
-          >
-            Relatos
-          </h1>
+          <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
 
-          <div className="prose dark:prose-invert max-w-none mb-4">
-            <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-              Bienvenido a <strong>MarcaPágina</strong>, antes una revista de
-              literatura, ahora una app para leer literatura. Más de{" "}
-              <strong>
+          <ExpandableText previewLines={2} className="prose dark:prose-invert max-w-none mb-4">
+            <div className="prose dark:prose-invert max-w-none mb-4">
+              <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
+                <strong>MarcaPágina</strong> es una app literaria para leer ficción.{" "}
                 <a
-                  href="/cronologico/"
+                  href="/acerca-de/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                 >
-                  300 relatos de ficción contemporánea
+                  Antes fuimos una revista,
+                </a>{" "}
+                ahora somos una plataforma para descubrir relatos, 
+                explorar playlists narrativas y participar de una comunidad en torno a la escritura.  
+                En este momento, puedes leer más de{" "}
+                <strong>
+                  <a
+                    href="/cronologico/"
+                    className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
+                  >
+                    350 relatos contemporáneos
+                  </a>
+                </strong>{" "}
+                y <strong>microcuentos</strong> escritos por autores emergentes de América Latina.
+                <br /><br />
+                Muchos de estos textos provienen del archivo de{" "}
+                <a
+                  href="/transtextos/"
+                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
+                >
+                  Transtextos
                 </a>
-              </strong>{" "}
-              y <strong>microcuentos</strong>. Explora historias inéditas,
-              escritas por autores emergentes de América Latina.
-            </p>
-          </div>
+                , un proyecto literario 
+                migrado recientemente a esta plataforma, integrando su fondo de publicaciones 
+                a la experiencia de lectura de MarcaPágina. También hemos lanzado una{" "}
+                <a
+                  href="/playlist/"
+                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
+                >
+                  sección de playlists
+                </a>{" "}
+                que acompaña algunos relatos con música curada por sus autores.
+                <br /><br />
+                Estamos construyendo el mejor lugar para leer literatura breve en internet. 
+                Esto recién comienza.
+              </p>
+            </div>
+          </ExpandableText>
         </div>
 
         {/* Botones de cambio de vista */}

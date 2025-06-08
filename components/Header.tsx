@@ -62,27 +62,29 @@ const Header = () => {
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto pr-4 sm:pr-8">
         <div className="flex items-center justify-between h-20 relative pl-[56px]">
-          {/* Logo */}
-          <div className="flex items-center mx-0 lg:mx-12 -mt-1">
-            <NewLogo square />
-          </div>
-          
-          {/* Redes sociales */}
-          <div className="flex items-center gap-6">
-            {socialLinks.map((link) =>
-              link.href ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors hidden sm:inline-flex"
-                >
-                  {link.icon}
-                </a>
-              ) : null
-            )}
+          {/* Logo y redes sociales juntos */}
+          <div className="flex items-center gap-0">
+            <div className="flex items-center mx-0 lg:mx-12 -mt-1">
+              <NewLogo square />
+            </div>
+            
+            {/* Redes sociales cerca del logo */}
+            <div className="flex items-center gap-4 ml-0">
+              {socialLinks.map((link) =>
+                link.href ? (
+                  <a
+                    key={link.label}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={link.label}
+                    className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors hidden sm:inline-flex"
+                  >
+                    {link.icon}
+                  </a>
+                ) : null
+              )}
+            </div>
           </div>
           
           {/* Navegación y botón destacado */}

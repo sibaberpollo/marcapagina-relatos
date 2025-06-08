@@ -23,7 +23,7 @@ const NewLogo = ({ square = false }: NewLogoProps) => {
       >
         <span
           className="text-3xl font-extrabold text-black select-none font-mono"
-          style={{ letterSpacing: '-5px' }}
+          style={{ letterSpacing: '-5px', marginLeft: '-10px' }}
         >
           :<span style={{ letterSpacing: '-10px' }}>{'//'}</span>
         </span>
