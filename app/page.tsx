@@ -85,51 +85,64 @@ export default async function Page() {
       <ClientRedirect />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
-
+          <h1
+            className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 
+                      sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
+          >
+            Lee relatos breves y microcuentos
+          </h1>
           <ExpandableText previewLines={2} className="prose dark:prose-invert max-w-none mb-4">
             <div className="prose dark:prose-invert max-w-none mb-4">
               <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-                <strong>MarcaPágina</strong> es una app literaria para leer ficción.{" "}
+                <strong>MarcaPágina</strong> es una app literaria para leer relatos breves, 
+                microcuentos y ficción contemporánea desde cualquier dispositivo.{" "}
                 <a
                   href="/acerca-de/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                 >
                   Antes fuimos una revista,
                 </a>{" "}
-                ahora somos una plataforma para descubrir relatos, 
-                explorar playlists narrativas y participar de una comunidad en torno a la escritura.  
-                En este momento, puedes leer más de{" "}
+                ahora somos una plataforma para descubrir literatura nueva, explorar{" "} 
+                <a
+                  href="/playlist/"
+                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
+                >playlists</a> narrativas 
+                y participar de una comunidad activa en torno a la escritura en español.  
+                <br /><br />
+                Hoy puedes acceder a más de{" "}
                 <strong>
                   <a
                     href="/cronologico/"
                     className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                   >
-                    350 relatos contemporáneos
+                    350 relatos y microficciones
                   </a>
                 </strong>{" "}
-                y <strong>microcuentos</strong> escritos por autores emergentes de América Latina.
+                escritos por autores emergentes de América Latina, seleccionados con criterio editorial.
                 <br /><br />
-                Muchos de estos textos provienen del archivo de{" "}
+                Una parte importante de nuestro catálogo proviene del archivo de{" "}
                 <a
                   href="/transtextos/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                 >
                   Transtextos
                 </a>
-                , un proyecto literario 
-                migrado recientemente a esta plataforma, integrando su fondo de publicaciones 
-                a la experiencia de lectura de MarcaPágina. También hemos lanzado una{" "}
+                , un proyecto de publicación literaria migrado recientemente a MarcaPágina. 
+                Hemos integrado su fondo completo de relatos y lo seguimos expandiendo. 
+                También lanzamos una{" "}
                 <a
                   href="/playlist/"
                   className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
                 >
                   sección de playlists
                 </a>{" "}
-                que acompaña algunos relatos con música curada por sus autores.
+                donde la música y la literatura dialogan: cada lista acompaña el tono de ciertos cuentos, 
+                curada directamente por sus autores.
                 <br /><br />
-                Estamos construyendo el mejor lugar para leer literatura breve en internet. 
-                Esto recién comienza.
+                Publicamos nuevos relatos cada semana. MarcaPágina funciona como aplicación web: 
+                puedes leer desde tu navegador o instalarla como PWA en tu celular para llevar tus lecturas donde quieras.
+                <br /><br />
+                Estamos construyendo el mejor espacio para leer literatura breve en internet. Esto recién comienza.
               </p>
             </div>
           </ExpandableText>
