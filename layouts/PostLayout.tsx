@@ -190,7 +190,6 @@ export default async function PostLayout({
                   id="post-content"
                   className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8"
                 >
-                  <ShareIcons title={title} slug={slug} className="mb-4" />
                   {showDropCap ? (
                     <div className="prose dark:prose-invert max-w-none [&_p]:!text-lg [&_p]:!leading-7 md:[&_p]:!text-base md:[&_p]:!leading-7 [&_a]:!no-underline hover:[&_a]:underline">
                       {(() => {
