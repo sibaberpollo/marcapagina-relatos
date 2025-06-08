@@ -16,7 +16,16 @@ import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
+import {
+  getRelatoBySlug,
+  getRelatosByAutor,
+  getAllRelatos,
+  getSerieDeRelato,
+  getAllRelatosForChronologicalBySite,
+  getSiteBySlug
+} from '../../../lib/sanity'
+import ChronologicalView from '@/components/ChronologicalView'
+import { Rss } from 'lucide-react'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
@@ -201,6 +210,11 @@ export default async function Page(props: {
     order: index + 1
   }))
 
+  const siteInfo = await getSiteBySlug('transtextos')
+  const allRelatosTranstextos = await getAllRelatosForChronologicalBySite('transtextos')
+  const latestTranstextos = allRelatosTranstextos.slice(0, 5)
+  const currentPage = 1
+
   return (
     <>
       {/* Mostrar el header apropiado según el sitio */}
@@ -268,6 +282,26 @@ export default async function Page(props: {
           </div>
         )}
       </Layout>
+
+      <SectionContainer>
+        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 flex items-center gap-2">
+            {siteInfo?.title || 'Transtextos'}
+            <Rss className="w-7 h-7" style={{ color: '#f26522' }} />
+          </h1>
+        </div>
+        <div className="container">
+          <ChronologicalView items={latestTranstextos} itemsPerPage={10} currentPage={currentPage} />
+          <div className="mt-8 flex justify-center">
+            <Link
+              href="/transtextos"
+              className="inline-block px-4 py-2 rounded bg-black text-white hover:bg-gray-800 transition-colors"
+            >
+              Ver todos
+            </Link>
+          </div>
+        </div>
+      </SectionContainer>
       <ClientFixedNavWrapper
         title={post.title}
         authorAvatar={post.author.avatar}
