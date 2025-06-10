@@ -56,12 +56,12 @@ export default function PlaylistPage() {
             <section className="mt-12 space-y-4">
               <h2 className="text-xl font-semibold">Canciones destacadas</h2>
               <ul className="list-disc list-inside space-y-1">
-                <li><strong>Mi Sueño</strong> – Willie Colón</li>
                 <li>
                   <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
                     🔥 <strong>#3</strong> – Aphex Twin <small>(nuevo)</small>
                   </div>
                 </li>
+                <li><strong>Mi Sueño</strong> – Willie Colón</li>
                 <li><strong>Las Tumbas</strong> – Ismael Rivera</li>
                 <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
                 <li><strong>Roads</strong> – Portishead</li>
