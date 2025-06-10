@@ -5,7 +5,7 @@ import { genPageMetadata } from 'app/seo'
 export const metadata = genPageMetadata({
   title: 'Música a pie de página – Playlist literaria de Marcapágina',
   description:
-    'Jazz de los 50 y trip hop de los 2000. Escucha la música que acompaña los reels y relatos de Marcapágina. Disponible en Spotify y YouTube.'
+    'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.'
 })
 
 export default function PlaylistPage() {
@@ -16,7 +16,7 @@ export default function PlaylistPage() {
           <div className="pt-8 pb-8">
             <PageTitle>Música a pie de página</PageTitle>
             <p className="mt-2 text-lg text-muted-foreground">
-              Jazz de los años 50 y trip hop de los 2000. Esta playlist acompaña nuestros reels, nuestras
+              Jazz de los años 50, trip hop de los 2000 y salsa de los grandes. Esta playlist acompaña nuestros reels, nuestras
               lecturas y también nuestras escrituras. Una banda sonora sin género, elegida sin reglas —salvo
               una: que combine con las historias que publicamos.
             </p>
@@ -43,23 +43,26 @@ export default function PlaylistPage() {
             </div>
 
             <section className="mt-12 space-y-6">
-              <h2 className="text-xl font-semibold">¿Por qué jazz y trip hop?</h2>
+              <h2 className="text-xl font-semibold">¿Por qué principalmente jazz y trip hop?</h2>
               <p>
-                Porque comparten algo difícil de explicar y fácil de sentir: una mezcla de precisión, nostalgia y
+                Porque ambos géneros comparten algo difícil de explicar y fácil de sentir: una mezcla de precisión, nostalgia y
                 groove que deja espacio para pensar. El jazz de mediados del siglo XX ofrece una atmósfera contenida,
                 nocturna, con silencios que narran tanto como las notas. El trip hop, en cambio, arrastra una estética
-                de videoclub y spoken word, con ritmos que flotan como las frases largas. Juntos, crean el tempo ideal
-                para leer un buen cuento, grabar un reel o simplemente no hacer nada.
+                de videoclub y spoken word, con ritmos que flotan como las frases largas. Pero en realidad, el género lo dicta cada relato. 
+                Cuando la historia lo pide, puede ser salsa, puede ser electrónica, o puede ser algo que aún no sabemos nombrar.
               </p>
             </section>
+
             <section className="mt-12 space-y-4">
               <h2 className="text-xl font-semibold">Canciones destacadas</h2>
               <ul className="list-disc list-inside space-y-1">
+                <li><strong>Mi Sueño</strong> – Willie Colón</li>
                 <li>
                   <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
-                    🔥 <strong>Las Tumbas</strong> – Ismael Rivera <small>(nuevo)</small>
+                    🔥 <strong>#3</strong> – Aphex Twin <small>(nuevo)</small>
                   </div>
                 </li>
+                <li><strong>Las Tumbas</strong> – Ismael Rivera</li>
                 <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
                 <li><strong>Roads</strong> – Portishead</li>
                 <li><strong>Alone Together (Mono)</strong> – Chet Baker</li>
@@ -72,6 +75,7 @@ export default function PlaylistPage() {
                 <li><strong>Bird's Lament</strong> – Moondog</li>
               </ul>
             </section>
+
             <p className="mt-12">
               Escúchala también en{' '}
               <a
