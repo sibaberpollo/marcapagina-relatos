@@ -90,9 +90,8 @@ const TranstextosHeader = () => {
               <ThemeToggle />
             </div>
 
-            {/* Navegación móvil */}
-            <div className="lg:hidden flex items-center gap-1">
-              <PublishDropdown isMobile={true} />
+            {/* Botón toggle móvil/tablet */}
+            <div className="lg:hidden">
               <ThemeToggle />
             </div>
 
@@ -128,6 +127,9 @@ const TranstextosHeader = () => {
                       {link.title}
                     </CustomLink>
                   ))}
+                  <div className="mt-4">
+                    <PublishDropdown isMobile={true} />
+                  </div>
                 </nav>
                 <div className="flex gap-8 mt-12">
                   {socialLinks.map((link) =>
