@@ -17,6 +17,7 @@ import { useDesafio } from '../../lib/hooks/useDesafio'
 import FormularioPublica from '../../components/forms/FormularioPublica'
 import PreFormulario from '../../components/forms/PreFormulario'
 import HighlightStroke from '@/components/HighlightStroke'
+import TranstextoMigrationModal from '@/components/TranstextoMigrationModal'
 
 // Utilidad para enviar eventos a Google Analytics
 function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
@@ -387,6 +388,7 @@ export default function PublicaClient() {
 
   return (
     <div className="py-4">
+      <TranstextoMigrationModal />
       <SectionContainer>
         {/* Texto de bienvenida estático - siempre visible */}
         {estado === 'pre_formulario' && (

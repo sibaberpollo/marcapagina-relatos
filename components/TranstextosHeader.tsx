@@ -6,6 +6,7 @@ import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import NewLogo from './newLogo'
+import PublishDropdown from './PublishDropdown'
 
 const socialLinks = [
   {
@@ -85,6 +86,7 @@ const TranstextosHeader = () => {
                   {link.title}
                 </CustomLink>
               ))}
+              <PublishDropdown />
               <ThemeToggle />
             </div>
 
@@ -125,6 +127,9 @@ const TranstextosHeader = () => {
                       {link.title}
                     </CustomLink>
                   ))}
+                  <div className="mt-4">
+                    <PublishDropdown isMobile={true} />
+                  </div>
                 </nav>
                 <div className="flex gap-8 mt-12">
                   {socialLinks.map((link) =>
