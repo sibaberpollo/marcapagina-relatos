@@ -103,7 +103,7 @@ export default async function Page() {
           <ExpandableText previewLines={2} className="prose dark:prose-invert max-w-none mb-4">
             <div className="prose dark:prose-invert max-w-none mb-4">
               <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-                <strong>MarcaPágina</strong> es una app literaria para leer relatos breves, 
+                <strong>MarcaPágina</strong> es una app para leer relatos, 
                 microcuentos y ficción contemporánea desde cualquier dispositivo.{" "}
                 <a
                   href="/acerca-de/"
