@@ -45,7 +45,8 @@ export default function CriteriosEditorialesPage() {
             <h3 className="text-lg font-bold mt-8 mb-4">❌ Y lo que especialmente no publicamos:</h3>
             
             <ul className="pl-5 space-y-2">
-              <li>Autores menores de edad</li>
+              <li>Autores menores de edad</li> 
+              <li>Journaling</li>
               <li>Fanfics</li>
               <li>Copeyanos</li>
             </ul>
