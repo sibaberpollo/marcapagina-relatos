@@ -25,21 +25,29 @@ export default function CriteriosEditorialesPage() {
             <h3 className="text-lg font-bold mt-8 mb-4">Lo que sí buscamos:</h3>
             
             <ul className="list-disc pl-5 space-y-2">
-              <li>Narrativas breves o fragmentos con una mirada literaria elaborada.</li>
-              <li>Personajes con contradicción interna, con deseo, con grietas.</li>
-              <li>Lenguaje trabajado: imágenes sugerentes, ritmo, cuidado formal.</li>
-              <li>Textos que se sostengan sin necesidad de explicarse.</li>
-              <li>Finales que abran resonancia, no que cierren con moraleja.</li>
+              <li>Narrativas breves o fragmentos con una mirada literaria elaborada</li>
+              <li>Personajes con contradicción interna, con deseo, con grietas</li>
+              <li>Lenguaje trabajado: imágenes sugerentes, ritmo, cuidado formal</li>
+              <li>Textos que se sostengan sin necesidad de explicarse</li>
+              <li>Finales que abran resonancia, no que cierren con moraleja</li>
             </ul>
 
             <h3 className="text-lg font-bold mt-8 mb-4">Lo que no publicamos:</h3>
             
             <ul className="list-disc pl-5 space-y-2">
-              <li>Textos escritos como si la historia fuese suficiente sin forma.</li>
-              <li>Relatos que repiten estereotipos sin transformarlos.</li>
-              <li>Escrituras con lenguaje plano, sin tensión ni atmósfera.</li>
-              <li>Anécdotas contadas de corrido, sin estructura narrativa.</li>
-              <li>Cierres explicativos que repiten lo ya dicho en lugar de generar eco.</li>
+              <li>Textos escritos como si la historia fuese suficiente sin forma</li>
+              <li>Relatos que repiten estereotipos sin transformarlos</li>
+              <li>Escrituras con lenguaje plano, sin tensión ni atmósfera</li>
+              <li>Anécdotas contadas de corrido, sin estructura narrativa</li>
+              <li>Cierres explicativos que repiten lo ya dicho en lugar de generar eco</li>
+            </ul>
+
+            <h3 className="text-lg font-bold mt-8 mb-4">❌ Y lo que especialmente no publicamos:</h3>
+            
+            <ul className="pl-5 space-y-2">
+              <li>Autores menores de edad</li>
+              <li>Fanfics</li>
+              <li>Copeyanos</li>
             </ul>
 
             <p className="mt-8">
