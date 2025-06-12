@@ -9,11 +9,11 @@ export const metadata = genPageMetadata({
   openGraph: {
     title: 'Música a pie de página – Playlist literaria de Marcapágina',
     description: 'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.',
-    type: 'video.music',
+    type: 'website',
     videos: [
       {
         url: 'https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel',
-        type: 'application/x-shockwave-flash',
+        type: 'text/html',
         width: 560,
         height: 315,
       },
