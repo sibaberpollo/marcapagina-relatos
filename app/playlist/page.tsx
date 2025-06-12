@@ -5,7 +5,20 @@ import { genPageMetadata } from 'app/seo'
 export const metadata = genPageMetadata({
   title: 'Música a pie de página – Playlist literaria de Marcapágina',
   description:
-    'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.'
+    'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.',
+  openGraph: {
+    title: 'Música a pie de página – Playlist literaria de Marcapágina',
+    description: 'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.',
+    type: 'video.music',
+    videos: [
+      {
+        url: 'https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel',
+        type: 'application/x-shockwave-flash',
+        width: 560,
+        height: 315,
+      },
+    ],
+  },
 })
 
 export default function PlaylistPage() {
@@ -29,6 +42,8 @@ export default function PlaylistPage() {
                   title="YouTube playlist de Marcapágina"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
+                  loading="lazy"
+                  aria-label="Playlist de YouTube de Marcapágina"
                 />
               </div>
               <div className="aspect-[16/10]">
@@ -38,6 +53,7 @@ export default function PlaylistPage() {
                   title="Spotify playlist de Marcapágina"
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
+                  aria-label="Playlist de Spotify de Marcapágina"
                 />
               </div>
             </div>
