@@ -76,6 +76,16 @@ export default function FormularioContacto() {
       onSubmit={handleSubmit}
       className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow"
     >
+      <div className="rounded-lg bg-yellow-100 p-4 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+        Para publicar en Marcapagina, hazlo a través de{' '}
+        <a
+          href="https://www.marcapagina.page/publica"
+          className="font-bold underline"
+        >
+          /publica
+        </a>
+        .
+      </div>
       {status && (
         <div
           className={`p-4 rounded ${status.success ? 'bg-green-100 dark:bg-green-900 text-green-800 dark:text-green-100' : 'bg-red-100 dark:bg-red-900 text-red-800 dark:text-red-100'}`}
