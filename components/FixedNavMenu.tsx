@@ -59,30 +59,81 @@ export default function FixedNavMenu({
     .sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
     .slice(0, 5)
 
-  // Track scroll progress
+  // Track scroll progress with improved cross-browser compatibility
   useEffect(() => {
     function updateProgress() {
-      const scrollY = window.scrollY
-      const content = document.getElementById('post-content')
-      if (content) {
-        const contentTop = content.getBoundingClientRect().top + window.scrollY
-        const maxScroll = contentTop + content.offsetHeight - window.innerHeight
-        if (scrollY <= contentTop) {
-          setReadingProgress(0)
-        } else if (scrollY >= maxScroll) {
-          setReadingProgress(100)
+      try {
+        const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
+        const content = document.getElementById('post-content')
+        
+        if (content) {
+          const rect = content.getBoundingClientRect()
+          const contentTop = rect.top + scrollY
+          const contentHeight = content.offsetHeight || content.scrollHeight || rect.height
+          const windowHeight = window.innerHeight || document.documentElement.clientHeight
+          const maxScroll = contentTop + contentHeight - windowHeight
+          
+          if (scrollY <= contentTop) {
+            setReadingProgress(0)
+          } else if (scrollY >= maxScroll) {
+            setReadingProgress(100)
+          } else {
+            const progress = ((scrollY - contentTop) / (maxScroll - contentTop)) * 100
+            setReadingProgress(Math.max(0, Math.min(100, progress)))
+          }
         } else {
-          setReadingProgress(((scrollY - contentTop) / (maxScroll - contentTop)) * 100)
+          // Fallback: usar la altura total del documento
+          const documentHeight = Math.max(
+            document.documentElement.scrollHeight,
+            document.documentElement.offsetHeight,
+            document.body.scrollHeight,
+            document.body.offsetHeight
+          )
+          const windowHeight = window.innerHeight || document.documentElement.clientHeight
+          const fullHeight = documentHeight - windowHeight
+          
+          if (fullHeight > 0) {
+            const progress = (scrollY / fullHeight) * 100
+            setReadingProgress(Math.max(0, Math.min(100, progress)))
+          } else {
+            setReadingProgress(0)
+          }
         }
-      } else {
+      } catch (error) {
+        console.warn('Error calculating reading progress:', error)
+        // Fallback simple
+        const scrollY = window.scrollY || 0
         const fullHeight = document.documentElement.scrollHeight - window.innerHeight
-        setReadingProgress(fullHeight ? (scrollY / fullHeight) * 100 : 0)
+        if (fullHeight > 0) {
+          setReadingProgress(Math.max(0, Math.min(100, (scrollY / fullHeight) * 100)))
+        }
       }
     }
+    
+    // Llamar inmediatamente y luego cada vez que se haga scroll
     updateProgress()
-    window.addEventListener('scroll', updateProgress)
-    window.addEventListener('resize', updateProgress)
+    
+    // Retraso adicional para Firefox/Vivaldi
+    const timeoutId = setTimeout(() => {
+      updateProgress()
+    }, 100)
+    
+    window.addEventListener('scroll', updateProgress, { passive: true })
+    window.addEventListener('resize', updateProgress, { passive: true })
+    
+    // Event listener adicional para cuando el DOM cambie
+    const observer = new MutationObserver(() => {
+      updateProgress()
+    })
+    
+    const postContent = document.getElementById('post-content')
+    if (postContent) {
+      observer.observe(postContent, { childList: true, subtree: true })
+    }
+    
     return () => {
+      clearTimeout(timeoutId)
+      observer.disconnect()
       window.removeEventListener('scroll', updateProgress)
       window.removeEventListener('resize', updateProgress)
     }
@@ -95,7 +146,6 @@ export default function FixedNavMenu({
         {/* Progress bar */}
         <div
           id="progress-bar-component"
-          className="h-1 bg-[var(--color-gray-950)] dark:bg-[var(--color-accent)]"
           style={{ width: `${readingProgress}%` }}
         />
 
