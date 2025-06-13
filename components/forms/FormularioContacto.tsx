@@ -77,7 +77,7 @@ export default function FormularioContacto() {
       className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow"
     >
       <div className="rounded-lg bg-yellow-100 p-4 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
-        Para publicar en Marcapagina, hazlo a través de{' '}
+        Para publicar, hazlo a través de{' '}
         <a
           href="https://www.marcapagina.page/publica"
           className="font-bold underline"
