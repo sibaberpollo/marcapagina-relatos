@@ -51,6 +51,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/transtextos/acerca-de`, // página "Acerca de" de Transtextos
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/contacto`, // página de contacto
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity
