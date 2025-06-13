@@ -11,9 +11,9 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: NextRequest) {
   try {
-    const { nombre, email, telefono, mensaje } = await req.json()
+    const { nombre, email, telefono, motivo, mensaje } = await req.json()
 
-    if (!nombre || !email || !mensaje) {
+    if (!nombre || !email || !motivo || !mensaje) {
       return NextResponse.json({ error: 'Faltan campos requeridos' }, { status: 400 })
     }
 
@@ -23,8 +23,8 @@ export async function POST(req: NextRequest) {
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: email,
         subject: 'Hemos recibido tu mensaje',
-        text: `Hola ${nombre.split(' ')[0]},\n\nGracias por contactarnos. Pronto responderemos tu mensaje.\n\n— MarcaPagina`,
-        html: `<p>Hola ${nombre.split(' ')[0]},</p><p>Gracias por contactarnos. Pronto responderemos tu mensaje.</p><p>— MarcaPagina</p>`
+        text: `Hola ${nombre.split(' ')[0]},\n\nGracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.\n\n— MarcaPagina`,
+        html: `<p>Hola ${nombre.split(' ')[0]},</p><p>Gracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.</p><p>— MarcaPagina</p>`
       })
       .catch(err => console.error('Error enviando confirmación de contacto:', err))
 
@@ -34,8 +34,8 @@ export async function POST(req: NextRequest) {
       to: GMAIL_USER,
       cc: 'pino.jose@gmail.com',
       replyTo: email,
-      subject: `Mensaje de contacto de ${nombre}`,
-      text: `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono || 'No proporcionado'}\n\n${mensaje}`
+      subject: `Contacto: ${motivo} - ${nombre}`,
+      text: `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono || 'No proporcionado'}\nMotivo: ${motivo}\n\n${mensaje}`
     })
 
     return NextResponse.json({ message: 'Mensaje enviado correctamente' })

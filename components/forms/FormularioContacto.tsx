@@ -6,6 +6,7 @@ interface FormData {
   nombre: string
   email: string
   telefono: string
+  motivo: string
   mensaje: string
 }
 
@@ -19,13 +20,16 @@ export default function FormularioContacto() {
     nombre: '',
     email: '',
     telefono: '',
+    motivo: '',
     mensaje: ''
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<FormStatus | null>(null)
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -33,7 +37,7 @@ export default function FormularioContacto() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (!formData.nombre || !formData.email || !formData.mensaje) {
+    if (!formData.nombre || !formData.email || !formData.motivo || !formData.mensaje) {
       setStatus({
         success: false,
         message: 'Por favor completa los campos requeridos.'
@@ -59,7 +63,7 @@ export default function FormularioContacto() {
       const json = await res.json()
       if (!res.ok) throw new Error(json.error || 'Error en el envío')
       setStatus({ success: true, message: 'Mensaje enviado correctamente.' })
-      setFormData({ nombre: '', email: '', telefono: '', mensaje: '' })
+      setFormData({ nombre: '', email: '', telefono: '', motivo: '', mensaje: '' })
     } catch (err) {
       setStatus({ success: false, message: (err as Error).message })
     } finally {
@@ -112,6 +116,28 @@ export default function FormularioContacto() {
           value={formData.email}
           onChange={handleChange}
         />
+      </div>
+      <div>
+        <label
+          htmlFor="motivo"
+          className="block text-sm font-medium text-gray-700 dark:text-gray-300"
+        >
+          Motivo <span className="text-red-600">*</span>
+        </label>
+        <select
+          id="motivo"
+          name="motivo"
+          required
+          className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+          value={formData.motivo}
+          onChange={handleChange}
+        >
+          <option value="">Selecciona una opción</option>
+          <option value="contactar">Contactar</option>
+          <option value="asesoria">Asesoría, lectura, corrección</option>
+          <option value="imagenes">Imágenes o pack de imágenes</option>
+          <option value="apps">Desarrollo de aplicaciones</option>
+        </select>
       </div>
       <div>
         <label
