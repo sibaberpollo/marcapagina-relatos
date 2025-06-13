@@ -36,8 +36,13 @@ export default function ContactoPage() {
         <div className="space-y-2 pt-6 pb-8 md:space-y-5">
           <PageTitle>Contacto</PageTitle>
           <p className="text-lg leading-7 text-gray-600 dark:text-gray-400">
-            Si estás trabajando en un texto, buscando una corrección literaria, o quieres ilustrar tu historia con el estilo gráfico de Marcapágina, puedes contactarnos desde aquí. 
-            También si necesitas una lectura crítica, un paquete visual para redes, o simplemente porque quieres compartirnos tus dudas o comentarios.
+            Si estás escribiendo un texto, buscando una corrección literaria o imaginando cómo ilustrar tu historia con el estilo gráfico de Marcapágina, este es un buen lugar para empezar. También ofrecemos lecturas críticas, paquetes visuales para redes y colaboraciones editoriales más amplias.
+            <br />
+            <br />
+            Pero Marcapágina no es solo una revista digital. Es también una muestra de lo que podemos construir. Si te gusta el resultado y quieres contactarnos para editar tu libro, desarrollar una aplicación parecida, diseñar una plataforma para publicar tus propios relatos o crear una identidad visual desde cero, escríbenos.
+            <br />
+            <br />
+            Trabajamos en el diseño y desarrollo de proyectos que combinan narrativa, estética y tecnología: desde brochures y revistas hasta campañas culturales o aplicaciones webs. Si tienes  una idea en mente, o simplemente quieres comentarnos algo, acá estamos.
           </p>
           <div className="flex space-x-3 pt-4">
             <SocialIcon kind="instagram" href={siteMetadata.instagram} />

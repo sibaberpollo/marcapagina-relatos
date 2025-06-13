@@ -133,10 +133,10 @@ export default function FormularioContacto() {
           onChange={handleChange}
         >
           <option value="">Selecciona una opción</option>
-          <option value="contactar">Contactar</option>
+          <option value="contactar">Contacto</option>
           <option value="asesoria">Asesoría, lectura, corrección</option>
-          <option value="imagenes">Imágenes o pack de imágenes</option>
-          <option value="apps">Desarrollo de aplicaciones</option>
+          <option value="imagenes">Ilustraciones, diseño gráfico</option>
+          <option value="apps">Desarrollo de aplicaciones, web</option>
         </select>
       </div>
       <div>
