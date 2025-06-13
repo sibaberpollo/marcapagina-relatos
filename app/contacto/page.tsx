@@ -6,6 +6,16 @@ import { genPageMetadata } from 'app/seo'
 import FormularioContacto from '@/components/forms/FormularioContacto'
 
 export const metadata = genPageMetadata({
+          <div className="mt-4 rounded-lg bg-yellow-100 p-4 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
+            Para publicar en Marcapagina, hazlo a través de{' '}
+            <a
+              href="https://www.marcapagina.page/publica"
+              className="font-bold underline"
+            >
+              /publica
+            </a>
+            .
+          </div>
   title: 'Contacto | Marcapágina',
   description:
     '¿Buscas una lectura crítica, corrección literaria o una ilustración con estilo propio? Escríbenos para contarnos tu proyecto o simplemente para compartir tus dudas.',

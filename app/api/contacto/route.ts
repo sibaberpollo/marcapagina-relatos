@@ -23,8 +23,17 @@ export async function POST(req: NextRequest) {
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: email,
         subject: 'Hemos recibido tu mensaje',
-        text: `Hola ${nombre.split(' ')[0]},\n\nGracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.\n\n— MarcaPagina`,
-        html: `<p>Hola ${nombre.split(' ')[0]},</p><p>Gracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.</p><p>— MarcaPagina</p>`
+        text: `Hola ${nombre.split(' ')[0]},\n\nGracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.\n\nSíguenos en nuestras redes sociales:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— MarcaPagina`,
+        html: `<p>Hola ${nombre.split(' ')[0]},</p>
+              <p>Gracias por contactarnos por "${motivo}". Pronto responderemos tu mensaje.</p>
+              <p>Síguenos en nuestras redes sociales para estar al tanto de novedades:</p>
+              <ul>
+                <li><a href="https://www.instagram.com/marcapagina.page/" target="_blank">Instagram</a></li>
+                <li><a href="https://x.com/marcapaginapage" target="_blank">Twitter</a></li>
+                <li><a href="https://www.threads.com/@marcapagina.page" target="_blank">Threads</a></li>
+                <li><a href="https://bsky.app/profile/marcapagina.bsky.social" target="_blank">Bluesky</a></li>
+              </ul>
+              <p>— MarcaPagina</p>`
       })
       .catch(err => console.error('Error enviando confirmación de contacto:', err))
 
