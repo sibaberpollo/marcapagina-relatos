@@ -61,10 +61,8 @@ export default function FeaturedCard({
           </div>
           <div className="flex flex-col mt-auto">
             <div className="px-6 mb-2">
-              <h2 className="text-xl font-bold leading-8 tracking-tight">
-                <Link href={href} className="hover:underline">
-                  {formattedTitle}
-                </Link>
+              <h2 className="text-xl font-bold leading-8 tracking-tight hover:underline">
+                {formattedTitle}
               </h2>
               <p className="text-base text-black/90 line-clamp-2 text-left">{description}</p>
             </div>

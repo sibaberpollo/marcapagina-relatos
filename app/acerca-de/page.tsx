@@ -11,6 +11,20 @@ export const metadata = genPageMetadata({
   description: 'Marcapágina renace como un espacio dedicado a la publicación de relatos literarios: un lugar sin algoritmos, centrado en cuidar el texto y la experiencia de lectura, donde autores comparten historias que invitan a perderse en mundos nuevos.'
 })
 
+// Array de artículos de prensa
+const pressArticles = [
+  {
+    id: 1,
+    title: "Marcapágina: la app que quiere convertirse en el mejor lugar para leer literatura en español",
+    publication: "El Estímulo",
+    date: "13 de junio de 2025",
+    url: "https://elestimulo.com/cultura/literatura/2025-06-13/marcapagina-app-literatura-relatos/",
+    description: "Una entrevista y recorrido por la historia del proyecto, desde sus inicios como revista digital hasta la actual plataforma de publicación literaria.",
+    logoSrc: "https://res.cloudinary.com/dx98vnos1/image/upload/v1749903568/marcapagina-1a-520x380_iacr6y.webp",
+    logoAlt: "El Estímulo"
+  }
+]
+
 export default function AcercaDePage() {
   return (
     <SectionContainer>
@@ -55,29 +69,21 @@ export default function AcercaDePage() {
               <SocialIcon kind="threads" href={siteMetadata.threads} /> 
             </div>
           </div>
-          <div className="prose dark:prose-invert max-w-none pt-2 pb-2 xl:col-span-2">
+          <div className="prose dark:prose-invert max-w-none pt-8 pb-2 xl:col-span-2">
             <p>
-              Marcapágina fue, entre 2009 y 2015, una revista literaria dedicada a la crítica, la divulgación y la conversación sobre libros.
-              Un proyecto pequeño, nacido de las ganas, de la amistad y de la necesidad de escribir aunque el mundo pareciera ocupado en otras cosas.
+              Marcapágina fue, entre 2009 y 2014, una revista digital de literatura que surgió de la amistad, del deseo de leer con otros y del impulso por escribir aunque el mundo estuviera mirando hacia otro lado.
             </p>
             <p>
-              Hoy, retomamos esa semilla con una mirada nueva.
-              Sabemos que el tiempo pasa, que las ideas mutan, y que lo importante —cuando persiste— encuentra otras formas de seguir respirando.
+              En 2016, ya los tres miembros fundadores —Anairene, Hazael y Pino— habíamos emigrado. En ese limbo, y a raíz de la muerte de Alejandro Rebolledo, intentamos un número homenaje con lo que se decía en las RRSS: textos, comentarios, elogios, hate. Pero después el proyecto volvió a apagarse. Hasta ahora.
             </p>
             <p>
-              En esta nueva etapa, Marcapágina será un espacio exclusivamente dedicado a la publicación de relatos: cortos, medianos o largos.
-              Un lugar sin apuro, sin algoritmos que dicten ritmos, y con el único compromiso de cuidar lo que verdaderamente importa: el texto.
+              La versión actual de Marcapágina no es una resurrección nostálgica, sino una forma nueva de lo mismo: una plataforma dedicada exclusivamente a la publicación de relatos literarios, pensada desde la experiencia de lectura.
             </p>
             <p>
-              Iremos recuperando, poco a poco, algunos materiales de la época de la revista, en la medida en que sigan dialogando con el espíritu actual.
-              Pero nuestro centro será, ante todo, contar historias.
+              Es también un proyecto técnico y estético: un desarrollo propio, cuidado al detalle, que busca dar a cada texto un lugar a la altura. Un lugar sin algoritmos, sin apuro, donde cada relato se publica porque creemos que vale la pena ser leído.
             </p>
             <p>
-              Aquí creemos que escribir —y leer— siguen siendo actos íntimos, valiosos, aunque muchas veces pasen inadvertidos.
-            </p>
-            <p>
-              Por eso, trabajamos con especial cuidado para ofrecer no solo los relatos, sino también una experiencia de lectura que los acompañe: limpia, refinada, enriquecida desde lo técnico y lo visual.
-              Un pequeño lujo, quizás, para quienes todavía disfrutan de perderse en una buena historia.
+              Aquí no publicamos todo lo que llega. Pero sí leemos todo con atención. Y lo que decidimos compartir lo acompañamos con criterio, edición y diseño. Porque el texto importa. Y también cómo se presenta.
             </p>
           </div>
         </div>
@@ -85,7 +91,7 @@ export default function AcercaDePage() {
         {/* Sección de Creadores */}
         <div className="pt-10 pb-8">
           <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 mb-8">
-            Somos:
+            Fuimos/Somos:
           </h2>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
             {/* Anairene */}
@@ -155,6 +161,39 @@ export default function AcercaDePage() {
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Diseño Gráfico</p>
               </div>
             </div>
+          </div>
+        </div>
+
+        {/* Sección de Prensa */}
+        <div id="prensa" className="pt-16 pb-8">
+          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 mb-8">
+            Marcapágina en los medios
+          </h2>
+          <div className="space-y-10">
+            {pressArticles.map((article) => (
+              <div key={article.id} className="flex flex-col md:flex-row md:items-start gap-6">
+                <Image
+                  src={article.logoSrc}
+                  alt={article.logoAlt}
+                  width={520}
+                  height={380}
+                  className="object-contain w-full h-auto md:w-32 md:h-20"
+                />
+                <div>
+                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                    <Link href={article.url} target="_blank" rel="noopener noreferrer">
+                      {article.title}
+                    </Link>
+                  </h3>
+                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                    {article.publication} · {article.date}
+                  </p>
+                  <p className="text-gray-700 dark:text-gray-300">
+                    {article.description}
+                  </p>
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>

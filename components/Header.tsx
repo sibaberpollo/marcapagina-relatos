@@ -56,6 +56,7 @@ const navLinks = [
 
 const projectLinks = [
   { title: 'Acerca de', href: '/acerca-de' },
+  { title: 'Prensa', href: '/acerca-de#prensa' },
   { title: 'Contacto', href: '/contacto' },
 ];
 
