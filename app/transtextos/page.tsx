@@ -73,6 +73,7 @@ export default async function TranstextosPage({ searchParams }: { searchParams: 
             items={allRelatos}
             itemsPerPage={10}
             currentPage={currentPage}
+            basePath="/transtextos"
           />
         </div>
       </SectionContainer>

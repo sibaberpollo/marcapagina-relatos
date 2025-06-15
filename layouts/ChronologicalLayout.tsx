@@ -15,12 +15,14 @@ interface ChronologicalLayoutProps {
   items: RelatoItem[]
   itemsPerPage?: number
   currentPage?: number
+  basePath?: string
 }
 
 export default function ChronologicalLayout({ 
   items, 
   itemsPerPage = 10,
-  currentPage = 1
+  currentPage = 1,
+  basePath = '/cronologico'
 }: ChronologicalLayoutProps) {
   const totalPages = Math.ceil(items.length / itemsPerPage)
   
@@ -114,7 +116,7 @@ export default function ChronologicalLayout({
           <div className="flex items-center justify-center gap-1 flex-wrap">
             {/* Botón Anterior */}
             <Link
-              href={currentPage > 1 ? `/cronologico?page=${currentPage - 1}` : '#'}
+              href={currentPage > 1 ? `${basePath}?page=${currentPage - 1}` : '#'}
               className={`px-3 py-2 text-sm rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors ${
                 currentPage === 1 ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
               }`}
@@ -136,7 +138,7 @@ export default function ChronologicalLayout({
               return (
                 <Link
                   key={pageNum}
-                  href={`/cronologico?page=${pageNum}`}
+                  href={`${basePath}?page=${pageNum}`}
                   className={`px-3 py-2 text-sm rounded-md transition-colors min-w-[40px] text-center ${
                     currentPage === pageNum
                       ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 font-medium'
@@ -150,7 +152,7 @@ export default function ChronologicalLayout({
             
             {/* Botón Siguiente */}
             <Link
-              href={currentPage < totalPages ? `/cronologico?page=${currentPage + 1}` : '#'}
+              href={currentPage < totalPages ? `${basePath}?page=${currentPage + 1}` : '#'}
               className={`px-3 py-2 text-sm rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors ${
                 currentPage === totalPages ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
               }`}
