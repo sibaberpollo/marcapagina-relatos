@@ -74,9 +74,10 @@ export default function PlaylistPage() {
               <ul className="list-disc list-inside space-y-1">
                 <li>
                   <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
-                    🔥 <strong>#3</strong> – Aphex Twin <small>(nuevo)</small>
+                    🔥 <strong>Sadeness (Part I)</strong> – Enigma <small>(nuevo)</small>
                   </div>
                 </li>
+                <li><strong>#3</strong> – Aphex Twin <small>(nuevo)</small></li>
                 <li><strong>Mi Sueño</strong> – Willie Colón</li>
                 <li><strong>Las Tumbas</strong> – Ismael Rivera</li>
                 <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
