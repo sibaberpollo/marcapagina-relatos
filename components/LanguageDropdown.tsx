@@ -20,6 +20,11 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
   const hasTranslations = ['/memes-merch-descargas'].includes(basePath)
   const currentLocale = pathname.startsWith('/en/') ? 'en' : 'es'
 
+  // Force re-render cuando cambie el pathname
+  useEffect(() => {
+    // Este efecto fuerza una actualización cuando cambia la URL
+  }, [pathname])
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -51,6 +56,11 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
               ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
               : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
+          onClick={() => {
+            if (currentLocale === 'en') {
+              window.location.href = basePath
+            }
+          }}
         >
           ES
         </CustomLink>
@@ -61,6 +71,11 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
               ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
               : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
+          onClick={() => {
+            if (currentLocale === 'es') {
+              window.location.href = `/en${basePath}`
+            }
+          }}
         >
           EN
         </CustomLink>
@@ -87,14 +102,24 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
             <CustomLink
               href={basePath}
               className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false)
+                if (currentLocale === 'en') {
+                  window.location.href = basePath
+                }
+              }}
             >
               ES
             </CustomLink>
             <CustomLink
               href={`/en${basePath}`}
               className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-              onClick={() => setIsOpen(false)}
+              onClick={() => {
+                setIsOpen(false)
+                if (currentLocale === 'es') {
+                  window.location.href = `/en${basePath}`
+                }
+              }}
             >
               EN
             </CustomLink>
