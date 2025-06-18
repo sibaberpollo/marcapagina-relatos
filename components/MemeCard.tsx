@@ -2,7 +2,7 @@
 
 import Image from './Image'
 import { Image as ImageIcon, Download, ShoppingCart } from 'lucide-react'
-import { MemeItem } from '../app/memes-merch-descargas/data'
+import { MemeItem } from '@/types/meme'
 
 interface MemeCardProps {
   item: MemeItem
@@ -13,7 +13,7 @@ export default function MemeCard({ item, onClick }: MemeCardProps) {
   const icon =
     item.type === 'meme' ? (
       <ImageIcon className="w-4 h-4" />
-    ) : item.type === 'descarga' ? (
+    ) : item.type === 'descarga' || item.type === 'download' ? (
       <Download className="w-4 h-4" />
     ) : (
       <ShoppingCart className="w-4 h-4" />

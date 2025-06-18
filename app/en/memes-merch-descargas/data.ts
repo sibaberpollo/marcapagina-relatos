@@ -1,11 +1,4 @@
-export interface MemeItem {
-  id: number
-  title: string
-  description: string
-  image: string
-  tags: string[]
-  type: 'meme' | 'download' | 'product'
-}
+import type { MemeItem } from '@/types/meme'
 
 export const memeItems: MemeItem[] = [
   {
