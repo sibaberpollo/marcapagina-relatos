@@ -5,18 +5,24 @@ import { genPageMetadata } from '../seo'
 import { memeItems } from './data'
 
 export const metadata = genPageMetadata({
-  title: 'Memes y descargas divertidas',
+  title: 'Sala de Memes, objetos y curiosidades',
   description:
-    'Colección estilo portfolio con memes, materiales descargables y productos exclusivos.',
+    'Un rincón inesperado de MarcaPágina donde se cruzan el humor, los objetos inútiles y las imágenes descargables. Desde memes literarios hasta tazas con frases delirantes, ideal para compartir y perder el tiempo con estilo.',
 })
 
 export default function MemesPage() {
   return (
     <SectionContainer>
       <div className="py-8">
-        <PageTitle>Memes y más</PageTitle>
+        <PageTitle>Sala de Memes, objetos y curiosidades</PageTitle>
         <p className="mt-2 text-lg text-muted-foreground">
-          Una galería de humor y artículos curiosos inspirados en MarcaPágina.
+          Un rincón inesperado de MarcaPágina donde se cruzan el humor, los objetos
+          inútiles y las imágenes descargables. Desde memes literarios hasta tazas con
+          frases delirantes, esta galería reúne artefactos digitales y hallazgos
+          visuales inspirados en el universo narrativo de la plataforma.
+        </p>
+        <p className="mt-2 text-lg text-muted-foreground">
+          Ideal para compartir, explorar o simplemente perder el tiempo con estilo.
         </p>
         <div className="mt-8">
           <MemeGallery items={memeItems} />
