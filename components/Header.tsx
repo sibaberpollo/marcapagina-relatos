@@ -44,7 +44,6 @@ const socialLinks = [
 ];
 
 const navLinks = [
-  { title: 'Todos los relatos', href: '/cronologico' },
   {
     title: 'Transtextos',
     href: '/transtextos',
@@ -52,6 +51,7 @@ const navLinks = [
   },
   { title: 'Autores', href: '/autores' },
   { title: 'Playlist', href: '/playlist' },
+  
 ];
 
 const projectLinks = [
@@ -70,7 +70,7 @@ const ProjectDropdown = ({ isMobile = false }) => {
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
         >
-          Sobre el proyecto
+          El proyecto
           <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
         {isOpen && (
@@ -94,7 +94,7 @@ const ProjectDropdown = ({ isMobile = false }) => {
   return (
     <div className="relative group">
       <button className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors">
-        Sobre el proyecto
+        El proyecto
         <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
       </button>
       <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-950 rounded-md shadow-lg border border-gray-200 dark:border-gray-800 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
