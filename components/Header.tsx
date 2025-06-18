@@ -116,9 +116,9 @@ const Header = () => {
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
-          <div className="flex items-center mx-0 lg:mx-12 mt-0">
+          <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
             <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
+              <Logo className="h-4 sm:h-6 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
           
@@ -164,7 +164,6 @@ const Header = () => {
             
             {/* Navegación móvil */}
             <div className="lg:hidden flex items-center gap-1">
-              <LanguageDropdown isMobile={true} />
               <PublishDropdown isMobile={true} />
               <ThemeToggle />
             </div>
@@ -182,7 +181,7 @@ const Header = () => {
           {/* Sidepanel menú móvil */}
           {open && (
             <div className="fixed inset-0 z-50 bg-black/60 flex">
-              <div className="w-full max-w-none bg-white dark:bg-gray-950 h-full shadow-lg flex flex-col p-6 animate-slide-in justify-center items-center relative">
+              <div className="w-full max-w-none bg-white dark:bg-gray-950 h-full shadow-lg flex flex-col animate-slide-in relative overflow-y-auto">
                 <button
                   className="absolute top-6 right-6 p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500 z-10"
                   aria-label="Cerrar menú"
@@ -190,49 +189,55 @@ const Header = () => {
                 >
                   <Close className="w-6 h-6 text-gray-700 dark:text-gray-200" />
                 </button>
-                <nav className="flex flex-col gap-8 text-2xl items-center w-full mt-12">
-                  {navLinks.map((link) => (
-                    <CustomLink
-                      key={link.title}
-                      href={link.href}
-                      className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors"
-                      onClick={() => setOpen(false)}
-                    >
-                      <span className="flex items-center">
-                        {link.title}
-                        {link.icon}
-                      </span>
-                    </CustomLink>
-                  ))}
-                  <div className="flex flex-col items-center gap-4 mt-4">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm">Sobre el proyecto</span>
-                    {projectLinks.map((link) => (
+                <div className="flex-1 flex flex-col justify-center px-6 py-20 min-h-full">
+                  <nav className="flex flex-col gap-6 text-xl items-center w-full">
+                    {navLinks.map((link) => (
                       <CustomLink
                         key={link.title}
                         href={link.href}
                         className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors"
                         onClick={() => setOpen(false)}
                       >
-                        {link.title}
+                        <span className="flex items-center">
+                          {link.title}
+                          {link.icon}
+                        </span>
                       </CustomLink>
                     ))}
+                    <div className="flex flex-col items-center gap-3 mt-4">
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">Sobre el proyecto</span>
+                      {projectLinks.map((link) => (
+                        <CustomLink
+                          key={link.title}
+                          href={link.href}
+                          className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors text-lg"
+                          onClick={() => setOpen(false)}
+                        >
+                          {link.title}
+                        </CustomLink>
+                      ))}
+                    </div>
+                    <div className="flex flex-col items-center gap-3 mt-4">
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">Idioma</span>
+                      <LanguageDropdown inMobileMenu={true} />
+                    </div>
+                  </nav>
+                  <div className="flex gap-6 justify-center mt-8">
+                    {socialLinks.map((link) =>
+                      link.href ? (
+                        <a
+                          key={link.label}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={link.label}
+                          className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
+                        >
+                          {link.icon}
+                        </a>
+                      ) : null
+                    )}
                   </div>
-                </nav>
-                <div className="flex gap-8 mt-12">
-                  {socialLinks.map((link) =>
-                    link.href ? (
-                      <a
-                        key={link.label}
-                        href={link.href}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        aria-label={link.label}
-                        className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
-                      >
-                        {link.icon}
-                      </a>
-                    ) : null
-                  )}
                 </div>
               </div>
               {/* Fondo oscuro para cerrar el menú */}

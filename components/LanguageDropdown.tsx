@@ -7,9 +7,10 @@ import CustomLink from './Link'
 
 interface LanguageDropdownProps {
   isMobile?: boolean
+  inMobileMenu?: boolean
 }
 
-export default function LanguageDropdown({ isMobile = false }: LanguageDropdownProps) {
+export default function LanguageDropdown({ isMobile = false, inMobileMenu = false }: LanguageDropdownProps) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -37,6 +38,34 @@ export default function LanguageDropdown({ isMobile = false }: LanguageDropdownP
 
   if (!hasTranslations) {
     return null
+  }
+
+  // Si está en el menú móvil, mostrar una versión simple sin dropdown
+  if (inMobileMenu) {
+    return (
+      <div className="flex gap-3">
+        <CustomLink
+          href={basePath}
+          className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
+            currentLocale === 'es' 
+              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
+              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+          }`}
+        >
+          ES
+        </CustomLink>
+        <CustomLink
+          href={`/en${basePath}`}
+          className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
+            currentLocale === 'en' 
+              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
+              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+          }`}
+        >
+          EN
+        </CustomLink>
+      </div>
+    )
   }
 
   const buttonClasses = isMobile

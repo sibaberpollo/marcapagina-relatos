@@ -55,6 +55,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/contacto`, // página de contacto
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/memes-merch-descargas`, // página de memes en español
+      lastModified: today,
+    },
+    {
+      url: `${siteUrl}/en/memes-merch-descargas`, // página de memes en inglés
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity
