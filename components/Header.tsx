@@ -118,7 +118,7 @@ const Header = () => {
           {/* Logo */}
           <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
             <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-4 sm:h-6 w-auto fill-gray-900 dark:fill-white" />
+              <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
           
