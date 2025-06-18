@@ -58,7 +58,7 @@ export default function MemeGallery({ items }: MemeGalleryProps) {
             </button>
             <Image
               src={selected.image}
-              alt={selected.title}
+              alt={selected.title || ''}
               className="w-full h-auto rounded mb-4"
               width={800}
               height={600}

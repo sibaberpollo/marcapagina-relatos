@@ -5,24 +5,24 @@ import { genPageMetadata } from '../../seo'
 import { memeItems } from './data'
 
 export const metadata = genPageMetadata({
-  title: 'Meme Room, merch and curiosities',
+  title: 'Memes, Objects & Curiosities Hall',
   description:
-    "An unexpected corner of MarcaPágina where literary humor, collectibles and downloadable resources meet. You'll find original memes, shareable designs and merch pieces with phrases from our stories. Everything you didn't know you needed... and now you can't stop looking at.",
+    'An unexpected corner of MarcaPágina where literary humor, collectible objects, and downloadable resources intersect. You\'ll find original memes, shareable designs, and merch pieces featuring phrases from our stories. Everything you didn\'t know you needed… and now can\'t stop looking at.',
 })
 
-export default function MemesPage() {
+export default function MemesPageEN() {
   return (
     <SectionContainer>
       <div className="py-8">
-        <PageTitle>Meme Room, merch and curiosities</PageTitle>
+        <PageTitle>Memes, Objects & Curiosities Hall</PageTitle>
         <p className="mt-2 text-lg text-muted-foreground">
-          An unexpected corner of MarcaPágina where literary humor, collectibles and
-          downloadable resources meet. You'll find original memes, shareable designs
-          and merch pieces with phrases from our stories. Everything you didn't know
-          you needed... and now you can't stop looking at.
+          An unexpected corner of MarcaPágina where literary humor, collectible objects,
+          and downloadable resources intersect. You'll find original memes, shareable designs,
+          and merch pieces featuring phrases from our stories. Everything you didn't know you
+          needed… and now can't stop looking at.
         </p>
         <p className="mt-2 text-lg text-muted-foreground">
-          Ideal for exploring, downloading or gifting.
+          Perfect for exploring, downloading, or gifting.
         </p>
         <div className="mt-8">
           <MemeGallery items={memeItems} />

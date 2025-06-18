@@ -27,7 +27,7 @@ export default function MemeCard({ item, onClick }: MemeCardProps) {
       <div className="overflow-hidden rounded-lg">
         <Image
           src={item.image}
-          alt={item.title}
+          alt={item.title || ''}
           className="w-full h-auto"
           width={600}
           height={400}

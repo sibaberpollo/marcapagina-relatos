@@ -1,0 +1,37 @@
+{
+  "title": "Sala de Memes, objetos y curiosidades",
+  "description": "Un rincón inesperado de MarcaPágina donde se cruzan el humor literario, los objetos de colección y los recursos descargables. Encontrarás memes originales, diseños para compartir, y piezas de merch con frases sacadas de nuestros relatos. Todo lo que no sabías que necesitabas… y ahora no podés dejar de ver.",
+  "subtitle": "Ideal para explorar, descargar o regalar.",
+  "items": {
+    "meme1": {
+      "title": "Cara de sorpresa",
+      "description": "Un meme clásico para reaccionar a lo inesperado."
+    },
+    "download1": {
+      "title": "Plantilla descargable", 
+      "description": "Descarga esta plantilla para crear tu propio meme."
+    },
+    "product1": {
+      "title": "Taza conmemorativa",
+      "description": "Producto oficial de MarcaPágina para amantes de los memes."
+    },
+    "meme2": {
+      "title": "Meme épico",
+      "description": "Ideal para compartir en redes y alegrar el día."
+    },
+    "download2": {
+      "title": "Sticker descargable",
+      "description": "Agrégalo a tus chats favoritos."
+    },
+    "product2": {
+      "title": "Playera edición limitada",
+      "description": "Luce este diseño inspirado en nuestros mejores memes."
+    }
+  },
+  "tags": {
+    "meme": "meme",
+    "diversión": "diversión",
+    "descarga": "descarga",
+    "producto": "producto"
+  }
+} 

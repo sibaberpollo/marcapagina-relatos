@@ -1,0 +1,37 @@
+{
+  "title": "Memes, Objects & Curiosities Hall",
+  "description": "An unexpected corner of MarcaPágina where literary humor, collectible objects, and downloadable resources intersect. You'll find original memes, shareable designs, and merch pieces featuring phrases from our stories. Everything you didn't know you needed… and now can't stop looking at.",
+  "subtitle": "Perfect for exploring, downloading, or gifting.",
+  "items": {
+    "meme1": {
+      "title": "Surprised Face",
+      "description": "A classic meme to react to the unexpected."
+    },
+    "download1": {
+      "title": "Downloadable Template",
+      "description": "Download this template to create your own meme."
+    },
+    "product1": {
+      "title": "Commemorative Mug",
+      "description": "Official MarcaPágina product for meme lovers."
+    },
+    "meme2": {
+      "title": "Epic Meme",
+      "description": "Perfect for sharing on social media and brightening the day."
+    },
+    "download2": {
+      "title": "Downloadable Sticker",
+      "description": "Add it to your favorite chats."
+    },
+    "product2": {
+      "title": "Limited Edition T-shirt",
+      "description": "Wear this design inspired by our best memes."
+    }
+  },
+  "tags": {
+    "meme": "meme",
+    "diversión": "fun",
+    "descarga": "download",
+    "producto": "product"
+  }
+} 
