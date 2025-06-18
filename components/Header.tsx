@@ -3,7 +3,14 @@
 import siteMetadata from '@/data/siteMetadata'
 import Logo from '@/data/logo.svg'
 import CustomLink from './Link'
-import { Instagram, Menu, X as Close, Rss, ChevronDown } from 'lucide-react'
+import {
+  Instagram,
+  Menu,
+  X as Close,
+  Rss,
+  ChevronDown,
+  Facebook,
+} from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
@@ -15,24 +22,6 @@ const socialLinks = [
     icon: <Instagram className="w-5 h-5" />,
   },
   {
-    href: siteMetadata.spotify,
-    label: 'Spotify',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z"/>
-      </svg>
-    ),
-  },
-  {
-    href: siteMetadata.youtube,
-    label: 'YouTube',
-    icon: (
-      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
-        <path d="M23.499 6.203a3.008 3.008 0 00-2.089-2.089c-1.87-.501-9.4-.501-9.4-.501s-7.509-.01-9.399.501a3.008 3.008 0 00-2.088 2.09A31.258 31.26 0 000 12.01a31.258 31.26 0 00.523 5.785 3.008 3.008 0 002.088 2.089c1.869.502 9.4.502 9.4.502s7.508 0 9.399-.502a3.008 3.008 0 002.089-2.09 31.258 31.26 0 00.5-5.784 31.258 31.26 0 00-.5-5.808zm-13.891 9.4V8.407l6.266 3.604z"/>
-      </svg>
-    ),
-  },
-  {
     href: siteMetadata.twitter,
     label: 'X',
     icon: (
@@ -41,10 +30,32 @@ const socialLinks = [
       </svg>
     ),
   },
+  {
+    href: siteMetadata.facebook,
+    label: 'Facebook',
+    icon: <Facebook className="w-5 h-5" />,
+  },
+  {
+    href: siteMetadata.spotify,
+    label: 'Spotify',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+        <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z" />
+      </svg>
+    ),
+  },
+  {
+    href: siteMetadata.youtube,
+    label: 'YouTube',
+    icon: (
+      <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
+        <path d="M23.499 6.203a3.008 3.008 0 00-2.089-2.089c-1.87-.501-9.4-.501-9.4-.501s-7.509-.01-9.399.501a3.008 3.008 0 00-2.088 2.09A31.258 31.26 0 000 12.01a31.258 31.26 0 00.523 5.785 3.008 3.008 0 002.088 2.089c1.869.502 9.4.502 9.4.502s7.508 0 9.399-.502a3.008 3.008 0 002.089-2.09 31.258 31.26 0 00.5-5.784 31.258 31.26 0 00-.5-5.808zm-13.891 9.4V8.407l6.266 3.604z" />
+      </svg>
+    ),
+  },
 ];
 
 const navLinks = [
-  { title: 'Todos los relatos', href: '/cronologico' },
   {
     title: 'Transtextos',
     href: '/transtextos',
@@ -52,6 +63,7 @@ const navLinks = [
   },
   { title: 'Autores', href: '/autores' },
   { title: 'Playlist', href: '/playlist' },
+  
 ];
 
 const projectLinks = [
@@ -70,7 +82,7 @@ const ProjectDropdown = ({ isMobile = false }) => {
           onClick={() => setIsOpen(!isOpen)}
           className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
         >
-          Sobre el proyecto
+          El proyecto
           <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
         </button>
         {isOpen && (
@@ -94,7 +106,7 @@ const ProjectDropdown = ({ isMobile = false }) => {
   return (
     <div className="relative group">
       <button className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors">
-        Sobre el proyecto
+        El proyecto
         <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
       </button>
       <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-950 rounded-md shadow-lg border border-gray-200 dark:border-gray-800 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
