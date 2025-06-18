@@ -2,36 +2,17 @@
   "title": "Sala de Memes, objetos y curiosidades",
   "description": "Un rincón inesperado de MarcaPágina donde se cruzan el humor literario, los objetos de colección y los recursos descargables. Encontrarás memes originales, diseños para compartir, y piezas de merch con frases sacadas de nuestros relatos. Todo lo que no sabías que necesitabas… y ahora no podés dejar de ver.",
   "subtitle": "Ideal para explorar, descargar o regalar.",
-  "items": {
-    "meme1": {
-      "title": "Cara de sorpresa",
-      "description": "Un meme clásico para reaccionar a lo inesperado."
-    },
-    "download1": {
-      "title": "Plantilla descargable", 
-      "description": "Descarga esta plantilla para crear tu propio meme."
-    },
-    "product1": {
-      "title": "Taza conmemorativa",
-      "description": "Producto oficial de MarcaPágina para amantes de los memes."
-    },
-    "meme2": {
-      "title": "Meme épico",
-      "description": "Ideal para compartir en redes y alegrar el día."
-    },
-    "download2": {
-      "title": "Sticker descargable",
-      "description": "Agrégalo a tus chats favoritos."
-    },
-    "product2": {
-      "title": "Playera edición limitada",
-      "description": "Luce este diseño inspirado en nuestros mejores memes."
-    }
+  "meme1": {
+    "title": "Los chapulines salvajes",
+    "description": "A propósito del hype de la serie Sin querer queriendo en HBO, aprovechamos de recomendar la mejor novela del autor. \"He sido cordialmente invitado a formar parte del realismo visceral. Por supuesto, he aceptado. No hubo ceremonia de iniciación. Mejor así.\" (1998)"
   },
-  "tags": {
-    "meme": "meme",
-    "diversión": "diversión",
-    "descarga": "descarga",
-    "producto": "producto"
+  "meme2": {
+    "title": "Chapulín Colorado en la playa",
+    "description": "No contaban con su astucia. Intervención visual sobre *Billy Boys* de Jack Vettriano, en clave paródica de *Los detectives salvajes* (Anagrama, 1998). El realismo visceral se baña en una costa mexicana."
+  },
+  "filters": {
+    "all": "Todos",
+    "meme": "Meme",
+    "fun": "Diversión"
   }
 } 

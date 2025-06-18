@@ -2,36 +2,17 @@
   "title": "Memes, Objects & Curiosities Hall",
   "description": "An unexpected corner of MarcaPágina where literary humor, collectible objects, and downloadable resources intersect. You'll find original memes, shareable designs, and merch pieces featuring phrases from our stories. Everything you didn't know you needed… and now can't stop looking at.",
   "subtitle": "Perfect for exploring, downloading, or gifting.",
-  "items": {
-    "meme1": {
-      "title": "Surprised Face",
-      "description": "A classic meme to react to the unexpected."
-    },
-    "download1": {
-      "title": "Downloadable Template",
-      "description": "Download this template to create your own meme."
-    },
-    "product1": {
-      "title": "Commemorative Mug",
-      "description": "Official MarcaPágina product for meme lovers."
-    },
-    "meme2": {
-      "title": "Epic Meme",
-      "description": "Perfect for sharing on social media and brightening the day."
-    },
-    "download2": {
-      "title": "Downloadable Sticker",
-      "description": "Add it to your favorite chats."
-    },
-    "product2": {
-      "title": "Limited Edition T-shirt",
-      "description": "Wear this design inspired by our best memes."
-    }
+  "meme1": {
+    "title": "The Savage Grasshoppers",
+    "description": "With the HBO series Sin querer queriendo back in the spotlight, we take the chance to recommend this author's best novel. \"I was cordially invited to join visceral realism. Of course, I accepted. There was no initiation ceremony. Better that way.\" (1998)"
   },
-  "tags": {
-    "meme": "meme",
-    "diversión": "fun",
-    "descarga": "download",
-    "producto": "product"
+  "meme2": {
+    "title": "Chapulín on the Beach",
+    "description": "They didn't count on his cleverness. A parody intervention over Jack Vettriano's Billy Boys, reframed through The Savage Detectives (Anagrama, 1998). Visceral realism walks a Mexican shore."
+  },
+  "filters": {
+    "all": "All",
+    "meme": "Meme",
+    "fun": "Fun"
   }
 } 

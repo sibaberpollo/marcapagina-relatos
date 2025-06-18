@@ -33,20 +33,12 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('https://www.marcapagina.page/transtextos'));
   }
 
-  // Check if the pathname is missing a locale
-  const pathnameIsMissingLocale = locales.every(
-    (locale) => !pathname.startsWith(`/${locale}/`) && pathname !== `/${locale}`
-  );
-
-  // If pathname is missing locale and it's a known route that should have locale support
-  if (pathnameIsMissingLocale && pathname.startsWith('/memes-merch-descargas')) {
-    // Don't redirect, just continue - this handles the default Spanish version
-    return NextResponse.next();
-  }
-
-  // For English routes, make sure they exist
-  if (pathname.startsWith('/en/')) {
-    return NextResponse.next();
+  // Handle multilingual routes for memes
+  if (pathname.startsWith('/en/memes-merch-descargas')) {
+    // Rewrite English route to the same component, but pass the original path
+    const response = NextResponse.rewrite(new URL('/memes-merch-descargas', request.url))
+    response.headers.set('x-pathname', pathname)
+    return response
   }
 
   // Comprueba si la URL coincide con el patrón de URL antiguo: /[author]/relato/[slug]
@@ -81,7 +73,10 @@ export function middleware(request: NextRequest) {
     });
   }
 
-  return NextResponse.next();
+  // For other routes, just pass the pathname in headers
+  const response = NextResponse.next()
+  response.headers.set('x-pathname', pathname)
+  return response;
 }
 
 export const config = {

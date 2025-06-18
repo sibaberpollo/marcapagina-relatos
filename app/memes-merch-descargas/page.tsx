@@ -2,28 +2,47 @@ import SectionContainer from '@/components/SectionContainer'
 import PageTitle from '@/components/PageTitle'
 import MemeGallery from '@/components/MemeGallery'
 import { genPageMetadata } from '../seo'
-import { memeItems } from './data'
+import { getMemeItems, getMemePageData } from '@/lib/memes'
+import { headers } from 'next/headers'
 
-export const metadata = genPageMetadata({
-  title: 'Sala de Memes, objetos y curiosidades',
-  description:
-    'Un rincón inesperado de MarcaPágina donde se cruzan el humor literario, los objetos de colección y los recursos descargables. Encontrarás memes originales, diseños para compartir, y piezas de merch con frases sacadas de nuestros relatos. Todo lo que no sabías que necesitabas… y ahora no podés dejar de ver.',
-})
+// Función para detectar el idioma desde la URL
+function getLocaleFromPath(pathname: string): string {
+  if (pathname.startsWith('/en/')) {
+    return 'en'
+  }
+  return 'es' // default
+}
 
-export default function MemesPage() {
+export async function generateMetadata() {
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || ''
+  const locale = getLocaleFromPath(pathname)
+  
+  const pageData = await getMemePageData(locale)
+  
+  return genPageMetadata({
+    title: pageData.title,
+    description: pageData.description,
+  })
+}
+
+export default async function MemesPage() {
+  const headersList = await headers()
+  const pathname = headersList.get('x-pathname') || ''
+  const locale = getLocaleFromPath(pathname)
+  
+  const memeItems = await getMemeItems(locale)
+  const pageData = await getMemePageData(locale)
+
   return (
     <SectionContainer>
       <div className="py-8">
-        <PageTitle>Sala de Memes, objetos y curiosidades</PageTitle>
+        <PageTitle>{pageData.title}</PageTitle>
         <p className="mt-2 text-lg text-muted-foreground">
-          Un rincón inesperado de MarcaPágina donde se cruzan el humor literario, los
-          objetos de colección y los recursos descargables. Encontrarás memes
-          originales, diseños para compartir, y piezas de merch con frases sacadas de
-          nuestros relatos. Todo lo que no sabías que necesitabas… y ahora no podés
-          dejar de ver.
+          {pageData.description}
         </p>
         <p className="mt-2 text-lg text-muted-foreground">
-          Ideal para explorar, descargar o regalar.
+          {pageData.subtitle}
         </p>
         <div className="mt-8">
           <MemeGallery items={memeItems} />
