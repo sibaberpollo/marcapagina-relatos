@@ -1,8 +1,8 @@
 "use client";
 
-import siteMetadata from '@/data/siteMetadata'
-import Logo from '@/data/logo.svg'
-import CustomLink from './Link'
+import siteMetadata from "@/data/siteMetadata";
+import Logo from "@/data/logo.svg";
+import CustomLink from "./Link";
 import {
   Instagram,
   Menu,
@@ -10,20 +10,21 @@ import {
   Rss,
   ChevronDown,
   Facebook,
-} from 'lucide-react'
-import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
-import PublishDropdown from './PublishDropdown'
+} from "lucide-react";
+import { useState } from "react";
+import ThemeToggle from "./ThemeToggle";
+import PublishDropdown from "./PublishDropdown";
+import LanguageSelector from "./LanguageSelector";
 
 const socialLinks = [
   {
     href: siteMetadata.instagram,
-    label: 'Instagram',
+    label: "Instagram",
     icon: <Instagram className="w-5 h-5" />,
   },
   {
     href: siteMetadata.twitter,
-    label: 'X',
+    label: "X",
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
         <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
@@ -32,12 +33,12 @@ const socialLinks = [
   },
   {
     href: siteMetadata.facebook,
-    label: 'Facebook',
+    label: "Facebook",
     icon: <Facebook className="w-5 h-5" />,
   },
   {
     href: siteMetadata.spotify,
-    label: 'Spotify',
+    label: "Spotify",
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
         <path d="M12 0C5.4 0 0 5.4 0 12s5.4 12 12 12 12-5.4 12-12S18.6 0 12 0zm5.521 17.34c-.24.359-.66.48-1.021.24-2.82-1.74-6.36-2.101-10.561-1.141-.418.122-.779-.179-.899-.539-.12-.421.18-.78.54-.9 4.56-1.021 8.52-.6 11.64 1.32.42.18.479.659.301 1.02zm1.44-3.3c-.301.42-.841.6-1.262.3-3.239-1.98-8.159-2.58-11.939-1.38-.479.12-1.02-.12-1.14-.6-.12-.48.12-1.021.6-1.141C9.6 9.9 15 10.561 18.72 12.84c.361.181.54.78.241 1.2zm.12-3.36C15.24 8.4 8.82 8.16 5.16 9.301c-.6.179-1.2-.181-1.38-.721-.18-.601.18-1.2.72-1.381 4.26-1.26 11.28-1.02 15.721 1.621.539.3.719 1.02.42 1.56-.299.421-1.02.599-1.559.3z" />
@@ -46,7 +47,7 @@ const socialLinks = [
   },
   {
     href: siteMetadata.youtube,
-    label: 'YouTube',
+    label: "YouTube",
     icon: (
       <svg viewBox="0 0 24 24" className="w-5 h-5 fill-current">
         <path d="M23.499 6.203a3.008 3.008 0 00-2.089-2.089c-1.87-.501-9.4-.501-9.4-.501s-7.509-.01-9.399.501a3.008 3.008 0 00-2.088 2.09A31.258 31.26 0 000 12.01a31.258 31.26 0 00.523 5.785 3.008 3.008 0 002.088 2.089c1.869.502 9.4.502 9.4.502s7.508 0 9.399-.502a3.008 3.008 0 002.089-2.09 31.258 31.26 0 00.5-5.784 31.258 31.26 0 00-.5-5.808zm-13.891 9.4V8.407l6.266 3.604z" />
@@ -57,23 +58,22 @@ const socialLinks = [
 
 const navLinks = [
   {
-    title: 'Transtextos',
-    href: '/transtextos',
-    icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />,
+    title: "Transtextos",
+    href: "/transtextos",
+    icon: <Rss className="w-4 h-4 ml-1" style={{ color: "#f26522" }} />,
   },
-  { title: 'Autores', href: '/autores' },
-  { title: 'Playlist', href: '/playlist' },
-  
+  { title: "Autores", href: "/autores" },
+  { title: "Playlist", href: "/playlist" },
 ];
 
 const projectLinks = [
-  { title: 'Acerca de', href: '/acerca-de' },
-  { title: 'Prensa', href: '/acerca-de#prensa' },
-  { title: 'Contacto', href: '/contacto' },
+  { title: "Acerca de", href: "/acerca-de" },
+  { title: "Prensa", href: "/acerca-de#prensa" },
+  { title: "Contacto", href: "/contacto" },
 ];
 
 const ProjectDropdown = ({ isMobile = false }) => {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
   if (isMobile) {
     return (
@@ -83,7 +83,9 @@ const ProjectDropdown = ({ isMobile = false }) => {
           className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
         >
           El proyecto
-          <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+          <ChevronDown
+            className={`w-4 h-4 transition-transform ${isOpen ? "rotate-180" : ""}`}
+          />
         </button>
         {isOpen && (
           <div className="absolute top-full left-0 mt-1 w-48 bg-white dark:bg-gray-950 rounded-md shadow-lg border border-gray-200 dark:border-gray-800 py-1 z-50">
@@ -100,7 +102,7 @@ const ProjectDropdown = ({ isMobile = false }) => {
           </div>
         )}
       </div>
-    )
+    );
   }
 
   return (
@@ -121,11 +123,11 @@ const ProjectDropdown = ({ isMobile = false }) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
 const Header = () => {
-  const [open, setOpen] = useState(false)
+  const [open, setOpen] = useState(false);
 
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
@@ -133,11 +135,15 @@ const Header = () => {
         <div className="flex items-center justify-between h-20 relative">
           {/* Logo */}
           <div className="flex items-center mx-0 lg:mx-12 -mt-1">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
+            <CustomLink
+              href="/"
+              aria-label={siteMetadata.headerTitle}
+              className="decoration-none"
+            >
               <Logo className="h-7 w-auto fill-gray-900 dark:fill-white" />
             </CustomLink>
           </div>
-          
+
           {/* Redes sociales */}
           <div className="flex items-center gap-6">
             {socialLinks.map((link) =>
@@ -152,10 +158,10 @@ const Header = () => {
                 >
                   {link.icon}
                 </a>
-              ) : null
+              ) : null,
             )}
           </div>
-          
+
           {/* Navegación y botón destacado */}
           <div className="flex items-center gap-2 ml-auto">
             {/* Navegación desktop */}
@@ -174,15 +180,17 @@ const Header = () => {
               ))}
               <ProjectDropdown />
               <ThemeToggle />
+              <LanguageSelector />
               <PublishDropdown isMobile={false} />
             </div>
-            
+
             {/* Navegación móvil */}
             <div className="lg:hidden flex items-center gap-1">
               <PublishDropdown isMobile={true} />
+              <LanguageSelector />
               <ThemeToggle />
             </div>
-            
+
             {/* Icono hamburguesa en móvil y tablet */}
             <button
               className="lg:hidden p-2 rounded focus:outline-none focus:ring-2 focus:ring-primary-500"
@@ -219,7 +227,9 @@ const Header = () => {
                     </CustomLink>
                   ))}
                   <div className="flex flex-col items-center gap-4 mt-4">
-                    <span className="text-gray-500 dark:text-gray-400 text-sm">Sobre el proyecto</span>
+                    <span className="text-gray-500 dark:text-gray-400 text-sm">
+                      Sobre el proyecto
+                    </span>
                     {projectLinks.map((link) => (
                       <CustomLink
                         key={link.title}
@@ -245,7 +255,7 @@ const Header = () => {
                       >
                         {link.icon}
                       </a>
-                    ) : null
+                    ) : null,
                   )}
                 </div>
               </div>
@@ -258,15 +268,19 @@ const Header = () => {
       {/* Animación para el sidepanel */}
       <style jsx global>{`
         @keyframes slide-in {
-          from { transform: translateX(100%); }
-          to { transform: translateX(0); }
+          from {
+            transform: translateX(100%);
+          }
+          to {
+            transform: translateX(0);
+          }
         }
         .animate-slide-in {
-          animation: slide-in 0.25s cubic-bezier(0.4,0,0.2,1);
+          animation: slide-in 0.25s cubic-bezier(0.4, 0, 0.2, 1);
         }
       `}</style>
     </header>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;
