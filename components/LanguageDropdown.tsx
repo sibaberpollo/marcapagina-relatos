@@ -40,8 +40,8 @@ export default function LanguageDropdown({ isMobile = false }: LanguageDropdownP
   }
 
   const buttonClasses = isMobile
-    ? 'flex items-center px-2 py-1 rounded-md font-semibold border text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200'
-    : 'flex items-center px-3 py-2 rounded-md font-semibold border text-sm bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-200'
+    ? 'flex items-center px-2 py-1 rounded-md font-semibold border text-sm text-gray-700 dark:text-gray-200'
+    : 'flex items-center px-3 py-2 rounded-md font-semibold border text-sm text-gray-700 dark:text-gray-200'
 
   const dropdownClasses =
     'absolute right-0 top-full mt-0 w-28 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg z-50 overflow-hidden'

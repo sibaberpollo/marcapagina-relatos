@@ -64,6 +64,7 @@ const navLinks = [
   },
   { title: 'Autores', href: '/autores' },
   { title: 'Playlist', href: '/playlist' },
+  { title: 'Memes & Objetos', href: '/memes-merch-descargas' },
   
 ];
 
