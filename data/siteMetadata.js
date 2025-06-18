@@ -16,7 +16,7 @@ const siteMetadata = {
   github: 'https://github.com/sibaberpollo/marcapagina-relatos',
   x: '',
   twitter: 'https://x.com/marcapaginapage',
-  facebook: '',
+  facebook: 'https://www.facebook.com/profile.php?id=61577303794980',
   youtube: 'https://www.youtube.com/@MarcaPagina_page',
   linkedin: '',
   threads: 'https://www.threads.com/@marcapagina.page',
