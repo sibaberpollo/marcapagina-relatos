@@ -15,40 +15,42 @@ export default function ViewToggle({ total }: ViewToggleProps) {
   const isHome = pathname === '/'
 
   return (
-    <div className="flex gap-2 mb-6">
-      <Link
-        href="/"
-        className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
-          isHome
-            ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
-            : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
-        }`}
-      >
-        <LayoutGrid className="w-4 h-4" />
-        Destacados
-      </Link>
-      <Link
-        href="/cronologico"
-        className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
-          isChronological
-            ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
-            : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
-        }`}
-      >
-        <CalendarClock className="w-4 h-4" />
-        {`Todos${typeof total === 'number' ? ` (${total})` : ''}`}
-      </Link>
-      <Link
-        href="/autores"
-        className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
-          isAutores
-            ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
-            : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
-        }`}
-      >
-        <PenLine className="w-4 h-4" />
-        Autores
-      </Link>
+    <div className="relative mb-6 overflow-x-auto thin-scrollbar">
+      <div className="flex gap-2 pb-1 whitespace-nowrap">
+        <Link
+          href="/"
+          className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+            isHome
+              ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
+              : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
+          }`}
+        >
+          <LayoutGrid className="w-4 h-4" />
+          Destacados
+        </Link>
+        <Link
+          href="/cronologico"
+          className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+            isChronological
+              ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
+              : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
+          }`}
+        >
+          <CalendarClock className="w-4 h-4" />
+          {`Todos${typeof total === 'number' ? ` (${total})` : ''}`}
+        </Link>
+        <Link
+          href="/autores"
+          className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+            isAutores
+              ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
+              : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
+          }`}
+        >
+          <PenLine className="w-4 h-4" />
+          Autores
+        </Link>
+      </div>
     </div>
   )
 }
