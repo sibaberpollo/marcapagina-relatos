@@ -30,7 +30,7 @@ export default function PublishDropdown({ isMobile = false }: PublishDropdownPro
 
   const buttonClasses = isMobile
     ?
-        'flex items-center px-2 py-1 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border border-primary-500 dark:border-primary-400 text-xs'
+        'flex items-center px-2 py-1 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border border-primary-500 dark:border-primary-400 text-xs leading-none'
     :
         'ml-2 flex items-center px-4 py-2 rounded-md font-semibold bg-primary-500 text-black dark:text-gray-900 hover:bg-primary-600 dark:bg-primary-400 dark:hover:bg-primary-300 shadow transition-colors border-2 border-primary-500 dark:border-primary-400'
 
