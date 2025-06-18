@@ -4,7 +4,7 @@ import { useState } from 'react'
 import MemeCard from './MemeCard'
 import Image from './Image'
 import { X } from 'lucide-react'
-import type { MemeItem } from '@/app/memes/data'
+import type { MemeItem } from '../app/memes/data'
 
 interface MemeGalleryProps {
   items: MemeItem[]

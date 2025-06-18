@@ -2,7 +2,7 @@
 
 import Image from './Image'
 import { Image as ImageIcon, Download, ShoppingCart } from 'lucide-react'
-import { MemeItem } from '@/app/memes/data'
+import { MemeItem } from '../app/memes/data'
 
 interface MemeCardProps {
   item: MemeItem
