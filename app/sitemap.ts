@@ -60,7 +60,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: today,
     },
     {
-      url: `${siteUrl}/en/contacto`, // contact page in English
+      url: `${siteUrl}/en/contacto`, // página de contacto
       lastModified: today,
     },
     {
