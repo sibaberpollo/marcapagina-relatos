@@ -24,6 +24,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: today,
     },
     {
+      url: `${siteUrl}/en/acerca-de`, // about page in English
+      lastModified: today,
+    },
+    {
       url: `${siteUrl}/publica`, // la nueva página de publica
       lastModified: today,
     },
@@ -53,6 +57,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
     {
       url: `${siteUrl}/contacto`, // página de contacto
+      lastModified: today,
+    },
+    {
+      url: `${siteUrl}/en/contacto`, // contact page in English
       lastModified: today,
     },
     {
