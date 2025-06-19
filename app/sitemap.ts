@@ -56,6 +56,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: today,
     },
     {
+      url: `${siteUrl}/en/contacto`, // página de contacto
+      lastModified: today,
+    },
+    {
       url: `${siteUrl}/memes-merch-descargas`, // página de memes en español
       lastModified: today,
     },
