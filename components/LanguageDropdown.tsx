@@ -17,7 +17,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
 
   const getBasePath = () => (pathname.startsWith('/en/') ? pathname.slice(3) : pathname)
   const basePath = getBasePath()
-  const hasTranslations = ['/memes-merch-descargas'].includes(basePath)
+  const hasTranslations = ['/memes-merch-descargas', '/contacto', '/acerca-de'].includes(basePath)
   const currentLocale = pathname.startsWith('/en/') ? 'en' : 'es'
 
   // Force re-render cuando cambie el pathname

@@ -15,7 +15,7 @@ interface FormStatus {
   message: string
 }
 
-export default function FormularioContacto() {
+export default function FormularioContacto({ locale = 'es' }: { locale?: string }) {
   const [formData, setFormData] = useState<FormData>({
     nombre: '',
     email: '',
@@ -25,6 +25,8 @@ export default function FormularioContacto() {
   })
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [status, setStatus] = useState<FormStatus | null>(null)
+
+  const isEn = locale === 'en'
 
   const handleChange = (
     e: React.ChangeEvent<
@@ -40,14 +42,14 @@ export default function FormularioContacto() {
     if (!formData.nombre || !formData.email || !formData.motivo || !formData.mensaje) {
       setStatus({
         success: false,
-        message: 'Por favor completa los campos requeridos.'
+        message: isEn ? 'Please fill in the required fields.' : 'Por favor completa los campos requeridos.'
       })
       return
     }
     if (formData.mensaje.length > 500) {
       setStatus({
         success: false,
-        message: 'El mensaje no debe superar 500 caracteres.'
+        message: isEn ? 'The message must not exceed 500 characters.' : 'El mensaje no debe superar 500 caracteres.'
       })
       return
     }
@@ -61,8 +63,8 @@ export default function FormularioContacto() {
         body: JSON.stringify(formData)
       })
       const json = await res.json()
-      if (!res.ok) throw new Error(json.error || 'Error en el envío')
-      setStatus({ success: true, message: 'Mensaje enviado correctamente.' })
+      if (!res.ok) throw new Error(json.error || (isEn ? 'Submission error' : 'Error en el envío'))
+      setStatus({ success: true, message: isEn ? 'Message sent successfully.' : 'Mensaje enviado correctamente.' })
       setFormData({ nombre: '', email: '', telefono: '', motivo: '', mensaje: '' })
     } catch (err) {
       setStatus({ success: false, message: (err as Error).message })
@@ -77,7 +79,7 @@ export default function FormularioContacto() {
       className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow"
     >
       <div className="rounded-lg bg-yellow-100 p-4 text-gray-800 dark:bg-gray-700 dark:text-gray-100">
-        Para publicar, hazlo a través de{' '}
+        {isEn ? 'To publish, do it via ' : 'Para publicar, hazlo a través de '}
         <a
           href="https://www.marcapagina.page/publica"
           className="font-bold underline"
@@ -98,7 +100,8 @@ export default function FormularioContacto() {
           htmlFor="nombre"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Nombre y apellido <span className="text-red-600">*</span>
+          {isEn ? 'Full name' : 'Nombre y apellido'}{' '}
+          <span className="text-red-600">*</span>
         </label>
         <input
           id="nombre"
@@ -115,7 +118,8 @@ export default function FormularioContacto() {
           htmlFor="email"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Correo electrónico <span className="text-red-600">*</span>
+          {isEn ? 'Email' : 'Correo electrónico'}{' '}
+          <span className="text-red-600">*</span>
         </label>
         <input
           id="email"
@@ -132,7 +136,7 @@ export default function FormularioContacto() {
           htmlFor="motivo"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Motivo <span className="text-red-600">*</span>
+          {isEn ? 'Reason' : 'Motivo'} <span className="text-red-600">*</span>
         </label>
         <select
           id="motivo"
@@ -142,11 +146,11 @@ export default function FormularioContacto() {
           value={formData.motivo}
           onChange={handleChange}
         >
-          <option value="">Selecciona una opción</option>
-          <option value="contactar">Contacto</option>
-          <option value="asesoria">Asesoría, lectura, corrección</option>
-          <option value="imagenes">Ilustraciones, diseño gráfico</option>
-          <option value="apps">Desarrollo de aplicaciones, web</option>
+          <option value="">{isEn ? 'Select an option' : 'Selecciona una opción'}</option>
+          <option value="contactar">{isEn ? 'Contact' : 'Contacto'}</option>
+          <option value="asesoria">{isEn ? 'Consulting, reading, editing' : 'Asesoría, lectura, corrección'}</option>
+          <option value="imagenes">{isEn ? 'Illustrations, graphic design' : 'Ilustraciones, diseño gráfico'}</option>
+          <option value="apps">{isEn ? 'App and web development' : 'Desarrollo de aplicaciones, web'}</option>
         </select>
       </div>
       <div>
@@ -154,7 +158,7 @@ export default function FormularioContacto() {
           htmlFor="telefono"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Teléfono (opcional)
+          {isEn ? 'Phone (optional)' : 'Teléfono (opcional)'}
         </label>
         <input
           id="telefono"
@@ -170,7 +174,7 @@ export default function FormularioContacto() {
           htmlFor="mensaje"
           className="block text-sm font-medium text-gray-700 dark:text-gray-300"
         >
-          Mensaje <span className="text-red-600">*</span>
+          {isEn ? 'Message' : 'Mensaje'} <span className="text-red-600">*</span>
         </label>
         <textarea
           id="mensaje"
@@ -192,7 +196,7 @@ export default function FormularioContacto() {
           disabled={isSubmitting}
           className={`w-full inline-flex justify-center rounded-md py-2 px-4 shadow hover:bg-gray-900 focus:ring-2 focus:ring-gray-900 ${isSubmitting ? 'bg-gray-500 text-white opacity-70' : 'bg-black text-[#faff00]'}`}
         >
-          {isSubmitting ? 'Enviando...' : 'Enviar'}
+          {isSubmitting ? (isEn ? 'Sending...' : 'Enviando...') : isEn ? 'Send' : 'Enviar'}
         </button>
       </div>
     </form>

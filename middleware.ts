@@ -41,6 +41,20 @@ export function middleware(request: NextRequest) {
     return response
   }
 
+  // Handle multilingual route for contacto
+  if (pathname.startsWith('/en/contacto')) {
+    const response = NextResponse.rewrite(new URL('/contacto', request.url))
+    response.headers.set('x-pathname', pathname)
+    return response
+  }
+
+  // Handle multilingual route for acerca-de
+  if (pathname.startsWith('/en/acerca-de')) {
+    const response = NextResponse.rewrite(new URL('/acerca-de', request.url))
+    response.headers.set('x-pathname', pathname)
+    return response
+  }
+
   // Comprueba si la URL coincide con el patrón de URL antiguo: /[author]/relato/[slug]
   const oldRelatoUrlPattern = /^\/([^\/]+)\/relato\/([^\/]+)/;
   const relatoMatch = pathname.match(oldRelatoUrlPattern);
