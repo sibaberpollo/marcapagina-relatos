@@ -46,7 +46,7 @@ export default async function MemesPage() {
       <div className="py-8">
         <PageTitle>{pageData.title}</PageTitle>
         <ExpandableText
-          previewLines={2}
+          previewLines={1}
           className="prose dark:prose-invert max-w-none mb-4"
         >
           <p className="mt-2 text-lg text-muted-foreground">{firstPart}</p>
