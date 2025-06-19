@@ -17,7 +17,6 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
 
   const getBasePath = () => (pathname.startsWith('/en/') ? pathname.slice(3) : pathname)
   const basePath = getBasePath()
-  // Rutas que cuentan con traducción
   const hasTranslations = ['/memes-merch-descargas', '/contacto', '/acerca-de'].includes(basePath)
   const currentLocale = pathname.startsWith('/en/') ? 'en' : 'es'
 
