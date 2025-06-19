@@ -1,6 +1,7 @@
 import SectionContainer from '@/components/SectionContainer'
 import PageTitle from '@/components/PageTitle'
 import MemeGallery from '@/components/MemeGallery'
+import ExpandableText from '@/components/ExpandableText'
 import { genPageMetadata } from '../seo'
 import { getMemeItems, getMemePageData } from '@/lib/memes'
 import { headers } from 'next/headers'
@@ -34,16 +35,26 @@ export default async function MemesPage() {
   const memeItems = await getMemeItems(locale)
   const pageData = await getMemePageData(locale)
 
+  const periodIndex = pageData.description.indexOf('. ')
+  const firstPart =
+    periodIndex !== -1 ? pageData.description.slice(0, periodIndex + 1) : pageData.description
+  const restPart =
+    periodIndex !== -1 ? pageData.description.slice(periodIndex + 1).trimStart() : ''
+
   return (
     <SectionContainer>
       <div className="py-8">
         <PageTitle>{pageData.title}</PageTitle>
-        <p className="mt-2 text-lg text-muted-foreground">
-          {pageData.description}
-        </p>
-        <p className="mt-2 text-lg text-muted-foreground">
-          {pageData.subtitle}
-        </p>
+        <ExpandableText
+          previewLines={2}
+          className="prose dark:prose-invert max-w-none mb-4"
+        >
+          <p className="mt-2 text-lg text-muted-foreground">{firstPart}</p>
+          {restPart && (
+            <p className="mt-2 text-lg text-muted-foreground">{restPart}</p>
+          )}
+          <p className="mt-2 text-lg text-muted-foreground">{pageData.subtitle}</p>
+        </ExpandableText>
         <div className="mt-8">
           <MemeGallery items={memeItems} />
         </div>
