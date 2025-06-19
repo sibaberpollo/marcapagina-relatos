@@ -88,7 +88,7 @@ export default async function ContactoPage() {
           </div>
         </div>
         <div className="pt-6">
-          <FormularioContacto />
+          <FormularioContacto locale={locale} />
         </div>
       </div>
     </SectionContainer>
