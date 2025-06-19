@@ -151,7 +151,7 @@ export default function RootLayout({
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
             <SectionContainer>
-              <div className="flex items-start justify-between">
+              <div className="flex items-center justify-between mt-4">
                 <Breadcrumbs />
                 <LanguageDropdown isMobile />
               </div>

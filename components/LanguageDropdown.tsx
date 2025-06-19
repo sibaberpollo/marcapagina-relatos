@@ -52,8 +52,8 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
         <CustomLink
           href={basePath}
           className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
-            currentLocale === 'es' 
-              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
+            currentLocale === 'es'
+              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
               : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
           onClick={() => {
@@ -62,13 +62,13 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
             }
           }}
         >
-          ES
+          <span className="mr-1">🇪🇸</span>ES
         </CustomLink>
         <CustomLink
           href={`/en${basePath}`}
           className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
-            currentLocale === 'en' 
-              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900' 
+            currentLocale === 'en'
+              ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
               : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
           }`}
           onClick={() => {
@@ -77,7 +77,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
             }
           }}
         >
-          EN
+          <span className="mr-1">🇬🇧</span>EN
         </CustomLink>
       </div>
     )
@@ -93,6 +93,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
   return (
     <div className="relative" ref={dropdownRef}>
       <button onClick={() => setIsOpen(!isOpen)} className={buttonClasses} aria-label="Cambiar idioma">
+        <span className="mr-1">{currentLocale === 'en' ? '🇬🇧' : '🇪🇸'}</span>
         {currentLocale.toUpperCase()}
         <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
       </button>
@@ -109,7 +110,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
                 }
               }}
             >
-              ES
+              <span className="mr-1">🇪🇸</span>ES
             </CustomLink>
             <CustomLink
               href={`/en${basePath}`}
@@ -121,7 +122,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
                 }
               }}
             >
-              EN
+              <span className="mr-1">🇬🇧</span>EN
             </CustomLink>
           </div>
         </div>
