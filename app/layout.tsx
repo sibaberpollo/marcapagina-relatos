@@ -7,6 +7,7 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import ConditionalHeader from '@/components/ConditionalHeader'
 import Breadcrumbs from '@/components/Breadcrumbs'
+import LanguageDropdown from '@/components/LanguageDropdown'
 import SectionContainer from '@/components/SectionContainer'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
@@ -150,7 +151,10 @@ export default function RootLayout({
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
             <SectionContainer>
-              <Breadcrumbs />
+              <div className="flex items-start justify-between">
+                <Breadcrumbs />
+                <LanguageDropdown isMobile />
+              </div>
             </SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
               <main className="mb-auto font-serif">{children}</main>
