@@ -12,6 +12,7 @@ import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import OrganizationSchema from '@/components/OrganizationSchema'
 import { ThemeProviders } from './theme-providers'
+import LanguageDropdown from '@/components/LanguageDropdown'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { ThemeProvider } from 'next-themes'
@@ -150,7 +151,10 @@ export default function RootLayout({
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
             <SectionContainer>
-              <Breadcrumbs />
+              <div className="flex items-start justify-between">
+                <Breadcrumbs />
+                <LanguageDropdown />
+              </div>
             </SectionContainer>
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
               <main className="mb-auto font-serif">{children}</main>
