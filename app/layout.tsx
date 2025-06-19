@@ -6,9 +6,7 @@ import { Playfair_Display, Source_Serif_4 } from 'next/font/google'
 import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import ConditionalHeader from '@/components/ConditionalHeader'
-import Breadcrumbs from '@/components/Breadcrumbs'
-import LanguageDropdown from '@/components/LanguageDropdown'
-import SectionContainer from '@/components/SectionContainer'
+import ConditionalTopBar from '@/components/ConditionalTopBar'
 import Footer from '@/components/Footer'
 import siteMetadata from '@/data/siteMetadata'
 import OrganizationSchema from '@/components/OrganizationSchema'
@@ -150,12 +148,7 @@ export default function RootLayout({
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
-            <SectionContainer>
-              <div className="flex items-center justify-between mt-4">
-                <Breadcrumbs />
-                <LanguageDropdown isMobile />
-              </div>
-            </SectionContainer>
+            <ConditionalTopBar />
             <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
               <main className="mb-auto font-serif">{children}</main>
             </SearchProvider>
