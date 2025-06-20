@@ -7,6 +7,7 @@ import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import NewLogo from './newLogo'
 import PublishDropdown from './PublishDropdown'
+import SearchBar from './SearchBar'
 
 const socialLinks = [
   {
@@ -58,6 +59,11 @@ const TranstextosHeader = () => {
                 </a>
               ) : null
             )}
+          </div>
+
+          {/* Buscador centrado entre redes sociales y logo - solo desktop */}
+          <div className="hidden lg:block flex-1 max-w-xs mx-8">
+            <SearchBar className="w-full" />
           </div>
 
           {/* Logo Transtextos centrado */}
@@ -117,6 +123,7 @@ const TranstextosHeader = () => {
                   <Close className="w-6 h-6 text-gray-700 dark:text-gray-200" />
                 </button>
                 <nav className="flex flex-col gap-8 text-xl items-center w-full mt-12">
+                  <SearchBar className="w-full max-w-xs" />
                   {navLinks.map((link) => (
                     <CustomLink
                       key={link.title}
