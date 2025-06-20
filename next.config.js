@@ -9,7 +9,7 @@ const ContentSecurityPolicy = `
   default-src 'self';
   script-src 'self' 'unsafe-eval' 'unsafe-inline' giscus.app analytics.umami.is https://challenges.cloudflare.com https://www.googletagmanager.com https://cse.google.com;
   script-src-elem 'self' 'unsafe-inline' https://challenges.cloudflare.com https://www.googletagmanager.com https://cse.google.com;
-  frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com https://open.spotify.com;
+  frame-src 'self' https://challenges.cloudflare.com https://www.youtube.com https://open.spotify.com https://cse.google.com;
   style-src 'self' 'unsafe-inline';
   img-src * blob: data:;
   media-src *.s3.amazonaws.com;
