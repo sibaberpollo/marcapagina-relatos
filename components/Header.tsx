@@ -11,6 +11,7 @@ import {
   ChevronDown,
   Facebook,
 } from 'lucide-react'
+import SocialDropdown from './SocialDropdown'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
@@ -121,22 +122,7 @@ const Header = () => {
           </div>
           
           {/* Redes sociales */}
-          <div className="flex items-center gap-6">
-            {socialLinks.map((link) =>
-              link.href ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors hidden sm:inline-flex"
-                >
-                  {link.icon}
-                </a>
-              ) : null
-            )}
-          </div>
+          <SocialDropdown />
           
           {/* Navegación y botón destacado */}
           <div className="flex items-center gap-2 ml-auto">
