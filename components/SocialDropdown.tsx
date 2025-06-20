@@ -51,12 +51,12 @@ export default function SocialDropdown() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         aria-label="Compartir"
-        className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+        className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800"
       >
         <Share2 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
       </button>
       {isOpen && (
-        <div className="absolute right-0 top-full mt-0 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg w-40 py-1 z-50">
+        <div className="absolute left-0 top-full mt-0 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg w-40 py-1 z-50">
           {socialLinks.map((link) =>
             link.href ? (
               <a

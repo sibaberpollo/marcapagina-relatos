@@ -117,13 +117,13 @@ const Header = () => {
         <div className="flex items-center h-20 relative">
           {/* Logo y acciones */}
           <div className="flex items-center flex-1">
-            <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
+            <div className="flex items-center gap-1 -mx-2 sm:mx-0 lg:mx-12 mt-0">
               <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
                 <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
               </CustomLink>
-            </div>
-            <div className="ml-[10px] hidden sm:block">
-              <SocialDropdown />
+              <div className="hidden sm:block">
+                <SocialDropdown />
+              </div>
             </div>
             <div className="hidden lg:flex flex-grow justify-center px-4">
               <SearchBar className="w-full max-w-xs" />
