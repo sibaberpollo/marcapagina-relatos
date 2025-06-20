@@ -11,6 +11,8 @@ import {
   ChevronDown,
   Facebook,
 } from 'lucide-react'
+import SearchBar from './SearchBar'
+import SocialDropdown from './SocialDropdown'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
@@ -112,30 +114,20 @@ const Header = () => {
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
-        <div className="flex items-center justify-between h-20 relative">
-          {/* Logo */}
-          <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
-          </div>
-          
-          {/* Redes sociales */}
-          <div className="flex items-center gap-6">
-            {socialLinks.map((link) =>
-              link.href ? (
-                <a
-                  key={link.label}
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={link.label}
-                  className="text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-gray-100 transition-colors hidden sm:inline-flex"
-                >
-                  {link.icon}
-                </a>
-              ) : null
-            )}
+        <div className="flex items-center h-20 relative">
+          {/* Logo y acciones */}
+          <div className="flex items-center flex-1">
+            <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
+              <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
+                <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
+              </CustomLink>
+            </div>
+            <div className="ml-[10px] hidden sm:block">
+              <SocialDropdown />
+            </div>
+            <div className="hidden lg:flex flex-grow justify-center px-4">
+              <SearchBar className="w-full max-w-xs" />
+            </div>
           </div>
           
           {/* Navegación y botón destacado */}
@@ -188,6 +180,7 @@ const Header = () => {
                 </button>
                 <div className="flex-1 flex flex-col justify-center px-6 py-20 min-h-full">
                   <nav className="flex flex-col gap-6 text-xl items-center w-full">
+                    <SearchBar className="w-full max-w-xs" />
                     {navLinks.map((link) => (
                       <CustomLink
                         key={link.title}
