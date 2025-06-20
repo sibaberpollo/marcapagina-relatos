@@ -1,7 +1,7 @@
 "use client"
 
 import siteMetadata from '@/data/siteMetadata'
-import { Instagram, Facebook, Rss } from 'lucide-react'
+import { Instagram, Facebook, Share2 } from 'lucide-react'
 import { useState, useRef, useEffect } from 'react'
 
 const socialLinks = [
@@ -53,10 +53,10 @@ export default function SocialDropdown() {
         aria-label="Compartir"
         className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
       >
-        <Rss className="w-5 h-5 text-gray-700 dark:text-gray-300" />
+        <Share2 className="w-5 h-5 text-gray-700 dark:text-gray-300" />
       </button>
       {isOpen && (
-        <div className="absolute right-0 mt-1 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg p-2 flex gap-4 z-50">
+        <div className="absolute right-0 top-full mt-0 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg p-2 flex gap-4 z-50">
           {socialLinks.map((link) =>
             link.href ? (
               <a
