@@ -10,6 +10,7 @@ import {
   Rss,
   ChevronDown,
   Facebook,
+  Search,
 } from 'lucide-react'
 import SocialDropdown from './SocialDropdown'
 import { useState } from 'react'
@@ -113,16 +114,28 @@ const Header = () => {
   return (
     <header className="w-full bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800 relative z-30">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
-        <div className="flex items-center justify-between h-20 relative">
-          {/* Logo */}
-          <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
-            <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
-              <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
-            </CustomLink>
+        <div className="flex items-center h-20 relative">
+          {/* Logo y acciones */}
+          <div className="flex items-center flex-1">
+            <div className="flex items-center -mx-2 sm:mx-0 lg:mx-12 mt-0">
+              <CustomLink href="/" aria-label={siteMetadata.headerTitle} className="decoration-none">
+                <Logo className="h-6 w-auto fill-gray-900 dark:fill-white" />
+              </CustomLink>
+            </div>
+            <div className="ml-[10px] hidden sm:block">
+              <SocialDropdown />
+            </div>
+            <div className="hidden lg:flex flex-grow justify-center px-4">
+              <div className="relative w-full max-w-xs">
+                <input
+                  type="text"
+                  placeholder="Buscar..."
+                  className="w-full border border-black bg-gray-100 rounded pl-3 pr-8 py-1 text-sm focus:outline-none"
+                />
+                <Search className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-600" />
+              </div>
+            </div>
           </div>
-          
-          {/* Redes sociales */}
-          <SocialDropdown />
           
           {/* Navegación y botón destacado */}
           <div className="flex items-center gap-2 ml-auto">
