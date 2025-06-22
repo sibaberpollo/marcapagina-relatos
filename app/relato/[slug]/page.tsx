@@ -16,7 +16,7 @@ import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
+import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato, getRelatosNavigation, getRelatosSerieNavigation } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
@@ -87,32 +87,20 @@ export default async function Page(props: {
   const showDropCap = post.showDropCap === true
   const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null;
 
+  // Obtener navegación solo de relatos publicados
   let prev: { path: string; title: string } | undefined
   let next: { path: string; title: string } | undefined
 
   if (serie && relatosDeSerie.length > 0) {
-    const idx = relatosDeSerie.findIndex((r) => r.slug.current === slug)
-    if (idx > 0) {
-      const p = relatosDeSerie[idx - 1]
-      prev = { path: `relato/${p.slug.current}`, title: p.title }
-    }
-    if (idx < relatosDeSerie.length - 1) {
-      const n = relatosDeSerie[idx + 1]
-      next = { path: `relato/${n.slug.current}`, title: n.title }
-    }
+    // Si el relato pertenece a una serie, usar navegación de serie
+    const serieNav = await getRelatosSerieNavigation(slug, serie.slug.current)
+    prev = serieNav.prev || undefined
+    next = serieNav.next || undefined
   } else {
-    const sorted = [...autorRelatos].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
-    const idx = sorted.findIndex((r) => r.slug.current === slug)
-    if (idx > 0) {
-      const p = sorted[idx - 1]
-      prev = { path: `relato/${p.slug.current}`, title: p.title }
-    }
-    if (idx < sorted.length - 1) {
-      const n = sorted[idx + 1]
-      next = { path: `relato/${n.slug.current}`, title: n.title }
-    }
+    // Si no pertenece a una serie, usar navegación por autor
+    const autorNav = await getRelatosNavigation(slug, post.author.slug.current)
+    prev = autorNav.prev || undefined
+    next = autorNav.next || undefined
   }
 
   const authorDetails = [

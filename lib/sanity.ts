@@ -274,11 +274,11 @@ export async function getAutorBySlug(slug: string): Promise<Autor | null> {
   }
 }
 
-// Obtener los relatos de un autor
+// Obtener los relatos de un autor (solo publicados)
 export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
   try {
     const relatos = await client.fetch(`
-      *[_type == "relato" && author->slug.current == $autorSlug] | order(date desc) {
+      *[_type == "relato" && author->slug.current == $autorSlug && status == "published"] | order(date desc) {
         title,
         slug,
         date,
@@ -1074,4 +1074,90 @@ export async function getRelatedRelatosBySite(slug: string, siteSlug: string, li
     console.error(`Error al obtener relatos relacionados para "${slug}" en sitio "${siteSlug}":`, error);
     return [];
   }
-} 
+}
+
+// Función para obtener navegación de relatos (prev/next) solo de publicados
+export async function getRelatosNavigation(slug: string, autorSlug: string): Promise<{
+  prev: { path: string; title: string } | null;
+  next: { path: string; title: string } | null;
+}> {
+  try {
+    // Obtener todos los relatos publicados del autor ordenados por fecha
+    const relatos = await client.fetch(`
+      *[_type == "relato" && author->slug.current == $autorSlug && status == "published"] | order(date desc) {
+        title,
+        slug,
+        date
+      }
+    `, { autorSlug });
+    
+    const currentIndex = relatos.findIndex((r: any) => r.slug.current === slug);
+    
+    if (currentIndex === -1) {
+      return { prev: null, next: null };
+    }
+    
+    const prev = currentIndex > 0 ? {
+      path: `relato/${relatos[currentIndex - 1].slug.current}`,
+      title: relatos[currentIndex - 1].title
+    } : null;
+    
+    const next = currentIndex < relatos.length - 1 ? {
+      path: `relato/${relatos[currentIndex + 1].slug.current}`,
+      title: relatos[currentIndex + 1].title
+    } : null;
+    
+    return { prev, next };
+  } catch (error) {
+    console.error(`Error al obtener navegación de relatos para "${slug}":`, error);
+    return { prev: null, next: null };
+  }
+}
+
+// Función para obtener navegación de relatos en serie (prev/next) solo de publicados
+export async function getRelatosSerieNavigation(slug: string, serieSlug: string): Promise<{
+  prev: { path: string; title: string } | null;
+  next: { path: string; title: string } | null;
+}> {
+  try {
+    // Obtener todos los relatos publicados de la serie ordenados
+    const relatos = await client.fetch(`
+      *[_type == "serie" && slug.current == $serieSlug][0] {
+        "relatos": relatos[]-> {
+          title,
+          slug,
+          date,
+          status
+        }
+      }
+    `, { serieSlug });
+    
+    if (!relatos || !relatos.relatos) {
+      return { prev: null, next: null };
+    }
+    
+    // Filtrar solo los publicados
+    const relatosPublicados = relatos.relatos.filter((r: any) => r.status === 'published');
+    
+    const currentIndex = relatosPublicados.findIndex((r: any) => r.slug.current === slug);
+    
+    if (currentIndex === -1) {
+      return { prev: null, next: null };
+    }
+    
+    const prev = currentIndex > 0 ? {
+      path: `relato/${relatosPublicados[currentIndex - 1].slug.current}`,
+      title: relatosPublicados[currentIndex - 1].title
+    } : null;
+    
+    const next = currentIndex < relatosPublicados.length - 1 ? {
+      path: `relato/${relatosPublicados[currentIndex + 1].slug.current}`,
+      title: relatosPublicados[currentIndex + 1].title
+    } : null;
+    
+    return { prev, next };
+  } catch (error) {
+    console.error(`Error al obtener navegación de serie para "${slug}":`, error);
+    return { prev: null, next: null };
+  }
+}
