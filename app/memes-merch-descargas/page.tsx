@@ -7,17 +7,14 @@ import { getMemeItems, getMemePageData } from '@/lib/memes'
 import { headers } from 'next/headers'
 
 // Función para detectar el idioma desde la URL
-function getLocaleFromPath(pathname: string): string {
-  if (pathname.startsWith('/en/')) {
-    return 'en'
-  }
-  return 'es' // default
+function getLocaleFromHeaders(headers: Headers): string {
+  return headers.get('x-locale') || 'es'
 }
 
 export async function generateMetadata() {
   const headersList = await headers()
   const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
   
   const pageData = await getMemePageData(locale)
   
@@ -29,8 +26,7 @@ export async function generateMetadata() {
 
 export default async function MemesPage() {
   const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
   
   const memeItems = await getMemeItems(locale)
   const pageData = await getMemePageData(locale)

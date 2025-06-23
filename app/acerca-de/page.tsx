@@ -7,17 +7,13 @@ import { genPageMetadata } from 'app/seo'
 import HighlightStroke from '@/components/HighlightStroke'
 import { headers } from 'next/headers'
 
-function getLocaleFromPath(pathname: string): string {
-  if (pathname.startsWith('/en/')) {
-    return 'en'
-  }
-  return 'es'
+function getLocaleFromHeaders(headers: Headers): string {
+  return headers.get('x-locale') || 'es'
 }
 
 export async function generateMetadata() {
   const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
 
   const isEn = locale === 'en'
   const title = isEn ? 'About | Marcapágina' : 'Acerca de | Marcapágina'
@@ -62,8 +58,7 @@ const pressArticles = [
 
 export default async function AcercaDePage() {
   const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
 
   const isEn = locale === 'en'
   const paragraphs = isEn

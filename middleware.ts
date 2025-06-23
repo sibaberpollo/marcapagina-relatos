@@ -33,26 +33,20 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL('https://www.marcapagina.page/transtextos'));
   }
 
-  // Handle multilingual routes for memes
-  if (pathname.startsWith('/en/memes-merch-descargas')) {
-    // Rewrite English route to the same component, but pass the original path
-    const response = NextResponse.rewrite(new URL('/memes-merch-descargas', request.url))
-    response.headers.set('x-pathname', pathname)
-    return response
-  }
+  // Handle multilingual routes dynamically
+  const supportedLocales = ['en']; // Add more locales here (es is default)
+  const multilingualPages = ['memes-merch-descargas', 'contacto', 'acerca-de'];
 
-  // Handle multilingual route for contacto
-  if (pathname.startsWith('/en/contacto')) {
-    const response = NextResponse.rewrite(new URL('/contacto', request.url))
-    response.headers.set('x-pathname', pathname)
-    return response
-  }
-
-  // Handle multilingual route for acerca-de
-  if (pathname.startsWith('/en/acerca-de')) {
-    const response = NextResponse.rewrite(new URL('/acerca-de', request.url))
-    response.headers.set('x-pathname', pathname)
-    return response
+  // Check for multilingual routes
+  for (const locale of supportedLocales) {
+    for (const page of multilingualPages) {
+      if (pathname.startsWith(`/${locale}/${page}`)) {
+        const response = NextResponse.rewrite(new URL(`/${page}`, request.url))
+        response.headers.set('x-pathname', pathname)
+        response.headers.set('x-locale', locale)
+        return response
+      }
+    }
   }
 
   // Comprueba si la URL coincide con el patrón de URL antiguo: /[author]/relato/[slug]

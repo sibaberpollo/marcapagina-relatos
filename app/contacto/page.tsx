@@ -6,17 +6,13 @@ import { genPageMetadata } from 'app/seo'
 import FormularioContacto from '@/components/forms/FormularioContacto'
 import { headers } from 'next/headers'
 
-function getLocaleFromPath(pathname: string): string {
-  if (pathname.startsWith('/en/')) {
-    return 'en'
-  }
-  return 'es'
+function getLocaleFromHeaders(headers: Headers): string {
+  return headers.get('x-locale') || 'es'
 }
 
 export async function generateMetadata() {
   const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
 
   const isEn = locale === 'en'
   const title = isEn ? 'Contact | Marcapágina' : 'Contacto | Marcapágina'
@@ -48,8 +44,7 @@ export async function generateMetadata() {
 
 export default async function ContactoPage() {
   const headersList = await headers()
-  const pathname = headersList.get('x-pathname') || ''
-  const locale = getLocaleFromPath(pathname)
+  const locale = getLocaleFromHeaders(headersList)
 
   const isEn = locale === 'en'
 
