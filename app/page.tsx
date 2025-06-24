@@ -1,27 +1,20 @@
 import {
-  getFeaturedAndNonFeaturedRelatos,
-  getAllMicrocuentos,
   getAllRelatosForChronological,
   getAllRelatosForChronologicalBySite,
   getSiteBySlug,
 } from "../lib/sanity";
-// import { getSortedProjects, getFeaturedProject, getNonFeaturedProjects } from '@/data/projectsData'
-//import Card from '@/components/Card'
 import FeaturedCard from "@/components/FeaturedCard";
 import FeaturedSlider from "@/components/FeaturedSlider";
 import SectionContainer from "@/components/SectionContainer";
 import ViewToggle from "@/components/ViewToggle";
 import ClientRedirect from "@/components/ClientRedirect";
 import PublishBanner from "@/components/PublishBanner";
-import MicrocuentoCard from "@/components/MicrocuentoCard";
-import Image from "next/image";
-import Logo from '@/data/logo.svg'
 import ExpandableText from '@/components/ExpandableText'
 import ChronologicalView from '@/components/ChronologicalView'
 import Link from 'next/link'
 import { Rss } from 'lucide-react'
 
-// Tipo común para ambos orígenes de datos
+// Interfaces para la nueva API
 interface CardProps {
   title: string;
   description: string;
@@ -35,35 +28,64 @@ interface CardProps {
   publishedAt: string;
 }
 
-interface Proyecto {
-  title: string;
-  description: string;
-  imgSrc: string;
-  href: string;
-  authorImgSrc: string;
-  authorName: string;
-  authorHref: string;
-  bgColor: string;
-  tags: string[];
-  publishedAt: string;
+interface HomeContentResponse {
+  meta: {
+    language: string;
+    version: string;
+    lastUpdated: string;
+  };
+  content: {
+    title: string;
+    description: string;
+  };
+  relatos: CardProps[];
 }
 
-interface MicrocuentoData {
-  title: string;
-  author: string;
-  description: string;
-  imgSrc: string;
-  href: string;
-  bgColor: string;
-  tags: string[];
-  publishedAt: string;
+// Función para procesar markdown básico a HTML
+function processMarkdown(text: string): string {
+  return text
+    // Procesar negritas **texto** -> <strong>texto</strong>
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    // Procesar enlaces [texto](url) -> <a href="url" class="link-styles">texto</a>
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300">$1</a>')
+    // Procesar saltos de línea dobles
+    .replace(/\n\n/g, '<br /><br />');
 }
 
-export default async function Page() {
-  // Obtener datos desde Sanity
-  let featuredProject: CardProps | null = null;
-  let nonFeaturedProjects: CardProps[] = [];
-  const allMicrocuentos = await getAllMicrocuentos();
+// Función para obtener contenido del home desde la API interna
+async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
+  try {
+    // En desarrollo, usar localhost; en producción, usar la URL completa
+    const baseUrl = process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}` 
+      : 'http://localhost:3000';
+    
+    const response = await fetch(`${baseUrl}/api/home-content?lang=${language}`, {
+      next: { revalidate: 300 } // Revalidar cada 5 minutos
+    });
+    
+    if (!response.ok) {
+      console.error('Error fetching home content:', response.statusText);
+      return null;
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Error obteniendo contenido del home:', error);
+    return null;
+  }
+}
+
+interface PageProps {
+  searchParams: { [key: string]: string | string[] | undefined }
+}
+
+export default async function Page({ searchParams }: PageProps) {
+  // Leer idioma desde URL, fallback a 'es'
+  const language = (searchParams.lang as string) || 'es';
+  
+  // Obtener datos desde la nueva API
+  const homeContent = await getHomeContent(language);
   const allRelatos = await getAllRelatosForChronological();
   const totalRelatos = allRelatos.length;
   const siteInfo = await getSiteBySlug('transtextos');
@@ -71,23 +93,23 @@ export default async function Page() {
   const latestTranstextos = allRelatosTranstextos.slice(0, 5);
   const currentPage = 1;
 
-  try {
-    console.log("Obteniendo datos desde Sanity");
-    const { featured, nonFeatured } = await getFeaturedAndNonFeaturedRelatos();
-    featuredProject = featured;
-    nonFeaturedProjects = nonFeatured;
-    console.log("Datos obtenidos de Sanity:", {
-      featuredProject: featuredProject?.title,
-      nonFeaturedCount: nonFeaturedProjects.length,
-    });
-  } catch (error) {
-    console.error("Error al obtener datos de Sanity:", error);
+  // Si no pudimos obtener el contenido del home, mostrar un fallback
+  if (!homeContent) {
+    return (
+      <SectionContainer>
+        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
+            Error cargando contenido
+          </h1>
+          <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
+            No se pudo cargar el contenido del home. Por favor, intenta más tarde.
+          </p>
+        </div>
+      </SectionContainer>
+    );
   }
 
-  const allProjects = [
-    ...(featuredProject ? [featuredProject] : []),
-    ...nonFeaturedProjects,
-  ];
+  const allProjects = homeContent.relatos;
 
   return (
     <>
@@ -98,62 +120,15 @@ export default async function Page() {
             className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 
                       sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
           >
-            Lee relatos breves y microcuentos
+            {homeContent.content.title}
           </h1>
           <ExpandableText previewLines={2} className="prose dark:prose-invert max-w-none mb-4">
-            <div className="prose dark:prose-invert max-w-none mb-4">
-              <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-                🤖 <strong>MarcaPágina</strong> es una artefacto (Webapp) para leer relatos, 
-                microcuentos y ficción contemporánea desde cualquier dispositivo.{" "}
-                <a
-                  href="/acerca-de/"
-                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                >
-                  Antes fuimos una revista,
-                </a>{" "}
-                ahora somos una plataforma para descubrir literatura nueva, explorar{" "} 
-                <a
-                  href="/playlist/"
-                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                >playlists</a> narrativas 
-                y participar de una comunidad activa en torno a la escritura en español.  
-                <br /><br />
-                Hoy puedes acceder a más de{" "}
-                <strong>
-                  <a
-                    href="/cronologico/"
-                    className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                  >
-                    350 relatos y microficciones
-                  </a>
-                </strong>{" "}
-                escritos por autores emergentes de América Latina, seleccionados con criterio editorial.
-                <br /><br />
-                Una parte importante de nuestro catálogo proviene del archivo de{" "}
-                <a
-                  href="/transtextos/"
-                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                >
-                  Transtextos
-                </a>
-                , un proyecto de publicación literaria migrado recientemente a MarcaPágina. 
-                Hemos integrado su fondo completo de relatos y lo seguimos expandiendo. 
-                También lanzamos una{" "}
-                <a
-                  href="/playlist/"
-                  className="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300"
-                >
-                  sección de playlists
-                </a>{" "}
-                donde la música y la literatura dialogan: cada lista acompaña el tono de ciertos cuentos, 
-                curada directamente por sus autores.
-                <br /><br />
-                Publicamos nuevos relatos cada semana. MarcaPágina funciona como aplicación web: 
-                puedes leer desde tu navegador o instalarla como PWA en tu celular para llevar tus lecturas donde quieras.
-                <br /><br />
-                Estamos construyendo el mejor espacio para leer literatura breve en internet. Esto recién comienza.
-              </p>
-            </div>
+            <div 
+              className="prose dark:prose-invert max-w-none mb-4 text-lg leading-7 text-gray-700 dark:text-gray-300"
+              dangerouslySetInnerHTML={{ 
+                __html: processMarkdown(homeContent.content.description)
+              }}
+            />
           </ExpandableText>
         </div>
 
@@ -219,38 +194,7 @@ export default async function Page() {
           </div>
         </div>
 
-        {/* Sección de Microcuentos */}
-        {allMicrocuentos.length > 0 && (
-          <div className="container pt-16 pb-12">
-            <div className="mb-8">
-              <h2 className="sr-only">Microcuentos</h2>
-              <Image
-                src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748448325/microcuentos_h1_ttuzc5.png"
-                alt="Microcuentos"
-                className="h-8 sm:h-10 md:h-12 w-auto"
-                width={300}
-                height={60}
-                priority
-              />
-            </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 md:gap-6 auto-rows-fr">
-              {allMicrocuentos.slice(0, 3).map((microcuento, index) => (
-                <div key={index} className="flex h-full">
-                  <MicrocuentoCard
-                    title={microcuento.title}
-                    author={microcuento.author}
-                    description={microcuento.description}
-                    imgSrc={microcuento.imgSrc}
-                    href={microcuento.href}
-                    bgColor={microcuento.bgColor}
-                    tags={microcuento.tags}
-                  />
-                </div>
-              ))}
-            </div>
-        </div>
-      )}
       </SectionContainer>
 
       <SectionContainer>

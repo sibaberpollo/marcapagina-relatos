@@ -1,0 +1,37 @@
+{
+  "meta": {
+    "language": "es",
+    "version": "1.0",
+    "lastUpdated": "2025-01-14"
+  },
+  "content": {
+    "title": "Lee relatos breves y microcuentos",
+    "description": "🤖 **MarcaPágina** es una artefacto (Webapp) para leer relatos, microcuentos y ficción contemporánea desde cualquier dispositivo. [Antes fuimos una revista,](/acerca-de/) ahora somos una plataforma para descubrir literatura nueva, explorar [playlists](/playlist/) narrativas y participar de una comunidad activa en torno a la escritura en español.\n\nHoy puedes acceder a más de **[350 relatos y microficciones](/cronologico/)** escritos por autores emergentes de América Latina, seleccionados con criterio editorial.\n\nUna parte importante de nuestro catálogo proviene del archivo de [Transtextos](/transtextos/), un proyecto de publicación literaria migrado recientemente a MarcaPágina. Hemos integrado su fondo completo de relatos y lo seguimos expandiendo. También lanzamos una [sección de playlists](/playlist/) donde la música y la literatura dialogan: cada lista acompaña el tono de ciertos cuentos, curada directamente por sus autores.\n\nPublicamos nuevos relatos cada semana. MarcaPágina funciona como aplicación web: puedes leer desde tu navegador o instalarla como PWA en tu celular para llevar tus lecturas donde quieras.\n\nEstamos construyendo el mejor espacio para leer literatura breve en internet. Esto recién comienza."
+  },
+  "relatos": [
+    {
+      "slug": "los-dias",
+      "type": "relato"
+    },
+    {
+      "slug": "los-chimichimitos", 
+      "type": "relato"
+    },
+    {
+      "slug": "el-hombre-del-canario-rojo",
+      "type": "relato"
+    },
+    {
+      "slug": "brisa-marina",
+      "type": "relato"
+    },
+    {
+      "slug": "treinta-minutos-o-menos",
+      "type": "relato"
+    },
+    {
+      "slug": "lluvia",
+      "type": "relato"
+    }
+  ]
+} 

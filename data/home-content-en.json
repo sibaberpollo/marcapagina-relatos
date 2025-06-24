@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "language": "en",
+    "version": "1.0",
+    "lastUpdated": "2025-01-14"
+  },
+  "content": {
+    "title": "Read short stories and microfiction",
+    "description": "🤖 **MarcaPágina** is a webapp for reading short stories, microfiction, and contemporary fiction from any device. [We used to be a magazine,](/acerca-de/) now we're a platform to discover new literature, explore narrative [playlists](/playlist/) and participate in an active community around Spanish writing.\n\nToday you can access more than **[350 stories and microfictions](/cronologico/)** written by emerging authors from Latin America, selected with editorial criteria.\n\nAn important part of our catalog comes from the [Transtextos](/transtextos/) archive, a literary publication project recently migrated to MarcaPágina. We publish new stories every week. MarcaPágina works as a web application: you can read from your browser or install it as a PWA on your phone to take your reading wherever you want.\n\nWe are building the best space to read short literature on the internet. This is just the beginning."
+  },
+  "relatos": [
+    {
+      "slug": "los-dias",
+      "type": "relato"
+    },
+    {
+      "slug": "brisa-marina",
+      "type": "relato"
+    },
+    {
+      "slug": "lluvia",
+      "type": "relato"
+    }
+  ]
+} 
