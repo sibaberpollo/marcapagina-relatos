@@ -42,6 +42,7 @@ interface HomeContentItem {
   // Para memes - datos directos
   image?: string;
   image_portada?: string;
+  href?: string;
 }
 
 interface HomeContentResponse {
@@ -224,6 +225,7 @@ export default async function Page({ searchParams }: PageProps) {
                         description={item.description}
                         image={item.image!}
                         image_portada={(item as HomeContentItem).image_portada}
+                        href={(item as HomeContentItem).href}
                         type={(item as HomeContentItem).type as 'meme'}
                         tags={item.tags}
                       />
@@ -260,6 +262,7 @@ export default async function Page({ searchParams }: PageProps) {
                       description={item.description}
                       image={item.image!}
                       image_portada={(item as HomeContentItem).image_portada}
+                      href={(item as HomeContentItem).href}
                       type={(item as HomeContentItem).type as 'meme'}
                       tags={item.tags}
                     />

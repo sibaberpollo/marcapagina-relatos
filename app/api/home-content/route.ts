@@ -19,6 +19,7 @@ interface HomeContentItem {
   // Para memes - datos directos
   image?: string
   image_portada?: string
+  href?: string
 }
 
 interface HomeContentMeta {

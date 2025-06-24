@@ -10,14 +10,6 @@
   },
   "items": [
     {
-      "type": "meme",
-      "title": "Chapulín Colorado en la playa",
-      "description": "No contaban con su astucia. Intervención visual sobre Billy Boys de Jack Vettriano.",
-      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina.page-Ravensburger-Jack-Vettriano-Billy-Boys_lw5xoz.png",
-      "image_portada": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina.page-Ravensburger-Jack-Vettriano-Billy-Boys_lw5xoz.png",
-      "tags": ["meme", "diversión"]
-    },
-    {
       "slug": "los-dias",
       "type": "relato"
     },
@@ -26,21 +18,32 @@
       "type": "relato"
     },
     {
+      "type": "meme",
+      "title": "Los chapulines salvajes",
+      "description": "A propósito del hype de la serie Sin querer queriendo en HBO, aprovechamos de recomendar la mejor novela del autor.",
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina-page-los-chapulines-salvajes_jsvcls.png",
+      "image_portada": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina.page-Ravensburger-Jack-Vettriano-Billy-Boys_lw5xoz.png",
+      "tags": ["meme", "diversión"]
+    },
+    {
       "slug": "el-hombre-del-canario-rojo",
       "type": "relato"
     },
     {
       "type": "meme",
-      "title": "Los chapulines salvajes",
-      "description": "A propósito del hype de la serie Sin querer queriendo en HBO, aprovechamos de recomendar la mejor novela del autor.",
-      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina-page-los-chapulines-salvajes_jsvcls.png",
-      "image_portada": "https://res.cloudinary.com/dx98vnos1/image/upload/v1748981804/treinta_minutos_srsteg.png",
-      "tags": ["meme", "diversión"]
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
+      "href": "/memes-merch-descargas",
+      "tags": ["imagen", "vertical"]
     },
-    
     {
       "slug": "brisa-marina",
       "type": "relato"
+    },
+    {
+      "type": "meme", 
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750791347/edgar-allan-poe-edgar_palrek.gif",
+      "href": "/memes-merch-descargas",
+      "tags": ["meme", "diversión"]
     },
     {
       "slug": "treinta-minutos-o-menos",
