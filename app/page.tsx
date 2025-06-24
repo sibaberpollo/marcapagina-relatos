@@ -52,27 +52,69 @@ function processMarkdown(text: string): string {
     .replace(/\n\n/g, '<br /><br />');
 }
 
-// Función para obtener contenido del home desde la API interna
+// Importar las dependencias necesarias para leer archivos
+import fs from 'fs'
+import path from 'path'
+import { getRelatoBySlug } from '../lib/sanity'
+
+// Función para obtener contenido del home directamente
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
   try {
-    // En desarrollo, usar localhost; en producción, usar la URL completa
-    const baseUrl = process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}` 
-      : 'http://localhost:3000';
+    // Leer el archivo JSON correspondiente al idioma
+    const filePath = path.join(process.cwd(), 'data', `home-content${language === 'es' ? '' : `-${language}`}.json`)
     
-    const response = await fetch(`${baseUrl}/api/home-content?lang=${language}`, {
-      next: { revalidate: 300 } // Revalidar cada 5 minutos
-    });
+    // Si no existe el archivo del idioma específico, usar el español como fallback
+    const fallbackPath = path.join(process.cwd(), 'data', 'home-content.json')
+    const finalPath = fs.existsSync(filePath) ? filePath : fallbackPath
     
-    if (!response.ok) {
-      console.error('Error fetching home content:', response.statusText);
-      return null;
+    if (!fs.existsSync(finalPath)) {
+      console.error('Archivo de contenido no encontrado:', finalPath)
+      return null
     }
-    
-    return await response.json();
+
+    const fileContent = fs.readFileSync(finalPath, 'utf-8')
+    const homeData = JSON.parse(fileContent)
+
+    // Obtener datos de Sanity para cada relato y combinarlos
+    const enrichedRelatos: CardProps[] = []
+
+    for (const item of homeData.relatos) {
+      try {
+        if (item.type === 'relato') {
+          const sanityData = await getRelatoBySlug(item.slug)
+          
+          if (sanityData) {
+            const enrichedItem: CardProps = {
+              title: item.title || sanityData.title,
+              description: item.description || sanityData.summary || '',
+              imgSrc: item.imgSrc || sanityData.image || '',
+              href: `/${item.type}/${item.slug}`,
+              authorImgSrc: item.authorImgSrc || sanityData.author?.avatar || '',
+              authorName: item.authorName || sanityData.author?.name || '',
+              authorHref: `/autor/${sanityData.author?.slug?.current}` || '',
+              bgColor: item.bgColor || sanityData.bgColor || '#efa106',
+              tags: item.tags || sanityData.tags || [],
+              publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
+            }
+            
+            enrichedRelatos.push(enrichedItem)
+          }
+        }
+      } catch (error) {
+        console.error(`Error obteniendo datos para ${item.slug}:`, error)
+        // Continuar con el siguiente elemento sin fallar
+      }
+    }
+
+    return {
+      meta: homeData.meta,
+      content: homeData.content,
+      relatos: enrichedRelatos
+    }
+
   } catch (error) {
-    console.error('Error obteniendo contenido del home:', error);
-    return null;
+    console.error('Error obteniendo contenido del home:', error)
+    return null
   }
 }
 
