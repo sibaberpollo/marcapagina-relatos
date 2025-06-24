@@ -77,12 +77,13 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
 }
 
 interface PageProps {
-  searchParams: { [key: string]: string | string[] | undefined }
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function Page({ searchParams }: PageProps) {
   // Leer idioma desde URL, fallback a 'es'
-  const language = (searchParams.lang as string) || 'es';
+  const resolvedSearchParams = await searchParams;
+  const language = (resolvedSearchParams.lang as string) || 'es';
   
   // Obtener datos desde la nueva API
   const homeContent = await getHomeContent(language);
