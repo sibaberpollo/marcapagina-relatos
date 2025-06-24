@@ -4,7 +4,6 @@ import {
   getSiteBySlug,
 } from "../lib/sanity";
 import FeaturedCard from "@/components/FeaturedCard";
-import FeaturedSlider from "@/components/FeaturedSlider";
 import SectionContainer from "@/components/SectionContainer";
 import ViewToggle from "@/components/ViewToggle";
 import ClientRedirect from "@/components/ClientRedirect";
@@ -28,6 +27,23 @@ interface CardProps {
   publishedAt: string;
 }
 
+interface HomeContentItem {
+  slug?: string;
+  type: 'relato' | 'microcuento' | 'meme';
+  // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
+  title?: string;
+  description?: string;
+  imgSrc?: string;
+  authorName?: string;
+  authorImgSrc?: string;
+  bgColor?: string;
+  tags?: string[];
+  publishedAt?: string;
+  // Para memes - datos directos
+  image?: string;
+  image_portada?: string;
+}
+
 interface HomeContentResponse {
   meta: {
     language: string;
@@ -38,7 +54,7 @@ interface HomeContentResponse {
     title: string;
     description: string;
   };
-  relatos: CardProps[];
+  items: (CardProps | HomeContentItem)[];
 }
 
 // Función para procesar markdown básico a HTML
@@ -52,10 +68,15 @@ function processMarkdown(text: string): string {
     .replace(/\n\n/g, '<br /><br />');
 }
 
+
+
 // Importar las dependencias necesarias para leer archivos
 import fs from 'fs'
 import path from 'path'
 import { getRelatoBySlug } from '../lib/sanity'
+
+import SimpleMemeItem from '@/components/SimpleMemeItem'
+import MasonryFeaturedCard from '@/components/MasonryFeaturedCard'
 
 // Función para obtener contenido del home directamente
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
@@ -75,41 +96,49 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
     const fileContent = fs.readFileSync(finalPath, 'utf-8')
     const homeData = JSON.parse(fileContent)
 
-    // Obtener datos de Sanity para cada relato y combinarlos
-    const enrichedRelatos: CardProps[] = []
-
-    for (const item of homeData.relatos) {
-      try {
-        if (item.type === 'relato') {
-          const sanityData = await getRelatoBySlug(item.slug)
-          
-          if (sanityData) {
-            const enrichedItem: CardProps = {
-              title: item.title || sanityData.title,
-              description: item.description || sanityData.summary || '',
-              imgSrc: item.imgSrc || sanityData.image || '',
-              href: `/${item.type}/${item.slug}`,
-              authorImgSrc: item.authorImgSrc || sanityData.author?.avatar || '',
-              authorName: item.authorName || sanityData.author?.name || '',
-              authorHref: `/autor/${sanityData.author?.slug?.current}` || '',
-              bgColor: item.bgColor || sanityData.bgColor || '#efa106',
-              tags: item.tags || sanityData.tags || [],
-              publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
-            }
+    // Procesar todos los items en paralelo manteniendo el orden original
+    const processedItems = await Promise.all(
+      homeData.items.map(async (item: any) => {
+        try {
+          if (item.type === 'relato' || item.type === 'microcuento') {
+            const sanityData = await getRelatoBySlug(item.slug)
             
-            enrichedRelatos.push(enrichedItem)
+            if (sanityData) {
+              const enrichedItem: CardProps = {
+                title: item.title || sanityData.title,
+                description: item.description || sanityData.summary || '',
+                imgSrc: item.imgSrc || sanityData.image || '',
+                href: `/${item.type}/${item.slug}`,
+                authorImgSrc: item.authorImgSrc || sanityData.author?.avatar || '',
+                authorName: item.authorName || sanityData.author?.name || '',
+                authorHref: `/autor/${sanityData.author?.slug?.current}` || '',
+                bgColor: item.bgColor || sanityData.bgColor || '#efa106',
+                tags: item.tags || sanityData.tags || [],
+                publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
+              }
+              
+              return enrichedItem
+            }
+            return null // Si no hay datos de Sanity, retornar null
+          } else if (item.type === 'meme') {
+            // Para memes, usar los datos directamente del JSON
+            return item as HomeContentItem
           }
+          return null
+        } catch (error) {
+          console.error(`Error obteniendo datos para ${item.slug || item.type}:`, error)
+          return null
         }
-      } catch (error) {
-        console.error(`Error obteniendo datos para ${item.slug}:`, error)
-        // Continuar con el siguiente elemento sin fallar
-      }
-    }
+      })
+    )
+
+    // Filtrar items nulos
+    const validItems = processedItems.filter(item => item !== null) as (CardProps | HomeContentItem)[]
 
     return {
       meta: homeData.meta,
       content: homeData.content,
-      relatos: enrichedRelatos
+      items: validItems
     }
 
   } catch (error) {
@@ -152,7 +181,8 @@ export default async function Page({ searchParams }: PageProps) {
     );
   }
 
-  const allProjects = homeContent.relatos;
+  // Los items ya vienen en el orden correcto desde el JSON
+  const masonryItems = homeContent.items;
 
   return (
     <>
@@ -178,25 +208,78 @@ export default async function Page({ searchParams }: PageProps) {
         {/* Botones de cambio de vista */}
         <ViewToggle total={totalRelatos} />
 
-        {/* Primera fila: 3 relatos sin slider */}
-        <div className="container pb-6">
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3 md:gap-6">
-            {allProjects.slice(0, 3).map((project, index) => (
-              <div key={index} className="flex">
-                <FeaturedCard
-                  title={project.title}
-                  description={project.description}
-                  imgSrc={project.imgSrc}
-                  href={project.href}
-                  authorImgSrc={project.authorImgSrc}
-                  authorName={project.authorName}
-                  authorHref={project.authorHref}
-                  bgColor={project.bgColor}
-                  tags={project.tags}
-                  publishedAt={project.publishedAt}
-                />
-              </div>
-            ))}
+        {/* Layout híbrido: masonry en móvil, grid en desktop para mantener orden */}
+        <div className="container py-6">
+          {/* Masonry solo en móvil (respeta orden) */}
+          <div className="md:hidden">
+            <div className="columns-1 gap-4 space-y-4">
+              {masonryItems.map((item, index) => {
+                const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
+                
+                return (
+                  <div key={`${isMeme ? 'meme' : 'relato'}-${index}`}>
+                    {isMeme ? (
+                      <SimpleMemeItem
+                        title={item.title}
+                        description={item.description}
+                        image={item.image!}
+                        image_portada={(item as HomeContentItem).image_portada}
+                        type={(item as HomeContentItem).type as 'meme'}
+                        tags={item.tags}
+                      />
+                    ) : (
+                      <MasonryFeaturedCard
+                        title={(item as CardProps).title}
+                        description={(item as CardProps).description}
+                        imgSrc={(item as CardProps).imgSrc}
+                        href={(item as CardProps).href}
+                        authorImgSrc={(item as CardProps).authorImgSrc}
+                        authorName={(item as CardProps).authorName}
+                        authorHref={(item as CardProps).authorHref}
+                        bgColor={(item as CardProps).bgColor}
+                        tags={(item as CardProps).tags}
+                        publishedAt={(item as CardProps).publishedAt}
+                      />
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </div>
+
+          {/* Grid en tablet/desktop (mantiene orden visual) */}
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {masonryItems.map((item, index) => {
+              const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
+              
+              return (
+                <div key={`${isMeme ? 'meme' : 'relato'}-${index}`} className="flex">
+                  {isMeme ? (
+                    <SimpleMemeItem
+                      title={item.title}
+                      description={item.description}
+                      image={item.image!}
+                      image_portada={(item as HomeContentItem).image_portada}
+                      type={(item as HomeContentItem).type as 'meme'}
+                      tags={item.tags}
+                    />
+                  ) : (
+                    <MasonryFeaturedCard
+                      title={(item as CardProps).title}
+                      description={(item as CardProps).description}
+                      imgSrc={(item as CardProps).imgSrc}
+                      href={(item as CardProps).href}
+                      authorImgSrc={(item as CardProps).authorImgSrc}
+                      authorName={(item as CardProps).authorName}
+                      authorHref={(item as CardProps).authorHref}
+                      bgColor={(item as CardProps).bgColor}
+                      tags={(item as CardProps).tags}
+                      publishedAt={(item as CardProps).publishedAt}
+                    />
+                  )}
+                </div>
+              )
+            })}
           </div>
         </div>
       </SectionContainer>
@@ -207,38 +290,6 @@ export default async function Page({ searchParams }: PageProps) {
           <PublishBanner />
         </div>
       </div>
-
-      <SectionContainer>
-        {/* Grid en desktop, Slider en móvil y tablet */}
-        <div className="container pt-12">
-          {/* Slider para móvil y tablet */}
-          <div className="lg:hidden">
-            <FeaturedSlider projects={allProjects.slice(3, 6)} />
-          </div>
-
-          {/* Grid para desktop */}
-          <div className="hidden lg:grid lg:grid-cols-3 gap-6">
-            {allProjects.slice(3, 6).map((project, index) => (
-              <div key={index} className="flex">
-                <FeaturedCard
-                  title={project.title}
-                  description={project.description}
-                  imgSrc={project.imgSrc}
-                  href={project.href}
-                  authorImgSrc={project.authorImgSrc}
-                  authorName={project.authorName}
-                  authorHref={project.authorHref}
-                  bgColor={project.bgColor}
-                  tags={project.tags}
-                  publishedAt={project.publishedAt}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-
-
-      </SectionContainer>
 
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">

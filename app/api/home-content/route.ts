@@ -4,10 +4,10 @@ import path from 'path'
 import { getRelatoBySlug, getMicrocuentoBySlug } from '@/lib/sanity'
 
 // Interfaces locales para el contenido
-interface HomeContentRelato {
-  slug: string
-  type: 'relato' | 'microcuento'
-  // Campos opcionales que pueden sobreescribir los de Sanity
+interface HomeContentItem {
+  slug?: string
+  type: 'relato' | 'microcuento' | 'meme'
+  // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string
   description?: string
   imgSrc?: string
@@ -16,6 +16,9 @@ interface HomeContentRelato {
   bgColor?: string
   tags?: string[]
   publishedAt?: string
+  // Para memes - datos directos
+  image?: string
+  image_portada?: string
 }
 
 interface HomeContentMeta {
@@ -30,7 +33,7 @@ interface HomeContentData {
     title: string
     description: string
   }
-  relatos: HomeContentRelato[]
+  items: HomeContentItem[]
 }
 
 interface CardProps {
@@ -97,60 +100,51 @@ export async function GET(request: NextRequest) {
     const fileContent = fs.readFileSync(finalPath, 'utf-8')
     const homeData: HomeContentData = JSON.parse(fileContent)
 
-    // Obtener datos de Sanity para cada relato/microcuento y combinarlos
-    const enrichedRelatos: CardProps[] = []
-
-    for (const item of homeData.relatos) {
-      try {
-        if (item.type === 'relato') {
-          const sanityData = await getRelatoBySlug(item.slug)
-          
-          if (sanityData) {
-            const enrichedItem: CardProps = {
-              title: item.title || sanityData.title,
-              description: item.description || sanityData.summary || '',
-              imgSrc: item.imgSrc || sanityData.image || '',
-              href: `/${item.type}/${item.slug}`,
-              authorImgSrc: item.authorImgSrc || sanityData.author?.avatar || '',
-              authorName: item.authorName || sanityData.author?.name || '',
-              authorHref: `/autor/${sanityData.author?.slug?.current}` || '',
-              bgColor: item.bgColor || sanityData.bgColor || '#efa106',
-              tags: item.tags || sanityData.tags || [],
-              publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
-            }
+    // Procesar todos los items en paralelo manteniendo el orden original
+    const processedItems = await Promise.all(
+      homeData.items.map(async (item: HomeContentItem) => {
+        try {
+          if (item.type === 'relato' || item.type === 'microcuento') {
+            if (!item.slug) return null
             
-            enrichedRelatos.push(enrichedItem)
-          }
-        } else if (item.type === 'microcuento') {
-          const sanityData = await getMicrocuentoBySlug(item.slug)
-          
-          if (sanityData) {
-            const enrichedItem: CardProps = {
-              title: item.title || sanityData.title,
-              description: item.description || sanityData.description || sanityData.summary || '',
-              imgSrc: item.imgSrc || sanityData.image || '',
-              href: `/${item.type}/${item.slug}`,
-              authorImgSrc: item.authorImgSrc || '',
-              authorName: item.authorName || sanityData.author || '',
-              authorHref: '', // Los microcuentos no tienen autor referenciado
-              bgColor: item.bgColor || sanityData.bgColor || '#efa106',
-              tags: item.tags || sanityData.tags || [],
-              publishedAt: item.publishedAt || sanityData.publishedAt || '',
-            }
+            const sanityData = await getRelatoBySlug(item.slug)
             
-            enrichedRelatos.push(enrichedItem)
+            if (sanityData) {
+              const enrichedItem: CardProps = {
+                title: item.title || sanityData.title,
+                description: item.description || sanityData.summary || '',
+                imgSrc: item.imgSrc || sanityData.image || '',
+                href: `/${item.type}/${item.slug}`,
+                authorImgSrc: item.authorImgSrc || sanityData.author?.avatar || '',
+                authorName: item.authorName || sanityData.author?.name || '',
+                authorHref: `/autor/${sanityData.author?.slug?.current}` || '',
+                bgColor: item.bgColor || sanityData.bgColor || '#efa106',
+                tags: item.tags || sanityData.tags || [],
+                publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
+              }
+              
+              return enrichedItem
+            }
+            return null
+          } else if (item.type === 'meme') {
+            // Para memes, usar los datos directamente del JSON
+            return item
           }
+          return null
+        } catch (error) {
+          console.error(`Error obteniendo datos para ${item.slug || item.type}:`, error)
+          return null
         }
-      } catch (error) {
-        console.error(`Error obteniendo datos para ${item.slug}:`, error)
-        // Continuar con el siguiente elemento sin fallar
-      }
-    }
+      })
+    )
+
+    // Filtrar items nulos
+    const validItems = processedItems.filter(item => item !== null)
 
     return NextResponse.json({
       meta: homeData.meta,
       content: homeData.content,
-      relatos: enrichedRelatos
+      items: validItems
     })
 
   } catch (error) {

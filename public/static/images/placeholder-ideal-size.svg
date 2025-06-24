@@ -1,0 +1,44 @@
+<svg width="600" height="400" viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Fondo -->
+  <rect width="600" height="400" fill="#f3f4f6"/>
+  
+  <!-- Borde principal -->
+  <rect x="10" y="10" width="580" height="380" fill="none" stroke="#d1d5db" stroke-width="2"/>
+  
+  <!-- Título -->
+  <text x="300" y="80" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#374151">TAMAÑO IDEAL</text>
+  
+  <!-- Dimensiones recomendadas -->
+  <text x="300" y="110" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#374151">600 x 400 px (3:2)</text>
+  <text x="300" y="135" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#6b7280">Máximo: 800 x 600 px</text>
+  <text x="300" y="155" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#6b7280">Mínimo: 400 x 300 px</text>
+  
+  <!-- Líneas de guía -->
+  <line x1="300" y1="180" x2="300" y2="350" stroke="#9ca3af" stroke-width="1" stroke-dasharray="5,5"/>
+  <line x1="50" y1="200" x2="550" y2="200" stroke="#9ca3af" stroke-width="1" stroke-dasharray="5,5"/>
+  
+  <!-- Proporciones recomendadas -->
+  <text x="100" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#6b7280">Vertical: 4:5</text>
+  <text x="300" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#6b7280">Cuadrada: 1:1</text>
+  <text x="500" y="250" font-family="Arial, sans-serif" font-size="12" text-anchor="middle" fill="#6b7280">Horizontal: 16:9</text>
+  
+  <!-- Ejemplos visuales de proporciones -->
+  <!-- Vertical 4:5 -->
+  <rect x="50" y="270" width="80" height="100" fill="none" stroke="#3b82f6" stroke-width="2"/>
+  <text x="90" y="385" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#3b82f6">4:5</text>
+  
+  <!-- Cuadrada 1:1 -->
+  <rect x="160" y="270" width="100" height="100" fill="none" stroke="#10b981" stroke-width="2"/>
+  <text x="210" y="385" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#10b981">1:1</text>
+  
+  <!-- Horizontal 16:9 -->
+  <rect x="280" y="270" width="120" height="67.5" fill="none" stroke="#f59e0b" stroke-width="2"/>
+  <text x="340" y="355" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#f59e0b">16:9</text>
+  
+  <!-- Horizontal 3:2 (ideal) -->
+  <rect x="420" y="270" width="120" height="80" fill="none" stroke="#8b5cf6" stroke-width="3"/>
+  <text x="480" y="365" font-family="Arial, sans-serif" font-size="10" text-anchor="middle" fill="#8b5cf6" font-weight="bold">3:2 (IDEAL)</text>
+  
+  <!-- Nota adicional -->
+  <text x="300" y="400" font-family="Arial, sans-serif" font-size="11" text-anchor="middle" fill="#9ca3af">Para mejor visualización en el layout masonry</text>
+</svg> 
