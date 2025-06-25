@@ -174,7 +174,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
 }
 
 // Componente para renderizar el card apropiado según el tipo
-function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index: number }) {
+function RenderCard({ item, index, language }: { item: CardProps | HomeContentItem, index: number, language: string }) {
   const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
   const isQuote = 'quote' in item && 'type' in item && item.type === 'quote';
   
@@ -204,6 +204,7 @@ function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index:
         author={quoteItem.author}
         bgColor={quoteItem.bgColor}
         href={quoteItem.href}
+        language={language}
       />
     );
   }
@@ -317,7 +318,7 @@ export default async function Page({ searchParams }: PageProps) {
             <div className="columns-1 gap-4 space-y-4">
               {masonryItems.map((item, index) => (
                 <div key={`item-${index}`}>
-                  <RenderCard item={item} index={index} />
+                  <RenderCard item={item} index={index} language={language} />
                 </div>
               ))}
             </div>
@@ -327,7 +328,7 @@ export default async function Page({ searchParams }: PageProps) {
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {masonryItems.map((item, index) => (
               <div key={`item-${index}`} className="h-full">
-                <RenderCard item={item} index={index} />
+                <RenderCard item={item} index={index} language={language} />
               </div>
             ))}
           </div>
