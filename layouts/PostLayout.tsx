@@ -3,6 +3,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
+import ShareIcons from '@/components/ShareIcons'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -15,6 +16,7 @@ interface PostLayoutProps {
     bgColor: string
     tags?: string[]
     publishedAt?: string
+    slug?: string
   }
   next?: { title: string; slug: { current: string } }
   prev?: { title: string; slug: { current: string } }
@@ -22,7 +24,7 @@ interface PostLayoutProps {
 }
 
 export default function JsonPostLayout({ content, next, prev, children }: PostLayoutProps) {
-  const { title, author, description, image, bgColor, tags, publishedAt } = content
+  const { title, author, description, image, bgColor, tags, publishedAt, slug } = content
 
   // Formatear la fecha
   const formatDate = (dateString: string) => {
@@ -61,16 +63,27 @@ export default function JsonPostLayout({ content, next, prev, children }: PostLa
                       {formatDate(publishedAt)}
                     </p>
                   )}
+                  
+                  {/* Botones de compartir debajo de la fecha */}
+                  {slug && (
+                    <div className="pt-4">
+                      <ShareIcons 
+                        title={title} 
+                        slug={slug} 
+                        className="flex flex-col items-center"
+                      />
+                    </div>
+                  )}
                 </div>
               )}
               
-              {/* Imagen PNG transparente centrada */}
+              {/* Imagen destacada sin restricciones de tamaño */}
               {image && (
                 <div className="mt-6 mb-6 flex justify-center">
                   <img
                     src={image}
                     alt={title}
-                    className="max-w-full max-h-64 object-contain"
+                    className="max-w-full h-auto"
                   />
                 </div>
               )}
@@ -83,6 +96,17 @@ export default function JsonPostLayout({ content, next, prev, children }: PostLa
 
             {/* Footer */}
             <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
+              {/* Botones de compartir al final del post */}
+              {slug && (
+                <div className="mb-8">
+                  <ShareIcons 
+                    title={title} 
+                    slug={slug} 
+                    className="flex flex-col items-center"
+                  />
+                </div>
+              )}
+
               {/* Autor */}
               <div className="flex items-center gap-3 mb-6">
                 <AutoAvatar 

@@ -103,7 +103,8 @@ export default async function PostPage({ params, searchParams }: PageProps) {
         image: post.image,
         bgColor: post.bgColor || '#E5F3FF',
         tags: post.tags,
-        publishedAt: post.publishedAt
+        publishedAt: post.publishedAt,
+        slug: post.slug
       }}
     >
       <div dangerouslySetInnerHTML={{ __html: post.content }} />
