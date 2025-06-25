@@ -87,21 +87,8 @@ import SimpleMemeItem from '@/components/SimpleMemeItem'
 import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
 import FeaturedStoryCard from '@/components/cards/FeaturedStoryCard'
 import QuoteCard from '@/components/cards/QuoteCard'
-import HoroscopoLiterario from '@/components/HoroscopoLiterario'
 
-// Función para obtener el horóscopo literario
-async function getHoroscopoLiterario() {
-  try {
-    const filePath = path.join(process.cwd(), 'data', 'horoscopo-demo.json')
-    if (!fs.existsSync(filePath)) return null
-    
-    const fileContent = fs.readFileSync(filePath, 'utf-8')
-    return JSON.parse(fileContent)
-  } catch (error) {
-    console.error('Error cargando horóscopo literario:', error)
-    return null
-  }
-}
+
 
 // Función para obtener contenido del home directamente
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
@@ -260,7 +247,6 @@ export default async function Page({ searchParams }: PageProps) {
   
   // Obtener datos desde la nueva API
   const homeContent = await getHomeContent(language);
-  const horoscopoData = await getHoroscopoLiterario();
   const allRelatos = await getAllRelatosForChronological();
   const totalRelatos = allRelatos.length;
   const siteInfo = await getSiteBySlug('transtextos');
@@ -332,34 +318,50 @@ export default async function Page({ searchParams }: PageProps) {
               </div>
             ))}
           </div>
-          
-          {/* Horóscopo Literario - Después de los cards */}
-          {horoscopoData && (
-            <div className="mt-12">
-              <HoroscopoLiterario
-                fecha={horoscopoData.fecha}
-                signoDestacado={horoscopoData.signoDestacado}
-                autorDestacado={horoscopoData.autorDestacado}
-                efemerides={horoscopoData.efemerides}
-                carta={horoscopoData.carta}
-                signos={horoscopoData.signos}
-              />
-            </div>
-          )}
+
         </div>
       </SectionContainer>
 
       <SectionContainer>
-        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 flex items-center gap-2">
-            {siteInfo?.title || 'Transtextos'}
-            <Rss className="w-7 h-7" style={{ color: '#f26522' }} />
-          </h1>
+        {/* Título con líneas decorativas */}
+        <div className="space-y-2 pt-12 pb-8 md:space-y-5">
+          <div className="flex items-center justify-center gap-6">
+            {/* Línea doble izquierda */}
+            <div className="flex-1 flex items-center justify-end">
+              <div className="w-full max-w-xs">
+                <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                <div className="border-t border-gray-900 dark:border-gray-50"></div>
+              </div>
+            </div>
+            
+            {/* Título central */}
+            <div className="text-center">
+              <h1 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-4xl sm:leading-9 md:text-6xl md:leading-12 whitespace-nowrap">
+                {siteInfo?.title || 'Transtextos'}
+              </h1>
+              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium tracking-wide uppercase mt-1">
+                Feed Narrativa
+              </p>
+            </div>
+            
+            {/* Línea doble derecha con ícono RSS */}
+            <div className="flex-1 flex items-center justify-start gap-4">
+              <div className="w-full max-w-xs">
+                <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                <div className="border-t border-gray-900 dark:border-gray-50"></div>
+              </div>
+              <Link href="/transtextos" className="flex-shrink-0 hover:scale-110 transition-transform">
+                <Rss className="w-8 h-8" style={{ color: '#f26522' }} />
+              </Link>
+            </div>
+          </div>
         </div>
-        <div className="container">
+        
+        {/* Contenido del feed con fondo blanco */}
+        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-12">
           <ChronologicalView items={latestTranstextos} itemsPerPage={10} currentPage={currentPage} />
-          <div className="mt-8 flex justify-center">
-            <Link href="/transtextos" className="inline-block px-4 py-2 rounded bg-black text-white hover:bg-gray-800 transition-colors">
+          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-center">
+            <Link href="/transtextos" className="inline-block px-6 py-3 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors font-medium">
               Ver todos
             </Link>
           </div>
