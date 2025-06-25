@@ -307,9 +307,9 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
 
           {/* Grid en tablet/desktop (mantiene orden visual) */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
             {masonryItems.map((item, index) => (
-              <div key={`item-${index}`} className="flex">
+              <div key={`item-${index}`} className="h-full">
                 <RenderCard item={item} index={index} />
               </div>
             ))}

@@ -2,7 +2,7 @@
 
 import Image from './Image'
 import Link from './Link'
-import { ImageIcon, Download, ShoppingCart, Hash, Sparkles, Package } from 'lucide-react'
+import { ImageIcon, Download, ShoppingCart, Hash, Sparkles, Package, Camera } from 'lucide-react'
 import { useState } from 'react'
 
 interface SimpleMemeItemProps {
@@ -111,7 +111,7 @@ export default function SimpleMemeItem({
 
   // Contenido de la imagen
   const imageContent = (
-    <div className="overflow-hidden rounded-lg relative">
+    <div className={`overflow-hidden rounded-lg relative ${overlayText ? 'h-full' : ''}`}>
       {imageError ? (
         <div className="w-full h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-lg">
           <div className="text-center text-gray-500 dark:text-gray-400">
@@ -125,7 +125,7 @@ export default function SimpleMemeItem({
             <img
               src={displayImage}
               alt={title || overlayText || ''}
-              className={overlayText ? "w-full h-auto min-h-[280px] md:min-h-[320px] object-cover" : getImageClasses()}
+              className={overlayText ? "w-full h-full object-cover" : getImageClasses()}
               onLoad={handleImageLoad}
               onError={handleImageError}
               style={{ display: 'block' }}
@@ -134,7 +134,7 @@ export default function SimpleMemeItem({
             <Image
               src={displayImage}
               alt={title || overlayText || ''}
-              className={overlayText ? "w-full h-auto min-h-[280px] md:min-h-[320px] object-cover" : getImageClasses()}
+              className={overlayText ? "w-full h-full object-cover" : getImageClasses()}
               width={600}
               height={400}
               onLoad={handleImageLoad}
@@ -148,19 +148,13 @@ export default function SimpleMemeItem({
               {/* Overlay oscuro degradado */}
               <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
               
-              {/* Tags en esquina superior izquierda */}
-              {tags && tags.length > 0 && (
-                <div className="absolute top-4 left-4 z-10 flex gap-2">
-                  {tags.map((tag) => (
-                    <span
-                      key={tag}
-                      className="px-2 py-1 text-xs font-medium bg-black/40 text-white rounded-full backdrop-blur-sm"
-                    >
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
+              {/* Badge de tipo en esquina superior derecha */}
+              <div className="absolute top-4 right-4 z-10">
+                <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
+                  <Camera className="w-3 h-3" />
+                  Meme
+                </span>
+              </div>
               
               {/* Texto del overlay centrado en la parte inferior */}
               <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
@@ -179,8 +173,8 @@ export default function SimpleMemeItem({
   if (overlayText) {
     if (href) {
       return (
-        <div className="group block w-full break-inside-avoid mb-4 hover:scale-105 transition-transform duration-200">
-          <Link href={href} className="block">
+        <div className="group block w-full h-full break-inside-avoid mb-4 hover:scale-105 transition-transform duration-200">
+          <Link href={href} className="block h-full">
             {imageContent}
           </Link>
         </div>
@@ -188,7 +182,7 @@ export default function SimpleMemeItem({
     }
     
     return (
-      <div className="group block w-full break-inside-avoid mb-4">
+      <div className="group block w-full h-full break-inside-avoid mb-4">
         {imageContent}
       </div>
     )
