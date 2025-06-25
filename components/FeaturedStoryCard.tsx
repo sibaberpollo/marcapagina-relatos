@@ -21,6 +21,7 @@ interface FeaturedStoryCardProps {
   bgColor?: string
   series?: string
   seriesOrder?: number
+  language?: string
 }
 
 export default function FeaturedStoryCard({
@@ -34,26 +35,34 @@ export default function FeaturedStoryCard({
   image_portada,
   bgColor,
   series,
-  seriesOrder
+  seriesOrder,
+  language = 'es'
 }: FeaturedStoryCardProps) {
   const displayImage = image_portada || image
   const href = `/relato/${slug}`
+  
+  const getBadgeText = () => {
+    if (series) {
+      return `${series} ${seriesOrder ? `#${seriesOrder}` : ''}`
+    }
+    return language === 'en' ? 'Short story' : 'Relato'
+  }
 
   return (
     <div className="break-inside-avoid mb-6">
       <article className="group relative overflow-hidden rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 shadow-lg hover:shadow-xl transition-all duration-300">
         
-        {/* Badge de "Relato" */}
-        <div className="absolute top-4 left-4 z-20">
-          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-600 text-white shadow-lg">
+        {/* Badge de tipo en esquina superior derecha */}
+        <div className="absolute top-4 right-4 z-20">
+          <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
             <BookOpen className="w-3 h-3" />
-            {series ? `${series} ${seriesOrder ? `#${seriesOrder}` : ''}` : 'Relato'}
+            {getBadgeText()}
           </span>
         </div>
 
         {/* Imagen destacada */}
         {displayImage && (
-          <div className="relative h-48 md:h-56 overflow-hidden">
+          <div className="relative h-56 md:h-64 overflow-hidden">
             {/* Color de fondo de Sanity */}
             {bgColor && (
               <div 
