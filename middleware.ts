@@ -35,13 +35,26 @@ export function middleware(request: NextRequest) {
 
   // Handle multilingual routes dynamically
   const supportedLocales = ['en']; // Add more locales here (es is default)
-  const multilingualPages = ['memes-merch-descargas', 'contacto', 'acerca-de'];
+  const multilingualPages = ['memes-merch-descargas', 'contacto', 'acerca-de', 'posts'];
+  const multilingualPagesWithDynamicRoutes = ['post']; // For /post/[slug] type routes
 
   // Check for multilingual routes
   for (const locale of supportedLocales) {
     for (const page of multilingualPages) {
       if (pathname.startsWith(`/${locale}/${page}`)) {
         const response = NextResponse.rewrite(new URL(`/${page}`, request.url))
+        response.headers.set('x-pathname', pathname)
+        response.headers.set('x-locale', locale)
+        return response
+      }
+    }
+    
+    // Check for dynamic routes like /en/post/[slug]
+    for (const page of multilingualPagesWithDynamicRoutes) {
+      if (pathname.startsWith(`/${locale}/${page}/`)) {
+        // Extract the dynamic part (slug)
+        const dynamicPart = pathname.replace(`/${locale}/${page}/`, '')
+        const response = NextResponse.rewrite(new URL(`/${page}/${dynamicPart}?lang=${locale}`, request.url))
         response.headers.set('x-pathname', pathname)
         response.headers.set('x-locale', locale)
         return response
