@@ -79,6 +79,22 @@ import { getRelatoBySlug } from '../lib/sanity'
 
 import SimpleMemeItem from '@/components/SimpleMemeItem'
 import MasonryFeaturedCard from '@/components/MasonryFeaturedCard'
+import FeaturedStoryCard from '@/components/FeaturedStoryCard'
+import HoroscopoLiterario from '@/components/HoroscopoLiterario'
+
+// Función para obtener el horóscopo literario
+async function getHoroscopoLiterario() {
+  try {
+    const filePath = path.join(process.cwd(), 'data', 'horoscopo-demo.json')
+    if (!fs.existsSync(filePath)) return null
+    
+    const fileContent = fs.readFileSync(filePath, 'utf-8')
+    return JSON.parse(fileContent)
+  } catch (error) {
+    console.error('Error cargando horóscopo literario:', error)
+    return null
+  }
+}
 
 // Función para obtener contenido del home directamente
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
@@ -162,6 +178,7 @@ export default async function Page({ searchParams }: PageProps) {
   
   // Obtener datos desde la nueva API
   const homeContent = await getHomeContent(language);
+  const horoscopoData = await getHoroscopoLiterario();
   const allRelatos = await getAllRelatosForChronological();
   const totalRelatos = allRelatos.length;
   const siteInfo = await getSiteBySlug('transtextos');
@@ -212,7 +229,7 @@ export default async function Page({ searchParams }: PageProps) {
         {/* Botones de cambio de vista */}
         <ViewToggle total={totalRelatos} />
 
-        {/* Layout híbrido: masonry en móvil, grid en desktop para mantener orden */}
+        {/* Feed principal con jerarquía visual clara */}
         <div className="container py-6">
           {/* Masonry solo en móvil (respeta orden) */}
           <div className="md:hidden">
@@ -231,19 +248,21 @@ export default async function Page({ searchParams }: PageProps) {
                         href={(item as HomeContentItem).href}
                         type={(item as HomeContentItem).type as 'meme'}
                         tags={item.tags}
+                        context="Contenido visual relacionado con literatura y cultura"
+                        category="humor"
                       />
                     ) : (
-                      <MasonryFeaturedCard
+                      <FeaturedStoryCard
+                        slug={(item as CardProps).href.split('/').pop()!}
+                        date={(item as CardProps).publishedAt}
                         title={(item as CardProps).title}
-                        description={(item as CardProps).description}
-                        imgSrc={(item as CardProps).imgSrc}
-                        href={(item as CardProps).href}
-                        authorImgSrc={(item as CardProps).authorImgSrc}
-                        authorName={(item as CardProps).authorName}
-                        authorHref={(item as CardProps).authorHref}
-                        bgColor={(item as CardProps).bgColor}
+                        summary={(item as CardProps).description}
                         tags={(item as CardProps).tags}
-                        publishedAt={(item as CardProps).publishedAt}
+                        author={{
+                          name: (item as CardProps).authorName
+                        }}
+                        image={(item as CardProps).imgSrc}
+                        bgColor={(item as CardProps).bgColor}
                       />
                     )}
                   </div>
@@ -268,34 +287,43 @@ export default async function Page({ searchParams }: PageProps) {
                       href={(item as HomeContentItem).href}
                       type={(item as HomeContentItem).type as 'meme'}
                       tags={item.tags}
+                      context="Contenido visual relacionado con literatura y cultura"
+                      category="humor"
                     />
                   ) : (
-                    <MasonryFeaturedCard
+                    <FeaturedStoryCard
+                      slug={(item as CardProps).href.split('/').pop()!}
+                      date={(item as CardProps).publishedAt}
                       title={(item as CardProps).title}
-                      description={(item as CardProps).description}
-                      imgSrc={(item as CardProps).imgSrc}
-                      href={(item as CardProps).href}
-                      authorImgSrc={(item as CardProps).authorImgSrc}
-                      authorName={(item as CardProps).authorName}
-                      authorHref={(item as CardProps).authorHref}
-                      bgColor={(item as CardProps).bgColor}
+                      summary={(item as CardProps).description}
                       tags={(item as CardProps).tags}
-                      publishedAt={(item as CardProps).publishedAt}
+                      author={{
+                        name: (item as CardProps).authorName
+                      }}
+                      image={(item as CardProps).imgSrc}
+                      bgColor={(item as CardProps).bgColor}
                     />
                   )}
                 </div>
               )
-            })}
-          </div>
+              })}
+            </div>
+          
+          {/* Horóscopo Literario - Después de los cards */}
+          {horoscopoData && (
+            <div className="mt-12">
+              <HoroscopoLiterario
+                fecha={horoscopoData.fecha}
+                signoDestacado={horoscopoData.signoDestacado}
+                autorDestacado={horoscopoData.autorDestacado}
+                efemerides={horoscopoData.efemerides}
+                carta={horoscopoData.carta}
+                signos={horoscopoData.signos}
+              />
+            </div>
+          )}
         </div>
       </SectionContainer>
-
-      {/* Banner de publicación a ancho completo */}
-      <div className="w-full bg-primary-500 dark:bg-primary-400">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-12 flex justify-center">
-          <PublishBanner />
-        </div>
-      </div>
 
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
@@ -313,6 +341,13 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </div>
       </SectionContainer>
+
+      {/* Banner de publicación en el footer */}
+      <div className="w-full bg-primary-500 dark:bg-primary-400">
+        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-12 flex justify-center">
+          <PublishBanner />
+        </div>
+      </div>
 
     </>
   );

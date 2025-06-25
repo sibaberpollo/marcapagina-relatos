@@ -2,7 +2,7 @@
 
 import Image from './Image'
 import Link from './Link'
-import { ImageIcon, Download, ShoppingCart } from 'lucide-react'
+import { ImageIcon, Download, ShoppingCart, Hash, Sparkles, Package } from 'lucide-react'
 import { useState } from 'react'
 
 interface SimpleMemeItemProps {
@@ -11,13 +11,52 @@ interface SimpleMemeItemProps {
   image: string
   image_portada?: string
   href?: string
-  type?: 'meme' | 'descarga' | 'merch'
+  type?: 'meme' | 'descarga' | 'merch' | 'post'
   tags?: string[]
+  context?: string // Por qué está en el feed
+  category?: 'humor' | 'resource' | 'product' | 'announcement'
 }
 
-export default function SimpleMemeItem({ title, description, image, image_portada, href, type = 'meme', tags }: SimpleMemeItemProps) {
+export default function SimpleMemeItem({ 
+  title, 
+  description, 
+  image, 
+  image_portada, 
+  href, 
+  type = 'meme', 
+  tags, 
+  context, 
+  category 
+}: SimpleMemeItemProps) {
   const [imageRatio, setImageRatio] = useState<number | null>(null)
   const [imageError, setImageError] = useState(false)
+
+  // Configuración de categorías con colores y etiquetas
+  const categoryConfig = {
+    humor: { 
+      icon: Sparkles, 
+      label: 'Humor Literario', 
+      color: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900 dark:text-yellow-200' 
+    },
+    resource: { 
+      icon: Hash, 
+      label: 'Recurso', 
+      color: 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200' 
+    },
+    product: { 
+      icon: Package, 
+      label: 'Producto', 
+      color: 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200' 
+    },
+    announcement: { 
+      icon: ImageIcon, 
+      label: 'Anuncio', 
+      color: 'bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200' 
+    }
+  }
+
+  const config = category ? categoryConfig[category] : categoryConfig.humor
+  const IconComponent = config.icon
 
   const icon = type === 'meme' ? (
     <ImageIcon className="w-4 h-4" />
@@ -25,6 +64,8 @@ export default function SimpleMemeItem({ title, description, image, image_portad
     <Download className="w-4 h-4" />
   ) : type === 'merch' ? (
     <ShoppingCart className="w-4 h-4" />
+  ) : type === 'post' ? (
+    <Hash className="w-4 h-4" />
   ) : (
     <ImageIcon className="w-4 h-4" />
   )
@@ -120,19 +161,53 @@ export default function SimpleMemeItem({ title, description, image, image_portad
 
   // Si hay título, mostrar con borde y metadatos
   const contentWithBorder = (
-    <div className="group block w-full break-inside-avoid mb-4 border-2 border-black rounded-lg p-3 hover:scale-105 transition-transform duration-200">
-      {imageContent}
+    <div className="group block w-full break-inside-avoid mb-4 border border-gray-300 dark:border-gray-700 rounded-lg bg-white dark:bg-gray-900 shadow-sm hover:shadow-md transition-all duration-200 overflow-hidden">
       
-      <div className="mt-3 space-y-1">
-        <h3 className="flex items-center gap-1 font-semibold text-sm">
+      {/* Badge de categoría superpuesto */}
+      {category && (
+        <div className="absolute top-3 left-3 z-10">
+          <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${config.color}`}>
+            <IconComponent className="w-3 h-3" />
+            {config.label}
+          </span>
+        </div>
+      )}
+      
+      <div className="relative">
+        {imageContent}
+      </div>
+      
+      <div className="p-3 space-y-2">
+        <h3 className="flex items-center gap-1 font-semibold text-sm text-gray-900 dark:text-white">
           {icon}
           {title}
         </h3>
+        
         {description && (
-          <p className="text-xs text-muted-foreground line-clamp-2">
+          <p className="text-xs text-gray-600 dark:text-gray-400 leading-relaxed line-clamp-2">
             {description}
           </p>
         )}
+        
+        {/* Contexto - por qué está en el feed */}
+        {context && (
+          <div className="pt-2 border-t border-gray-200 dark:border-gray-700">
+            <p className="text-xs text-gray-500 dark:text-gray-500 italic flex items-start gap-1">
+              <span className="text-blue-500">💬</span>
+              {context}
+            </p>
+          </div>
+        )}
+        
+        {/* Footer con tipo de contenido */}
+        <div className="pt-1">
+          <p className="text-xs text-gray-400 dark:text-gray-600 uppercase tracking-wide font-medium">
+            {type === 'meme' && 'Contenido visual'}
+            {type === 'descarga' && 'Descarga'}
+            {type === 'merch' && 'Producto editorial'}
+            {type === 'post' && 'Post del equipo'}
+          </p>
+        </div>
       </div>
     </div>
   )

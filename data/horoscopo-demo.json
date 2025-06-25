@@ -1,0 +1,107 @@
+{
+  "fecha": "Julio 2024",
+  "signoDestacado": {
+    "emoji": "🦀",
+    "nombre": "Cáncer",
+    "fechas": "21 junio – 22 julio",
+    "frase": "Un hogar es una cicatriz bien acomodada."
+  },
+  "autorDestacado": {
+    "nombre": "Franz Kafka",
+    "descripcion": "Frágil, nocturno, con traumas heredados y la pulsión inagotable de escribir sin que nadie lo lea. El cáncer arquetípico: todo le duele, pero lo convierte en literatura. \"Soy literatura o nada\", dijo. Murió pidiendo que quemaran todo lo que había escrito. Nadie le hizo caso."
+  },
+  "efemerides": [
+    {
+      "fecha": "3 de julio de 1883",
+      "evento": "Nace Franz Kafka. Lo celebra escribiendo cartas imposibles a su padre."
+    },
+    {
+      "fecha": "10 de julio de 1871",
+      "evento": "Nace Marcel Proust. Aún no encuentra la magdalena perfecta."
+    },
+    {
+      "fecha": "18 de julio de 1817",
+      "evento": "Muere Jane Austen. La ironía sobrevivió. Su virginidad, también."
+    }
+  ],
+  "carta": {
+    "nombre": "El Colgado",
+    "numero": "XII",
+    "descripcion": "El sacrificio voluntario, la pausa forzada, el ver las cosas desde otro ángulo. Como ese personaje secundario que cambia la historia sin quererlo.",
+    "frase": "No confundas la melancolía con la lucidez. A veces, el personaje que más llora no es el protagonista."
+  },
+  "signos": [
+    {
+      "emoji": "♈",
+      "nombre": "Aries",
+      "fechas": "21 mar – 19 abr",
+      "prediccion": "Semana tipo Rayuela, pero sin saber en qué capítulo estás ni quién te observa desde la otra acera. Cuidado con los ascensores emocionales: pueden devolverte al inicio."
+    },
+    {
+      "emoji": "♉",
+      "nombre": "Tauro",
+      "fechas": "20 abr – 20 may",
+      "prediccion": "Tu terquedad alcanza niveles quijotescos. Solo que esta vez los molinos tienen WiFi y Sancho está viendo series. Replantéate ese mensaje antes de enviarlo."
+    },
+    {
+      "emoji": "♊",
+      "nombre": "Géminis",
+      "fechas": "21 may – 20 jun",
+      "prediccion": "Demasiadas versiones de ti. Esta semana, elige un solo narrador y dale voz. Tus amigos ya creen que estás atrapado en un taller eterno con Ricardo Piglia."
+    },
+    {
+      "emoji": "♋",
+      "nombre": "Cáncer",
+      "fechas": "21 jun – 22 jul",
+      "prediccion": "Tu nostalgia podría protagonizar un cuento de Benedetti, pero con delivery en vez de cartas. Llama a alguien, aunque solo sea para hablar del clima (o del fin del mundo)."
+    },
+    {
+      "emoji": "♌",
+      "nombre": "Leo",
+      "fechas": "23 jul – 22 ago",
+      "prediccion": "Te sientes como el protagonista de una distopía: todo gira en torno a ti, pero nadie te escucha. Tal vez sea hora de cerrar el diario íntimo y abrir una ventana. Literalmente."
+    },
+    {
+      "emoji": "♍",
+      "nombre": "Virgo",
+      "fechas": "23 ago – 22 sep",
+      "prediccion": "Tu obsesión por el detalle cruzó la línea: estás editando mentalmente las conversaciones ajenas. Un Cortázar interior quiere corregir la realidad. Déjalo, pero solo hasta el martes."
+    },
+    {
+      "emoji": "♎",
+      "nombre": "Libra",
+      "fechas": "23 sep – 22 oct",
+      "prediccion": "Vas a encontrar belleza en algo completamente asimétrico, como un verso cojo o un perro callejero. Esta semana no es para balancearse, sino para desbalancearse con estilo."
+    },
+    {
+      "emoji": "♏",
+      "nombre": "Escorpio",
+      "fechas": "23 oct – 21 nov",
+      "prediccion": "Tu intensidad podría arruinar hasta una viñeta de Mafalda. Aprende a leer entre líneas... y a no subrayarlas todas. No todo lo que duele es tragedia."
+    },
+    {
+      "emoji": "♐",
+      "nombre": "Sagitario",
+      "fechas": "22 nov – 21 dic",
+      "prediccion": "Estás tentado a empezar una novela sin tener final. Hazlo. Solo recuerda que hasta Bolaño borraba. El problema no es no saber adónde vas, sino no disfrutar el viaje."
+    },
+    {
+      "emoji": "♑",
+      "nombre": "Capricornio",
+      "fechas": "22 dic – 19 ene",
+      "prediccion": "Tu pragmatismo choca con algo inexplicablemente poético. Como encontrar una carta de amor en el contrato de alquiler. Déjate sorprender por lo absurdo."
+    },
+    {
+      "emoji": "♒",
+      "nombre": "Acuario",
+      "fechas": "20 ene – 18 feb",
+      "prediccion": "Tus ideas son tan adelantadas que ni tú las entiendes. Como un Borges escribiendo ciencia ficción en 1940. Ten paciencia: el mundo te va a alcanzar, pero no esta semana."
+    },
+    {
+      "emoji": "♓",
+      "nombre": "Piscis",
+      "fechas": "19 feb – 20 mar",
+      "prediccion": "Navega entre la realidad y la fantasía como García Márquez escribiendo una lista de supermercado. Todo es mágico cuando sabes verlo. Incluidas las facturas."
+    }
+  ]
+} 
