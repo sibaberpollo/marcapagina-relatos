@@ -60,6 +60,14 @@ export function middleware(request: NextRequest) {
         return response
       }
     }
+    
+    // Special handling for home page in different languages
+    if (pathname === `/${locale}`) {
+      const response = NextResponse.rewrite(new URL('/', request.url))
+      response.headers.set('x-pathname', pathname)
+      response.headers.set('x-locale', locale)
+      return response
+    }
   }
 
   // Comprueba si la URL coincide con el patrón de URL antiguo: /[author]/relato/[slug]

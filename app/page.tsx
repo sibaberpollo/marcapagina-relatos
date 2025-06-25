@@ -74,6 +74,7 @@ function processMarkdown(text: string): string {
 // Importar las dependencias necesarias para leer archivos
 import fs from 'fs'
 import path from 'path'
+import { headers } from 'next/headers'
 import { getRelatoBySlug } from '../lib/sanity'
 
 import SimpleMemeItem from '@/components/SimpleMemeItem'
@@ -153,9 +154,11 @@ interface PageProps {
 }
 
 export default async function Page({ searchParams }: PageProps) {
-  // Leer idioma desde URL, fallback a 'es'
+  // Leer idioma desde headers del middleware, fallback a searchParams y luego a 'es'
+  const headersList = await headers()
+  const langFromHeader = headersList.get('x-locale')
   const resolvedSearchParams = await searchParams;
-  const language = (resolvedSearchParams.lang as string) || 'es';
+  const language = langFromHeader || (resolvedSearchParams.lang as string) || 'es';
   
   // Obtener datos desde la nueva API
   const homeContent = await getHomeContent(language);
