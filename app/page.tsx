@@ -25,11 +25,13 @@ interface CardProps {
   bgColor: string;
   tags: string[];
   publishedAt: string;
+  cardType?: 'featured' | 'story'; // Nuevo campo para tipo de card
 }
 
 interface HomeContentItem {
   slug?: string;
   type: 'relato' | 'microcuento' | 'meme';
+  cardType?: 'featured' | 'story'; // Nuevo campo para tipo de card
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string;
   description?: string;
@@ -133,6 +135,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
                 bgColor: item.bgColor || sanityData.bgColor || '#efa106',
                 tags: item.tags || sanityData.tags || [],
                 publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
+                cardType: item.cardType || 'featured', // Default a 'featured' para card original
               }
               
               return enrichedItem
@@ -163,6 +166,64 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
     console.error('Error obteniendo contenido del home:', error)
     return null
   }
+}
+
+// Componente para renderizar el card apropiado según el tipo
+function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index: number }) {
+  const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
+  
+  if (isMeme) {
+    return (
+      <SimpleMemeItem
+        title={item.title}
+        description={item.description}
+        image={item.image!}
+        image_portada={(item as HomeContentItem).image_portada}
+        href={(item as HomeContentItem).href}
+        type={(item as HomeContentItem).type as 'meme'}
+        tags={item.tags}
+        context="Contenido visual relacionado con literatura y cultura"
+        category="humor"
+      />
+    );
+  }
+
+  // Para relatos, usar el tipo de card especificado
+  const cardItem = item as CardProps;
+  const cardType = cardItem.cardType || 'featured';
+
+  if (cardType === 'story') {
+    return (
+      <FeaturedStoryCard
+        slug={cardItem.href.split('/').pop()!}
+        date={cardItem.publishedAt}
+        title={cardItem.title}
+        summary={cardItem.description}
+        tags={cardItem.tags}
+        author={{
+          name: cardItem.authorName
+        }}
+        image={cardItem.imgSrc}
+        bgColor={cardItem.bgColor}
+      />
+    );
+  }
+
+  // Default: usar FeaturedCard (card original)
+  return (
+    <MasonryFeaturedCard
+      title={cardItem.title}
+      description={cardItem.description}
+      imgSrc={cardItem.imgSrc}
+      href={cardItem.href}
+      authorImgSrc={cardItem.authorImgSrc}
+      authorName={cardItem.authorName}
+      authorHref={cardItem.authorHref}
+      bgColor={cardItem.bgColor}
+      tags={cardItem.tags}
+      publishedAt={cardItem.publishedAt}
+    />
+  );
 }
 
 interface PageProps {
@@ -234,80 +295,22 @@ export default async function Page({ searchParams }: PageProps) {
           {/* Masonry solo en móvil (respeta orden) */}
           <div className="md:hidden">
             <div className="columns-1 gap-4 space-y-4">
-              {masonryItems.map((item, index) => {
-                const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
-                
-                return (
-                  <div key={`${isMeme ? 'meme' : 'relato'}-${index}`}>
-                    {isMeme ? (
-                      <SimpleMemeItem
-                        title={item.title}
-                        description={item.description}
-                        image={item.image!}
-                        image_portada={(item as HomeContentItem).image_portada}
-                        href={(item as HomeContentItem).href}
-                        type={(item as HomeContentItem).type as 'meme'}
-                        tags={item.tags}
-                        context="Contenido visual relacionado con literatura y cultura"
-                        category="humor"
-                      />
-                    ) : (
-                      <FeaturedStoryCard
-                        slug={(item as CardProps).href.split('/').pop()!}
-                        date={(item as CardProps).publishedAt}
-                        title={(item as CardProps).title}
-                        summary={(item as CardProps).description}
-                        tags={(item as CardProps).tags}
-                        author={{
-                          name: (item as CardProps).authorName
-                        }}
-                        image={(item as CardProps).imgSrc}
-                        bgColor={(item as CardProps).bgColor}
-                      />
-                    )}
-                  </div>
-                )
-              })}
+              {masonryItems.map((item, index) => (
+                <div key={`item-${index}`}>
+                  <RenderCard item={item} index={index} />
+                </div>
+              ))}
             </div>
           </div>
 
           {/* Grid en tablet/desktop (mantiene orden visual) */}
           <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {masonryItems.map((item, index) => {
-              const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
-              
-              return (
-                <div key={`${isMeme ? 'meme' : 'relato'}-${index}`} className="flex">
-                  {isMeme ? (
-                    <SimpleMemeItem
-                      title={item.title}
-                      description={item.description}
-                      image={item.image!}
-                      image_portada={(item as HomeContentItem).image_portada}
-                      href={(item as HomeContentItem).href}
-                      type={(item as HomeContentItem).type as 'meme'}
-                      tags={item.tags}
-                      context="Contenido visual relacionado con literatura y cultura"
-                      category="humor"
-                    />
-                  ) : (
-                    <FeaturedStoryCard
-                      slug={(item as CardProps).href.split('/').pop()!}
-                      date={(item as CardProps).publishedAt}
-                      title={(item as CardProps).title}
-                      summary={(item as CardProps).description}
-                      tags={(item as CardProps).tags}
-                      author={{
-                        name: (item as CardProps).authorName
-                      }}
-                      image={(item as CardProps).imgSrc}
-                      bgColor={(item as CardProps).bgColor}
-                    />
-                  )}
-                </div>
-              )
-              })}
-            </div>
+            {masonryItems.map((item, index) => (
+              <div key={`item-${index}`} className="flex">
+                <RenderCard item={item} index={index} />
+              </div>
+            ))}
+          </div>
           
           {/* Horóscopo Literario - Después de los cards */}
           {horoscopoData && (

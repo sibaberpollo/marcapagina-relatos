@@ -5,21 +5,59 @@
     "lastUpdated": "2025-01-14"
   },
   "content": {
-    "title": "Read short stories and microfiction",
-    "description": "🤖 **MarcaPágina** is a webapp for reading short stories, microfiction, and contemporary fiction from any device. [We used to be a magazine,](/acerca-de/) now we're a platform to discover new literature, explore narrative [playlists](/playlist/) and participate in an active community around Spanish writing.\n\nToday you can access more than **[350 stories and microfictions](/cronologico/)** written by emerging authors from Latin America, selected with editorial criteria.\n\nAn important part of our catalog comes from the [Transtextos](/transtextos/) archive, a literary publication project recently migrated to MarcaPágina. We publish new stories every week. MarcaPágina works as a web application: you can read from your browser or install it as a PWA on your phone to take your reading wherever you want.\n\nWe are building the best space to read short literature on the internet. This is just the beginning."
+    "title": "Read short stories and flash fiction",
+    "description": "🤖 **MarcaPágina** is an artifact (Web app) for reading short stories, flash fiction and contemporary fiction from any device. [We used to be a magazine,](/acerca-de/) now we are a platform to discover new literature, explore narrative [playlists](/playlist/) and participate in an active community around writing in Spanish.\n\nToday you can access more than **[350 stories and micro-fictions](/cronologico/)** written by emerging authors from Latin America, selected with editorial criteria.\n\nAn important part of our catalog comes from the [Transtextos](/transtextos/) archive, a literary publishing project recently migrated to MarcaPágina. We have integrated its complete collection of stories and continue to expand it. We also launched a [playlists section](/playlist/) where music and literature dialogue: each list accompanies the tone of certain stories, curated directly by their authors.\n\nWe publish new stories every week. MarcaPágina works as a web application: you can read from your browser or install it as a PWA on your phone to take your readings wherever you want.\n\nWe are building the best space to read short literature on the internet. This is just the beginning."
   },
   "items": [
     {
       "slug": "los-dias",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
+    },
+    {
+      "slug": "los-chimichimitos", 
+      "type": "relato",
+      "cardType": "featured"
+    },
+    {
+      "type": "meme",
+      "title": "Los chapulines salvajes",
+      "description": "Regarding the hype of the series Sin querer queriendo on HBO, we take the opportunity to recommend the best novel by the author.",
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina-page-los-chapulines-salvajes_jsvcls.png",
+      "image_portada": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina.page-Ravensburger-Jack-Vettriano-Billy-Boys_lw5xoz.png",
+      "tags": ["meme", "fun"]
+    },
+    {
+      "slug": "el-hombre-del-canario-rojo",
+      "type": "relato",
+      "cardType": "featured"
+    },
+    {
+      "type": "meme",
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
+      "href": "/post/los-chapulines-salvajes",
+      "tags": ["image", "vertical"]
     },
     {
       "slug": "brisa-marina",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
+    },
+    {
+      "type": "meme", 
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750791347/edgar-allan-poe-edgar_palrek.gif",
+      "href": "/memes-merch-descargas",
+      "tags": ["meme", "fun"]
+    },
+    {
+      "slug": "treinta-minutos-o-menos",
+      "type": "relato",
+      "cardType": "story"
     },
     {
       "slug": "lluvia",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     }
   ]
 } 

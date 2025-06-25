@@ -11,11 +11,13 @@
   "items": [
     {
       "slug": "los-dias",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     },
     {
       "slug": "los-chimichimitos", 
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     },
     {
       "type": "meme",
@@ -27,7 +29,8 @@
     },
     {
       "slug": "el-hombre-del-canario-rojo",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     },
     {
       "type": "meme",
@@ -37,7 +40,8 @@
     },
     {
       "slug": "brisa-marina",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     },
     {
       "type": "meme", 
@@ -47,11 +51,13 @@
     },
     {
       "slug": "treinta-minutos-o-menos",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "story"
     },
     {
       "slug": "lluvia",
-      "type": "relato"
+      "type": "relato",
+      "cardType": "featured"
     }
   ]
 } 

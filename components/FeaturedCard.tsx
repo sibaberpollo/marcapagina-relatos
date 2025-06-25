@@ -4,6 +4,7 @@ import Image from './Image'
 import Link from './Link'
 import { getRelativeTime } from '@/lib/time'
 import { toVersal } from '@/lib/utils'
+import { BookOpen } from 'lucide-react'
 
 interface FeaturedCardProps {
   title: string
@@ -16,6 +17,7 @@ interface FeaturedCardProps {
   bgColor: string
   tags: string[]
   publishedAt: string
+  language?: string
 }
 
 export default function FeaturedCard({
@@ -28,10 +30,21 @@ export default function FeaturedCard({
   authorHref,
   bgColor,
   tags,
-  publishedAt
+  publishedAt,
+  language = 'es'
 }: FeaturedCardProps) {
   const relativeTime = getRelativeTime(publishedAt)
   const formattedTitle = toVersal(title)
+  
+  const isRelato = href.includes('/relato/')
+  const isMicrocuento = href.includes('/microcuento/')
+  
+  const getBadgeText = () => {
+    if (isMicrocuento) {
+      return language === 'en' ? 'Flash fiction' : 'Microcuento'
+    }
+    return language === 'en' ? 'Short story' : 'Relato'
+  }
 
   return (
     <div className="group relative h-full [&_a]:!text-gray-900 dark:[&_a]:!text-gray-900">
@@ -40,7 +53,7 @@ export default function FeaturedCard({
           className="relative flex flex-col rounded-lg overflow-hidden w-full h-full cursor-pointer hover:scale-105 transition-transform duration-200" 
           style={{ backgroundColor: bgColor }}
         >
-          <div className="flex-1 flex items-center justify-center relative min-h-[280px]">
+          <div className="flex-1 flex items-center justify-center relative min-h-[320px]">
             <div className="absolute top-4 left-4 z-10 flex gap-2">
               {tags && tags.length > 0 && tags.map((tag) => (
                 <span
@@ -50,6 +63,12 @@ export default function FeaturedCard({
                   {tag}
                 </span>
               ))}
+            </div>
+            <div className="absolute top-4 right-4 z-10">
+              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
+                <BookOpen className="w-3 h-3" />
+                {getBadgeText()}
+              </span>
             </div>
             <Image
               src={imgSrc}
