@@ -14,14 +14,14 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
-import AlternativeLayout from '@/layouts/AlternativeLayout'
+import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato, getRelatosNavigation, getRelatosSerieNavigation } from '../../../lib/sanity'
+import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
-const defaultLayout = 'AlternativeLayout'
-const layouts = { PostSimple, AlternativeLayout, PostBanner }
+const defaultLayout = 'PostLayout'
+const layouts = { PostSimple, PostLayout, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -87,20 +87,32 @@ export default async function Page(props: {
   const showDropCap = post.showDropCap === true
   const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null;
 
-  // Obtener navegación solo de relatos publicados
-  let prev: { title: string; slug: { current: string } } | undefined
-  let next: { title: string; slug: { current: string } } | undefined
+  let prev: { path: string; title: string } | undefined
+  let next: { path: string; title: string } | undefined
 
   if (serie && relatosDeSerie.length > 0) {
-    // Si el relato pertenece a una serie, usar navegación de serie
-    const serieNav = await getRelatosSerieNavigation(slug, serie.slug.current)
-    prev = serieNav.prev ? { title: serieNav.prev.title, slug: { current: serieNav.prev.path.replace('relato/', '') } } : undefined
-    next = serieNav.next ? { title: serieNav.next.title, slug: { current: serieNav.next.path.replace('relato/', '') } } : undefined
+    const idx = relatosDeSerie.findIndex((r) => r.slug.current === slug)
+    if (idx > 0) {
+      const p = relatosDeSerie[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
+    }
+    if (idx < relatosDeSerie.length - 1) {
+      const n = relatosDeSerie[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
+    }
   } else {
-    // Si no pertenece a una serie, usar navegación por autor
-    const autorNav = await getRelatosNavigation(slug, post.author.slug.current)
-    prev = autorNav.prev ? { title: autorNav.prev.title, slug: { current: autorNav.prev.path.replace('relato/', '') } } : undefined
-    next = autorNav.next ? { title: autorNav.next.title, slug: { current: autorNav.next.path.replace('relato/', '') } } : undefined
+    const sorted = [...autorRelatos].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
+    const idx = sorted.findIndex((r) => r.slug.current === slug)
+    if (idx > 0) {
+      const p = sorted[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
+    }
+    if (idx < sorted.length - 1) {
+      const n = sorted[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
+    }
   }
 
   const authorDetails = [
@@ -142,6 +154,32 @@ export default async function Page(props: {
       }))
   }
 
+  const mainContent = {
+    title: post.title,
+    date: post.date,
+    tags: post.tags || [],
+    draft: false,
+    summary: post.summary || '',
+    images: isTranstextos ? [] : post.image ? [post.image] : [],
+    image: isTranstextos ? undefined : post.image,
+    authors: [post.author.name],
+    slug: post.slug.current,
+    path: `relato/${post.slug.current}`,
+    series: serie?.title,
+    seriesOrder: serie
+      ? relatosDeSerie.findIndex((r) => r.slug.current === slug) + 1
+      : undefined,
+    bgColor: post.bgColor,
+    body: {
+      code: `
+        function MDXContent() {
+          return null;
+        }
+      `
+    },
+    toc: []
+  }
+
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BlogPosting',
@@ -152,40 +190,6 @@ export default async function Page(props: {
     image: isTranstextos ? undefined : post.image,
     url: siteMetadata.siteUrl + `/relato/${slug}`,
     author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
-  }
-
-  const mainContent = {
-    title: post.title,
-    author: post.author.name,
-    date: post.date,
-    tags: post.tags || [],
-    draft: false,
-    summary: post.summary || '',
-    description: post.summary || '',
-    images: isTranstextos ? [] : post.image ? [post.image] : [],
-    image: isTranstextos ? undefined : post.image,
-    authors: [post.author.name],
-    slug: post.slug.current,
-    path: `relato/${post.slug.current}`,
-    series: serie?.title,
-    seriesOrder: serie
-      ? relatosDeSerie.findIndex((r) => r.slug.current === slug) + 1
-      : undefined,
-    bgColor: post.bgColor || '#000000',
-    publishedAt: post.date,
-    body: {
-      code: `
-        function MDXContent() {
-          return null;
-        }
-      `
-    },
-    toc: [],
-    // Propiedades requeridas por CoreContent<Blog>
-    type: 'Blog' as const,
-    readingTime: post.readingTime || { text: '5 min read', minutes: 5, time: 300000, words: 1000 },
-    filePath: `relato/${post.slug.current}.md`,
-    structuredData: jsonLd
   }
 
   const Layout = layouts[defaultLayout]
@@ -211,8 +215,11 @@ export default async function Page(props: {
       />
       <Layout
         content={mainContent}
+        authorDetails={authorDetails}
         next={next}
         prev={prev}
+        autor={autor}
+        showDropCap={showDropCap}
       >
         <div className="prose dark:prose-invert max-w-none">
           <PortableText value={post.body} components={ptComponents} />
