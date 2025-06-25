@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import JsonPostLayout from '@/layouts/PostLayout'
+import JsonPostLayout from '@/layouts/JsonPostLayout'
 import siteMetadata from '@/data/siteMetadata'
 import { headers } from 'next/headers'
 import fs from 'fs'

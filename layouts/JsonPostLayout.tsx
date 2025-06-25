@@ -7,7 +7,7 @@ import ShareIcons from '@/components/ShareIcons'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
-interface PostLayoutProps {
+interface JsonPostLayoutProps {
   content: {
     title: string
     author: string
@@ -23,7 +23,7 @@ interface PostLayoutProps {
   children: ReactNode
 }
 
-export default function JsonPostLayout({ content, next, prev, children }: PostLayoutProps) {
+export default function JsonPostLayout({ content, next, prev, children }: JsonPostLayoutProps) {
   const { title, author, description, image, bgColor, tags, publishedAt, slug } = content
 
   // Formatear la fecha

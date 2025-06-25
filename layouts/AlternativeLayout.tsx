@@ -3,6 +3,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
+import ShareIcons from '@/components/ShareIcons'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -15,6 +16,7 @@ interface AlternativeLayoutProps {
     bgColor: string
     tags?: string[]
     publishedAt?: string
+    slug?: string
   }
   next?: { title: string; slug: { current: string } }
   prev?: { title: string; slug: { current: string } }
@@ -22,7 +24,7 @@ interface AlternativeLayoutProps {
 }
 
 export default function AlternativeLayout({ content, next, prev, children }: AlternativeLayoutProps) {
-  const { title, author, description, image, bgColor, tags, publishedAt } = content
+  const { title, author, description, image, bgColor, tags, publishedAt, slug } = content
 
   // Formatear la fecha
   const formatDate = (dateString: string) => {
@@ -76,6 +78,15 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
               )}
             </header>
 
+            {/* Botones de compartir antes del contenido */}
+            <div className="mb-8">
+              <ShareIcons 
+                title={title} 
+                slug={slug || ''} 
+                className="flex flex-col items-center"
+              />
+            </div>
+
             {/* Contenido principal con letra capital */}
             <div className="prose prose-lg dark:prose-invert max-w-none mb-8">
               <div 
@@ -91,6 +102,15 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                 `}} />
                 {children}
               </div>
+            </div>
+
+            {/* Botones de compartir después del contenido */}
+            <div className="mb-8">
+              <ShareIcons 
+                title={title} 
+                slug={slug || ''} 
+                className="flex flex-col items-center"
+              />
             </div>
 
             {/* Footer import */}
@@ -132,7 +152,7 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                   <div className="flex-1">
                     {prev && (
                       <Link
-                        href={`/microcuento/${prev.slug.current}`}
+                        href={`/relato/${prev.slug.current}`}
                         className="text-left hover:underline transition-colors"
                       >
                         <div className="text-xs uppercase tracking-wide mb-1">Anterior</div>
@@ -144,7 +164,7 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                   <div className="flex-1 text-right">
                     {next && (
                       <Link
-                        href={`/microcuento/${next.slug.current}`}
+                        href={`/relato/${next.slug.current}`}
                         className="text-right hover:underline transition-colors"
                       >
                         <div className="text-xs uppercase tracking-wide mb-1">Siguiente</div>

@@ -8,13 +8,14 @@ import Header from '@/components/Header'
 import TranstextosHeader from '@/components/TranstextosHeader'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
+import AlternativeLayout from '@/layouts/AlternativeLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { getArticuloBySlug, getArticulosByAutor, getAllArticulos } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
-const defaultLayout = 'PostSimple'
-const layouts = { PostSimple, PostBanner }
+const defaultLayout = 'AlternativeLayout'
+const layouts = { PostSimple, AlternativeLayout, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -81,8 +82,8 @@ export default async function Page(props: {
   // Obtener todos los artículos del mismo autor
   const autorArticulos = await getArticulosByAutor(post.author.slug.current)
   
-  let prev: { path: string; title: string } | undefined = undefined
-  let next: { path: string; title: string } | undefined = undefined
+  let prev: { title: string; slug: { current: string } } | undefined = undefined
+  let next: { title: string; slug: { current: string } } | undefined = undefined
   
   // Para artículos, no hay series, así que simplemente ordenamos por fecha
   const sortedArticulos = [...autorArticulos].sort((a, b) => 
@@ -92,14 +93,14 @@ export default async function Page(props: {
   const idx = sortedArticulos.findIndex(p => p.slug.current === slug)
   if (idx > 0) {
     prev = {
-      path: `articulo/${sortedArticulos[idx - 1].slug.current}`,
-      title: sortedArticulos[idx - 1].title
+      title: sortedArticulos[idx - 1].title,
+      slug: { current: sortedArticulos[idx - 1].slug.current }
     }
   }
   if (idx < sortedArticulos.length - 1) {
     next = {
-      path: `articulo/${sortedArticulos[idx + 1].slug.current}`,
-      title: sortedArticulos[idx + 1].title
+      title: sortedArticulos[idx + 1].title,
+      slug: { current: sortedArticulos[idx + 1].slug.current }
     }
   }
 
@@ -144,15 +145,19 @@ export default async function Page(props: {
   // Formatear el contenido principal
   const mainContent = {
     title: post.title,
+    author: post.author.name,
     date: post.date,
     tags: [],
     draft: false,
     summary: post.summary || '',
+    description: post.summary || '',
     images: post.image ? [post.image] : [],
     image: post.image, // Imagen destacada
     authors: [post.author.name],
     slug: post.slug.current,
     path: `articulo/${post.slug.current}`,
+    bgColor: '#000000', // Color por defecto para artículos
+    publishedAt: post.date,
     // Para que MDXLayoutRenderer funcione con el contenido de Sanity
     body: { 
       code: `

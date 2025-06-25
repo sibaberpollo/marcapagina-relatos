@@ -14,13 +14,14 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
+import AlternativeLayout from '@/layouts/AlternativeLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato, getRelatosNavigation, getRelatosSerieNavigation } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
-const defaultLayout = 'PostSimple'
-const layouts = { PostSimple, PostBanner }
+const defaultLayout = 'AlternativeLayout'
+const layouts = { PostSimple, AlternativeLayout, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -87,19 +88,19 @@ export default async function Page(props: {
   const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null;
 
   // Obtener navegación solo de relatos publicados
-  let prev: { path: string; title: string } | undefined
-  let next: { path: string; title: string } | undefined
+  let prev: { title: string; slug: { current: string } } | undefined
+  let next: { title: string; slug: { current: string } } | undefined
 
   if (serie && relatosDeSerie.length > 0) {
     // Si el relato pertenece a una serie, usar navegación de serie
     const serieNav = await getRelatosSerieNavigation(slug, serie.slug.current)
-    prev = serieNav.prev || undefined
-    next = serieNav.next || undefined
+    prev = serieNav.prev ? { title: serieNav.prev.title, slug: { current: serieNav.prev.path.replace('relato/', '') } } : undefined
+    next = serieNav.next ? { title: serieNav.next.title, slug: { current: serieNav.next.path.replace('relato/', '') } } : undefined
   } else {
     // Si no pertenece a una serie, usar navegación por autor
     const autorNav = await getRelatosNavigation(slug, post.author.slug.current)
-    prev = autorNav.prev || undefined
-    next = autorNav.next || undefined
+    prev = autorNav.prev ? { title: autorNav.prev.title, slug: { current: autorNav.prev.path.replace('relato/', '') } } : undefined
+    next = autorNav.next ? { title: autorNav.next.title, slug: { current: autorNav.next.path.replace('relato/', '') } } : undefined
   }
 
   const authorDetails = [
@@ -155,10 +156,12 @@ export default async function Page(props: {
 
   const mainContent = {
     title: post.title,
+    author: post.author.name,
     date: post.date,
     tags: post.tags || [],
     draft: false,
     summary: post.summary || '',
+    description: post.summary || '',
     images: isTranstextos ? [] : post.image ? [post.image] : [],
     image: isTranstextos ? undefined : post.image,
     authors: [post.author.name],
@@ -168,7 +171,8 @@ export default async function Page(props: {
     seriesOrder: serie
       ? relatosDeSerie.findIndex((r) => r.slug.current === slug) + 1
       : undefined,
-    bgColor: post.bgColor,
+    bgColor: post.bgColor || '#000000',
+    publishedAt: post.date,
     body: {
       code: `
         function MDXContent() {
