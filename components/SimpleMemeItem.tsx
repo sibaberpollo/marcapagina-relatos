@@ -15,6 +15,7 @@ interface SimpleMemeItemProps {
   tags?: string[]
   context?: string // Por qué está en el feed
   category?: 'humor' | 'resource' | 'product' | 'announcement'
+  overlayText?: string // Texto que aparece sobre un overlay oscuro
 }
 
 export default function SimpleMemeItem({ 
@@ -26,7 +27,8 @@ export default function SimpleMemeItem({
   type = 'meme', 
   tags, 
   context, 
-  category 
+  category, 
+  overlayText 
 }: SimpleMemeItemProps) {
   const [imageRatio, setImageRatio] = useState<number | null>(null)
   const [imageError, setImageError] = useState(false)
@@ -109,7 +111,7 @@ export default function SimpleMemeItem({
 
   // Contenido de la imagen
   const imageContent = (
-    <div className="overflow-hidden rounded-lg">
+    <div className="overflow-hidden rounded-lg relative">
       {imageError ? (
         <div className="w-full h-40 bg-gray-200 dark:bg-gray-700 flex items-center justify-center rounded-lg">
           <div className="text-center text-gray-500 dark:text-gray-400">
@@ -117,28 +119,80 @@ export default function SimpleMemeItem({
             <p className="text-sm">Error cargando imagen</p>
           </div>
         </div>
-      ) : isGif ? (
-        <img
-          src={displayImage}
-          alt={title || ''}
-          className={getImageClasses()}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-          style={{ display: 'block' }}
-        />
       ) : (
-        <Image
-          src={displayImage}
-          alt={title || ''}
-          className={getImageClasses()}
-          width={600}
-          height={400}
-          onLoad={handleImageLoad}
-          onError={handleImageError}
-        />
+        <>
+          {isGif ? (
+            <img
+              src={displayImage}
+              alt={title || overlayText || ''}
+              className={overlayText ? "w-full h-auto min-h-[280px] md:min-h-[320px] object-cover" : getImageClasses()}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+              style={{ display: 'block' }}
+            />
+          ) : (
+            <Image
+              src={displayImage}
+              alt={title || overlayText || ''}
+              className={overlayText ? "w-full h-auto min-h-[280px] md:min-h-[320px] object-cover" : getImageClasses()}
+              width={600}
+              height={400}
+              onLoad={handleImageLoad}
+              onError={handleImageError}
+            />
+          )}
+          
+          {/* Overlay y texto cuando hay overlayText */}
+          {overlayText && (
+            <>
+              {/* Overlay oscuro degradado */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              
+              {/* Tags en esquina superior izquierda */}
+              {tags && tags.length > 0 && (
+                <div className="absolute top-4 left-4 z-10 flex gap-2">
+                  {tags.map((tag) => (
+                    <span
+                      key={tag}
+                      className="px-2 py-1 text-xs font-medium bg-black/40 text-white rounded-full backdrop-blur-sm"
+                    >
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              )}
+              
+              {/* Texto del overlay centrado en la parte inferior */}
+              <div className="absolute bottom-0 left-0 right-0 p-6 z-10">
+                <p className="text-white text-center text-sm md:text-base font-medium leading-relaxed">
+                  {overlayText}
+                </p>
+              </div>
+            </>
+          )}
+        </>
       )}
     </div>
   )
+
+  // Si hay overlayText, mostrar solo la imagen con overlay (standalone)
+  if (overlayText) {
+    if (href) {
+      return (
+        <div className="group block w-full break-inside-avoid mb-4 hover:scale-105 transition-transform duration-200">
+          <Link href={href} className="block">
+            {imageContent}
+          </Link>
+        </div>
+      )
+    }
+    
+    return (
+      <div className="group block w-full break-inside-avoid mb-4">
+        {imageContent}
+      </div>
+    )
+  }
 
   // Si no hay título, mostrar solo la imagen (con o sin link)
   if (!title) {

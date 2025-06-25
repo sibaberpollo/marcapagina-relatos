@@ -34,6 +34,8 @@
     },
     {
       "type": "meme",
+      "cardType": "overlay",
+      "overlayText": "A propósito del hype de la serie...",
       "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
       "href": "/post/los-chapulines-salvajes",
       "tags": ["imagen", "vertical"]

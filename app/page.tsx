@@ -31,7 +31,7 @@ interface CardProps {
 interface HomeContentItem {
   slug?: string;
   type: 'relato' | 'microcuento' | 'meme';
-  cardType?: 'featured' | 'story'; // Nuevo campo para tipo de card
+  cardType?: 'featured' | 'story' | 'overlay'; // Agregar overlay como opción
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string;
   description?: string;
@@ -45,6 +45,7 @@ interface HomeContentItem {
   image?: string;
   image_portada?: string;
   href?: string;
+  overlayText?: string; // Agregar campo para texto del overlay
 }
 
 interface HomeContentResponse {
@@ -173,17 +174,19 @@ function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index:
   const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
   
   if (isMeme) {
+    const memeItem = item as HomeContentItem;
     return (
       <SimpleMemeItem
-        title={item.title}
-        description={item.description}
-        image={item.image!}
-        image_portada={(item as HomeContentItem).image_portada}
-        href={(item as HomeContentItem).href}
-        type={(item as HomeContentItem).type as 'meme'}
-        tags={item.tags}
+        title={memeItem.title}
+        description={memeItem.description}
+        image={memeItem.image!}
+        image_portada={memeItem.image_portada}
+        href={memeItem.href}
+        type={memeItem.type as 'meme'}
+        tags={memeItem.tags}
         context="Contenido visual relacionado con literatura y cultura"
         category="humor"
+        overlayText={memeItem.overlayText}
       />
     );
   }
