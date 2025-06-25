@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import MemeCard from './MemeCard'
+import MemeCard from './cards/MemeCard'
 import Image from './Image'
 import { X, Download } from 'lucide-react'
 import type { MemeItem } from '@/types/meme'

@@ -1,7 +1,7 @@
 'use client'
 
-import Image from './Image'
-import Link from './Link'
+import Image from '../Image'
+import Link from '../Link'
 import { getRelativeTime } from '@/lib/time'
 import { toVersal } from '@/lib/utils'
 import { BookOpen } from 'lucide-react'

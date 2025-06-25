@@ -1,7 +1,7 @@
 // components/Card.tsx
 
-import Image from './Image'
-import Link from './Link'
+import Image from '../Image'
+import Link from '../Link'
 
 interface CardProps {
   title: string

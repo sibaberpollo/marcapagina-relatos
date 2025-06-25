@@ -3,7 +3,7 @@ import {
   getAllRelatosForChronologicalBySite,
   getSiteBySlug,
 } from "../lib/sanity";
-import FeaturedCard from "@/components/FeaturedCard";
+import FeaturedCard from "@/components/cards/FeaturedCard";
 import SectionContainer from "@/components/SectionContainer";
 import ViewToggle from "@/components/ViewToggle";
 import ClientRedirect from "@/components/ClientRedirect";
@@ -84,9 +84,9 @@ import { headers } from 'next/headers'
 import { getRelatoBySlug } from '../lib/sanity'
 
 import SimpleMemeItem from '@/components/SimpleMemeItem'
-import MasonryFeaturedCard from '@/components/MasonryFeaturedCard'
-import FeaturedStoryCard from '@/components/FeaturedStoryCard'
-import QuoteCard from '@/components/QuoteCard'
+import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
+import FeaturedStoryCard from '@/components/cards/FeaturedStoryCard'
+import QuoteCard from '@/components/cards/QuoteCard'
 import HoroscopoLiterario from '@/components/HoroscopoLiterario'
 
 // Función para obtener el horóscopo literario

@@ -1,8 +1,8 @@
 'use client'
 
-import Link from './Link'
-import Image from './Image'
-import AutoAvatar from './AutoAvatar'
+import Link from '../Link'
+import Image from '../Image'
+import AutoAvatar from '../AutoAvatar'
 import { formatDate } from 'pliny/utils/formatDate'
 import { Calendar, BookOpen, User } from 'lucide-react'
 

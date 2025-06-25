@@ -14,7 +14,7 @@ import ScrollTopAndComment from "@/components/ScrollTopAndComment";
 import { PageSEO } from "@/components/SEO";
 import { getRelativeTime } from "@/lib/time";
 import FeaturedSlider from "@/components/FeaturedSlider";
-import FeaturedCard from "@/components/FeaturedCard";
+import FeaturedCard from "@/components/cards/FeaturedCard";
 import { getFeaturedAndNonFeaturedRelatos } from "@/lib/sanity";
 import ShareIcons from "@/components/ShareIcons";
 

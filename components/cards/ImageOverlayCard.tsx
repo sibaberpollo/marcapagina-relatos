@@ -1,7 +1,7 @@
 'use client'
 
-import Image from './Image'
-import Link from './Link'
+import Image from '../Image'
+import Link from '../Link'
 
 interface ImageOverlayCardProps {
   image: string

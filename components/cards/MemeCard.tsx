@@ -1,6 +1,6 @@
 'use client'
 
-import Image from './Image'
+import Image from '../Image'
 import { Image as ImageIcon, Download, ShoppingCart } from 'lucide-react'
 import { MemeItem } from '@/types/meme'
 
