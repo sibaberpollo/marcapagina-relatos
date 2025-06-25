@@ -8,14 +8,13 @@ import Header from '@/components/Header'
 import TranstextosHeader from '@/components/TranstextosHeader'
 import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
-import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { getArticuloBySlug, getArticulosByAutor, getAllArticulos } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
-const defaultLayout = 'PostLayout'
-const layouts = { PostSimple, PostLayout, PostBanner }
+const defaultLayout = 'PostSimple'
+const layouts = { PostSimple, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -129,6 +128,19 @@ export default async function Page(props: {
     .filter(p => p.slug.current !== slug)
     .map(formatRelatedPost)
 
+  // Preparar JSON-LD para SEO
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    description: post.summary,
+    image: post.image,
+    url: siteMetadata.siteUrl + `/articulo/${slug}`,
+    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
+  }
+
   // Formatear el contenido principal
   const mainContent = {
     title: post.title,
@@ -149,20 +161,12 @@ export default async function Page(props: {
         }
       `
     },
-    toc: [] // Sanity no proporciona TOC, usamos array vacío
-  }
-
-  // Preparar JSON-LD para SEO
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    datePublished: post.date,
-    dateModified: post.date,
-    description: post.summary,
-    image: post.image,
-    url: siteMetadata.siteUrl + `/articulo/${slug}`,
-    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
+    toc: [], // Sanity no proporciona TOC, usamos array vacío
+    // Propiedades requeridas por CoreContent<Blog>
+    type: 'Blog' as const,
+    readingTime: post.readingTime || { text: '5 min read', minutes: 5, time: 300000, words: 1000 },
+    filePath: `articulo/${post.slug.current}.md`,
+    structuredData: jsonLd
   }
   
   // Determinar el layout - usamos PostLayout por defecto
@@ -185,7 +189,6 @@ export default async function Page(props: {
       />
       <Layout 
         content={mainContent} 
-        authorDetails={authorDetails} 
         next={next} 
         prev={prev}
       >

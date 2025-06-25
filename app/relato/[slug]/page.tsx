@@ -14,14 +14,13 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import SectionContainer from '@/components/SectionContainer'
 import PostSimple from '@/layouts/PostSimple'
-import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
 import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato, getRelatosNavigation, getRelatosSerieNavigation } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
 
-const defaultLayout = 'PostLayout'
-const layouts = { PostSimple, PostLayout, PostBanner }
+const defaultLayout = 'PostSimple'
+const layouts = { PostSimple, PostBanner }
 
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
@@ -142,6 +141,18 @@ export default async function Page(props: {
       }))
   }
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    datePublished: post.date,
+    dateModified: post.date,
+    description: post.summary,
+    image: isTranstextos ? undefined : post.image,
+    url: siteMetadata.siteUrl + `/relato/${slug}`,
+    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
+  }
+
   const mainContent = {
     title: post.title,
     date: post.date,
@@ -165,19 +176,12 @@ export default async function Page(props: {
         }
       `
     },
-    toc: []
-  }
-
-  const jsonLd = {
-    '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
-    headline: post.title,
-    datePublished: post.date,
-    dateModified: post.date,
-    description: post.summary,
-    image: isTranstextos ? undefined : post.image,
-    url: siteMetadata.siteUrl + `/relato/${slug}`,
-    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name }))
+    toc: [],
+    // Propiedades requeridas por CoreContent<Blog>
+    type: 'Blog' as const,
+    readingTime: post.readingTime || { text: '5 min read', minutes: 5, time: 300000, words: 1000 },
+    filePath: `relato/${post.slug.current}.md`,
+    structuredData: jsonLd
   }
 
   const Layout = layouts[defaultLayout]
@@ -203,11 +207,8 @@ export default async function Page(props: {
       />
       <Layout
         content={mainContent}
-        authorDetails={authorDetails}
         next={next}
         prev={prev}
-        autor={autor}
-        showDropCap={showDropCap}
       >
         <div className="prose dark:prose-invert max-w-none">
           <PortableText value={post.body} components={ptComponents} />

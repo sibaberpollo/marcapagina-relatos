@@ -21,7 +21,7 @@ interface PostLayoutProps {
   children: ReactNode
 }
 
-export default function PostLayout({ content, next, prev, children }: PostLayoutProps) {
+export default function JsonPostLayout({ content, next, prev, children }: PostLayoutProps) {
   const { title, author, description, image, bgColor, tags, publishedAt } = content
 
   // Formatear la fecha

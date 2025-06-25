@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import PostLayout from '@/layouts/PostLayout'
+import JsonPostLayout from '@/layouts/PostLayout'
 import siteMetadata from '@/data/siteMetadata'
 import { headers } from 'next/headers'
 import fs from 'fs'
@@ -95,7 +95,7 @@ export default async function PostPage({ params, searchParams }: PageProps) {
   }
 
   return (
-    <PostLayout
+    <JsonPostLayout
       content={{
         title: post.title,
         author: post.author.name,
@@ -107,6 +107,6 @@ export default async function PostPage({ params, searchParams }: PageProps) {
       }}
     >
       <div dangerouslySetInnerHTML={{ __html: post.content }} />
-    </PostLayout>
+    </JsonPostLayout>
   )
 } 
