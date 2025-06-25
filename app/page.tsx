@@ -30,8 +30,8 @@ interface CardProps {
 
 interface HomeContentItem {
   slug?: string;
-  type: 'relato' | 'microcuento' | 'meme';
-  cardType?: 'featured' | 'story' | 'overlay'; // Agregar overlay como opción
+  type: 'relato' | 'microcuento' | 'meme' | 'quote';
+  cardType?: 'featured' | 'story' | 'overlay' | 'quote'; // Agregar quote como opción
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string;
   description?: string;
@@ -46,6 +46,9 @@ interface HomeContentItem {
   image_portada?: string;
   href?: string;
   overlayText?: string; // Agregar campo para texto del overlay
+  // Para quotes - datos específicos
+  quote?: string;
+  author?: string;
 }
 
 interface HomeContentResponse {
@@ -83,6 +86,7 @@ import { getRelatoBySlug } from '../lib/sanity'
 import SimpleMemeItem from '@/components/SimpleMemeItem'
 import MasonryFeaturedCard from '@/components/MasonryFeaturedCard'
 import FeaturedStoryCard from '@/components/FeaturedStoryCard'
+import QuoteCard from '@/components/QuoteCard'
 import HoroscopoLiterario from '@/components/HoroscopoLiterario'
 
 // Función para obtener el horóscopo literario
@@ -142,8 +146,8 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
               return enrichedItem
             }
             return null // Si no hay datos de Sanity, retornar null
-          } else if (item.type === 'meme') {
-            // Para memes, usar los datos directamente del JSON
+          } else if (item.type === 'meme' || item.type === 'quote') {
+            // Para memes y quotes, usar los datos directamente del JSON
             return item as HomeContentItem
           }
           return null
@@ -172,6 +176,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
 // Componente para renderizar el card apropiado según el tipo
 function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index: number }) {
   const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
+  const isQuote = 'quote' in item && 'type' in item && item.type === 'quote';
   
   if (isMeme) {
     const memeItem = item as HomeContentItem;
@@ -187,6 +192,18 @@ function RenderCard({ item, index }: { item: CardProps | HomeContentItem, index:
         context="Contenido visual relacionado con literatura y cultura"
         category="humor"
         overlayText={memeItem.overlayText}
+      />
+    );
+  }
+
+  if (isQuote) {
+    const quoteItem = item as HomeContentItem;
+    return (
+      <QuoteCard
+        quote={quoteItem.quote!}
+        author={quoteItem.author}
+        bgColor={quoteItem.bgColor}
+        href={quoteItem.href}
       />
     );
   }

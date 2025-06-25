@@ -20,6 +20,13 @@
       "cardType": "featured"
     },
     {
+      "type": "quote",
+      "cardType": "quote",
+      "quote": "Write drunk, edit sober",
+      "author": "Ernest Hemingway",
+      "bgColor": "#4ade80"
+    },
+    {
       "type": "meme",
       "title": "Los chapulines salvajes",
       "description": "Regarding the hype of the series Sin querer queriendo on HBO, we take the opportunity to recommend the best novel by the author.",
@@ -34,9 +41,11 @@
     },
     {
       "type": "meme",
+      "cardType": "overlay",
       "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
       "href": "/post/los-chapulines-salvajes",
-      "tags": ["image", "vertical"]
+      "tags": ["image", "vertical"],
+      "overlayText": "Regarding the hype of the series Sin querer queriendo on HBO"
     },
     {
       "slug": "brisa-marina",
