@@ -58,7 +58,7 @@ export default function FeaturedCard({
               <img
                 src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
                 alt="Feed de narrativa"
-                className="w-[25px] h-[25px] opacity-70"
+                className="w-[25px] h-[25px] opacity-100"
                 width={25}
                 height={25}
               />

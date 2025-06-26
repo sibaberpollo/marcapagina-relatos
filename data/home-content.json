@@ -27,14 +27,6 @@
       "bgColor": "#4ade80"
     },
     {
-      "type": "meme",
-      "title": "Los chapulines salvajes",
-      "description": "A propósito del hype de la serie Sin querer queriendo en HBO, aprovechamos de recomendar la mejor novela del autor.",
-      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina-page-los-chapulines-salvajes_jsvcls.png",
-      "image_portada": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750275121/marcapagina.page-Ravensburger-Jack-Vettriano-Billy-Boys_lw5xoz.png",
-      "tags": ["meme", "diversión"]
-    },
-    {
       "slug": "el-hombre-del-canario-rojo",
       "type": "relato",
       "cardType": "featured"
@@ -61,7 +53,7 @@
     {
       "slug": "treinta-minutos-o-menos",
       "type": "relato",
-      "cardType": "story"
+      "cardType": "featured"
     }
   ]
 } 

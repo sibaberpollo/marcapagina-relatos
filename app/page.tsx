@@ -7,7 +7,6 @@ import FeaturedCard from "@/components/cards/FeaturedCard";
 import SectionContainer from "@/components/SectionContainer";
 import ViewToggle from "@/components/ViewToggle";
 import ClientRedirect from "@/components/ClientRedirect";
-import PublishBanner from "@/components/PublishBanner";
 import ExpandableText from '@/components/ExpandableText'
 import ChronologicalView from '@/components/ChronologicalView'
 import Link from 'next/link'
@@ -367,14 +366,6 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
         </div>
       </SectionContainer>
-
-      {/* Banner de publicación en el footer */}
-      <div className="w-full bg-primary-500 dark:bg-primary-400">
-        <div className="max-w-screen-2xl mx-auto px-4 sm:px-8 py-12 flex justify-center">
-          <PublishBanner />
-        </div>
-      </div>
-
     </>
   );
 }
