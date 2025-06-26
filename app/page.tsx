@@ -29,8 +29,8 @@ interface CardProps {
 
 interface HomeContentItem {
   slug?: string;
-  type: 'relato' | 'microcuento' | 'meme' | 'quote' | 'playlist';
-  cardType?: 'featured' | 'story' | 'overlay' | 'quote' | 'playlist'; // Agregar quote y playlist como opciones
+  type: 'relato' | 'microcuento' | 'meme' | 'quote' | 'playlist' | 'series';
+  cardType?: 'featured' | 'story' | 'overlay' | 'quote' | 'playlist' | 'series'; // Agregar quote, playlist y series como opciones
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string;
   description?: string;
@@ -58,6 +58,20 @@ interface HomeContentItem {
     name: string;
     artist: string;
     albumCover?: string;
+  }>;
+  // Para series - datos específicos
+  seriesName?: string;
+  seriesCover?: string;
+  latestChapter?: {
+    title: string;
+    slug: string;
+    preview: string;
+    order: number;
+  };
+  previousChapters?: Array<{
+    title: string;
+    slug: string;
+    order: number;
   }>;
 }
 
@@ -98,6 +112,7 @@ import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
 import FeaturedStoryCard from '@/components/cards/FeaturedStoryCard'
 import QuoteCard from '@/components/cards/QuoteCard'
 import PlaylistCard from '@/components/cards/PlaylistCard'
+import SeriesCard from '@/components/cards/SeriesCard'
 
 
 
@@ -144,8 +159,8 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
               return enrichedItem
             }
             return null // Si no hay datos de Sanity, retornar null
-          } else if (item.type === 'meme' || item.type === 'quote' || item.type === 'playlist') {
-            // Para memes, quotes y playlists, usar los datos directamente del JSON
+          } else if (item.type === 'meme' || item.type === 'quote' || item.type === 'playlist' || item.type === 'series') {
+            // Para memes, quotes, playlists y series, usar los datos directamente del JSON
             return item as HomeContentItem
           }
           return null
@@ -176,6 +191,7 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
   const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
   const isQuote = 'quote' in item && 'type' in item && item.type === 'quote';
   const isPlaylist = 'currentTrack' in item && 'type' in item && item.type === 'playlist';
+  const isSeries = 'seriesName' in item && 'type' in item && item.type === 'series';
   
   if (isMeme) {
     const memeItem = item as HomeContentItem;
@@ -216,6 +232,22 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         previousTracks={playlistItem.previousTracks || []}
         language={language}
         href={playlistItem.href}
+      />
+    );
+  }
+
+  if (isSeries) {
+    const seriesItem = item as HomeContentItem;
+    return (
+      <SeriesCard
+        seriesName={seriesItem.seriesName!}
+        seriesCover={seriesItem.seriesCover}
+        latestChapter={seriesItem.latestChapter!}
+        previousChapters={seriesItem.previousChapters || []}
+        language={language}
+        href={seriesItem.href}
+        backgroundColor={seriesItem.bgColor || '#ee686b'}
+        textColor="#ffffff"
       />
     );
   }

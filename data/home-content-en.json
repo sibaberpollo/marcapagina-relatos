@@ -87,6 +87,30 @@
           "artist": "Fools Garden"
         }
       ]
+    },
+    {
+      "type": "series",
+      "cardType": "series",
+      "seriesName": "The Gospel According to Asdrúbal",
+      "seriesCover": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750791347/edgar-allan-poe-edgar_palrek.gif",
+      "latestChapter": {
+        "title": "The Final Revelation",
+        "slug": "el-evangelio-segun-asdrubal-capitulo-3",
+        "preview": "On an improvised altar, lay a book with worn black covers and paper as thin as the Bibles distributed by evangelists. 'No one touch it,' warned the witch who guarded it. 'It has too much energy.'",
+        "order": 3
+      },
+      "previousChapters": [
+        {
+          "title": "The First Encounter",
+          "slug": "el-evangelio-segun-asdrubal-capitulo-1",
+          "order": 1
+        },
+        {
+          "title": "The Signs",
+          "slug": "el-evangelio-segun-asdrubal-capitulo-2", 
+          "order": 2
+        }
+      ]
     }
   ]
 } 

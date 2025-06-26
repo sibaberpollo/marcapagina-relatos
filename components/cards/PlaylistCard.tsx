@@ -25,7 +25,7 @@ export default function PlaylistCard({
   const playlistText = language === 'en' ? 'Playlist' : 'Playlist'
 
   const content = (
-    <div className="bg-gray-900 rounded-lg shadow-lg p-6 min-h-[420px] transition-transform duration-300 hover:scale-[1.02]">
+    <div className="bg-[#212121] rounded-lg shadow-lg p-6 min-h-[420px] transition-transform duration-300 hover:scale-[1.02]">
       {/* Badge de tipo en esquina superior derecha */}
       <div className="absolute top-4 right-4 z-10">
         <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
@@ -45,9 +45,9 @@ export default function PlaylistCard({
       </div>
 
       {/* Tema actual destacado */}
-      <div className="mb-6 p-4 bg-gray-800 rounded-lg border-l-4 border-primary-500">
+      <div className="mb-6 p-4 bg-[#333333] rounded-lg border-l-4 border-primary-500">
         {/* Album cover más grande */}
-        <div className="w-24 h-24 mx-auto mb-4 bg-gray-700 rounded-lg flex items-center justify-center">
+        <div className="w-24 h-24 mx-auto mb-4 bg-[#333333] rounded-lg flex items-center justify-center">
           {currentTrack.albumCover ? (
             <img 
               src={currentTrack.albumCover} 
@@ -98,9 +98,9 @@ export default function PlaylistCard({
       {previousTracks.length > 0 && (
         <div className="space-y-3">
           {previousTracks.slice(0, 2).map((track, index) => (
-            <div key={index} className="flex items-center p-3 rounded-lg hover:bg-gray-800 transition-colors cursor-pointer">
+            <div key={index} className="flex items-center p-3 rounded-lg hover:bg-[#333333] transition-colors cursor-pointer">
               {/* Album cover pequeño */}
-              <div className="w-10 h-10 mr-3 bg-gray-700 rounded flex items-center justify-center flex-shrink-0">
+              <div className="w-10 h-10 mr-3 bg-[#333333] rounded flex items-center justify-center flex-shrink-0">
                 {track.albumCover ? (
                   <img 
                     src={track.albumCover} 
