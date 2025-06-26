@@ -382,7 +382,7 @@ export default async function Page({ searchParams }: PageProps) {
         <ViewToggle total={totalRelatos} />
 
         {/* Feed principal con jerarquía visual clara */}
-        <div className="container py-6">
+        <div className="container py-2">
           {/* Masonry solo en móvil (respeta orden) */}
           <div className="md:hidden">
             <div className="columns-1 gap-4 space-y-4">
