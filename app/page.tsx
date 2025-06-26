@@ -29,8 +29,8 @@ interface CardProps {
 
 interface HomeContentItem {
   slug?: string;
-  type: 'relato' | 'microcuento' | 'meme' | 'quote';
-  cardType?: 'featured' | 'story' | 'overlay' | 'quote'; // Agregar quote como opción
+  type: 'relato' | 'microcuento' | 'meme' | 'quote' | 'playlist';
+  cardType?: 'featured' | 'story' | 'overlay' | 'quote' | 'playlist'; // Agregar quote y playlist como opciones
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
   title?: string;
   description?: string;
@@ -48,6 +48,17 @@ interface HomeContentItem {
   // Para quotes - datos específicos
   quote?: string;
   author?: string;
+  // Para playlist - datos específicos
+  currentTrack?: {
+    name: string;
+    artist: string;
+    albumCover?: string;
+  };
+  previousTracks?: Array<{
+    name: string;
+    artist: string;
+    albumCover?: string;
+  }>;
 }
 
 interface HomeContentResponse {
@@ -86,6 +97,7 @@ import SimpleMemeItem from '@/components/SimpleMemeItem'
 import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
 import FeaturedStoryCard from '@/components/cards/FeaturedStoryCard'
 import QuoteCard from '@/components/cards/QuoteCard'
+import PlaylistCard from '@/components/cards/PlaylistCard'
 
 
 
@@ -132,8 +144,8 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
               return enrichedItem
             }
             return null // Si no hay datos de Sanity, retornar null
-          } else if (item.type === 'meme' || item.type === 'quote') {
-            // Para memes y quotes, usar los datos directamente del JSON
+          } else if (item.type === 'meme' || item.type === 'quote' || item.type === 'playlist') {
+            // Para memes, quotes y playlists, usar los datos directamente del JSON
             return item as HomeContentItem
           }
           return null
@@ -163,6 +175,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
 function RenderCard({ item, index, language }: { item: CardProps | HomeContentItem, index: number, language: string }) {
   const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
   const isQuote = 'quote' in item && 'type' in item && item.type === 'quote';
+  const isPlaylist = 'currentTrack' in item && 'type' in item && item.type === 'playlist';
   
   if (isMeme) {
     const memeItem = item as HomeContentItem;
@@ -191,6 +204,18 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         bgColor={quoteItem.bgColor}
         href={quoteItem.href}
         language={language}
+      />
+    );
+  }
+
+  if (isPlaylist) {
+    const playlistItem = item as HomeContentItem;
+    return (
+      <PlaylistCard
+        currentTrack={playlistItem.currentTrack!}
+        previousTracks={playlistItem.previousTracks || []}
+        language={language}
+        href={playlistItem.href}
       />
     );
   }

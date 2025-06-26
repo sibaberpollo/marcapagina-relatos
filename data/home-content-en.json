@@ -67,6 +67,26 @@
       "slug": "lluvia",
       "type": "relato",
       "cardType": "featured"
+    },
+    {
+      "type": "playlist",
+      "cardType": "playlist",
+      "href": "/playlist",
+      "currentTrack": {
+        "name": "Time in a Bottle",
+        "artist": "Jim Croce",
+        "albumCover": "https://m.media-amazon.com/images/I/41TWKY5Z3ZL.jpg"
+      },
+      "previousTracks": [
+        {
+          "name": "My Way",
+          "artist": "Frank Sinatra"
+        },
+        {
+          "name": "Lemon Tree", 
+          "artist": "Fools Garden"
+        }
+      ]
     }
   ]
 } 
