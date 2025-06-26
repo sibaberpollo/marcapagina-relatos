@@ -407,42 +407,41 @@ export default async function Page({ searchParams }: PageProps) {
       </SectionContainer>
 
       <SectionContainer>
-        {/* Título con líneas decorativas */}
-        <div className="space-y-2 pt-12 pb-8 md:space-y-5">
-          <div className="flex items-center justify-center gap-6">
-            {/* Línea doble izquierda */}
-            <div className="flex-1 flex items-center justify-end">
-              <div className="w-full max-w-xs">
-                <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
-                <div className="border-t border-gray-900 dark:border-gray-50"></div>
-              </div>
-            </div>
-            
-            {/* Título central */}
-            <div className="text-center">
-              <h1 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-4xl sm:leading-9 md:text-6xl md:leading-12 whitespace-nowrap">
-                {siteInfo?.title || 'Transtextos'}
-              </h1>
-              <p className="text-sm text-gray-600 dark:text-gray-400 font-medium tracking-wide uppercase mt-1">
-                Feed Narrativa
-              </p>
-            </div>
-            
-            {/* Línea doble derecha con ícono RSS */}
-            <div className="flex-1 flex items-center justify-start gap-4">
-              <div className="w-full max-w-xs">
-                <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
-                <div className="border-t border-gray-900 dark:border-gray-50"></div>
-              </div>
-              <Link href="/transtextos" className="flex-shrink-0 hover:scale-110 transition-transform">
-                <Rss className="w-8 h-8" style={{ color: '#f26522' }} />
-              </Link>
-            </div>
-          </div>
-        </div>
-        
         {/* Contenido del feed con fondo blanco */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-12">
+          {/* Título con líneas decorativas */}
+          <div className="space-y-2 pt-2 pb-8 md:space-y-5">
+            <div className="flex items-center justify-center gap-6">
+              {/* Línea doble izquierda */}
+              <div className="flex-1 flex items-center justify-end">
+                <div className="w-full max-w-xs">
+                  <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                  <div className="border-t border-gray-900 dark:border-gray-50"></div>
+                </div>
+              </div>
+              
+              {/* Título central */}
+              <div className="text-center">
+                <h1 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-4xl sm:leading-9 md:text-6xl md:leading-12 whitespace-nowrap">
+                  {siteInfo?.title || 'Transtextos'}
+                </h1>
+                <p className="text-sm text-gray-600 dark:text-gray-400 font-medium tracking-wide uppercase mt-1">
+                  Feed De Narrativa
+                </p>
+              </div>
+              
+              {/* Línea doble derecha con ícono RSS */}
+              <div className="flex-1 flex items-center justify-start gap-4">
+                <div className="w-full max-w-xs">
+                  <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                  <div className="border-t border-gray-900 dark:border-gray-50"></div>
+                </div>
+                <Link href="/transtextos" className="flex-shrink-0 hover:scale-110 transition-transform">
+                  <Rss className="w-8 h-8" style={{ color: '#f26522' }} />
+                </Link>
+              </div>
+            </div>
+          </div>
           <ChronologicalView items={latestTranstextos} itemsPerPage={10} currentPage={currentPage} />
           <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-center">
             <Link href="/transtextos" className="inline-block px-6 py-3 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors font-medium">
