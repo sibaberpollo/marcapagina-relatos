@@ -18,6 +18,7 @@ interface FeaturedCardProps {
   tags: string[]
   publishedAt: string
   language?: string
+  transtextos?: boolean
 }
 
 export default function FeaturedCard({
@@ -31,7 +32,8 @@ export default function FeaturedCard({
   bgColor,
   tags,
   publishedAt,
-  language = 'es'
+  language = 'es',
+  transtextos = false
 }: FeaturedCardProps) {
   const relativeTime = getRelativeTime(publishedAt)
   const formattedTitle = toVersal(title)
@@ -54,15 +56,17 @@ export default function FeaturedCard({
           style={{ backgroundColor: bgColor }}
         >
           <div className="flex-1 flex items-center justify-center relative min-h-[320px]">
-            <div className="absolute top-4 left-4 z-10">
-              <img
-                src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
-                alt="Feed de narrativa"
-                className="w-[25px] h-[25px] opacity-100"
-                width={25}
-                height={25}
-              />
-            </div>
+            {transtextos && (
+              <div className="absolute top-4 left-4 z-10">
+                <img
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
+                  alt="Feed de narrativa"
+                  className="w-[25px] h-[25px] opacity-100"
+                  width={25}
+                  height={25}
+                />
+              </div>
+            )}
             <div className="absolute top-4 right-4 z-10">
               <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
                 <BookOpen className="w-3 h-3" />

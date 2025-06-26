@@ -13,6 +13,7 @@ interface MasonryFeaturedCardProps {
   bgColor: string
   tags: string[]
   publishedAt: string
+  transtextos?: boolean
 }
 
 export default function MasonryFeaturedCard(props: MasonryFeaturedCardProps) {

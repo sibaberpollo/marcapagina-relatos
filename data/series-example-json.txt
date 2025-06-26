@@ -1,0 +1,25 @@
+{
+  "type": "series",
+  "cardType": "series",
+  "seriesName": "El evangelio según Asdrúbal",
+  "seriesCover": "https://res.cloudinary.com/dx98vnos1/image/upload/v1748162632/corazon_jwldhq.png",
+  "bgColor": "#ee686b",
+  "latestChapter": {
+    "title": "La revelación final",
+    "slug": "el-evangelio-segun-asdrubal-capitulo-3",
+    "preview": "En un altar improvisado, reposaba un libro de tapas negras gastadas y papel tan delgado como las Biblias que reparten los evangelistas. —Nadie lo toque —nos advirtió la bruja que lo resguardaba—. Tiene demasiada energía.",
+    "order": 3
+  },
+  "previousChapters": [
+    {
+      "title": "El primer encuentro",
+      "slug": "el-evangelio-segun-asdrubal-capitulo-1",
+      "order": 1
+    },
+    {
+      "title": "Las señales",
+      "slug": "el-evangelio-segun-asdrubal-capitulo-2", 
+      "order": 2
+    }
+  ]
+} 

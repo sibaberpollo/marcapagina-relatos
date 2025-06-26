@@ -9,6 +9,13 @@
     "description": "🤖 **MarcaPágina** es una artefacto (Webapp) para leer relatos, microcuentos y ficción contemporánea desde cualquier dispositivo. [Antes fuimos una revista,](/acerca-de/) ahora somos una plataforma para descubrir literatura nueva, explorar [playlists](/playlist/) narrativas y participar de una comunidad activa en torno a la escritura en español.\n\nHoy puedes acceder a más de **[350 relatos y microficciones](/cronologico/)** escritos por autores emergentes de América Latina, seleccionados con criterio editorial.\n\nUna parte importante de nuestro catálogo proviene del archivo de [Transtextos](/transtextos/), un proyecto de publicación literaria migrado recientemente a MarcaPágina. Hemos integrado su fondo completo de relatos y lo seguimos expandiendo. También lanzamos una [sección de playlists](/playlist/) donde la música y la literatura dialogan: cada lista acompaña el tono de ciertos cuentos, curada directamente por sus autores.\n\nPublicamos nuevos relatos cada semana. MarcaPágina funciona como aplicación web: puedes leer desde tu navegador o instalarla como PWA en tu celular para llevar tus lecturas donde quieras.\n\nEstamos construyendo el mejor espacio para leer literatura breve en internet. Esto recién comienza."
   },
   "items": [
+    
+    {
+      "slug": "los-dias",
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": false
+    },
     {
       "type": "playlist",
       "cardType": "playlist",
@@ -16,26 +23,25 @@
       "usePlaylistData": true
     },
     {
-      "slug": "los-dias",
-      "type": "relato",
-      "cardType": "featured"
-    },
-    {
       "slug": "los-chimichimitos", 
       "type": "relato",
-      "cardType": "featured"
+      "cardType": "featured",
+      "transtextos": false
     },
     {
       "type": "quote",
       "cardType": "quote",
       "quote": "Escribe borracho, edita sobrio",
       "author": "Ernest Hemingway",
-      "bgColor": "#4ade80"
+      "bgColor": "#f3e5c0",
+      "textColor": "#8b0000",
+      "authorColor": "#1f2e3d"
     },
     {
       "slug": "el-hombre-del-canario-rojo",
       "type": "relato",
-      "cardType": "featured"
+      "cardType": "featured",
+      "transtextos": false
     },
     {
       "type": "meme",
@@ -48,37 +54,20 @@
     {
       "slug": "brisa-marina",
       "type": "relato",
-      "cardType": "featured"
+      "cardType": "featured",
+      "transtextos": true
     },
     {
       "slug": "treinta-minutos-o-menos",
       "type": "relato",
-      "cardType": "featured"
+      "cardType": "featured",
+      "transtextos": false
     },
     {
-      "type": "series",
-      "cardType": "series",
-      "seriesName": "El evangelio según Asdrúbal",
-      "seriesCover": "https://res.cloudinary.com/dx98vnos1/image/upload/v1748162632/corazon_jwldhq.png",
-      "bgColor": "#ee686b",
-      "latestChapter": {
-        "title": "La revelación final",
-        "slug": "el-evangelio-segun-asdrubal-capitulo-3",
-        "preview": "En un altar improvisado, reposaba un libro de tapas negras gastadas y papel tan delgado como las Biblias que reparten los evangelistas. —Nadie lo toque —nos advirtió la bruja que lo resguardaba—. Tiene demasiada energía.",
-        "order": 3
-      },
-      "previousChapters": [
-        {
-          "title": "El primer encuentro",
-          "slug": "el-evangelio-segun-asdrubal-capitulo-1",
-          "order": 1
-        },
-        {
-          "title": "Las señales",
-          "slug": "el-evangelio-segun-asdrubal-capitulo-2", 
-          "order": 2
-        }
-      ]
+      "slug": "teoria-de-cuerdas-en-un-sofa-turquesa",
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": false
     }
   ]
 } 

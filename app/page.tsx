@@ -25,6 +25,7 @@ interface CardProps {
   tags: string[];
   publishedAt: string;
   cardType?: 'featured' | 'story'; // Nuevo campo para tipo de card
+  transtextos?: boolean;
 }
 
 interface HomeContentItem {
@@ -40,6 +41,7 @@ interface HomeContentItem {
   bgColor?: string;
   tags?: string[];
   publishedAt?: string;
+  transtextos?: boolean;
   // Para memes - datos directos
   image?: string;
   image_portada?: string;
@@ -48,6 +50,8 @@ interface HomeContentItem {
   // Para quotes - datos específicos
   quote?: string;
   author?: string;
+  textColor?: string;
+  authorColor?: string;
   // Para playlist - datos específicos
   currentTrack?: {
     name: string;
@@ -155,6 +159,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
                 tags: item.tags || sanityData.tags || [],
                 publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
                 cardType: item.cardType || 'featured', // Default a 'featured' para card original
+                transtextos: item.transtextos || false,
               }
               
               return enrichedItem
@@ -238,6 +243,8 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         quote={quoteItem.quote!}
         author={quoteItem.author}
         bgColor={quoteItem.bgColor}
+        textColor={quoteItem.textColor}
+        authorColor={quoteItem.authorColor}
         href={quoteItem.href}
         language={language}
       />
@@ -306,6 +313,7 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
       bgColor={cardItem.bgColor}
       tags={cardItem.tags}
       publishedAt={cardItem.publishedAt}
+      transtextos={cardItem.transtextos}
     />
   );
 }

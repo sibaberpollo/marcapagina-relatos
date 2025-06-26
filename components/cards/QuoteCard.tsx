@@ -6,6 +6,8 @@ interface QuoteCardProps {
   quote: string
   author?: string
   bgColor?: string
+  textColor?: string
+  authorColor?: string
   href?: string
   language?: string
 }
@@ -14,6 +16,8 @@ export default function QuoteCard({
   quote,
   author,
   bgColor = '#4ade80', // Verde por defecto similar a la imagen
+  textColor = '#8b0000', // Rojo oscuro para la cita
+  authorColor = '#1f2e3d', // Azul oscuro para el autor
   href,
   language = 'es'
 }: QuoteCardProps) {
@@ -32,7 +36,7 @@ export default function QuoteCard({
       </div>
       
       {/* Comillas decorativas grandes */}
-      <div className="absolute top-4 left-4 opacity-20">
+      <div className="absolute top-4 left-4 opacity-25">
         <svg width="220" height="220" viewBox="0 0 24 24" fill="currentColor" className="text-white">
           <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-10zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h4v10h-10z"/>
         </svg>
@@ -40,13 +44,13 @@ export default function QuoteCard({
       
       {/* Texto de la cita */}
       <div className="relative z-10 text-center">
-        <blockquote className="text-white text-base md:text-lg font-medium leading-relaxed mb-3">
+        <blockquote className="text-base md:text-lg font-medium leading-relaxed mb-3" style={{ color: textColor }}>
           {quote}
         </blockquote>
         
         {/* Autor si existe */}
         {author && (
-          <cite className="text-white/80 text-sm font-medium not-italic">
+          <cite className="text-sm font-medium not-italic" style={{ color: authorColor }}>
             — {author}
           </cite>
         )}
