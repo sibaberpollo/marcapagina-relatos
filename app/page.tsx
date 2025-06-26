@@ -106,6 +106,7 @@ import fs from 'fs'
 import path from 'path'
 import { headers } from 'next/headers'
 import { getRelatoBySlug } from '../lib/sanity'
+import { getCurrentTrack, getLatestTracks } from '../lib/playlist'
 
 import SimpleMemeItem from '@/components/SimpleMemeItem'
 import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
@@ -159,6 +160,25 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
               return enrichedItem
             }
             return null // Si no hay datos de Sanity, retornar null
+          } else if (item.type === 'playlist' && item.usePlaylistData) {
+            // Para playlist con usePlaylistData, cargar datos del JSON del playlist
+            const currentTrack = await getCurrentTrack()
+            const latestTracks = await getLatestTracks(3)
+            const previousTracks = latestTracks.slice(1) // Las 2 siguientes después de la actual
+            
+            return {
+              ...item,
+              currentTrack: currentTrack ? {
+                name: currentTrack.name,
+                artist: currentTrack.artist,
+                albumCover: currentTrack.albumCover
+              } : null,
+              previousTracks: previousTracks.map(track => ({
+                name: track.name,
+                artist: track.artist,
+                albumCover: track.albumCover
+              }))
+            } as HomeContentItem
           } else if (item.type === 'meme' || item.type === 'quote' || item.type === 'playlist' || item.type === 'series') {
             // Para memes, quotes, playlists y series, usar los datos directamente del JSON
             return item as HomeContentItem

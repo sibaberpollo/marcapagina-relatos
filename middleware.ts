@@ -35,7 +35,7 @@ export function middleware(request: NextRequest) {
 
   // Handle multilingual routes dynamically
   const supportedLocales = ['en']; // Add more locales here (es is default)
-  const multilingualPages = ['memes-merch-descargas', 'contacto', 'acerca-de', 'posts'];
+  const multilingualPages = ['memes-merch-descargas', 'contacto', 'acerca-de', 'posts', 'playlist'];
   const multilingualPagesWithDynamicRoutes = ['post']; // For /post/[slug] type routes
 
   // Check for multilingual routes

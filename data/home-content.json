@@ -13,21 +13,7 @@
       "type": "playlist",
       "cardType": "playlist",
       "href": "/playlist",
-      "currentTrack": {
-        "name": "Discipline",
-        "artist": "King Crimson",
-        "albumCover": "https://m.media-amazon.com/images/I/41TWKY5Z3ZL.jpg"
-      },
-      "previousTracks": [
-        {
-          "name": "My Way",
-          "artist": "Frank Sinatra"
-        },
-        {
-          "name": "Lemon Tree", 
-          "artist": "Fools Garden"
-        }
-      ]
+      "usePlaylistData": true
     },
     {
       "slug": "los-dias",
@@ -63,12 +49,6 @@
       "slug": "brisa-marina",
       "type": "relato",
       "cardType": "featured"
-    },
-    {
-      "type": "meme", 
-      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750791347/edgar-allan-poe-edgar_palrek.gif",
-      "href": "/memes-merch-descargas",
-      "tags": ["meme", "diversión"]
     },
     {
       "slug": "treinta-minutos-o-menos",

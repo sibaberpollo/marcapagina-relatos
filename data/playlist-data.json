@@ -1,0 +1,163 @@
+{
+  "meta": {
+    "version": "1.0",
+    "lastUpdated": "2025-01-14"
+  },
+  "content": {
+    "es": {
+      "title": "Música a pie de página",
+      "subtitle": "Playlist literaria de Marcapágina",
+      "description": "Jazz de los años 50, trip hop de los 2000 y salsa de los grandes. Esta playlist acompaña nuestros reels, nuestras lecturas y también nuestras escrituras. Una banda sonora sin género, elegida sin reglas —salvo una: que combine con las historias que publicamos.",
+      "sections": {
+        "why": {
+          "title": "¿Por qué principalmente jazz y trip hop?",
+          "content": "Porque ambos géneros comparten algo difícil de explicar y fácil de sentir: una mezcla de precisión, nostalgia y groove que deja espacio para pensar. El jazz de mediados del siglo XX ofrece una atmósfera contenida, nocturna, con silencios que narran tanto como las notas. El trip hop, en cambio, arrastra una estética de videoclub y spoken word, con ritmos que flotan como las frases largas. Pero en realidad, el género lo dicta cada relato. Cuando la historia lo pide, puede ser salsa, puede ser electrónica, o puede ser algo que aún no sabemos nombrar."
+        },
+        "featured": {
+          "title": "Canciones destacadas"
+        }
+      },
+      "footer": "Escúchala también en [Spotify](https://open.spotify.com/playlist/1KhNqfcsSL4nHzf43T5KLI) o en [YouTube](https://www.youtube.com/playlist?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel). Y si tienes una canción que crees que encaja en este universo, escríbenos un DM. La puerta está abierta."
+    },
+    "en": {
+      "title": "Music as a footnote",
+      "subtitle": "Marcapágina's literary playlist",
+      "description": "50s jazz, 2000s trip hop, and great salsa music. This playlist accompanies our reels, our readings, and our writings. A genre-less soundtrack, chosen without rules—except one: it must match the stories we publish.",
+      "sections": {
+        "why": {
+          "title": "Why mainly jazz and trip hop?",
+          "content": "Because both genres share something difficult to explain and easy to feel: a mix of precision, nostalgia, and groove that leaves room for thinking. Mid-20th century jazz offers a contained, nocturnal atmosphere, with silences that narrate as much as the notes. Trip hop, on the other hand, carries a video store and spoken word aesthetic, with rhythms that float like long sentences. But actually, the genre is dictated by each story. When the story asks for it, it can be salsa, it can be electronic, or it can be something we don't yet know how to name."
+        },
+        "featured": {
+          "title": "Featured songs"
+        }
+      },
+      "footer": "Listen to it also on [Spotify](https://open.spotify.com/playlist/1KhNqfcsSL4nHzf43T5KLI) or [YouTube](https://www.youtube.com/playlist?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel). And if you have a song that you think fits this universe, DM us. The door is open."
+    }
+  },
+  "tracks": [
+    {
+      "id": "sadeness-enigma",
+      "name": "Sadeness (Part I)",
+      "artist": "Enigma",
+      "albumCover": "https://m.media-amazon.com/images/I/41niAdCFKbL._SX300_SY300_QL70_FMwebp_.jpg",
+      "isNew": true,
+      "isFeatured": true,
+      "order": 1
+    },
+    {
+      "id": "3-aphex-twin",
+      "name": "#3",
+      "artist": "Aphex Twin",
+      "isNew": true,
+      "isFeatured": false,
+      "order": 2
+    },
+    {
+      "id": "mi-sueno-willie-colon",
+      "name": "Mi Sueño",
+      "artist": "Willie Colón",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 3
+    },
+    {
+      "id": "las-tumbas-ismael-rivera",
+      "name": "Las Tumbas",
+      "artist": "Ismael Rivera",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 4
+    },
+    {
+      "id": "time-moves-slow-badbadnotgood",
+      "name": "Time Moves Slow",
+      "artist": "BADBADNOTGOOD ft. Samuel T. Herring",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 5
+    },
+    {
+      "id": "roads-portishead",
+      "name": "Roads",
+      "artist": "Portishead",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 6
+    },
+    {
+      "id": "alone-together-chet-baker",
+      "name": "Alone Together (Mono)",
+      "artist": "Chet Baker",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 7
+    },
+    {
+      "id": "blue-in-green-miles-davis",
+      "name": "Blue in Green",
+      "artist": "Miles Davis, John Coltrane & Bill Evans",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 8
+    },
+    {
+      "id": "harlem-nocturne-illinois-jacquet",
+      "name": "Harlem Nocturne",
+      "artist": "Illinois Jacquet",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 9
+    },
+    {
+      "id": "midnight-perfect-world-dj-shadow",
+      "name": "Midnight In A Perfect World",
+      "artist": "DJ Shadow",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 10
+    },
+    {
+      "id": "round-midnight-thelonious-monk",
+      "name": "'Round Midnight",
+      "artist": "Thelonious Monk",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 11
+    },
+    {
+      "id": "electric-relaxation-tribe-called-quest",
+      "name": "Electric Relaxation",
+      "artist": "A Tribe Called Quest",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 12
+    },
+    {
+      "id": "mood-indigo-duke-ellington",
+      "name": "Mood Indigo",
+      "artist": "Duke Ellington",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 13
+    },
+    {
+      "id": "birds-lament-moondog",
+      "name": "Bird's Lament",
+      "artist": "Moondog",
+      "isNew": false,
+      "isFeatured": false,
+      "order": 14
+    }
+  ],
+  "embeds": {
+    "youtube": {
+      "url": "https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel",
+      "title": "YouTube playlist de Marcapágina"
+    },
+    "spotify": {
+      "url": "https://open.spotify.com/embed/playlist/1KhNqfcsSL4nHzf43T5KLI?utm_source=generator",
+      "title": "Spotify playlist de Marcapágina"
+    }
+  }
+} 

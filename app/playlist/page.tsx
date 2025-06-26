@@ -1,119 +1,138 @@
 import SectionContainer from '@/components/SectionContainer'
 import PageTitle from '@/components/PageTitle'
 import { genPageMetadata } from 'app/seo'
+import { getPlaylistContent, processMarkdown } from '@/lib/playlist'
+import { headers } from 'next/headers'
 
-export const metadata = genPageMetadata({
-  title: 'Música a pie de página – Playlist literaria de Marcapágina',
-  description:
-    'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.',
-  openGraph: {
-    title: 'Música a pie de página – Playlist literaria de Marcapágina',
-    description: 'Jazz de los 50, trip hop de los 2000 y salsa que acompaña los relatos de Marcapágina. Disponible en Spotify y YouTube.',
-    type: 'website',
-    videos: [
-      {
-        url: 'https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel',
-        type: 'text/html',
-        width: 560,
-        height: 315,
-      },
-    ],
-  },
-})
+function getLocaleFromHeaders(headers: Headers): string {
+  return headers.get('x-locale') || 'es'
+}
 
-export default function PlaylistPage() {
+export async function generateMetadata() {
+  const headersList = await headers()
+  const locale = getLocaleFromHeaders(headersList)
+  
+  const playlistData = await getPlaylistContent(locale)
+  
+  if (!playlistData) {
+    return genPageMetadata({
+      title: 'Playlist | Marcapágina',
+      description: 'Playlist literaria de Marcapágina'
+    })
+  }
+
+  const { content } = playlistData
+  const isEn = locale === 'en'
+
+  return genPageMetadata({
+    title: `${content.title} | Marcapágina`,
+    description: content.description,
+    openGraph: {
+      title: `${content.title} | Marcapágina`,
+      description: content.description,
+      type: 'website',
+      videos: [
+        {
+          url: 'https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel',
+          type: 'text/html',
+          width: 560,
+          height: 315,
+        },
+      ],
+    },
+  })
+}
+
+export default async function PlaylistPage() {
+  const headersList = await headers()
+  const locale = getLocaleFromHeaders(headersList)
+  
+  const playlistData = await getPlaylistContent(locale)
+  
+  if (!playlistData) {
+    return (
+      <SectionContainer>
+        <div className="space-y-2 pt-6 pb-4 md:space-y-5">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
+            Error cargando playlist
+          </h1>
+          <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
+            No se pudo cargar el contenido del playlist.
+          </p>
+        </div>
+      </SectionContainer>
+    )
+  }
+
+  const { content, tracks, embeds } = playlistData
+  const isEn = locale === 'en'
+
   return (
     <SectionContainer>
       <article className="mx-auto max-w-3xl">
         <div className="space-y-8 divide-y divide-gray-200 dark:divide-gray-700">
           <div className="pt-8 pb-8">
-            <PageTitle>Música a pie de página</PageTitle>
+            <PageTitle>{content.title}</PageTitle>
             <p className="mt-2 text-lg text-muted-foreground">
-              Jazz de los años 50, trip hop de los 2000 y salsa de los grandes. Esta playlist acompaña nuestros reels, nuestras
-              lecturas y también nuestras escrituras. Una banda sonora sin género, elegida sin reglas —salvo
-              una: que combine con las historias que publicamos.
+              {content.description}
             </p>
 
             <div className="mt-8 space-y-6">
               <div className="aspect-video">
                 <iframe
                   className="w-full h-full rounded-md"
-                  src="https://www.youtube.com/embed/videoseries?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel"
-                  title="YouTube playlist de Marcapágina"
+                  src={embeds.youtube.url}
+                  title={embeds.youtube.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                   allowFullScreen
                   loading="lazy"
-                  aria-label="Playlist de YouTube de Marcapágina"
+                  aria-label={embeds.youtube.title}
                 />
               </div>
               <div className="aspect-[16/10]">
                 <iframe
                   className="w-full h-full rounded-md"
-                  src="https://open.spotify.com/embed/playlist/1KhNqfcsSL4nHzf43T5KLI?utm_source=generator"
-                  title="Spotify playlist de Marcapágina"
+                  src={embeds.spotify.url}
+                  title={embeds.spotify.title}
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
                   loading="lazy"
-                  aria-label="Playlist de Spotify de Marcapágina"
+                  aria-label={embeds.spotify.title}
                 />
               </div>
             </div>
 
             <section className="mt-12 space-y-6">
-              <h2 className="text-xl font-semibold">¿Por qué principalmente jazz y trip hop?</h2>
-              <p>
-                Porque ambos géneros comparten algo difícil de explicar y fácil de sentir: una mezcla de precisión, nostalgia y
-                groove que deja espacio para pensar. El jazz de mediados del siglo XX ofrece una atmósfera contenida,
-                nocturna, con silencios que narran tanto como las notas. El trip hop, en cambio, arrastra una estética
-                de videoclub y spoken word, con ritmos que flotan como las frases largas. Pero en realidad, el género lo dicta cada relato. 
-                Cuando la historia lo pide, puede ser salsa, puede ser electrónica, o puede ser algo que aún no sabemos nombrar.
-              </p>
+              <h2 className="text-xl font-semibold">{content.sections.why.title}</h2>
+              <p>{content.sections.why.content}</p>
             </section>
 
             <section className="mt-12 space-y-4">
-              <h2 className="text-xl font-semibold">Canciones destacadas</h2>
+              <h2 className="text-xl font-semibold">{content.sections.featured.title}</h2>
               <ul className="list-disc list-inside space-y-1">
-                <li>
-                  <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
-                    🔥 <strong>Sadeness (Part I)</strong> – Enigma <small>(nuevo)</small>
-                  </div>
-                </li>
-                <li><strong>#3</strong> – Aphex Twin <small>(nuevo)</small></li>
-                <li><strong>Mi Sueño</strong> – Willie Colón</li>
-                <li><strong>Las Tumbas</strong> – Ismael Rivera</li>
-                <li><strong>Time Moves Slow</strong> – BADBADNOTGOOD ft. Samuel T. Herring</li>
-                <li><strong>Roads</strong> – Portishead</li>
-                <li><strong>Alone Together (Mono)</strong> – Chet Baker</li>
-                <li><strong>Blue in Green</strong> – Miles Davis, John Coltrane & Bill Evans</li>
-                <li><strong>Harlem Nocturne</strong> – Illinois Jacquet</li>
-                <li><strong>Midnight In A Perfect World</strong> – DJ Shadow</li>
-                <li><strong>'Round Midnight</strong> – Thelonious Monk</li>
-                <li><strong>Electric Relaxation</strong> – A Tribe Called Quest</li>
-                <li><strong>Mood Indigo</strong> – Duke Ellington</li>
-                <li><strong>Bird's Lament</strong> – Moondog</li>
+                {tracks.map((track, index) => (
+                  <li key={track.id}>
+                    {index === 0 && track.isFeatured ? (
+                      <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
+                        🔥 <strong>{track.name}</strong> – {track.artist} 
+                        {track.isNew && <small> ({isEn ? 'new' : 'nuevo'})</small>}
+                      </div>
+                    ) : (
+                      <>
+                        <strong>{track.name}</strong> – {track.artist}
+                        {track.isNew && <small> ({isEn ? 'new' : 'nuevo'})</small>}
+                      </>
+                    )}
+                  </li>
+                ))}
               </ul>
             </section>
 
-            <p className="mt-12">
-              Escúchala también en{' '}
-              <a
-                href="https://open.spotify.com/playlist/1KhNqfcsSL4nHzf43T5KLI"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                Spotify
-              </a>{' '}
-              o en{' '}
-              <a
-                href="https://www.youtube.com/playlist?list=PLKfzi-Ybx99YOcEfCuiwR5nEdAapExkel"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="underline underline-offset-4 hover:text-primary"
-              >
-                YouTube
-              </a>
-              . Y si tienes una canción que crees que encaja en este universo, escríbenos un DM. La puerta está abierta.
-            </p>
+            <div 
+              className="mt-12"
+              dangerouslySetInnerHTML={{ 
+                __html: processMarkdown(content.footer)
+              }}
+            />
           </div>
         </div>
       </article>
