@@ -79,8 +79,8 @@ export default function SeriesCard({
             </span>
           </div>
 
-                     {/* Header - con padding para evitar superposición con badge y margin-top grande */}
-           <div className="p-4 pr-16 pb-6 flex-shrink-0 mt-16">
+                     {/* Header - igual que FeaturedCard */}
+           <div className="px-6 pt-6 pb-2 pr-16 flex-shrink-0 mt-10">
              <div className="text-left">
                <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
                  {seriesText}: <span className="italic">{seriesName}</span>
@@ -93,8 +93,8 @@ export default function SeriesCard({
              </div>
            </div>
 
-                      {/* Preview del último capítulo - más abajo */}
-           <div className="px-4 pb-2 flex-1">
+                      {/* Preview del último capítulo - igual que FeaturedCard */}
+           <div className="px-6 pb-2 flex-1">
              <p className="leading-relaxed text-base line-clamp-4" style={{ color: textColor }}>
                {latestChapter.preview}
              </p>
@@ -119,28 +119,31 @@ export default function SeriesCard({
 
                      {/* Footer con scroll horizontal de capítulos anteriores */}
            {previousChapters.length > 0 && (
-             <div className="px-4 py-3 flex-shrink-0">
-               <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
-                 {language === 'en' ? 'Previous chapters' : 'Capítulos anteriores'}
-               </p>
-              <div className="overflow-x-auto no-scrollbar">
-                <div className="flex gap-2">
-                  {previousChapters.map((chapter) => (
-                    <Link
-                      key={chapter.slug}
-                      href={`/relato/${chapter.slug}`}
-                      className="flex-shrink-0 px-2 py-1 rounded-full transition-all duration-200 hover:scale-105 hover:opacity-80"
-                      style={buttonStyle}
-                    >
-                      <span className="text-sm font-medium whitespace-nowrap" style={{ color: textColor }}>
-                        {chapter.order}. {chapter.title}
-                      </span>
-                    </Link>
-                  ))}
+             <>
+               <hr className="mx-6 my-2 border-white/30" />
+               <div className="px-6 py-3 flex-shrink-0">
+                 <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
+                   {language === 'en' ? 'Previous chapters' : 'Capítulos anteriores'}
+                 </p>
+                <div className="overflow-x-auto no-scrollbar">
+                  <div className="flex gap-2">
+                    {previousChapters.map((chapter) => (
+                      <Link
+                        key={chapter.slug}
+                        href={`/relato/${chapter.slug}`}
+                        className="flex-shrink-0 px-2 py-1 rounded-full transition-all duration-200 hover:scale-105 hover:opacity-80"
+                        style={buttonStyle}
+                      >
+                        <span className="text-sm font-medium whitespace-nowrap" style={{ color: textColor }}>
+                          {chapter.order}. {chapter.title}
+                        </span>
+                      </Link>
+                    ))}
+                  </div>
                 </div>
-              </div>
-            </div>
-          )}
+               </div>
+             </>
+           )}
 
           {/* Indicador de hover */}
           <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-lg transition-colors pointer-events-none"></div>
