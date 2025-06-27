@@ -1161,3 +1161,59 @@ export async function getRelatosSerieNavigation(slug: string, serieSlug: string)
     return { prev: null, next: null };
   }
 }
+
+// Función para obtener múltiples relatos por sus slugs en una sola query (OPTIMIZACIÓN)
+export async function getRelatosBySlugsBatch(slugs: string[]): Promise<Record<string, Relato>> {
+  if (slugs.length === 0) return {};
+  
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && slug.current in $slugs] {
+        title,
+        slug,
+        date,
+        publishedAt,
+        summary,
+        image,
+        bgColor,
+        "author": author-> {
+          name,
+          slug,
+          avatar
+        },
+        "tags": tags[]->title,
+        "site": site-> {
+          title,
+          slug,
+          description
+        }
+      }
+    `, { slugs });
+    
+    // Convertir a un mapa por slug para acceso O(1)
+    const relatoMap: Record<string, Relato> = {};
+    relatos.forEach((relato: Relato) => {
+      if (relato.slug?.current) {
+        // Limpiar título de emojis y convertir a versales
+        relato.title = toVersal(cleanEmoji(relato.title));
+        relatoMap[relato.slug.current] = relato;
+      }
+    });
+    
+    return relatoMap;
+  } catch (error) {
+    console.error('Error al obtener relatos por lotes desde Sanity:', error);
+    return {};
+  }
+}
+
+// Función optimizada para obtener solo el count de relatos sin traer todos los datos
+export async function getRelatosCount(): Promise<number> {
+  try {
+    const result = await client.fetch(`count(*[_type == "relato" && status == "published"])`);
+    return result || 0;
+  } catch (error) {
+    console.error('Error al obtener count de relatos desde Sanity:', error);
+    return 0;
+  }
+}

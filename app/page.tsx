@@ -2,6 +2,8 @@ import {
   getAllRelatosForChronological,
   getAllRelatosForChronologicalBySite,
   getSiteBySlug,
+  getRelatosBySlugsBatch,
+  getRelatosCount,
 } from "../lib/sanity";
 import FeaturedCard from "@/components/cards/FeaturedCard";
 import SectionContainer from "@/components/SectionContainer";
@@ -103,13 +105,10 @@ function processMarkdown(text: string): string {
     .replace(/\n\n/g, '<br /><br />');
 }
 
-
-
 // Importar las dependencias necesarias para leer archivos
 import fs from 'fs'
 import path from 'path'
 import { headers } from 'next/headers'
-import { getRelatoBySlug } from '../lib/sanity'
 import { getCurrentTrack, getLatestTracks } from '../lib/playlist'
 
 import SimpleMemeItem from '@/components/SimpleMemeItem'
@@ -119,9 +118,7 @@ import QuoteCard from '@/components/cards/QuoteCard'
 import PlaylistCard from '@/components/cards/PlaylistCard'
 import SeriesCard from '@/components/cards/SeriesCard'
 
-
-
-// Función para obtener contenido del home directamente
+// Función para obtener contenido del home directamente (OPTIMIZADA)
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
   try {
     // Leer el archivo JSON correspondiente al idioma
@@ -139,12 +136,23 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
     const fileContent = fs.readFileSync(finalPath, 'utf-8')
     const homeData = JSON.parse(fileContent)
 
-    // Procesar todos los items en paralelo manteniendo el orden original
+    // OPTIMIZACIÓN: Recopilar todos los slugs de relatos/microcuentos primero
+    const relatoSlugs: string[] = []
+    homeData.items.forEach((item: any) => {
+      if ((item.type === 'relato' || item.type === 'microcuento') && item.slug) {
+        relatoSlugs.push(item.slug)
+      }
+    })
+
+    // OPTIMIZACIÓN: Obtener todos los relatos en una sola query
+    const relatosMap = relatoSlugs.length > 0 ? await getRelatosBySlugsBatch(relatoSlugs) : {}
+
+    // Procesar todos los items manteniendo el orden original
     const processedItems = await Promise.all(
       homeData.items.map(async (item: any) => {
         try {
           if (item.type === 'relato' || item.type === 'microcuento') {
-            const sanityData = await getRelatoBySlug(item.slug)
+            const sanityData = relatosMap[item.slug]
             
             if (sanityData) {
               const enrichedItem: CardProps = {
@@ -158,18 +166,18 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
                 bgColor: item.bgColor || sanityData.bgColor || '#efa106',
                 tags: item.tags || sanityData.tags || [],
                 publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
-                cardType: item.cardType || 'featured', // Default a 'featured' para card original
+                cardType: item.cardType || 'featured',
                 transtextos: item.transtextos || false,
               }
               
               return enrichedItem
             }
-            return null // Si no hay datos de Sanity, retornar null
+            return null
           } else if (item.type === 'playlist' && item.usePlaylistData) {
             // Para playlist con usePlaylistData, cargar datos del JSON del playlist
             const currentTrack = await getCurrentTrack()
             const latestTracks = await getLatestTracks(3)
-            const previousTracks = latestTracks.slice(1) // Las 2 siguientes después de la actual
+            const previousTracks = latestTracks.slice(1)
             
             return {
               ...item,
@@ -329,12 +337,14 @@ export default async function Page({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
   const language = langFromHeader || (resolvedSearchParams.lang as string) || 'es';
   
-  // Obtener datos desde la nueva API
-  const homeContent = await getHomeContent(language);
-  const allRelatos = await getAllRelatosForChronological();
-  const totalRelatos = allRelatos.length;
-  const siteInfo = await getSiteBySlug('transtextos');
-  const allRelatosTranstextos = await getAllRelatosForChronologicalBySite('transtextos');
+  // OPTIMIZACIÓN: Hacer las queries principales en paralelo
+  const [homeContent, totalRelatos, siteInfo, allRelatosTranstextos] = await Promise.all([
+    getHomeContent(language),
+    getRelatosCount(), // OPTIMIZADA: Solo obtiene el count, no todos los datos
+    getSiteBySlug('transtextos'),
+    getAllRelatosForChronologicalBySite('transtextos') // Solo para Transtextos
+  ])
+  
   const latestTranstextos = allRelatosTranstextos.slice(0, 5);
   const currentPage = 1;
 

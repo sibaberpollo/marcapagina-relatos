@@ -12,8 +12,6 @@ export const metadata = genPageMetadata({
     'Explora más de 300 relatos y microcuentos organizados cronológicamente. Narrativa contemporánea de autores emergentes de América Latina.',
 })
 
-
-
 // Interfaz para los datos del relato
 interface RelatoData {
   title: string
@@ -52,8 +50,8 @@ export default async function CronologicoPage({ searchParams }: PageProps) {
             Todos los Relatos
           </h1>
           <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
-  Una colección cronológica de <strong>relatos</strong> escritos por autores emergentes de América Latina. Narrativa contemporánea, organizada por fecha.
-</p>
+            Una colección cronológica de <strong>relatos</strong> escritos por autores emergentes de América Latina. Narrativa contemporánea, organizada por fecha.
+          </p>
         </div>
         {/* Botones de cambio de vista */}
         <ViewToggle total={allRelatos.length} />
