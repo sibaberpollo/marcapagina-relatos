@@ -17,10 +17,10 @@
       "transtextos": false
     },
     {
-      "type": "playlist",
-      "cardType": "playlist",
-      "href": "/playlist",
-      "usePlaylistData": true
+      "slug": "bajo-de-tu-saya",
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": false
     },
     {
       "slug": "los-chimichimitos", 
