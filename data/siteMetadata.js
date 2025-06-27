@@ -4,7 +4,7 @@ const siteMetadata = {
   author: 'Hazael & Pino',
   headerTitle: 'Hazael & Pino',
   description: 'Descubre MarcaPágina: 300+ relatos y microcuentos inéditos de autores emergentes de América Latina.',
-  descriptionRich: 'Textos de gente que escribe cuando nadie los ve (2009 ~ 2014 → 2025 ➔ ∞)',
+  descriptionRich: 'Textos de gente que escribe cuando nadie los ve (2009 ~ 2014 → 2025 ➔ ∞) [test]',
   language: 'es-ES',
   theme: 'system', // system, dark or light
   siteUrl: 'https://www.marcapagina.page/',
