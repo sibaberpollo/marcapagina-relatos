@@ -118,8 +118,19 @@ import QuoteCard from '@/components/cards/QuoteCard'
 import PlaylistCard from '@/components/cards/PlaylistCard'
 import SeriesCard from '@/components/cards/SeriesCard'
 
-// Función para obtener contenido del home directamente (OPTIMIZADA)
+// Cache para contenido del home (5 minutos)
+const homeContentCache = new Map<string, { data: HomeContentResponse | null, timestamp: number }>()
+const CACHE_DURATION = 5 * 60 * 1000 // 5 minutos
+
+// Función para obtener contenido del home directamente (OPTIMIZADA CON CACHE)
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
+  const cacheKey = `home-content-${language}`
+  const cached = homeContentCache.get(cacheKey)
+  
+  // Si hay cache válido, retornarlo
+  if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
+    return cached.data
+  }
   try {
     // Leer el archivo JSON correspondiente al idioma
     const filePath = path.join(process.cwd(), 'data', `home-content${language === 'es' ? '' : `-${language}`}.json`)
@@ -207,15 +218,23 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
     // Filtrar items nulos
     const validItems = processedItems.filter(item => item !== null) as (CardProps | HomeContentItem)[]
 
-    return {
+    const result = {
       meta: homeData.meta,
       content: homeData.content,
       items: validItems
     }
 
+    // Guardar en cache
+    homeContentCache.set(cacheKey, { data: result, timestamp: Date.now() })
+    
+    return result
+
   } catch (error) {
     console.error('Error obteniendo contenido del home:', error)
-    return null
+    const errorResult = null
+    // Guardar error en cache por menos tiempo (1 minuto)
+    homeContentCache.set(cacheKey, { data: errorResult, timestamp: Date.now() - CACHE_DURATION + 60000 })
+    return errorResult
   }
 }
 
@@ -337,13 +356,28 @@ export default async function Page({ searchParams }: PageProps) {
   const resolvedSearchParams = await searchParams;
   const language = langFromHeader || (resolvedSearchParams.lang as string) || 'es';
   
-  // OPTIMIZACIÓN: Hacer las queries principales en paralelo
-  const [homeContent, totalRelatos, siteInfo, allRelatosTranstextos] = await Promise.all([
-    getHomeContent(language),
-    getRelatosCount(), // OPTIMIZADA: Solo obtiene el count, no todos los datos
-    getSiteBySlug('transtextos'),
-    getAllRelatosForChronologicalBySite('transtextos') // Solo para Transtextos
-  ])
+  // OPTIMIZACIÓN: Hacer las queries principales en paralelo con manejo robusto de errores
+  let homeContent: HomeContentResponse | null = null
+  let totalRelatos = 0
+  let siteInfo: any = null
+  let allRelatosTranstextos: any[] = []
+
+  try {
+    const results = await Promise.all([
+      getHomeContent(language).catch(() => null),
+      getRelatosCount().catch(() => 0), // OPTIMIZADA: Solo obtiene el count, no todos los datos
+      getSiteBySlug('transtextos').catch(() => null),
+      getAllRelatosForChronologicalBySite('transtextos').catch(() => []) // Solo para Transtextos
+    ])
+    
+    homeContent = results[0]
+    totalRelatos = results[1]
+    siteInfo = results[2]
+    allRelatosTranstextos = results[3]
+  } catch (error) {
+    console.error('Error cargando datos del home:', error)
+    // Los valores por defecto ya están asignados arriba
+  }
   
   const latestTranstextos = allRelatosTranstextos.slice(0, 5);
   const currentPage = 1;
