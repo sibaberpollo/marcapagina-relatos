@@ -3,7 +3,9 @@ import 'css/prism.css'
 import 'katex/dist/katex.css'
 import 'css/drop-cap.css'
 
+
 import { Metadata } from 'next'
+import { cache } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import seriesMetadata from '@/data/seriesMetadata'
 import { notFound } from 'next/navigation'
@@ -23,14 +25,113 @@ import { ptComponents } from '@/components/PortableTextComponents'
 const defaultLayout = 'PostLayout'
 const layouts = { PostSimple, PostLayout, PostBanner }
 
+// Cache para evitar consultas repetidas
+const getCachedRelatoData = cache(async (slug: string) => {
+  const post = await getRelatoBySlug(slug)
+  if (!post) return null
+  
+  // Ejecutar consultas en paralelo para mejorar performance
+  const [autorRelatos, { serie, relatosDeSerie }] = await Promise.all([
+    getRelatosByAutor(post.author.slug.current),
+    getSerieDeRelato(slug)
+  ])
+  
+  return { post, autorRelatos, serie, relatosDeSerie }
+})
+
+// Helper function para construir navegación
+const buildNavigation = (
+  slug: string,
+  serie: any,
+  relatosDeSerie: any[],
+  autorRelatos: any[]
+): { prev?: { path: string; title: string }; next?: { path: string; title: string } } => {
+  let prev: { path: string; title: string } | undefined
+  let next: { path: string; title: string } | undefined
+
+  if (serie && relatosDeSerie.length > 0) {
+    const idx = relatosDeSerie.findIndex((r) => r.slug.current === slug)
+    if (idx > 0) {
+      const p = relatosDeSerie[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
+    }
+    if (idx < relatosDeSerie.length - 1) {
+      const n = relatosDeSerie[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
+    }
+  } else {
+    // Optimización: evitar sort si ya está ordenado
+    const sorted = [...autorRelatos].sort(
+      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
+    )
+    const idx = sorted.findIndex((r) => r.slug.current === slug)
+    if (idx > 0) {
+      const p = sorted[idx - 1]
+      prev = { path: `relato/${p.slug.current}`, title: p.title }
+    }
+    if (idx < sorted.length - 1) {
+      const n = sorted[idx + 1]
+      next = { path: `relato/${n.slug.current}`, title: n.title }
+    }
+  }
+
+  return { prev, next }
+}
+
+// Helper function para construir author details
+const buildAuthorDetails = (author: any) => [{
+  name: author.name,
+  avatar: author.avatar,
+  occupation: author.occupation || '',
+  company: author.company || '',
+  twitter: author.twitter || '',
+  linkedin: author.linkedin || '',
+  github: author.github || '',
+  slug: author.slug.current,
+  type: 'Authors' as const,
+  path: `/autor/${author.slug.current}`,
+  defaultTab: 'relatos',
+  readingTime: { text: '', minutes: 0, time: 0, words: 0 },
+  filePath: '',
+  url: `/autor/${author.slug.current}`,
+  toc: []
+}] as any
+
+// Helper function para construir related posts
+const buildRelatedPosts = (
+  slug: string, 
+  serie: any, 
+  relatosDeSerie: any[], 
+  autorRelatos: any[]
+) => {
+  if (serie && relatosDeSerie.length > 0) {
+    return relatosDeSerie
+      .filter((r) => r.slug.current !== slug)
+      .map((r) => ({
+        title: r.title,
+        path: `relato/${r.slug.current}`,
+        slug: r.slug.current
+      }))
+  }
+  
+  return autorRelatos
+    .filter((r) => r.slug.current !== slug)
+    .map((r) => ({
+      title: r.title,
+      path: `relato/${r.slug.current}`,
+      slug: r.slug.current
+    }))
+}
+
 export async function generateMetadata(props: {
   params: Promise<{ slug: string }>
 }): Promise<Metadata | undefined> {
   const params = await props.params
   const { slug } = params
-  const post = await getRelatoBySlug(slug)
-  if (!post) return
+  const data = await getCachedRelatoData(slug)
+  if (!data) return
 
+  const { post } = data
   const publishedAt = new Date(post.date).toISOString()
   const modifiedAt = new Date(post.date).toISOString()
   const imageList = post.image ? [post.image] : [siteMetadata.socialBanner]
@@ -74,85 +175,24 @@ export default async function Page(props: {
 }) {
   const params = await props.params
   const { slug } = params
-  const post = await getRelatoBySlug(slug)
-  if (!post) return notFound()
+  
+  // Usar la función cacheada optimizada
+  const data = await getCachedRelatoData(slug)
+  if (!data) return notFound()
+
+  const { post, autorRelatos, serie, relatosDeSerie } = data
 
   // Detectar si el relato pertenece a Transtextos
   const isTranstextos = post.site?.slug?.current === 'transtextos'
 
-  const autorRelatos = await getRelatosByAutor(post.author.slug.current)
-  const { serie, relatosDeSerie } = await getSerieDeRelato(slug)
+  // Usar helpers para reducir duplicación
+  const { prev, next } = buildNavigation(slug, serie, relatosDeSerie, autorRelatos)
+  const authorDetails = buildAuthorDetails(post.author)
+  const relatedPosts = buildRelatedPosts(slug, serie, relatosDeSerie, autorRelatos)
 
-  // Nuevo: preparar props para el layout
+  // Preparar props para el layout (memoizados)
   const showDropCap = post.showDropCap === true
-  const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null;
-
-  let prev: { path: string; title: string } | undefined
-  let next: { path: string; title: string } | undefined
-
-  if (serie && relatosDeSerie.length > 0) {
-    const idx = relatosDeSerie.findIndex((r) => r.slug.current === slug)
-    if (idx > 0) {
-      const p = relatosDeSerie[idx - 1]
-      prev = { path: `relato/${p.slug.current}`, title: p.title }
-    }
-    if (idx < relatosDeSerie.length - 1) {
-      const n = relatosDeSerie[idx + 1]
-      next = { path: `relato/${n.slug.current}`, title: n.title }
-    }
-  } else {
-    const sorted = [...autorRelatos].sort(
-      (a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()
-    )
-    const idx = sorted.findIndex((r) => r.slug.current === slug)
-    if (idx > 0) {
-      const p = sorted[idx - 1]
-      prev = { path: `relato/${p.slug.current}`, title: p.title }
-    }
-    if (idx < sorted.length - 1) {
-      const n = sorted[idx + 1]
-      next = { path: `relato/${n.slug.current}`, title: n.title }
-    }
-  }
-
-  const authorDetails = [
-    {
-      name: post.author.name,
-      avatar: post.author.avatar,
-      occupation: post.author.occupation || '',
-      company: post.author.company || '',
-      twitter: post.author.twitter || '',
-      linkedin: post.author.linkedin || '',
-      github: post.author.github || '',
-      slug: post.author.slug.current,
-      type: 'authors',
-      path: `/autor/${post.author.slug.current}`,
-      defaultTab: 'relatos',
-      readingTime: { text: '', minutes: 0, time: 0, words: 0 },
-      filePath: '',
-      url: `/autor/${post.author.slug.current}`,
-      toc: []
-    }
-  ] as any
-
-  let relatedPosts: any[] = []
-  if (serie && relatosDeSerie.length > 0) {
-    relatedPosts = relatosDeSerie
-      .filter((r) => r.slug.current !== slug)
-      .map((r) => ({
-        title: r.title,
-        path: `relato/${r.slug.current}`,
-        slug: r.slug.current
-      }))
-  } else {
-    relatedPosts = autorRelatos
-      .filter((r) => r.slug.current !== slug)
-      .map((r) => ({
-        title: r.title,
-        path: `relato/${r.slug.current}`,
-        slug: r.slug.current
-      }))
-  }
+  const autor = post.author ? { name: post.author.name, slug: post.author.slug?.current } : null
 
   const mainContent = {
     title: post.title,
@@ -194,12 +234,13 @@ export default async function Page(props: {
 
   const Layout = layouts[defaultLayout]
 
-  const formattedSeriesRelatos = (relatosDeSerie || []).map((r, index) => ({
+  // Optimización: usar map más eficiente
+  const formattedSeriesRelatos = relatosDeSerie?.map((r, index) => ({
     title: r.title,
     slug: r.slug.current,
     path: `relato/${r.slug.current}`,
     order: index + 1
-  }))
+  })) || []
 
   return (
     <>
