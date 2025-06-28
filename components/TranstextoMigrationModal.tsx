@@ -2,8 +2,6 @@
 
 import { useState, useEffect } from 'react'
 
-const STORAGE_KEY = 'transtexto-migration-modal-shown'
-
 export default function TranstextoMigrationModal() {
   const [isOpen, setIsOpen] = useState(false)
   const [mounted, setMounted] = useState(false)
@@ -11,24 +9,12 @@ export default function TranstextoMigrationModal() {
   useEffect(() => {
     setMounted(true)
     
-    // Verificar si el modal ya fue mostrado
-    try {
-      const hasBeenShown = localStorage.getItem(STORAGE_KEY)
-      if (!hasBeenShown) {
-        setIsOpen(true)
-      }
-    } catch (error) {
-      console.error('Error accessing localStorage:', error)
-    }
+    // Mostrar el modal siempre
+    setIsOpen(true)
   }, [])
 
   const closeModal = () => {
     setIsOpen(false)
-    try {
-      localStorage.setItem(STORAGE_KEY, 'true')
-    } catch (error) {
-      console.error('Error setting localStorage:', error)
-    }
   }
 
   // No renderizar nada hasta que el componente esté montado (evitar hydration mismatch)
@@ -42,19 +28,26 @@ export default function TranstextoMigrationModal() {
         className="absolute inset-0 bg-black opacity-50"
         onClick={closeModal}
       />
-      <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-        <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
+      <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full"
+           style={{ 
+             backgroundColor: 'var(--color-bg-light)', 
+             color: 'var(--color-text-light)' 
+           }}
+           data-theme-target="modal">
+        <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50"
+            style={{ color: 'var(--color-text-light)' }}>
           ¡Hola! 👋
         </h2>
-        <div className="space-y-3 text-sm mb-4 text-gray-700 dark:text-gray-300">
+        <div className="space-y-3 text-sm mb-4 text-gray-700 dark:text-gray-300"
+             style={{ color: 'var(--color-text-light)' }}>
           <p>
-            Queremos contarte que ahora todos los textos que nos envíen serán considerados para ser publicados como parte de <strong>Transtextos</strong>, nuestro feed de narrativa.
+            Queremos contarte que ahora todos los textos que nos envíen serán considerados para ser publicados como parte de <strong><a href="/transtextos" className="underline hover:underline">Transtextos</a></strong>, nuestro feed de narrativa.
           </p>
           <p>
-            <strong>MarcaPágina</strong> es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de <strong>Transtextos</strong>.
+            <strong>MarcaPágina</strong> es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de <strong><a href="/transtextos" className="underline hover:underline">Transtextos</a></strong>.
           </p>
           <p className="text-xs opacity-75">
-            <em>Nota: Si ya fuiste publicado anteriormente en Transtexto, puedes enviar tu relato directamente por correo electrónico.</em>
+            <em>Nota: Si ya fuiste publicado anteriormente en <a href="/transtextos" className="underline hover:underline">Transtextos</a>, puedes enviar tu relato directamente por correo electrónico.</em>
           </p>
         </div>
         <div className="flex justify-end">

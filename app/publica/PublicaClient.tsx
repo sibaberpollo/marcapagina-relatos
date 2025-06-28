@@ -357,12 +357,20 @@ export default function PublicaClient() {
               case 'formulario':
         return (
           <>
-            <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
-              <PageTitle>Publica en Transtextos</PageTitle>
+            <article className="prose prose-lg dark:prose-invert mx-auto mb-5"
+                     style={{ 
+                       color: 'var(--color-text-light)', 
+                       backgroundColor: 'var(--color-bg-light)' 
+                     }}
+                     data-theme-target="prose">
+              <PageTitle>Publica en <a href="/transtextos" className="underline hover:underline">Transtextos</a></PageTitle>
               
-              <p>Comparte tu relato para nuestro feed de narrativa (máximo 5-7 cuartillas).</p>
+              <p className="text-gray-700 dark:text-gray-300" 
+                 style={{ color: 'var(--color-text-light)' }}>
+                Comparte tu relato para nuestro feed de narrativa (máximo 5-7 cuartillas).
+              </p>
               <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
-                <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados en Transtextos.
+                <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados en <a href="/transtextos" className="underline hover:underline" style={{ color: '#222' }}>Transtextos</a>.
               </p>
             </article>
 
@@ -392,12 +400,20 @@ export default function PublicaClient() {
       <SectionContainer>
         {/* Texto de bienvenida estático - siempre visible */}
         {estado === 'pre_formulario' && (
-          <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mb-8">
-            <h2>¡Publica tu relato!</h2>
-            <p>
-              Estamos encantados con la idea de leerte y, ojalá, publicarte en <strong>Transtextos</strong>, nuestro feed de narrativa continua. Pero antes, queremos que conozcas mejor el tipo de relatos que buscamos.
+          <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mb-8" 
+               style={{ 
+                 color: 'var(--color-text-light)', 
+                 backgroundColor: 'var(--color-bg-light)' 
+               }}
+               data-theme-target="prose">
+            <h2 className="text-gray-900 dark:text-gray-100" 
+                style={{ color: 'var(--color-text-light)' }}>¡Publica tu relato!</h2>
+            <p className="text-gray-700 dark:text-gray-300" 
+               style={{ color: 'var(--color-text-light)' }}>
+              Estamos encantados con la idea de leerte y, ojalá, publicarte en <strong><a href="/transtextos" className="underline hover:underline">Transtextos</a></strong>, nuestro feed de narrativa continua. Pero antes, queremos que conozcas mejor el tipo de relatos que buscamos.
             </p>
-            <p>
+            <p className="text-gray-700 dark:text-gray-300" 
+               style={{ color: 'var(--color-text-light)' }}>
               1) Te mostraremos un relato breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en nuestro feed.  
               <HighlightStroke>
                 <a href="/criterios-editoriales" className="font-semibold hover:underline">
@@ -405,8 +421,9 @@ export default function PublicaClient() {
                 </a>
               </HighlightStroke>
             </p>
-            <p>
-              2) Luego de leerlo, te haremos un par de preguntas muy simples. Al responderlas, se activará el formulario para enviar tu texto a Transtextos.
+            <p className="text-gray-700 dark:text-gray-300" 
+               style={{ color: 'var(--color-text-light)' }}>
+              2) Luego de leerlo, te haremos un par de preguntas muy simples. Al responderlas, se activará el formulario para enviar tu texto a <a href="/transtextos" className="underline hover:underline">Transtextos</a>.
             </p>
           </div>
         )}
@@ -420,9 +437,15 @@ export default function PublicaClient() {
       </SectionContainer>
       {estado === 'pre_formulario' && (
         <SectionContainer>
-        <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mt-8">
-          <p className="text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
-            Nos comprometemos a leer con atención cada texto recibido para Transtextos. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
+        <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mt-8"
+             style={{ 
+               color: 'var(--color-text-light)', 
+               backgroundColor: 'var(--color-bg-light)' 
+             }}
+             data-theme-target="prose">
+          <p className="text-gray-700 dark:text-gray-300"
+             style={{ color: 'var(--color-text-light)' }}>
+            Nos comprometemos a leer con atención cada texto recibido para <a href="/transtextos" className="underline hover:underline">Transtextos</a>. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
             Si tu relato es seleccionado para nuestro <HighlightStroke>feed de narrativa</HighlightStroke>, te daremos acceso a una <strong>selección de ilustraciones especialmente creadas para acompañarlo, y le daremos difusión activa a través de nuestras redes sociales.</strong>
           </p>
         </div>

@@ -155,6 +155,16 @@
       color: var(--color-text-dark) !important;
     }
     
+    html.dark [data-theme-target="prose"] {
+      backgroundColor: var(--color-bg-dark) !important;
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark [data-theme-target="modal"] {
+      backgroundColor: var(--color-bg-dark) !important;
+      color: var(--color-text-dark) !important;
+    }
+    
     html.dark .prose {
       color: var(--color-text-dark) !important;
     }
@@ -178,6 +188,16 @@
   html.dark [data-theme-target="form"] {
     background-color: var(--color-bg-dark) !important;
     border-color: var(--color-gray-600) !important;
+    color: var(--color-text-dark) !important;
+  }
+
+  html.dark [data-theme-target="prose"] {
+    background-color: var(--color-bg-dark) !important;
+    color: var(--color-text-dark) !important;
+  }
+
+  html.dark [data-theme-target="modal"] {
+    background-color: var(--color-bg-dark) !important;
     color: var(--color-text-dark) !important;
   }
 
@@ -213,6 +233,16 @@
     }
     
     html.dark .prose {
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark [data-theme-target="prose"] {
+      background-color: var(--color-bg-dark) !important;
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark [data-theme-target="modal"] {
+      background-color: var(--color-bg-dark) !important;
       color: var(--color-text-dark) !important;
     }
     
