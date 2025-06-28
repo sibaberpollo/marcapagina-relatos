@@ -3,9 +3,9 @@ import { genPageMetadata } from 'app/seo'
 import PublicaClient from './PublicaClient'
 
 export const metadata = genPageMetadata({
-  title: 'Publica con nosotros',
+  title: 'Publica en Transtextos',
   description:
-    'Comparte tu relato con MarcaPagina: cuéntanos quién eres, tus influencias y adjunta tu historia.',
+    'Comparte tu relato en Transtextos, el feed de narrativa de MarcaPágina: cuéntanos quién eres, tus influencias y adjunta tu historia.',
 })
 
 export default function PublicaPage() {

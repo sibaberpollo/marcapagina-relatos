@@ -13,7 +13,9 @@ export default function ConditionalHeader() {
   }
   
   // Detectar si estamos en rutas de secciones de Transtextos
-  const isTranstextosRoute = pathname.startsWith('/transtextos')
+  const isTranstextosRoute = pathname.startsWith('/transtextos') || 
+                            pathname.startsWith('/publica') || 
+                            pathname.startsWith('/criterios-editoriales')
   
   return isTranstextosRoute ? <TranstextosHeader /> : <Header />
 } 

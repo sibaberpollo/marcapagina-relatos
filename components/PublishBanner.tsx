@@ -26,14 +26,14 @@ export default function PublishBanner() {
         {/* Texto - abajo en móvil, derecha en desktop */}
         <div className="order-2 md:order-2 flex-1 text-left">
           <p className="text-lg mb-2">
-            <strong>¿Te gustaría publicar tu relato en nuestro <Link href="https://www.marcapagina.page" className="underline hover:underline">feed de narrativa</Link>?</strong>
+            <strong>¿Te gustaría publicar tu relato en <Link href="/transtextos" className="underline hover:underline">Transtextos</Link>?</strong>
           </p>
-          <p className="mb-4">En Marcapágina buscamos nuevas voces y relatos. Si tienes un texto que quieras compartir, ¡anímate a enviarlo!</p>
+          <p className="mb-4">En nuestro feed de narrativa buscamos nuevas voces y relatos. Si tienes un texto que quieras compartir, ¡anímate a enviarlo!</p>
           <Link
             href="/publica"
             className="inline-block px-4 py-2 rounded bg-black text-yellow-200 font-bold hover:bg-gray-800 transition-colors duration-200"
           >
-            Publica tu relato
+            Publica en Transtextos
           </Link>
         </div>
       </div>

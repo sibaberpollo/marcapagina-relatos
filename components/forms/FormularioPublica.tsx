@@ -187,10 +187,18 @@ export default function FormularioPublica({
 
       <form
         onSubmit={handleSubmitWithCaptchaCheck}
-        className="mx-auto max-w-2xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow"
+        className="mx-auto max-w-2xl space-y-6 bg-white dark:bg-gray-800 p-8 border-2 border-black dark:border-gray-600 rounded-lg shadow-lg"
         encType="multipart/form-data"
+        style={{ 
+          backgroundColor: 'var(--color-bg-light)',
+          borderColor: 'var(--color-gray-900)',
+          color: 'var(--color-text-light)'
+        }}
+        data-theme-target="form"
       >
-        <p className="text-sm text-gray-600 dark:text-gray-400">Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.</p>
+        <p className="text-sm text-gray-600 dark:text-gray-400" style={{ color: 'var(--color-gray-600)' }}>
+          Todos los campos son obligatorios. Los campos marcados con (<span className="text-red-600">*</span>) son requeridos.
+        </p>
 
         {/* Email */}
         <div>

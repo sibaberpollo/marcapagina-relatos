@@ -122,8 +122,8 @@
   }
 
   html.dark body {
-    color: var(--color-text-dark);
-    background-color: var(--color-bg-dark);
+    color: var(--color-text-dark) !important;
+    background-color: var(--color-bg-dark) !important;
   }
 
   a {
@@ -135,11 +135,93 @@
   }
 
   html.dark a {
-    color: var(--color-link-dark);
+    color: var(--color-link-dark) !important;
   }
 
   html.dark a:hover {
-    color: var(--color-link-dark-hover);
+    color: var(--color-link-dark-hover) !important;
+  }
+
+  /* Firefox specific dark mode fixes */
+  @-moz-document url-prefix() {
+    html.dark body {
+      color: var(--color-text-dark) !important;
+      background-color: var(--color-bg-dark) !important;
+    }
+    
+    html.dark [data-theme-target="form"] {
+      backgroundColor: var(--color-bg-dark) !important;
+      borderColor: var(--color-gray-600) !important;
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark .prose {
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark .prose h1,
+    html.dark .prose h2,
+    html.dark .prose h3,
+    html.dark .prose h4,
+    html.dark .prose h5,
+    html.dark .prose h6 {
+      color: var(--color-gray-100) !important;
+    }
+    
+    html.dark .prose p,
+    html.dark .prose li {
+      color: var(--color-gray-300) !important;
+    }
+  }
+
+  /* Cross-browser dark mode improvements */
+  html.dark [data-theme-target="form"] {
+    background-color: var(--color-bg-dark) !important;
+    border-color: var(--color-gray-600) !important;
+    color: var(--color-text-dark) !important;
+  }
+
+  html.dark .prose {
+    color: var(--color-text-dark) !important;
+  }
+
+  html.dark .prose * {
+    color: inherit !important;
+  }
+
+  /* Form inputs dark mode */
+  html.dark input,
+  html.dark textarea,
+  html.dark select {
+    background-color: var(--color-gray-900) !important;
+    border-color: var(--color-gray-600) !important;
+    color: var(--color-text-dark) !important;
+  }
+
+  html.dark input:focus,
+  html.dark textarea:focus,
+  html.dark select:focus {
+    border-color: var(--color-accent) !important;
+    outline-color: var(--color-accent) !important;
+  }
+
+  /* Webkit/Blink specific (Chrome, Safari, new Edge, Vivaldi) */
+  @supports (-webkit-appearance: none) {
+    html.dark body {
+      color: var(--color-text-dark) !important;
+      background-color: var(--color-bg-dark) !important;
+    }
+    
+    html.dark .prose {
+      color: var(--color-text-dark) !important;
+    }
+    
+    html.dark input,
+    html.dark textarea,
+    html.dark select {
+      background-color: var(--color-gray-900) !important;
+      color: var(--color-text-dark) !important;
+    }
   }
 }
 

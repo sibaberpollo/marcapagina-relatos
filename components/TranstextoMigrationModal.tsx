@@ -44,15 +44,17 @@ export default function TranstextoMigrationModal() {
       />
       <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
         <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
-          💡 Nota para autores de Transtexto
+          ¡Hola! 👋
         </h2>
         <div className="space-y-3 text-sm mb-4 text-gray-700 dark:text-gray-300">
           <p>
-            Si ya fuiste publicado en <strong>Transtexto</strong> (ahora un minisitio que es parte de Marcapágina), 
-            puedes enviar tu relato directamente por <em><strong>correo electrónico</strong></em>.
+            Queremos contarte que ahora todos los textos que nos envíen serán considerados para ser publicados como parte de nuestro <strong>feed de narrativa (Transtextos)</strong>.
           </p>
           <p>
-            <strong>No es necesario que uses este formulario.</strong>
+            <strong>MarcaPágina</strong> es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de <strong>Transtextos</strong>.
+          </p>
+          <p className="text-xs opacity-75">
+            <em>Nota: Si ya fuiste publicado anteriormente en Transtexto, puedes enviar tu relato directamente por correo electrónico.</em>
           </p>
         </div>
         <div className="flex justify-end">

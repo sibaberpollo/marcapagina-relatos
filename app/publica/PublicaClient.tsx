@@ -354,15 +354,15 @@ export default function PublicaClient() {
           </div>
         )
         
-      case 'formulario':
+              case 'formulario':
         return (
           <>
             <article className="prose prose-lg dark:prose-invert mx-auto mb-5">
-              <PageTitle>Publica con nosotros</PageTitle>
+              <PageTitle>Publica en Transtextos</PageTitle>
               
-              <p>Comparte tu relato (máximo 5-7 cuartillas).</p>
+              <p>Comparte tu relato para nuestro feed de narrativa (máximo 5-7 cuartillas).</p>
               <p className="px-4 py-2 rounded font-semibold" style={{ background: '#faff00', color: '#222', boxShadow: '0 0 8px #faff00' }}>
-                <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados.
+                <strong>Nota:</strong> Los archivos enviados serán evaluados antes de ser publicados en Transtextos.
               </p>
             </article>
 
@@ -393,12 +393,12 @@ export default function PublicaClient() {
         {/* Texto de bienvenida estático - siempre visible */}
         {estado === 'pre_formulario' && (
           <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mb-8">
-            <h2>¡Publica con nosotros!</h2>
+            <h2>¡Publica tu relato!</h2>
             <p>
-              Estamos encantados con la idea de leerte y, ojalá, publicarte. Pero antes, queremos que conozcas mejor el tipo de relatos que buscamos.
+              Estamos encantados con la idea de leerte y, ojalá, publicarte en <strong>Transtextos</strong>, nuestro feed de narrativa continua. Pero antes, queremos que conozcas mejor el tipo de relatos que buscamos.
             </p>
             <p>
-              1) Te mostraremos un cuento breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en Marcapágina.  
+              1) Te mostraremos un relato breve al azar para que puedas explorar el tono, la atmósfera y la mirada narrativa que cultivamos en nuestro feed.  
               <HighlightStroke>
                 <a href="/criterios-editoriales" className="font-semibold hover:underline">
                   Ver criterios editoriales
@@ -406,7 +406,7 @@ export default function PublicaClient() {
               </HighlightStroke>
             </p>
             <p>
-              2) Luego de leerlo, te haremos un par de preguntas muy simples. Al responderlas, se activará el formulario para enviar tu texto.
+              2) Luego de leerlo, te haremos un par de preguntas muy simples. Al responderlas, se activará el formulario para enviar tu texto a Transtextos.
             </p>
           </div>
         )}
@@ -422,8 +422,8 @@ export default function PublicaClient() {
         <SectionContainer>
         <div className="prose prose-lg dark:prose-invert mx-auto max-w-3xl mt-8">
           <p className="text-[var(--color-text-light)] dark:text-[var(--color-text-dark)]">
-            Nos comprometemos a leer con atención cada texto recibido. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
-            Si tu relato es seleccionado, además de su <HighlightStroke>publicación</HighlightStroke>, te daremos acceso a una <strong>selección de ilustraciones especialmente creadas para acompañarlo, y le daremos difusión activa a través de nuestras redes sociales.</strong>
+            Nos comprometemos a leer con atención cada texto recibido para Transtextos. En la medida de lo posible, te enviaremos una devolución en clave de taller. 
+            Si tu relato es seleccionado para nuestro <HighlightStroke>feed de narrativa</HighlightStroke>, te daremos acceso a una <strong>selección de ilustraciones especialmente creadas para acompañarlo, y le daremos difusión activa a través de nuestras redes sociales.</strong>
           </p>
         </div>
         </SectionContainer>
