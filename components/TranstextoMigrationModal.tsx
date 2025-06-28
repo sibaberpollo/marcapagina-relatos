@@ -48,7 +48,7 @@ export default function TranstextoMigrationModal() {
         </h2>
         <div className="space-y-3 text-sm mb-4 text-gray-700 dark:text-gray-300">
           <p>
-            Queremos contarte que ahora todos los textos que nos envíen serán considerados para ser publicados como parte de nuestro <strong>feed de narrativa (Transtextos)</strong>.
+            Queremos contarte que ahora todos los textos que nos envíen serán considerados para ser publicados como parte de <strong>Transtextos</strong>, nuestro feed de narrativa.
           </p>
           <p>
             <strong>MarcaPágina</strong> es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de <strong>Transtextos</strong>.
