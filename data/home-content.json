@@ -37,6 +37,15 @@
       "cardType": "featured",
       "transtextos": false
     },
+
+    {
+      "type": "meme",
+      "cardType": "overlay",
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
+      "href": "/post/los-chapulines-salvajes",
+      "tags": ["imagen", "vertical"],
+      "overlayText": "A propósito del hype de la serie Sin querer queriendo en HBO"
+    },
     {
       "slug": "los-chimichimitos", 
       "type": "relato",
@@ -50,14 +59,6 @@
       "transtextos": false
     },
     {
-      "type": "meme",
-      "cardType": "overlay",
-      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
-      "href": "/post/los-chapulines-salvajes",
-      "tags": ["imagen", "vertical"],
-      "overlayText": "A propósito del hype de la serie Sin querer queriendo en HBO"
-    },
-    {
       "slug": "brisa-marina",
       "type": "relato",
       "cardType": "featured",
@@ -65,12 +66,6 @@
     },
     {
       "slug": "treinta-minutos-o-menos",
-      "type": "relato",
-      "cardType": "featured",
-      "transtextos": false
-    },
-    {
-      "slug": "teoria-de-cuerdas-en-un-sofa-turquesa",
       "type": "relato",
       "cardType": "featured",
       "transtextos": false
