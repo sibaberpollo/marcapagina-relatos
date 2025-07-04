@@ -10,12 +10,17 @@
   },
   "items": [
     {
+      "slug": "sabanas-remendadas",
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": false
+    },
+    {
       "slug": "versus",
       "type": "relato",
       "cardType": "featured",
       "transtextos": true
     },
-
     {
       "type": "quote",
       "cardType": "quote",
@@ -63,12 +68,6 @@
       "type": "relato",
       "cardType": "featured",
       "transtextos": true
-    },
-    {
-      "slug": "treinta-minutos-o-menos",
-      "type": "relato",
-      "cardType": "featured",
-      "transtextos": false
     }
   ]
 } 
