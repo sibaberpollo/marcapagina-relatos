@@ -15,7 +15,7 @@ import { PageSEO } from "@/components/SEO";
 import { getRelativeTime } from "@/lib/time";
 import FeaturedSlider from "@/components/FeaturedSlider";
 import FeaturedCard from "@/components/cards/FeaturedCard";
-import { getFeaturedAndNonFeaturedRelatos } from "@/lib/sanity";
+import { getFeaturedRelatosFromJSON } from "@/lib/home-content";
 import ShareIcons from "@/components/ShareIcons";
 
 const editUrl = (path: string) =>
@@ -73,8 +73,8 @@ export default async function PostLayout({
   const nextLabel = isArticle ? "Próximo artículo" : "Próximo relato";
   const basePath = path.split("/")[0];
 
-  const { featured, nonFeatured } = await getFeaturedAndNonFeaturedRelatos();
-  const sliderPosts = [...(featured ? [featured] : []), ...nonFeatured]
+  const featuredRelatos = await getFeaturedRelatosFromJSON();
+  const sliderPosts = featuredRelatos
     .slice(0, 6)
     .filter((p) => p.href !== `/${path}`);
 
