@@ -21,13 +21,13 @@ function AutorCard({ autor }: { autor: any }) {
             alt={autor.name}
             width={60}
             height={60}
-            className="rounded-full w-12 h-12 sm:w-16 sm:h-16"
+            className="rounded-full w-12 h-12 sm:w-16 sm:h-16 grayscale"
           />
         ) : (
           <AutoAvatar
             name={autor.name}
             size={60}
-            className="rounded-full bg-black text-white font-titles text-lg sm:text-xl flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16"
+            className="rounded-full bg-black text-white font-titles text-lg sm:text-xl flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 grayscale"
           />
         )}
       </div>
