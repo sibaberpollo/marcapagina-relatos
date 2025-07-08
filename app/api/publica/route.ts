@@ -69,32 +69,39 @@ export async function POST(req: NextRequest) {
       .sendMail({
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: email,
-        subject: 'MarcaPagina: recibimos tu relato',
-        text: `Hola,\n\n¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.\n\nTu texto será evaluado antes de publicarse.\n\nSíguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— El equipo de MarcaPagina`,
-        html: `<p>Hola,</p>
-               <p>¡Gracias por compartir tu historia con MarcaPagina! Hemos recibido tu relato y nos pondremos en contacto contigo pronto.</p>
-               <p style='background:#faff00; color:#222; padding:8px; border-radius:6px; font-weight:bold;'>Tu texto será evaluado antes de publicarse.</p>
+        subject: 'Transtextos\\Mp: recibimos tu relato para ser revisado',
+        text: `¡Hola! 👋\n\n¡Gracias por compartir tu historia con nosotros! Hemos recibido tu relato y será considerado para ser publicado como parte de Transtextos, nuestro feed de narrativa en MarcaPágina.\n\nMarcaPágina es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de Transtextos.\n\nTu texto será evaluado antes de publicarse en nuestro feed continuo de escritura breve.\n\nSíguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:\n\nTranstextos:\nInstagram: https://www.instagram.com/transtextosig/\nTwitter: https://x.com/transtextos\n\nMarcaPágina:\nInstagram: https://www.instagram.com/marcapagina.page/\nTwitter: https://x.com/marcapaginapage\nThreads: https://www.threads.com/@marcapagina.page\nBluesky: https://bsky.app/profile/marcapagina.bsky.social\n\n— El equipo de MarcaPagina y Transtextos`,
+        html: `<p>¡Hola! 👋</p>
+               <p>¡Gracias por compartir tu historia con nosotros! Hemos recibido tu relato y será considerado para ser publicado como parte de <strong>Transtextos</strong>, nuestro feed de narrativa en MarcaPágina.</p>
+               <p><strong>MarcaPágina</strong> es ahora una app que publica relatos, memes, playlists y otros formatos literarios, donde toda la narrativa forma parte de <strong>Transtextos</strong>.</p>
+               <p style='background:#faff00; color:#222; padding:8px; border-radius:6px; font-weight:bold;'>Tu texto será evaluado antes de publicarse en nuestro feed continuo de escritura breve.</p>
                <p>Síguenos en nuestras redes sociales para estar al tanto de novedades y publicaciones:</p>
+               <h4>Transtextos:</h4>
+               <ul>
+                 <li><a href='https://www.instagram.com/transtextosig/' target='_blank'>Instagram</a></li>
+                 <li><a href='https://x.com/transtextos' target='_blank'>Twitter</a></li>
+               </ul>
+               <h4>MarcaPágina:</h4>
                <ul>
                  <li><a href='https://www.instagram.com/marcapagina.page/' target='_blank'>Instagram</a></li>
                  <li><a href='https://x.com/marcapaginapage' target='_blank'>Twitter</a></li>
                  <li><a href='https://www.threads.com/@marcapagina.page' target='_blank'>Threads</a></li>
                  <li><a href='https://bsky.app/profile/marcapagina.bsky.social' target='_blank'>Bluesky</a></li>
                </ul>
-               <p>— El equipo de MarcaPagina</p>`,
+               <p>— El equipo de MarcaPagina y Transtextos</p>`,
       })
       .then(info => console.log('Confirmación enviada a remitente:', info.messageId))
       .catch(err => console.error('Error enviando confirmación al remitente:', err))
 
     try {
-      // 2) Envío interno con copia a ti
+      // 2) Envío interno con copia a equipos de MarcaPagina y Transtextos
       console.log('Enviando correo interno a:', GMAIL_USER);
       const infoInternal = await transporter.sendMail({
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: GMAIL_USER,
-        cc: 'pino.jose@gmail.com',
+        cc: 'pino.jose@gmail.com, transtextos@gmail.com, mirco.ferri.yv@gmail.com, joacofe@gmail.com',
         replyTo: email,
-        subject: `Nuevo relato de ${email}`,
+        subject: `Nuevo relato para Transtextos de ${email}`,
         text: `De: ${email}\n\n${description}`,
         attachments,
       });
