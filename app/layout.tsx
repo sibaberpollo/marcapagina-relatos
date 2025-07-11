@@ -10,6 +10,7 @@ import ConditionalTopBar from '@/components/ConditionalTopBar'
 import Footer from '@/components/Footer'
 import Breadcrumbs from '@/components/Breadcrumbs'
 import SectionContainer from '@/components/SectionContainer'
+import ConditionalBackgroundWrapper from '@/components/ConditionalBackgroundWrapper'
 import siteMetadata from '@/data/siteMetadata'
 import OrganizationSchema from '@/components/OrganizationSchema'
 import { ThemeProviders } from './theme-providers'
@@ -67,6 +68,8 @@ export const metadata: Metadata = {
     images: [siteMetadata.socialBanner],
   },
 }
+
+
 
 export default function RootLayout({
   children,
@@ -151,12 +154,14 @@ export default function RootLayout({
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
             <ConditionalHeader />
             <ConditionalTopBar />
-            <SectionContainer>
-              <Breadcrumbs />
-            </SectionContainer>
-            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-              <main className="mb-auto font-serif">{children}</main>
-            </SearchProvider>
+            <ConditionalBackgroundWrapper>
+              <SectionContainer>
+                <Breadcrumbs />
+              </SectionContainer>
+              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+                <main className="mb-auto font-serif">{children}</main>
+              </SearchProvider>
+            </ConditionalBackgroundWrapper>
             <Footer />
           </ThemeProviders>
         </ThemeProvider>

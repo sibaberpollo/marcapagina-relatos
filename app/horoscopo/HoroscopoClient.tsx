@@ -180,6 +180,34 @@ export default function HoroscopoClient() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const zodiacSectionRef = useRef<HTMLDivElement>(null)
+  const zodiacScrollRef = useRef<HTMLDivElement>(null)
+
+  // Función para centrar el signo activo en el scroll horizontal
+  const scrollToActiveSign = (signSlug: string) => {
+    if (!zodiacScrollRef.current) return
+    
+    const signIndex = zodiacSigns.findIndex(sign => sign.slug === signSlug)
+    if (signIndex === -1) return
+    
+    const scrollContainer = zodiacScrollRef.current
+    const containerWidth = scrollContainer.offsetWidth
+    
+    // Calcular el ancho aproximado de cada elemento (incluyendo gap)
+    // w-16 md:w-20 lg:w-24 + gap-4 + padding + texto
+    const itemWidth = window.innerWidth >= 1024 ? 120 : window.innerWidth >= 768 ? 100 : 80
+    
+    // Calcular la posición del signo activo
+    const signPosition = signIndex * itemWidth
+    
+    // Calcular el scroll para centrar el signo
+    const scrollLeft = signPosition - (containerWidth / 2) + (itemWidth / 2)
+    
+    // Hacer scroll suave
+    scrollContainer.scrollTo({
+      left: Math.max(0, scrollLeft),
+      behavior: 'smooth'
+    })
+  }
 
   // Establecer signo activo al cargar la página
   useEffect(() => {
@@ -190,24 +218,40 @@ export default function HoroscopoClient() {
       // Si hay un signo válido en la URL, usarlo
       setActiveSign(signFromUrl)
       
-      // Hacer scroll automático a la sección de signos al cargar
+      // Hacer scroll automático a la sección de signos al cargar y centrar el signo
       setTimeout(() => {
         zodiacSectionRef.current?.scrollIntoView({ 
           behavior: 'smooth',
           block: 'start'
         })
+        // Centrar el signo en el scroll horizontal
+        setTimeout(() => scrollToActiveSign(signFromUrl), 100)
       }, 300)
     } else {
       // Si no, detectar automáticamente el signo actual
       const currentSign = getCurrentZodiacSign()
       setActiveSign(currentSign)
+      
+      // Centrar el signo detectado automáticamente
+      setTimeout(() => scrollToActiveSign(currentSign), 500)
     }
   }, [searchParams])
+
+  // Efecto adicional para centrar el signo cuando cambie activeSign
+  useEffect(() => {
+    if (activeSign) {
+      // Pequeño delay para asegurar que el DOM esté listo
+      setTimeout(() => scrollToActiveSign(activeSign), 200)
+    }
+  }, [activeSign])
 
   const handleSignChange = (signSlug) => {
     setActiveSign(signSlug)
     // Navegar a la nueva URL con parámetros
     router.push(`/horoscopo?sign=${signSlug}`, { scroll: false })
+    
+    // Centrar el signo seleccionado en el scroll horizontal
+    setTimeout(() => scrollToActiveSign(signSlug), 100)
     
     // Hacer scroll suave a la sección del menú zodiacal
     setTimeout(() => {
@@ -251,13 +295,6 @@ export default function HoroscopoClient() {
             {/* Right Column - Artistic Image */}
             <div className="relative order-1 lg:order-2">
               <div className="relative w-full h-96 lg:h-[500px]">
-                {/* Background geometric shapes */}
-                <div className="absolute inset-0">
-                  <div className="absolute top-10 left-10 w-32 h-32 bg-gradient-to-br from-cyan-200 to-cyan-300 dark:from-cyan-800 dark:to-cyan-900 rounded-full opacity-60"></div>
-                  <div className="absolute top-20 right-20 w-24 h-24 bg-gradient-to-br from-primary-200 to-primary-300 dark:from-primary-800 dark:to-primary-900 opacity-70 transform rotate-45"></div>
-                  <div className="absolute bottom-20 left-20 w-20 h-20 bg-gradient-to-br from-purple-200 to-purple-300 dark:from-purple-800 dark:to-purple-900 rounded-full opacity-50"></div>
-                </div>
-
                 {/* Central silhouette area */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="relative w-64 h-80 bg-gradient-to-b from-gray-800 to-gray-900 dark:from-gray-200 dark:to-gray-300 rounded-full opacity-20">
@@ -276,14 +313,6 @@ export default function HoroscopoClient() {
                       </svg>
                     </div>
                   </div>
-                </div>
-
-                {/* Floating particles */}
-                <div className="absolute inset-0">
-                  <div className="absolute top-12 left-8 w-1 h-1 bg-primary-400 rounded-full animate-pulse"></div>
-                  <div className="absolute top-32 right-8 w-1 h-1 bg-cyan-400 rounded-full animate-pulse" style={{animationDelay: '1s'}}></div>
-                  <div className="absolute bottom-16 left-16 w-1 h-1 bg-purple-400 rounded-full animate-pulse" style={{animationDelay: '2s'}}></div>
-                  <div className="absolute bottom-40 right-24 w-1 h-1 bg-primary-400 rounded-full animate-pulse" style={{animationDelay: '0.5s'}}></div>
                 </div>
               </div>
             </div>
@@ -307,7 +336,10 @@ export default function HoroscopoClient() {
           {/* Zodiac Signs Tabs - Estilo Avatar */}
           <div className="mb-8">
             <div className="relative">
-              <div className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent pb-4">
+              <div 
+                ref={zodiacScrollRef}
+                className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent pb-4"
+              >
                 <div className="flex gap-4 min-w-max px-2">
                   {zodiacSigns.map((sign) => (
                     <button
