@@ -10,7 +10,7 @@ const zodiacSigns = [
     date: 'MAR 21-ABR 19',
     slug: 'aries',
     symbol: '♈',
-    image: '/static/images/horoscope/aries.png' // placeholder para cuando tengas las imágenes
+    image: '/static/images/horoscope/aries.png'
   },
   {
     name: 'Tauro',
@@ -59,35 +59,35 @@ const zodiacSigns = [
     date: 'OCT 23-NOV 21',
     slug: 'escorpio',
     symbol: '♏',
-    image: '/static/images/horoscope/escorpio.png'
+    image: undefined
   },
   {
     name: 'Sagitario',
     date: 'NOV 22-DIC 21',
     slug: 'sagitario',
     symbol: '♐',
-    image: '/static/images/horoscope/sagitario.png'
+    image: undefined
   },
   {
     name: 'Capricornio',
     date: 'DIC 22-ENE 19',
     slug: 'capricornio',
     symbol: '♑',
-    image: '/static/images/horoscope/capricornio.png'
+    image: undefined
   },
   {
     name: 'Acuario',
     date: 'ENE 20-FEB 18',
     slug: 'acuario',
     symbol: '♒',
-    image: '/static/images/horoscope/acuario.png'
+    image: undefined
   },
   {
     name: 'Piscis',
     date: 'FEB 19-MAR 20',
     slug: 'piscis',
     symbol: '♓',
-    image: '/static/images/horoscope/piscis.png'
+    image: undefined
   }
 ]
 
@@ -178,75 +178,39 @@ function getCurrentZodiacSign() {
 // 1. Definir los textos literarios para cada signo
 const literaryHoroscopes = {
   aries: {
-    symbol: '♈',
-    name: 'Aries',
-    dates: '21 mar – 19 abr',
     text: 'Semana tipo Rayuela, pero sin saber en qué capítulo estás ni quién te observa desde la otra acera. Cuidado con los ascensores emocionales: pueden devolverte al inicio.'
   },
   tauro: {
-    symbol: '♉',
-    name: 'Tauro',
-    dates: '20 abr – 20 may',
     text: 'Tu terquedad alcanza niveles quijotescos. Solo que esta vez los molinos tienen WiFi y Sancho está viendo series. Replantéate ese mensaje antes de enviarlo.'
   },
   geminis: {
-    symbol: '♊',
-    name: 'Géminis',
-    dates: '21 may – 20 jun',
     text: 'Demasiadas versiones de ti. Esta semana, elige un solo narrador y dale voz. Tus amigos ya creen que estás atrapado en un taller eterno con Ricardo Piglia.'
   },
   cancer: {
-    symbol: '♋',
-    name: 'Cáncer',
-    dates: '21 jun – 22 jul',
     text: 'Tu nostalgia podría protagonizar un cuento de Benedetti, pero con delivery en vez de cartas. Llama a alguien, aunque solo sea para hablar del clima (o del fin del mundo).'
   },
   leo: {
-    symbol: '♌',
-    name: 'Leo',
-    dates: '23 jul – 22 ago',
     text: 'Te sientes como el protagonista de una distopía: todo gira en torno a ti, pero nadie te escucha. Tal vez sea hora de cerrar el diario íntimo y abrir una ventana. Literalmente.'
   },
   virgo: {
-    symbol: '♍',
-    name: 'Virgo',
-    dates: '23 ago – 22 sep',
     text: 'Tu obsesión por el detalle cruzó la línea: estás editando mentalmente las conversaciones ajenas. Un Cortázar interior quiere corregir la realidad. Déjalo, pero solo hasta el martes.'
   },
   libra: {
-    symbol: '♎',
-    name: 'Libra',
-    dates: '23 sep – 22 oct',
     text: 'Vas a encontrar belleza en algo completamente asimétrico, como un verso cojo o un perro callejero. Esta semana no es para balancearse, sino para desbalancearse con estilo.'
   },
   escorpio: {
-    symbol: '♏',
-    name: 'Escorpio',
-    dates: '23 oct – 21 nov',
     text: 'Tu intensidad podría arruinar hasta una viñeta de Mafalda. Aprende a leer entre líneas... y a no subrayarlas todas. No todo lo que duele es tragedia.'
   },
   sagitario: {
-    symbol: '♐',
-    name: 'Sagitario',
-    dates: '22 nov – 21 dic',
-    text: 'Estás tentado a empezar una novela sin tener final. Hazlo. Solo recuerda que hasta Bolaño borraba. El fuego creativo no justifica que le escribas a tu ex “por inspiración”.'
+    text: 'Estás tentado a empezar una novela sin tener final. Hazlo. Solo recuerda que hasta Bolaño borraba. El fuego creativo no justifica que le escribas a tu ex "por inspiración".'
   },
   capricornio: {
-    symbol: '♑',
-    name: 'Capricornio',
-    dates: '22 dic – 19 ene',
     text: 'Vas camino a convertirte en personaje de tu propia tesis. Trabajas, planificas, documentas... pero alguien te soñó y ya estás despertando en otra novela. No temas al borrador.'
   },
   acuario: {
-    symbol: '♒',
-    name: 'Acuario',
-    dates: '20 ene – 18 feb',
     text: 'Esta semana tu rebeldía tendrá ecos de Arlt, pero en clave de grupo de WhatsApp. Un pequeño acto anárquico puede redimir tu rutina. Eso sí: no pongas todo en mayúsculas.'
   },
   piscis: {
-    symbol: '♓',
-    name: 'Piscis',
-    dates: '19 feb – 20 mar',
     text: 'Te va a caer una revelación como en los cuentos de Clarice Lispector: suave, extraña, inevitable. No intentes explicarla. Solo toma nota. Y si puedes, escribe con la luz apagada.'
   }
 }
@@ -414,8 +378,9 @@ export default function HoroscopoClient() {
 
           {/* Grilla de signos literarios */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {Object.entries(literaryHoroscopes).map(([slug, sign]) => {
-              const isActive = slug === currentSign;
+            {zodiacSigns.map((sign) => {
+              const isActive = sign.slug === currentSign;
+              const literaryText = literaryHoroscopes[sign.slug]?.text || '';
               return (
                 <div
                   key={sign.name}
@@ -427,10 +392,26 @@ export default function HoroscopoClient() {
                       Signo actual
                     </span>
                   )}
-                  <div className="text-5xl mb-2">{sign.symbol}</div>
+                  <div className="mb-2">
+                    {sign.image ? (
+                      <div 
+                        className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
+                        style={{ backgroundColor: '#e7e2d6' }}
+                      >
+                        <img 
+                          src={sign.image} 
+                          alt={`Símbolo de ${sign.name}`}
+                          className="w-12 h-12 object-contain"
+                          loading="lazy"
+                        />
+                      </div>
+                    ) : (
+                      <div className="text-5xl">{sign.symbol}</div>
+                    )}
+                  </div>
                   <div className="font-bold text-lg mb-1">{sign.name}</div>
-                  <div className="text-sm text-gray-500 mb-3">{sign.dates}</div>
-                  <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{sign.text}</div>
+                  <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
+                  <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
                 </div>
               );
             })}
