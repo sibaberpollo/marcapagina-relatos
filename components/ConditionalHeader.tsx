@@ -7,15 +7,16 @@ import TranstextosHeader from './TranstextosHeader'
 export default function ConditionalHeader() {
   const pathname = usePathname()
   
-  // Las rutas de relatos individuales manejan sus propios headers
-  if (pathname.startsWith('/relato/')) {
-    return null
-  }
-  
   // Detectar si estamos en rutas de secciones de Transtextos
   const isTranstextosRoute = pathname.startsWith('/transtextos') || 
                             pathname.startsWith('/publica') || 
                             pathname.startsWith('/criterios-editoriales')
+  
+  // Para relatos individuales, por ahora usamos el header principal
+  // En el futuro se podría determinar dinámicamente si pertenecen a Transtextos
+  if (pathname.startsWith('/relato/')) {
+    return <Header />
+  }
   
   return isTranstextosRoute ? <TranstextosHeader /> : <Header />
 } 

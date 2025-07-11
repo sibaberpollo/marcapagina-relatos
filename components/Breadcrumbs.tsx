@@ -46,7 +46,7 @@ async function getAuthorName(slug: string): Promise<string> {
   return toTitleCase(slug)
 }
 
-export default function Breadcrumbs({ force = false }: { force?: boolean } = {}) {
+export default function Breadcrumbs() {
   // ✅ TODOS LOS HOOKS AL PRINCIPIO - ANTES DE CUALQUIER EARLY RETURN
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
@@ -68,7 +68,6 @@ export default function Breadcrumbs({ force = false }: { force?: boolean } = {})
 
   // ✅ EARLY RETURNS DESPUÉS DE TODOS LOS HOOKS
   if (!mounted) return null
-  if (!force && pathname.startsWith('/relato/')) return null
   if (segments.length === 0) return null
 
   let crumbs: { href: string; label: string }[] = []
