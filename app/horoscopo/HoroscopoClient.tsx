@@ -175,6 +175,82 @@ function getCurrentZodiacSign() {
   return 'piscis'
 }
 
+// 1. Definir los textos literarios para cada signo
+const literaryHoroscopes = {
+  aries: {
+    symbol: '♈',
+    name: 'Aries',
+    dates: '21 mar – 19 abr',
+    text: 'Semana tipo Rayuela, pero sin saber en qué capítulo estás ni quién te observa desde la otra acera. Cuidado con los ascensores emocionales: pueden devolverte al inicio.'
+  },
+  tauro: {
+    symbol: '♉',
+    name: 'Tauro',
+    dates: '20 abr – 20 may',
+    text: 'Tu terquedad alcanza niveles quijotescos. Solo que esta vez los molinos tienen WiFi y Sancho está viendo series. Replantéate ese mensaje antes de enviarlo.'
+  },
+  geminis: {
+    symbol: '♊',
+    name: 'Géminis',
+    dates: '21 may – 20 jun',
+    text: 'Demasiadas versiones de ti. Esta semana, elige un solo narrador y dale voz. Tus amigos ya creen que estás atrapado en un taller eterno con Ricardo Piglia.'
+  },
+  cancer: {
+    symbol: '♋',
+    name: 'Cáncer',
+    dates: '21 jun – 22 jul',
+    text: 'Tu nostalgia podría protagonizar un cuento de Benedetti, pero con delivery en vez de cartas. Llama a alguien, aunque solo sea para hablar del clima (o del fin del mundo).'
+  },
+  leo: {
+    symbol: '♌',
+    name: 'Leo',
+    dates: '23 jul – 22 ago',
+    text: 'Te sientes como el protagonista de una distopía: todo gira en torno a ti, pero nadie te escucha. Tal vez sea hora de cerrar el diario íntimo y abrir una ventana. Literalmente.'
+  },
+  virgo: {
+    symbol: '♍',
+    name: 'Virgo',
+    dates: '23 ago – 22 sep',
+    text: 'Tu obsesión por el detalle cruzó la línea: estás editando mentalmente las conversaciones ajenas. Un Cortázar interior quiere corregir la realidad. Déjalo, pero solo hasta el martes.'
+  },
+  libra: {
+    symbol: '♎',
+    name: 'Libra',
+    dates: '23 sep – 22 oct',
+    text: 'Vas a encontrar belleza en algo completamente asimétrico, como un verso cojo o un perro callejero. Esta semana no es para balancearse, sino para desbalancearse con estilo.'
+  },
+  escorpio: {
+    symbol: '♏',
+    name: 'Escorpio',
+    dates: '23 oct – 21 nov',
+    text: 'Tu intensidad podría arruinar hasta una viñeta de Mafalda. Aprende a leer entre líneas... y a no subrayarlas todas. No todo lo que duele es tragedia.'
+  },
+  sagitario: {
+    symbol: '♐',
+    name: 'Sagitario',
+    dates: '22 nov – 21 dic',
+    text: 'Estás tentado a empezar una novela sin tener final. Hazlo. Solo recuerda que hasta Bolaño borraba. El fuego creativo no justifica que le escribas a tu ex “por inspiración”.'
+  },
+  capricornio: {
+    symbol: '♑',
+    name: 'Capricornio',
+    dates: '22 dic – 19 ene',
+    text: 'Vas camino a convertirte en personaje de tu propia tesis. Trabajas, planificas, documentas... pero alguien te soñó y ya estás despertando en otra novela. No temas al borrador.'
+  },
+  acuario: {
+    symbol: '♒',
+    name: 'Acuario',
+    dates: '20 ene – 18 feb',
+    text: 'Esta semana tu rebeldía tendrá ecos de Arlt, pero en clave de grupo de WhatsApp. Un pequeño acto anárquico puede redimir tu rutina. Eso sí: no pongas todo en mayúsculas.'
+  },
+  piscis: {
+    symbol: '♓',
+    name: 'Piscis',
+    dates: '19 feb – 20 mar',
+    text: 'Te va a caer una revelación como en los cuentos de Clarice Lispector: suave, extraña, inevitable. No intentes explicarla. Solo toma nota. Y si puedes, escribe con la luz apagada.'
+  }
+}
+
 export default function HoroscopoClient() {
   const [activeSign, setActiveSign] = useState('')
   const router = useRouter()
@@ -182,139 +258,142 @@ export default function HoroscopoClient() {
   const zodiacSectionRef = useRef<HTMLDivElement>(null)
   const zodiacScrollRef = useRef<HTMLDivElement>(null)
 
-  // Función para centrar el signo activo en el scroll horizontal
-  const scrollToActiveSign = (signSlug: string) => {
-    if (!zodiacScrollRef.current) return
-    
-    const signIndex = zodiacSigns.findIndex(sign => sign.slug === signSlug)
-    if (signIndex === -1) return
-    
-    const scrollContainer = zodiacScrollRef.current
-    const containerWidth = scrollContainer.offsetWidth
-    
-    // Calcular el ancho aproximado de cada elemento (incluyendo gap)
-    // w-16 md:w-20 lg:w-24 + gap-4 + padding + texto
-    const itemWidth = window.innerWidth >= 1024 ? 120 : window.innerWidth >= 768 ? 100 : 80
-    
-    // Calcular la posición del signo activo
-    const signPosition = signIndex * itemWidth
-    
-    // Calcular el scroll para centrar el signo
-    const scrollLeft = signPosition - (containerWidth / 2) + (itemWidth / 2)
-    
-    // Hacer scroll suave
-    scrollContainer.scrollTo({
-      left: Math.max(0, scrollLeft),
-      behavior: 'smooth'
-    })
-  }
+  // Eliminar toda la lógica de selección de signo, scroll, y el grid horizontal de tabs
+  // En su lugar, mostrar todos los signos en una grilla
 
-  // Establecer signo activo al cargar la página
-  useEffect(() => {
-    // Primero verificar si hay un signo en la URL
-    const signFromUrl = searchParams.get('sign')
+  // Eliminar la función scrollToActiveSign
+  // const scrollToActiveSign = (signSlug: string) => {
+  //   if (!zodiacScrollRef.current) return
     
-    if (signFromUrl && zodiacSigns.some(sign => sign.slug === signFromUrl)) {
-      // Si hay un signo válido en la URL, usarlo
-      setActiveSign(signFromUrl)
+  //   const signIndex = zodiacSigns.findIndex(sign => sign.slug === signSlug)
+  //   if (signIndex === -1) return
+    
+  //   const scrollContainer = zodiacScrollRef.current
+  //   const containerWidth = scrollContainer.offsetWidth
+    
+  //   // Calcular el ancho aproximado de cada elemento (incluyendo gap)
+  //   // w-16 md:w-20 lg:w-24 + gap-4 + padding + texto
+  //   const itemWidth = window.innerWidth >= 1024 ? 120 : window.innerWidth >= 768 ? 100 : 80
+    
+  //   // Calcular la posición del signo activo
+  //   const signPosition = signIndex * itemWidth
+    
+  //   // Calcular el scroll para centrar el signo
+  //   const scrollLeft = signPosition - (containerWidth / 2) + (itemWidth / 2)
+    
+  //   // Hacer scroll suave
+  //   scrollContainer.scrollTo({
+  //     left: Math.max(0, scrollLeft),
+  //     behavior: 'smooth'
+  //   })
+  // }
+
+  // Eliminar el useEffect para establecer el signo activo al cargar la página
+  // useEffect(() => {
+  //   // Primero verificar si hay un signo en la URL
+  //   const signFromUrl = searchParams.get('sign')
+    
+  //   if (signFromUrl && zodiacSigns.some(sign => sign.slug === signFromUrl)) {
+  //     // Si hay un signo válido en la URL, usarlo
+  //     setActiveSign(signFromUrl)
       
-      // Hacer scroll automático a la sección de signos al cargar y centrar el signo
-      setTimeout(() => {
-        zodiacSectionRef.current?.scrollIntoView({ 
-          behavior: 'smooth',
-          block: 'start'
-        })
-        // Centrar el signo en el scroll horizontal
-        setTimeout(() => scrollToActiveSign(signFromUrl), 100)
-      }, 300)
-    } else {
-      // Si no, detectar automáticamente el signo actual
-      const currentSign = getCurrentZodiacSign()
-      setActiveSign(currentSign)
+  //     // Hacer scroll automático a la sección de signos al cargar y centrar el signo
+  //     setTimeout(() => {
+  //       zodiacSectionRef.current?.scrollIntoView({ 
+  //         behavior: 'smooth',
+  //         block: 'start'
+  //       })
+  //       // Centrar el signo en el scroll horizontal
+  //       setTimeout(() => scrollToActiveSign(signFromUrl), 100)
+  //     }, 300)
+  //   } else {
+  //     // Si no, detectar automáticamente el signo actual
+  //     const currentSign = getCurrentZodiacSign()
+  //     setActiveSign(currentSign)
       
-      // Centrar el signo detectado automáticamente
-      setTimeout(() => scrollToActiveSign(currentSign), 500)
-    }
-  }, [searchParams])
+  //     // Centrar el signo detectado automáticamente
+  //     setTimeout(() => scrollToActiveSign(currentSign), 500)
+  //   }
+  // }, [searchParams])
 
-  // Efecto adicional para centrar el signo cuando cambie activeSign
-  useEffect(() => {
-    if (activeSign) {
-      // Pequeño delay para asegurar que el DOM esté listo
-      setTimeout(() => scrollToActiveSign(activeSign), 200)
-    }
-  }, [activeSign])
+  // Eliminar el Efecto adicional para centrar el signo cuando cambie activeSign
+  // useEffect(() => {
+  //   if (activeSign) {
+  //     // Pequeño delay para asegurar que el DOM esté listo
+  //     setTimeout(() => scrollToActiveSign(activeSign), 200)
+  //   }
+  // }, [activeSign])
 
-  const handleSignChange = (signSlug) => {
-    setActiveSign(signSlug)
-    // Navegar a la nueva URL con parámetros
-    router.push(`/horoscopo?sign=${signSlug}`, { scroll: false })
+  // Eliminar la función handleSignChange
+  // const handleSignChange = (signSlug) => {
+  //   setActiveSign(signSlug)
+  //   // Navegar a la nueva URL con parámetros
+  //   router.push(`/horoscopo?sign=${signSlug}`, { scroll: false })
     
-    // Centrar el signo seleccionado en el scroll horizontal
-    setTimeout(() => scrollToActiveSign(signSlug), 100)
+  //   // Centrar el signo seleccionado en el scroll horizontal
+  //   setTimeout(() => scrollToActiveSign(signSlug), 100)
     
-    // Hacer scroll suave a la sección del menú zodiacal
-    setTimeout(() => {
-      zodiacSectionRef.current?.scrollIntoView({ 
-        behavior: 'smooth',
-        block: 'start'
-      })
-    }, 100)
-  }
+  //   // Hacer scroll suave a la sección del menú zodiacal
+  //   setTimeout(() => {
+  //     zodiacSectionRef.current?.scrollIntoView({ 
+  //       behavior: 'smooth',
+  //       block: 'start'
+  //     })
+  //   }, 100)
+  // }
 
-  const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
+  // Eliminar la variable activePrediction
+  // const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
+
+  // Detectar el signo actual
+  const currentSign = getCurrentZodiacSign();
 
   return (
     <div className="relative">
       {/* Hero Section */}
       <section className="relative py-16 lg:py-24 overflow-hidden">
+        {/* Fondo geométrico ya existente */}
         <SectionContainer>
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-            {/* Left Column - Text Content */}
-            <div className="relative order-2 lg:order-1">
+            {/* Left Column - Texto literario de Cáncer */}
+            <div className="relative order-2 lg:order-1 flex flex-col justify-center">
               <div className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium mb-4">
-                HORÓSCOPO LITERARIO
+                Signo: Cáncer
               </div>
-              
-              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-6 font-titles">
-                Marcapágina Astral
+              <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-4 font-titles">
+                Franz Kafka
               </h1>
-              
-              <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-300 mb-8 max-w-lg">
-                He comenzado mi carrera astrológica a temprana edad y desde entonces he escrito horóscopos para ediciones internacionales de revistas famosas. Mis horóscopos en línea gratuitos son leídos por más de 5.000 personas con un enfoque narrativo único.
+              <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8 max-w-lg">
+                Frágil, nocturno, con traumas heredados y la pulsión inagotable de escribir sin que nadie lo lea. El cáncer arquetípico: todo le duele, pero lo convierte en literatura. “Soy literatura o nada”, dijo. Murió pidiendo que quemaran todo lo que había escrito. Nadie le hizo caso.
               </p>
-              
-              <button className="inline-flex items-center px-6 py-3 text-sm font-medium text-gray-900 dark:text-gray-100 border-b-2 border-gray-900 dark:border-gray-100 hover:border-primary-500 dark:hover:border-primary-400 transition-colors duration-200">
-                VER MÁS
-                <svg className="ml-2 w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Right Column - Artistic Image */}
-            <div className="relative order-1 lg:order-2">
-              <div className="relative w-full h-96 lg:h-[500px]">
-                {/* Central silhouette area */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="relative w-64 h-80 bg-gradient-to-b from-gray-800 to-gray-900 dark:from-gray-200 dark:to-gray-300 rounded-full opacity-20">
-                    {/* Constellation dots and lines */}
-                    <div className="absolute inset-0">
-                      <div className="absolute top-8 left-12 w-2 h-2 bg-white dark:bg-gray-800 rounded-full"></div>
-                      <div className="absolute top-16 right-16 w-1.5 h-1.5 bg-white dark:bg-gray-800 rounded-full"></div>
-                      <div className="absolute bottom-24 left-8 w-2 h-2 bg-white dark:bg-gray-800 rounded-full"></div>
-                      <div className="absolute bottom-32 right-12 w-1.5 h-1.5 bg-white dark:bg-gray-800 rounded-full"></div>
-                      <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-primary-400 rounded-full"></div>
-                      
-                      {/* Connecting lines */}
-                      <svg className="absolute inset-0 w-full h-full" viewBox="0 0 256 320">
-                        <path d="M48 32 L240 64 L32 256 L224 288" stroke="currentColor" strokeWidth="1" fill="none" className="text-gray-400 dark:text-gray-600" opacity="0.5"/>
-                        <path d="M128 160 L200 100 L180 240" stroke="currentColor" strokeWidth="1" fill="none" className="text-gray-400 dark:text-gray-600" opacity="0.5"/>
-                      </svg>
-                    </div>
-                  </div>
+              {/* Autoría de Adriana */}
+              <div className="flex items-center gap-4 mt-6 mb-2">
+                <img
+                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1749824794/Adriana_Garcia_Sojo_dgbs6y.png"
+                  alt="Adriana García S."
+                  className="w-14 h-14 rounded-full object-cover border-2 border-gray-200 dark:border-gray-700 shadow-sm"
+                  loading="lazy"
+                />
+                <div className="flex flex-col">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">Por:</span>
+                  <a
+                    href="/autor/agarcia"
+                    className="text-base font-semibold text-gray-900 dark:text-gray-100 hover:underline"
+                  >
+                    Adriana García S.
+                  </a>
                 </div>
               </div>
+            </div>
+            {/* Right Column - Imagen de Kafka sobre las formas geométricas */}
+            <div className="relative order-1 lg:order-2 flex justify-center items-center">
+              <img
+                src="https://res.cloudinary.com/dx98vnos1/image/upload/v1752236442/Kafka_cancer_qeyz7p.png"
+                alt="Franz Kafka"
+                className="w-64 h-auto max-h-72 object-contain z-10"
+                style={{ background: 'none', boxShadow: 'none', border: 'none' }}
+                loading="lazy"
+              />
             </div>
           </div>
         </SectionContainer>
@@ -322,137 +401,39 @@ export default function HoroscopoClient() {
 
       {/* Main Content sobre fondo blanco normal */}
       <SectionContainer>
-        <div className="py-12" ref={zodiacSectionRef}>
+        <div className="py-12">
           {/* Intro Section */}
           <div className="text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
               Tu Horóscopo Literario
             </h2>
             <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Selecciona tu signo zodiacal para descubrir las predicciones astrológicas con un toque narrativo único.
+              Disfruta de las predicciones literarias para cada signo. ¡Lee el de todos y comparte el que más te guste!
             </p>
           </div>
 
-          {/* Zodiac Signs Tabs - Estilo Avatar */}
-          <div className="mb-8">
-            <div className="relative">
-              <div 
-                ref={zodiacScrollRef}
-                className="overflow-x-auto scrollbar-thin scrollbar-thumb-gray-300 dark:scrollbar-thumb-gray-600 scrollbar-track-transparent pb-4"
-              >
-                <div className="flex gap-4 min-w-max px-2">
-                  {zodiacSigns.map((sign) => (
-                    <button
-                      key={sign.slug}
-                      onClick={() => handleSignChange(sign.slug)}
-                      className="flex-shrink-0 flex flex-col items-center group"
-                    >
-                      <div className="relative mb-3">
-                        <div className={`w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-full flex items-center justify-center transition-all duration-300 ${
-                          activeSign === sign.slug
-                            ? 'bg-primary-500 transform scale-105'
-                            : 'bg-black hover:bg-gray-800'
-                        }`}>
-                          {/* Placeholder para imagen - por ahora usamos la primera letra */}
-                          <span className={`text-xl md:text-2xl lg:text-3xl font-bold ${
-                            activeSign === sign.slug ? 'text-black' : 'text-white'
-                          }`}>
-                            {sign.name.charAt(0)}
-                          </span>
-                        </div>
-                      </div>
-                      
-                      <div className="text-center">
-                        <h3 className={`text-sm font-semibold transition-colors ${
-                          activeSign === sign.slug
-                            ? 'text-primary-600 dark:text-primary-400'
-                            : 'text-gray-900 dark:text-gray-100'
-                        }`}>
-                          {sign.name}
-                        </h3>
-                        <p className="text-xs text-gray-600 dark:text-gray-400 mt-1">
-                          {sign.date.split('-')[0]}
-                        </p>
-                      </div>
-                    </button>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Predicción Activa - Sobre fondo principal */}
-          {activeSign && (
-            <div className="p-8 lg:p-12 mb-16">
-              <div className="max-w-4xl mx-auto">
-                <div className="text-center mb-8">
-                  <div className="inline-flex items-center gap-3 mb-4">
-                    <span className="text-4xl">
-                      {zodiacSigns.find(sign => sign.slug === activeSign)?.symbol}
+          {/* Grilla de signos literarios */}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            {Object.entries(literaryHoroscopes).map(([slug, sign]) => {
+              const isActive = slug === currentSign;
+              return (
+                <div
+                  key={sign.name}
+                  className={`relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border transition-all duration-200
+                    ${isActive ? 'border-primary-500 ring-2 ring-primary-400 dark:ring-primary-500 bg-yellow-50/80 dark:bg-yellow-900/20 scale-105 z-10' : 'border-gray-100 dark:border-gray-800'}`}
+                >
+                  {isActive && (
+                    <span className="absolute top-4 right-4 bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse">
+                      Signo actual
                     </span>
-                    <h3 className="text-3xl font-bold text-gray-900 dark:text-gray-100">
-                      {zodiacSigns.find(sign => sign.slug === activeSign)?.name}
-                    </h3>
-                  </div>
-                  <div className="text-sm text-gray-500 dark:text-gray-400 mb-6">
-                    {zodiacSigns.find(sign => sign.slug === activeSign)?.date}
-                  </div>
+                  )}
+                  <div className="text-5xl mb-2">{sign.symbol}</div>
+                  <div className="font-bold text-lg mb-1">{sign.name}</div>
+                  <div className="text-sm text-gray-500 mb-3">{sign.dates}</div>
+                  <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{sign.text}</div>
                 </div>
-
-                <div className="prose dark:prose-invert max-w-none text-center">
-                  <h4 className="text-2xl font-semibold text-primary-600 dark:text-primary-400 mb-6">
-                    {activePrediction.title}
-                  </h4>
-                  <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8">
-                    {activePrediction.prediction}
-                  </p>
-                  <div className="bg-primary-50 dark:bg-gray-700 rounded-lg p-6">
-                    <p className="text-sm text-gray-600 dark:text-gray-400 font-medium">
-                      {activePrediction.lucky}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Newsletter Section */}
-          <div className="bg-gradient-to-r from-primary-50 to-primary-100 dark:from-gray-800 dark:to-gray-700 rounded-xl p-8 lg:p-12 text-center">
-            <h2 className="text-2xl lg:text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Suscríbete al Horóscopo Literario
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-300 mb-8 max-w-2xl mx-auto">
-              Recibe predicciones personalizadas y recomendaciones de lectura basadas en tu signo zodiacal
-            </p>
-            
-            <form className="max-w-lg mx-auto">
-              <div className="flex flex-col sm:flex-row gap-4">
-                <input
-                  type="text"
-                  placeholder="Nombre"
-                  className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-                <input
-                  type="email"
-                  placeholder="E-mail"
-                  className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-                />
-                <select className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 text-gray-900 dark:text-gray-100 focus:ring-2 focus:ring-primary-500 focus:border-transparent">
-                  <option value="">Tu signo</option>
-                  {zodiacSigns.map((sign) => (
-                    <option key={sign.slug} value={sign.slug}>
-                      {sign.symbol} {sign.name}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              <button
-                type="submit"
-                className="mt-4 px-8 py-3 bg-primary-600 hover:bg-primary-700 text-white font-semibold rounded-lg transition-colors duration-200"
-              >
-                Suscribirse
-              </button>
-            </form>
+              );
+            })}
           </div>
         </div>
       </SectionContainer>
