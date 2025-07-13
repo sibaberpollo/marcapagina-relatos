@@ -311,6 +311,10 @@ export default function HoroscopoClient() {
 
   // Detectar el signo actual
   const currentSign = getCurrentZodiacSign();
+  
+  // Obtener información del signo actual
+  const currentSignInfo = zodiacSigns.find(sign => sign.slug === currentSign);
+  const currentSignText = literaryHoroscopes[currentSign]?.text || '';
 
   return (
     <div className="relative">
@@ -364,7 +368,7 @@ export default function HoroscopoClient() {
       </section>
 
       {/* Main Content sobre fondo blanco normal */}
-              <SectionContainer>
+      <SectionContainer>
           <div className="py-2">
             {/* Efemérides Literarias Section */}
             <div className="mb-6">
@@ -431,52 +435,83 @@ export default function HoroscopoClient() {
               <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
                 21 junio – 22 julio
               </p>
-              <div className="max-w-2xl mx-auto">
-                <blockquote className="text-xl italic text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 pl-6 py-4 bg-orange-50/50 dark:bg-orange-900/20 rounded-r-lg">
-                  "Un hogar es una cicatriz bien acomodada."
-                </blockquote>
-              </div>
             </div>
 
                       {/* Grilla de signos literarios */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {zodiacSigns.map((sign) => {
-                const isActive = sign.slug === currentSign;
-                const literaryText = literaryHoroscopes[sign.slug]?.text || '';
+            <div className="space-y-8">
+              {/* Card horizontal del signo del mes */}
+              {(() => {
+                const currentSignData = zodiacSigns.find(sign => sign.slug === currentSign);
+                const currentSignText = literaryHoroscopes[currentSign]?.text || '';
                 return (
-                  <div
-                    key={sign.name}
-                    className={`relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border transition-all duration-200
-                      ${isActive ? 'border-primary-500 ring-2 ring-primary-400 dark:ring-primary-500 bg-yellow-50/80 dark:bg-yellow-900/20 scale-105 z-10' : 'border-gray-100 dark:border-gray-800'}`}
-                  >
-                    {isActive && (
-                      <span className="absolute top-4 right-4 bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse">
-                        Signo actual
-                      </span>
-                    )}
-                    <div className="mb-2">
-                      {sign.image ? (
-                        <div 
-                          className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
-                          style={{ backgroundColor: '#e7e2d6' }}
-                        >
-                          <img 
-                            src={sign.image} 
-                            alt={`Símbolo de ${sign.name}`}
-                            className="w-12 h-12 object-contain"
-                            loading="lazy"
-                          />
+                  <div className="w-full bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl shadow-lg border-2 border-orange-200 dark:border-orange-800 p-8">
+                    <div className="flex flex-col md:flex-row items-center gap-6">
+                      <div className="flex-shrink-0">
+                        {currentSignData?.image ? (
+                          <div 
+                            className="w-24 h-24 rounded-full flex items-center justify-center"
+                            style={{ backgroundColor: '#e7e2d6' }}
+                          >
+                            <img 
+                              src={currentSignData.image} 
+                              alt={`Símbolo de ${currentSignData.name}`}
+                              className="w-20 h-20 object-contain"
+                              loading="lazy"
+                            />
+                          </div>
+                        ) : (
+                          <div className="text-6xl">{currentSignData?.symbol}</div>
+                        )}
+                      </div>
+                      <div className="flex-1 text-center md:text-left">
+                        <div className="font-bold text-3xl mb-2 text-gray-900 dark:text-gray-100">
+                          {currentSignData?.name}
                         </div>
-                      ) : (
-                        <div className="text-5xl">{sign.symbol}</div>
-                      )}
+                        <div className="text-lg text-gray-600 dark:text-gray-400 mb-4">
+                          {currentSignData?.date}
+                        </div>
+                        <div className="text-xl text-gray-700 dark:text-gray-300 leading-relaxed">
+                          {currentSignText}
+                        </div>
+                      </div>
                     </div>
-                    <div className="font-bold text-lg mb-1">{sign.name}</div>
-                    <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
-                    <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
                   </div>
                 );
-              })}
+              })()}
+
+              {/* Grid de los demás signos */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+                {zodiacSigns.filter(sign => sign.slug !== currentSign).map((sign) => {
+                  const literaryText = literaryHoroscopes[sign.slug]?.text || '';
+                  return (
+                    <div
+                      key={sign.name}
+                      className="relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border border-gray-100 dark:border-gray-800 transition-all duration-200"
+                    >
+                      <div className="mb-2">
+                        {sign.image ? (
+                          <div 
+                            className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
+                            style={{ backgroundColor: '#e7e2d6' }}
+                          >
+                            <img 
+                              src={sign.image} 
+                              alt={`Símbolo de ${sign.name}`}
+                              className="w-12 h-12 object-contain"
+                              loading="lazy"
+                            />
+                          </div>
+                        ) : (
+                          <div className="text-5xl">{sign.symbol}</div>
+                        )}
+                      </div>
+                      <div className="font-bold text-lg mb-1">{sign.name}</div>
+                      <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
+                      <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
+                    </div>
+                  );
+                })}
+              </div>
             </div>
               </div>
             </div>
