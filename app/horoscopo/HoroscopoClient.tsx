@@ -364,58 +364,122 @@ export default function HoroscopoClient() {
       </section>
 
       {/* Main Content sobre fondo blanco normal */}
-      <SectionContainer>
-        <div className="py-12">
-          {/* Intro Section */}
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              Tu Horóscopo Literario
-            </h2>
-            <p className="text-lg text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
-              Disfruta de las predicciones literarias para cada signo. ¡Lee el de todos y comparte el que más te guste!
-            </p>
-          </div>
-
-          {/* Grilla de signos literarios */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {zodiacSigns.map((sign) => {
-              const isActive = sign.slug === currentSign;
-              const literaryText = literaryHoroscopes[sign.slug]?.text || '';
-              return (
-                <div
-                  key={sign.name}
-                  className={`relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border transition-all duration-200
-                    ${isActive ? 'border-primary-500 ring-2 ring-primary-400 dark:ring-primary-500 bg-yellow-50/80 dark:bg-yellow-900/20 scale-105 z-10' : 'border-gray-100 dark:border-gray-800'}`}
-                >
-                  {isActive && (
-                    <span className="absolute top-4 right-4 bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse">
-                      Signo actual
-                    </span>
-                  )}
-                  <div className="mb-2">
-                    {sign.image ? (
-                      <div 
-                        className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
-                        style={{ backgroundColor: '#e7e2d6' }}
-                      >
-                        <img 
-                          src={sign.image} 
-                          alt={`Símbolo de ${sign.name}`}
-                          className="w-12 h-12 object-contain"
-                          loading="lazy"
-                        />
-                      </div>
-                    ) : (
-                      <div className="text-5xl">{sign.symbol}</div>
-                    )}
+              <SectionContainer>
+          <div className="py-2">
+            {/* Efemérides Literarias Section */}
+            <div className="mb-6">
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  Efemérides literarias de julio
+                </h3>
+                <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
+              </div>
+              
+              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-100 dark:border-purple-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
+                    3 de julio de 1883
                   </div>
-                  <div className="font-bold text-lg mb-1">{sign.name}</div>
-                  <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
-                  <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Nace Franz Kafka
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                    Lo celebra escribiendo cartas imposibles a su padre.
+                  </p>
                 </div>
-              );
-            })}
-          </div>
+
+                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                    10 de julio de 1871
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Nace Marcel Proust
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                    Aún no encuentra la magdalena perfecta.
+                  </p>
+                </div>
+
+                <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                  <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
+                    18 de julio de 1817
+                  </div>
+                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Muere Jane Austen
+                  </div>
+                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                    La ironía sobrevivió. Su virginidad, también.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* Separador divisorio */}
+            <div className="divide-y-2 divide-black dark:divide-black pb-8 xl:divide-y-0 dark:divide-gray-700">
+              <div></div>
+              <div className="pt-8">
+                {/* Signo del Mes Section */}
+                <div className="text-center mb-12">
+              <div className="inline-block bg-gradient-to-r from-yellow-100 to-orange-100 dark:from-yellow-900/30 dark:to-orange-900/30 px-6 py-3 rounded-full mb-6">
+                <span className="text-sm font-semibold text-orange-800 dark:text-orange-200 uppercase tracking-wide">
+                  Signo del Mes
+                </span>
+              </div>
+              <h2 className="text-4xl lg:text-5xl font-bold text-gray-900 dark:text-gray-100 mb-4 font-titles">
+                Cáncer
+              </h2>
+              <p className="text-lg text-gray-600 dark:text-gray-400 mb-6">
+                21 junio – 22 julio
+              </p>
+              <div className="max-w-2xl mx-auto">
+                <blockquote className="text-xl italic text-gray-700 dark:text-gray-300 border-l-4 border-orange-400 pl-6 py-4 bg-orange-50/50 dark:bg-orange-900/20 rounded-r-lg">
+                  "Un hogar es una cicatriz bien acomodada."
+                </blockquote>
+              </div>
+            </div>
+
+                      {/* Grilla de signos literarios */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+              {zodiacSigns.map((sign) => {
+                const isActive = sign.slug === currentSign;
+                const literaryText = literaryHoroscopes[sign.slug]?.text || '';
+                return (
+                  <div
+                    key={sign.name}
+                    className={`relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border transition-all duration-200
+                      ${isActive ? 'border-primary-500 ring-2 ring-primary-400 dark:ring-primary-500 bg-yellow-50/80 dark:bg-yellow-900/20 scale-105 z-10' : 'border-gray-100 dark:border-gray-800'}`}
+                  >
+                    {isActive && (
+                      <span className="absolute top-4 right-4 bg-primary-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm animate-pulse">
+                        Signo actual
+                      </span>
+                    )}
+                    <div className="mb-2">
+                      {sign.image ? (
+                        <div 
+                          className="w-16 h-16 rounded-full mx-auto flex items-center justify-center"
+                          style={{ backgroundColor: '#e7e2d6' }}
+                        >
+                          <img 
+                            src={sign.image} 
+                            alt={`Símbolo de ${sign.name}`}
+                            className="w-12 h-12 object-contain"
+                            loading="lazy"
+                          />
+                        </div>
+                      ) : (
+                        <div className="text-5xl">{sign.symbol}</div>
+                      )}
+                    </div>
+                    <div className="font-bold text-lg mb-1">{sign.name}</div>
+                    <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
+                    <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
+                  </div>
+                );
+              })}
+            </div>
+              </div>
+            </div>
         </div>
       </SectionContainer>
     </div>

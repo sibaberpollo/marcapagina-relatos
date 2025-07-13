@@ -12,10 +12,25 @@ export default function ConditionalHeader() {
                             pathname.startsWith('/publica') || 
                             pathname.startsWith('/criterios-editoriales')
   
-  // Para relatos individuales, por ahora usamos el header principal
-  // En el futuro se podría determinar dinámicamente si pertenecen a Transtextos
+  // Para relatos individuales, usamos TranstextosHeader por defecto
+  // Excepto para algunos relatos específicos que usan el header genérico
   if (pathname.startsWith('/relato/')) {
-    return <Header />
+    // Lista de relatos que deben usar el header genérico
+    const genericHeaderRelatos = [
+      'treinta-minutos-o-menos',
+      'los-dias'
+    ]
+    
+    // Extraer el slug del relato de la URL
+    const relatoSlug = pathname.split('/relato/')[1]
+    
+    // Si el relato está en la lista, usar header genérico
+    if (genericHeaderRelatos.includes(relatoSlug)) {
+      return <Header />
+    }
+    
+    // Para el resto de relatos, usar TranstextosHeader
+    return <TranstextosHeader />
   }
   
   return isTranstextosRoute ? <TranstextosHeader /> : <Header />
