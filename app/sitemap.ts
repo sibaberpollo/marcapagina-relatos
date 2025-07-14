@@ -71,6 +71,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/en/memes-merch-descargas`, // página de memes en inglés
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/horoscopo`, // página de horóscopo
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity
