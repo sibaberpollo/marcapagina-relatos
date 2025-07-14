@@ -3,7 +3,7 @@ import HoroscopoClient from './HoroscopoClient'
 
 export async function generateMetadata() {
   return genPageMetadata({
-    title: 'Horóscopo Literario | MarcaPágina',
+    title: 'Horóscopo: Signos del Zodiaco, Predicciones y Tarot',
     description: 'Descubre tu horóscopo literario personalizado. Predicciones astrológicas con un toque narrativo único en MarcaPágina.',
     openGraph: {
       images: [
