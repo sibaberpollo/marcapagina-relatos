@@ -41,13 +41,15 @@ const socialLinks = [
 
 const navLinks = [
   {
-    title: 'Transtextos',
-    href: '/transtextos',
-    icon: <Rss className="w-4 h-4 ml-1" style={{ color: '#f26522' }} />,
+    title: 'Autores',
+    href: '/autores',
   },
+];
+
+const explorationLinks = [
+  { title: 'Horóscopo literario', href: '/horoscopo' },
+  { title: 'Memes & objetos', href: '/memes-merch-descargas' },
   { title: 'Playlist', href: '/playlist' },
-  { title: 'Memes & Objetos', href: '/memes-merch-descargas' },
-  
 ];
 
 const projectLinks = [
@@ -55,6 +57,58 @@ const projectLinks = [
   { title: 'Prensa', href: '/acerca-de#prensa' },
   { title: 'Contacto', href: '/contacto' },
 ];
+
+const ExplorationDropdown = ({ isMobile = false }) => {
+  const [isOpen, setIsOpen] = useState(false)
+
+  if (isMobile) {
+    return (
+      <div className="relative">
+        <button
+          onClick={() => setIsOpen(!isOpen)}
+          className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors"
+        >
+          Exploraciones
+          <ChevronDown className={`w-4 h-4 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        </button>
+        {isOpen && (
+          <div className="absolute top-full left-0 mt-1 w-52 bg-white dark:bg-gray-950 rounded-md shadow-lg border border-gray-200 dark:border-gray-800 py-1 z-50">
+            {explorationLinks.map((link) => (
+              <CustomLink
+                key={link.title}
+                href={link.href}
+                className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+                onClick={() => setIsOpen(false)}
+              >
+                {link.title}
+              </CustomLink>
+            ))}
+          </div>
+        )}
+      </div>
+    )
+  }
+
+  return (
+    <div className="relative group">
+      <button className="flex items-center gap-1 font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-3 py-2 rounded transition-colors">
+        Exploraciones
+        <ChevronDown className="w-4 h-4 transition-transform group-hover:rotate-180" />
+      </button>
+      <div className="absolute top-full left-0 mt-1 w-52 bg-white dark:bg-gray-950 rounded-md shadow-lg border border-gray-200 dark:border-gray-800 py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+        {explorationLinks.map((link) => (
+          <CustomLink
+            key={link.title}
+            href={link.href}
+            className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800"
+          >
+            {link.title}
+          </CustomLink>
+        ))}
+      </div>
+    </div>
+  )
+}
 
 const ProjectDropdown = ({ isMobile = false }) => {
   const [isOpen, setIsOpen] = useState(false)
@@ -146,6 +200,7 @@ const Header = () => {
                   </span>
                 </CustomLink>
               ))}
+              <ExplorationDropdown />
               <ProjectDropdown />
               <ThemeToggle />
               <PublishDropdown isMobile={false} />
@@ -194,6 +249,19 @@ const Header = () => {
                         </span>
                       </CustomLink>
                     ))}
+                    <div className="flex flex-col items-center gap-3 mt-4">
+                      <span className="text-gray-500 dark:text-gray-400 text-sm">Exploraciones</span>
+                      {explorationLinks.map((link) => (
+                        <CustomLink
+                          key={link.title}
+                          href={link.href}
+                          className="font-medium text-gray-700 dark:text-gray-200 hover:text-gray-900 dark:hover:text-gray-100 px-2 py-2 rounded transition-colors text-lg"
+                          onClick={() => setOpen(false)}
+                        >
+                          {link.title}
+                        </CustomLink>
+                      ))}
+                    </div>
                     <div className="flex flex-col items-center gap-3 mt-4">
                       <span className="text-gray-500 dark:text-gray-400 text-sm">Sobre el proyecto</span>
                       {projectLinks.map((link) => (
