@@ -244,7 +244,6 @@ const Header = () => {
                       >
                         <span className="flex items-center">
                           {link.title}
-                          {link.icon}
                         </span>
                       </CustomLink>
                     ))}
