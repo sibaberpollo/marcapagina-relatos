@@ -1,6 +1,6 @@
 /** @type {import("pliny/config").PlinyConfig } */
 const siteMetadata = {
-  title: 'Marcapágina | Relatos',
+  title: 'Marcapágina | artefacto para leer',
   author: 'Hazael & Pino',
   headerTitle: 'Hazael & Pino',
   description: 'Descubre MarcaPágina: 300+ relatos y microcuentos inéditos de autores emergentes de América Latina.',
