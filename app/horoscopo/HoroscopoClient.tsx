@@ -1,6 +1,7 @@
 'use client'
 
 import SectionContainer from '@/components/SectionContainer'
+import ShareIcons from '@/components/ShareIcons'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -367,6 +368,15 @@ export default function HoroscopoClient() {
         </SectionContainer>
       </section>
 
+      {/* Botones de compartir después del hero */}
+      <div className="mb-8">
+        <ShareIcons 
+          title="Horóscopo Literario - Franz Kafka y predicciones astrológicas" 
+          slug="horoscopo-literario" 
+          className="max-w-md mx-auto"
+        />
+      </div>
+
       {/* Main Content sobre fondo blanco normal */}
       <SectionContainer>
           <div className="py-2">
@@ -379,7 +389,50 @@ export default function HoroscopoClient() {
                 <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
               </div>
               
-              <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+              {/* Scroll horizontal en móvil */}
+              <div className="flex gap-4 overflow-x-auto pb-4 md:hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+                <div className="flex-shrink-0 w-80">
+                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-100 dark:border-purple-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
+                      3 de julio de 1883
+                    </div>
+                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                      Nace Franz Kafka
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                      Lo celebra escribiendo cartas imposibles a su padre.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex-shrink-0 w-80">
+                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
+                      10 de julio de 1871
+                    </div>
+                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                      Nace Marcel Proust
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                      Aún no encuentra la magdalena perfecta.
+                    </p>
+                  </div>
+                </div>
+                <div className="flex-shrink-0 w-80">
+                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
+                      18 de julio de 1817
+                    </div>
+                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                      Muere Jane Austen
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                      La ironía sobrevivió. Su virginidad, también.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              {/* Grid para desktop */}
+              <div className="hidden md:grid md:grid-cols-3 md:gap-6 md:max-w-4xl md:mx-auto">
                 <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-100 dark:border-purple-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
                     3 de julio de 1883
@@ -391,7 +444,6 @@ export default function HoroscopoClient() {
                     Lo celebra escribiendo cartas imposibles a su padre.
                   </p>
                 </div>
-
                 <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
                     10 de julio de 1871
@@ -403,7 +455,6 @@ export default function HoroscopoClient() {
                     Aún no encuentra la magdalena perfecta.
                   </p>
                 </div>
-
                 <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
                   <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
                     18 de julio de 1817
@@ -504,8 +555,8 @@ export default function HoroscopoClient() {
         </div>
       </SectionContainer>
 
-      {/* Bloque de la carta del tarot con fondo geométrico */}
-      <section className="relative py-16 lg:py-4 overflow-hidden">
+      {/* Bloque de la carta del tarot con fondo geométrico al final */}
+      <section className="relative py-16 lg:py-24 overflow-hidden">
         {/* Fondo geométrico idéntico al hero */}
         <div className="absolute inset-0 pointer-events-none">
           {/* Textura de papel/brush sutil */}
@@ -574,6 +625,14 @@ export default function HoroscopoClient() {
                   Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.
                 </div>
               </div>
+            </div>
+            {/* Botones de compartir debajo de la carta de tarot */}
+            <div className="flex justify-center mt-8 mb-4">
+              <ShareIcons 
+                title="Horóscopo Literario - Franz Kafka y predicciones astrológicas" 
+                slug="horoscopo-literario" 
+                className="max-w-md"
+              />
             </div>
           </div>
         </SectionContainer>
