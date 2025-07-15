@@ -469,13 +469,8 @@ export default function HoroscopoClient() {
               </div>
             </div>
 
-            {/* Separador divisorio */}
-            <div className="divide-y-2 divide-black dark:divide-black pb-8 xl:divide-y-0 dark:divide-gray-700">
-              <div></div>
-              <div className="pt-8">
-
             {/* Grilla de signos literarios */}
-            <div className="space-y-8">
+            <div className="space-y-8 pt-8">
               {/* Card horizontal del signo del mes */}
               {(() => {
                 const currentSignData = zodiacSigns.find(sign => sign.slug === currentSign);
@@ -548,10 +543,8 @@ export default function HoroscopoClient() {
                     </div>
                   );
                 })}
-              </div>
             </div>
-              </div>
-            </div>
+          </div>
         </div>
       </SectionContainer>
 
