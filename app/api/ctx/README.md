@@ -4,7 +4,19 @@ This directory contains the MCP (Model Context Protocol) handler and tools for t
 
 ## Usage
 
-Instructions here: https://github.com/vercel/mcp-adapter?tab=readme-ov-file#integrating-into-your-client
+`mcp.json`:
+
+```
+{
+  "mcpServers": {
+    "marcapagina": {
+      "url": "http://localhost:3000/api/ctx/mcp"
+    }
+  }
+}
+```
+
+Details: https://github.com/vercel/mcp-adapter?tab=readme-ov-file#integrating-into-your-client
 
 ## Directory Structure
 
@@ -94,4 +106,4 @@ The main handler is configured in `[transport]/route.ts` with:
 - Redis support for caching
 - Base path `/api/ctx`
 - Maximum duration of 60 seconds
-- Verbose logging enabled 
+- Verbose logging enabled
