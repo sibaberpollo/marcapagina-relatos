@@ -18,6 +18,12 @@
       "overlay": false
     },
     {
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": true,
+      "slug": "maquinas-de-tiempo"
+    },
+    {
       "slug": "sabanas-remendadas",
       "type": "relato",
       "cardType": "featured",
