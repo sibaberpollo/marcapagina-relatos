@@ -14326,9 +14326,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"mcp-handler@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "mcp-handler@npm:1.0.0"
+"mcp-handler@npm:^1.0.1":
+  version: 1.0.1
+  resolution: "mcp-handler@npm:1.0.1"
   dependencies:
     chalk: ^5.3.0
     commander: ^11.1.0
@@ -14345,7 +14345,7 @@ __metadata:
     create-mcp-route: dist/cli/index.js
     mcp-adapter: dist/cli/index.js
     mcp-handler: dist/cli/index.js
-  checksum: f4435fd2d5c9aa13175dd6db4c788a94205858ab2019fdb635df45317b7e08637d82d6904f08b5cc973553edfff286d24b470bfa3a72d7532cf71250163c7c5f
+  checksum: ccb63c279cc6d675b30d71944a2148d66bfc3aef262d27f29f3212d3987d02e3787d1c4e9c53554b2dea2da16e1f0cdcd49233a21ce9db4197889b5e922ab85c
   languageName: node
   linkType: hard
 
@@ -19648,7 +19648,7 @@ __metadata:
     image-size: 2.0.1
     lint-staged: ^13.0.0
     lucide-react: ^0.511.0
-    mcp-handler: ^1.0.0
+    mcp-handler: ^1.0.1
     next: 15.2.4
     next-contentlayer2: 0.5.5
     next-i18next: ^15.4.2

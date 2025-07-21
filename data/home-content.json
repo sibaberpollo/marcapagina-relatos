@@ -10,6 +10,20 @@
   },
   "items": [
     {
+      "type": "meme",
+      "cardType": "overlay",
+      "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1753014188/horoscopo-cancer_hutzrw.png",
+      "href": "/horoscopo",
+      "tags": ["horoscopo"],
+      "overlay": false
+    },
+    {
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": true,
+      "slug": "maquinas-de-tiempo"
+    },
+    {
       "slug": "sabanas-remendadas",
       "type": "relato",
       "cardType": "featured",
@@ -48,7 +62,7 @@
       "cardType": "overlay",
       "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1750790673/post-chapulines-salvajes_wipmms.png",
       "href": "/post/los-chapulines-salvajes",
-      "tags": ["imagen", "vertical"],
+      "tags": ["meme", "vertical"],
       "overlayText": "A propósito del hype de la serie Sin querer queriendo en HBO"
     },
     {

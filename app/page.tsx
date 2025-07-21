@@ -49,6 +49,7 @@ interface HomeContentItem {
   image_portada?: string;
   href?: string;
   overlayText?: string; // Agregar campo para texto del overlay
+  overlay?: boolean; // Si debe mostrar overlay o no
   // Para quotes - datos específicos
   quote?: string;
   author?: string;
@@ -259,6 +260,7 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         context="Contenido visual relacionado con literatura y cultura"
         category="humor"
         overlayText={memeItem.overlayText}
+        overlay={memeItem.overlay}
       />
     );
   }

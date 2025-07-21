@@ -1217,3 +1217,280 @@ export async function getRelatosCount(): Promise<number> {
     return 0;
   }
 }
+
+// ===== FUNCIONES PARA MCP (Model Context Protocol) =====
+
+// Función de búsqueda completa con full-text search y parámetros
+export async function searchRelatos(params: {
+  query?: string;           // Búsqueda full-text en título, summary y body
+  author?: string;          // Filtrar por autor (slug)
+  tags?: string[];          // Filtrar por tags
+  site?: string;            // Filtrar por sitio (slug)
+  dateFrom?: string;        // Fecha desde (YYYY-MM-DD)
+  dateTo?: string;          // Fecha hasta (YYYY-MM-DD)
+  limit?: number;           // Número máximo de resultados
+  offset?: number;          // Para paginación
+  includeContent?: boolean; // Si incluir el body completo o solo metadatos
+}): Promise<{
+  results: Relato[];
+  total: number;
+  hasMore: boolean;
+}> {
+  try {
+    const {
+      query = '',
+      author,
+      tags,
+      site,
+      dateFrom,
+      dateTo,
+      limit = 50,
+      offset = 0,
+      includeContent = false
+    } = params;
+
+    // Construir filtros dinámicamente
+    let filters = ['_type == "relato"', 'status == "published"'];
+    let queryParams: any = {};
+
+    // Full-text search en título, summary y contenido
+    if (query.trim()) {
+      // Usar GROQ para búsqueda en múltiples campos
+      filters.push('(title match $query + "*" || summary match $query + "*" || pt::text(body) match $query + "*")');
+      queryParams.query = query.trim();
+    }
+
+    // Filtro por autor
+    if (author) {
+      filters.push('author->slug.current == $author');
+      queryParams.author = author;
+    }
+
+    // Filtro por tags (al menos uno de los tags especificados)
+    if (tags && tags.length > 0) {
+      filters.push('count((tags[]->title)[@ in $tags]) > 0');
+      queryParams.tags = tags;
+    }
+
+    // Filtro por sitio
+    if (site) {
+      filters.push('site->slug.current == $site');
+      queryParams.site = site;
+    }
+
+    // Filtro por fecha desde
+    if (dateFrom) {
+      filters.push('coalesce(publishedAt, date) >= $dateFrom');
+      queryParams.dateFrom = dateFrom;
+    }
+
+    // Filtro por fecha hasta
+    if (dateTo) {
+      filters.push('coalesce(publishedAt, date) <= $dateTo');
+      queryParams.dateTo = dateTo;
+    }
+
+    const whereClause = filters.join(' && ');
+
+    // Campos a incluir
+    const fields = includeContent ? `
+      title,
+      slug,
+      date,
+      publishedAt,
+      summary,
+      image,
+      bgColor,
+      body,
+      showDropCap,
+      "author": author-> {
+        name,
+        slug,
+        avatar,
+        occupation,
+        company,
+        email,
+        twitter,
+        linkedin,
+        github,
+        website,
+        bio
+      },
+      "category": category->title,
+      "tags": tags[]->title,
+      "site": site-> {
+        title,
+        slug,
+        description
+      },
+      series,
+      seriesOrder
+    ` : `
+      title,
+      slug,
+      date,
+      publishedAt,
+      summary,
+      image,
+      bgColor,
+      "author": author-> {
+        name,
+        slug,
+        avatar
+      },
+      "category": category->title,
+      "tags": tags[]->title,
+      "site": site-> {
+        title,
+        slug,
+        description
+      }
+    `;
+
+    // Query principal para obtener resultados
+    const resultsQuery = `
+      *[${whereClause}] | order(coalesce(publishedAt, date) desc)[${offset}...${offset + limit}] {
+        ${fields}
+      }
+    `;
+
+    // Query para obtener el total
+    const countQuery = `count(*[${whereClause}])`;
+
+    // Ejecutar ambas queries en paralelo
+    const [results, total] = await Promise.all([
+      client.fetch(resultsQuery, queryParams),
+      client.fetch(countQuery, queryParams)
+    ]);
+
+    // Procesar resultados
+    const processedResults = results.map((relato: Relato) => {
+      // Limpiar título de emojis y convertir a versales
+      relato.title = toVersal(cleanEmoji(relato.title));
+      
+      // Agregar tiempo de lectura si incluye contenido
+      if (includeContent && relato.body) {
+        relato.readingTime = calcularTiempoLectura(relato.body);
+      }
+      
+      return relato;
+    });
+
+    return {
+      results: processedResults,
+      total,
+      hasMore: offset + limit < total
+    };
+
+  } catch (error) {
+    console.error('Error en búsqueda de relatos:', error);
+    return {
+      results: [],
+      total: 0,
+      hasMore: false
+    };
+  }
+}
+
+// Función para exportar todos los relatos en formato JSON optimizado para MCP
+export async function getAllRelatosForMCP(): Promise<{
+  posts: Array<{
+    id: string;
+    title: string;
+    slug: string;
+    author: {
+      name: string;
+      slug: string;
+    };
+    summary: string;
+    tags: string[];
+    site: string;
+    publishedAt: string;
+    url: string;
+    wordCount: number;
+    readingTime: string;
+  }>;
+  meta: {
+    total: number;
+    lastUpdated: string;
+    sites: string[];
+    authors: string[];
+    allTags: string[];
+  };
+}> {
+  try {
+    // Obtener todos los relatos con información completa
+    const relatos = await client.fetch(`
+      *[_type == "relato" && status == "published"] | order(coalesce(publishedAt, date) desc) {
+        _id,
+        title,
+        slug,
+        date,
+        publishedAt,
+        summary,
+        body,
+        "author": author-> {
+          name,
+          slug
+        },
+        "tags": tags[]->title,
+        "site": site-> {
+          title,
+          slug
+        }
+      }
+    `);
+
+    // Procesar relatos para el formato del MCP
+    const processedPosts = relatos.map((relato: any) => {
+      const readingTime = calcularTiempoLectura(relato.body);
+      const cleanTitle = toVersal(cleanEmoji(relato.title));
+      
+      return {
+        id: relato._id,
+        title: cleanTitle,
+        slug: relato.slug.current,
+        author: {
+          name: relato.author?.name || 'Autor desconocido',
+          slug: relato.author?.slug?.current || ''
+        },
+        summary: relato.summary || '',
+        tags: relato.tags || [],
+        site: relato.site?.title || 'MarcaPágina',
+        publishedAt: relato.publishedAt || relato.date,
+        url: `https://marcapagina.com/relato/${relato.slug.current}`,
+        wordCount: readingTime.words,
+        readingTime: readingTime.text
+      };
+    });
+
+    // Generar metadatos
+    const sites = [...new Set(processedPosts.map(p => p.site))].filter((s): s is string => Boolean(s));
+    const authors = [...new Set(processedPosts.map(p => p.author.name))].filter((a): a is string => Boolean(a));
+    const allTags = [...new Set(processedPosts.flatMap(p => p.tags))].filter((t): t is string => Boolean(t));
+
+    return {
+      posts: processedPosts,
+      meta: {
+        total: processedPosts.length,
+        lastUpdated: new Date().toISOString(),
+        sites,
+        authors,
+        allTags
+      }
+    };
+
+  } catch (error) {
+    console.error('Error al exportar relatos para MCP:', error);
+    return {
+      posts: [],
+      meta: {
+        total: 0,
+        lastUpdated: new Date().toISOString(),
+        sites: [],
+        authors: [],
+        allTags: []
+      }
+    };
+  }
+}
