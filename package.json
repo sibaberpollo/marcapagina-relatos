@@ -41,7 +41,7 @@
     "i18next": "^25.2.1",
     "image-size": "2.0.1",
     "lucide-react": "^0.511.0",
-    "mcp-handler": "^1.0.0",
+    "mcp-handler": "^1.0.1",
     "next": "15.2.4",
     "next-contentlayer2": "0.5.5",
     "next-i18next": "^15.4.2",
