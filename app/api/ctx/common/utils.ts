@@ -3,164 +3,150 @@ import path from "path";
 import { Post } from "./types";
 
 /**
- * Gets a specific post by identifier (slug or title)
+ * Formats a relato object into a comprehensive readable string response
  */
-export const getPostById = (
-  dir: string,
-  identifier: string,
-  searchType: "slug" | "title"
-): Post | null => {
-  if (!fs.existsSync(dir)) return null;
-
-  const files = fs.readdirSync(dir).filter(file => file.endsWith('.json'));
+export const formatRelatoResponse = (relato: any, includeContent: boolean = true): string => {
+  let response = `**${relato.title}**\n\n`;
+  response += `**Slug:** ${relato.slug.current || relato.slug}\n`;
   
-  for (const file of files) {
-    try {
-      const filePath = path.join(dir, file);
-      const fileContents = fs.readFileSync(filePath, 'utf8');
-      const post: Post = JSON.parse(fileContents);
-
-      if (searchType === "slug") {
-        if (post.slug === identifier) {
-          return post;
-        }
-      } else if (searchType === "title") {
-        // Case-insensitive title matching
-        if (post.title.toLowerCase() === identifier.toLowerCase() ||
-            post.title.toLowerCase().includes(identifier.toLowerCase())) {
-          return post;
-        }
-      }
-    } catch (error) {
-      console.error(`Error reading file ${file}:`, error);
-    }
-  }
-  return null;
-};
-
-/**
- * Simple fuzzy search function that calculates similarity based on:
- * - Exact matches get highest score
- * - Contains matches get medium score
- * - Character overlap gets lower score
- */
-export const fuzzyMatch = (searchTerm: string, target: string): number => {
-  const search = searchTerm.toLowerCase();
-  const text = target.toLowerCase();
-  
-  // Exact match
-  if (text === search) return 100;
-  
-  // Contains match
-  if (text.includes(search)) return 80;
-  
-  // Character overlap scoring
-  let score = 0;
-  const searchChars = search.split('');
-  const textChars = text.split('');
-  
-  for (const char of searchChars) {
-    if (textChars.includes(char)) {
-      score += 1;
-    }
+  if (relato.author?.name) {
+    response += `**Author:** ${relato.author.name}\n`;
   }
   
-  // Return percentage based on search term length
-  return Math.round((score / searchChars.length) * 60);
-};
-
-/**
- * Get all posts from a directory
- */
-export const getAllPostsFromDirectory = (dir: string): Post[] => {
-  if (!fs.existsSync(dir)) return [];
+  if (relato.publishedAt || relato.date) {
+    response += `**Published:** ${relato.publishedAt || relato.date}\n`;
+  }
   
-  const files = fs.readdirSync(dir).filter(file => file.endsWith('.json'));
-  const posts: Post[] = [];
+  if (relato.readingTime) {
+    response += `**Reading Time:** ${relato.readingTime.text}\n`;
+  }
   
-  for (const file of files) {
-    try {
-      const filePath = path.join(dir, file);
-      const fileContents = fs.readFileSync(filePath, 'utf8');
-      const post: Post = JSON.parse(fileContents);
-      posts.push(post);
-    } catch (error) {
-      console.error(`Error reading file ${file}:`, error);
+  if (relato.tags?.length) {
+    response += `**Tags:** ${relato.tags.join(", ")}\n`;
+  }
+  
+  if (relato.category) {
+    response += `**Category:** ${relato.category}\n`;
+  }
+  
+  if (relato.site?.title) {
+    response += `**Site:** ${relato.site.title}\n`;
+  }
+  
+  if (relato.series) {
+    response += `**Series:** ${relato.series}`;
+    if (relato.seriesOrder) {
+      response += ` (Part ${relato.seriesOrder})`;
+    }
+    response += `\n`;
+  }
+  
+  if (relato.summary) {
+    response += `\n**Summary:**\n${relato.summary}\n`;
+  }
+  
+  if (includeContent && relato.body) {
+    response += `\n**Content:**\n`;
+    // For portable text content, we'll show a simplified version
+    if (Array.isArray(relato.body)) {
+      // Extract text from portable text blocks
+      const textContent = relato.body
+        .filter(block => block._type === 'block')
+        .map(block => {
+          if (block.children) {
+            return block.children.map(child => child.text).join('');
+          }
+          return '';
+        })
+        .join('\n\n');
+      response += textContent;
+    } else if (typeof relato.body === 'string') {
+      response += relato.body;
     }
   }
   
-  return posts;
+  if (relato.image) {
+    response += `\n\n**Image:** ${relato.image}`;
+  }
+  
+  if (relato.bgColor) {
+    response += `\n**Background Color:** ${relato.bgColor}`;
+  }
+
+  return response;
 };
 
 /**
- * Search posts with fuzzy matching and return sorted results
+ * Formats search results into a comprehensive readable response with metadata and pagination
  */
-export const searchPosts = (
-  query: string,
-  limit: number = 10,
-  lang: "es" | "en" | "both" = "both",
-  minScore: number = 30
-): Array<Post & { score: number; lang: string }> => {
-  const allPosts: Array<Post & { score: number; lang: string }> = [];
-  
-  // Search in Spanish posts
-  if (lang === "es" || lang === "both") {
-    const esDirectory = path.join(process.cwd(), "data", "posts", "es");
-    const esPosts = getAllPostsFromDirectory(esDirectory);
-    
-    for (const post of esPosts) {
-      const titleScore = fuzzyMatch(query, post.title);
-      const slugScore = fuzzyMatch(query, post.slug);
-      const maxScore = Math.max(titleScore, slugScore);
+export const formatSearchResultsResponse = (
+  searchResults: { results: any[]; total: number; hasMore: boolean },
+  searchParams: {
+    query?: string;
+    author?: string;
+    tags?: string[];
+    site?: string;
+    dateFrom?: string;
+    dateTo?: string;
+    offset?: number;
+    includeContent?: boolean;
+  }
+): string => {
+  const { results, total, hasMore } = searchResults;
+  const { query, author, tags, site, dateFrom, dateTo, offset = 0, includeContent = false } = searchParams;
+
+  // Format individual results
+  const formattedResults = results
+    .map((post, index) => {
+      let result = `${offset + index + 1}. **${post.title}**\n   Slug: \`${post.slug}\``;
       
-      if (maxScore >= minScore) {
-        allPosts.push({ ...post, score: maxScore, lang: "es" });
+      if (post.author?.name) {
+        result += `\n   Author: ${post.author.name}`;
       }
-    }
-  }
-  
-  // Search in English posts
-  if (lang === "en" || lang === "both") {
-    const enDirectory = path.join(process.cwd(), "data", "posts", "en");
-    const enPosts = getAllPostsFromDirectory(enDirectory);
-    
-    for (const post of enPosts) {
-      const titleScore = fuzzyMatch(query, post.title);
-      const slugScore = fuzzyMatch(query, post.slug);
-      const maxScore = Math.max(titleScore, slugScore);
       
-      if (maxScore >= minScore) {
-        allPosts.push({ ...post, score: maxScore, lang: "en" });
+      if (post.tags?.length) {
+        result += `\n   Tags: ${post.tags.join(', ')}`;
       }
-    }
+      
+      if (post.site?.title) {
+        result += `\n   Site: ${post.site.title}`;
+      }
+      
+      if (post.publishedAt || post.date) {
+        result += `\n   Published: ${post.publishedAt || post.date}`;
+      }
+      
+      if (post.summary) {
+        result += `\n   Summary: ${post.summary}`;
+      }
+      
+      if (includeContent && post.readingTime) {
+        result += `\n   Reading time: ${post.readingTime.text}`;
+      }
+      
+      return result;
+    })
+    .join('\n\n');
+
+  // Build search info string
+  const searchInfo = [
+    query && `query: "${query}"`,
+    author && `author: "${author}"`,
+    tags?.length && `tags: ${tags.join(', ')}`,
+    site && `site: "${site}"`,
+    dateFrom && `from: ${dateFrom}`,
+    dateTo && `to: ${dateTo}`
+  ].filter(Boolean).join(', ');
+
+  // Build complete response
+  let response = `**Search Results${searchInfo ? ` for ${searchInfo}` : ''}**\n\n`;
+  response += `Found ${total} total posts (showing ${results.length})`;
+  
+  if (hasMore) {
+    response += ` - more results available`;
   }
   
-  // Sort by score (highest first) and limit results
-  return allPosts
-    .sort((a, b) => b.score - a.score)
-    .slice(0, limit);
+  response += `\n\n${formattedResults}`;
+
+  return response;
 };
-
-/**
- * Formats a post object into a readable string response
- */
-export const formatPostResponse = (post: Post): string => {
-  return `📄 **${post.title}**
-
-**Slug:** ${post.slug}
-**Author:** ${post.author.name}
-**Published:** ${post.publishedAt}
-**Reading Time:** ${post.readingTime}
-**Tags:** ${post.tags.join(", ")}
-
-**Description:**
-${post.description}
-
-**Content:**
-${post.content}
-
-**Image:** ${post.image}
-${post.bgColor ? `**Background Color:** ${post.bgColor}` : ""}`;
-};
-
-

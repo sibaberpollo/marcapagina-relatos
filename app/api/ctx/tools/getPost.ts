@@ -1,59 +1,89 @@
 import { z } from "zod";
-import path from "path";
-import { getPostById, formatPostResponse } from "../common/utils";
+import { getRelatoBySlug, searchRelatos } from '@/lib/sanity';
+import { formatRelatoResponse } from "../common/utils";
 
 export const initGetPostTool = (server: any) => {
   server.tool(
     "get_post",
-    "Gets the full content of a post by slug or title",
+    "Gets the full content of a post by slug or title from the database",
     {
       identifier: z.string().describe("The slug or title of the post to retrieve"),
       searchType: z.enum(["slug", "title"]).default("slug").describe("Whether to search by slug or title"),
-      lang: z.enum(["es", "en"]).default("es").describe("Language preference (defaults to Spanish with fallback)"),
+      includeContent: z.boolean().default(true).describe("Whether to include full post content"),
     },
     async ({ 
       identifier, 
       searchType, 
-      lang 
+      includeContent 
     }: { 
       identifier: string; 
       searchType: "slug" | "title"; 
-      lang: "es" | "en" 
+      includeContent: boolean;
     }, extra: any) => {
       try {
-        const postsDirectory = path.join(process.cwd(), "data", "posts", lang);
-        const fallbackDirectory = path.join(process.cwd(), "data", "posts", "es");
+        // Log input parameters
+        console.log('[get_post] Tool called with parameters:', {
+          identifier,
+          searchType,
+          includeContent
+        });
 
-              // Search in requested language first
-      let post = getPostById(postsDirectory, identifier, searchType);
+        let relato: any = null;
 
-      // If not found and not searching in Spanish, try Spanish as fallback
-      if (!post && lang !== "es") {
-        post = getPostById(fallbackDirectory, identifier, searchType);
+        if (searchType === "slug") {
+          // Log before calling getRelatoBySlug
+          console.log('[get_post] Calling getRelatoBySlug function with slug:', identifier);
+          relato = await getRelatoBySlug(identifier);
+          
+          // Log after calling getRelatoBySlug
+          console.log('[get_post] getRelatoBySlug completed. Found:', relato ? 'Yes' : 'No');
+        } else {
+          // Log before calling searchRelatos for title search
+          console.log('[get_post] Calling searchRelatos function for title search:', identifier);
+          const searchResults = await searchRelatos({
+            query: identifier,
+            limit: 1,
+            includeContent
+          });
+          
+          // Log after calling searchRelatos
+          console.log('[get_post] searchRelatos completed. Results found:', searchResults.results.length);
+          
+          if (searchResults.results.length > 0) {
+            relato = searchResults.results[0];
+          }
         }
 
-        if (!post) {
+        if (!relato) {
+          const notFoundResponse = `Post not found with ${searchType}: "${identifier}"`;
+          console.log('[get_post] Returning not found response:', notFoundResponse);
+          
           return {
             content: [{ 
               type: "text" as const, 
-              text: `❌ Post not found with ${searchType}: "${identifier}"` 
+              text: notFoundResponse
             }],
           };
         }
 
-        // Format the response with the full post content
-        const response = formatPostResponse(post);
+        // Log before calling formatRelatoResponse
+        console.log('[get_post] Calling formatRelatoResponse function...');
+        const response = formatRelatoResponse(relato, includeContent);
+        
+        // Log after calling formatRelatoResponse
+        console.log('[get_post] formatRelatoResponse completed');
+        console.log('[get_post] Final response length:', response.length, 'characters');
 
         return {
           content: [{ type: "text" as const, text: response }],
         };
 
       } catch (error) {
-        console.error("Error in get_post tool:", error);
+        console.error('[get_post] Error in get_post tool:', error);
         return {
           content: [{ 
             type: "text" as const, 
-            text: `❌ Error retrieving post: ${error instanceof Error ? error.message : "Unknown error"}` 
+            text: `Error retrieving post: ${error instanceof Error ? error.message : "Unknown error"}` 
           }],
         };
       }
