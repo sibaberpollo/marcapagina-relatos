@@ -222,7 +222,7 @@ const literaryHoroscopesLeo = {
     text: 'Hay algo en el aire que te empuja a hacer declaraciones grandilocuentes tipo prólogo de novela rusa. Pero cuidado: no todas las tragedias merecen 800 páginas.'
   },
   tauro: {
-    text: 'Tu fidelidad está a prueba. No con personas, sino con playlists. El algoritmo te traicionará. Serás tentado por una cumbia cósmica. Entrégate.'
+    text: 'Tu fidelidad está a prueba. No con personas, sino con playlists. El algoritmo te traicionará. Serás tentado por una novela de V.C. Andrews. Entrégate.'
   },
   geminis: {
     text: 'Estás a punto de iniciar tres proyectos nuevos. Todos contradictorios. Ninguno urgente. Uno terminará siendo un poema. O una deuda. O ambos.'
