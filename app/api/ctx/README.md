@@ -2,11 +2,13 @@
 
 This directory contains the MCP (Model Context Protocol) handler and tools for the application.'
 
+More details: https://github.com/vercel/mcp-adapter?tab=readme-ov-file#integrating-into-your-client
+
 ## Usage
 
-`mcp.json`:
+* Having support for remote server:
 
-```
+```json
 {
   "mcpServers": {
     "marcapagina": {
@@ -16,7 +18,24 @@ This directory contains the MCP (Model Context Protocol) handler and tools for t
 }
 ```
 
-Details: https://github.com/vercel/mcp-adapter?tab=readme-ov-file#integrating-into-your-client
+* No support to remote servers:
+
+```json
+{
+  "mcpServers": {
+    "marcapagina": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "mcp-remote",
+        "http://localhost:3000/api/ctx/mcp"
+      ]
+    }
+  }
+}
+```
+
+Claude Desktop: https://gist.github.com/p1nox/6effb821014dcd819f3ab8b516c3166f
 
 ## Directory Structure
 
@@ -73,37 +92,3 @@ initGetPostTool(server);
 initSearchPostsTool(server);
 initMyNewTool(server);
 ```
-
-4. **The tool will be registered** when the server starts.
-
-## Common Utilities
-
-The `common/` directory contains shared functionality:
-
-- `types.ts`: TypeScript interfaces used across tools
-- `utils.ts`: Utility functions like `getPostById`, `formatPostResponse`, `searchPosts`, `fuzzyMatch`, `getAllPostsFromDirectory`
-
-## Available Tools
-
-### `get_post`
-- **Description**: Gets the full content of a post by slug or title
-- **Parameters**:
-  - `identifier` (string): The slug or title of the post to retrieve
-  - `searchType` (enum): "slug" or "title" (default: "slug")
-  - `lang` (enum): "es" or "en" (default: "es")
-
-### `search_posts`
-- **Description**: Fuzzy search through all posts by title or slug
-- **Parameters**:
-  - `query` (string): Search term to find posts by title or slug
-  - `limit` (number): Maximum number of results to return (1-20, default: 10)
-  - `lang` (enum): "es", "en", or "both" (default: "both")
-  - `minScore` (number): Minimum fuzzy match score 0-100 (default: 30)
-
-## Handler Configuration
-
-The main handler is configured in `[transport]/route.ts` with:
-- Redis support for caching
-- Base path `/api/ctx`
-- Maximum duration of 60 seconds
-- Verbose logging enabled
