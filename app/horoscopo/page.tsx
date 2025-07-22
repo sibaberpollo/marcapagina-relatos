@@ -8,7 +8,7 @@ export async function generateMetadata() {
     openGraph: {
       images: [
         {
-          url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/Leo_Lovecraft_tahvd6.png',
+          url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753187282/shared_leo_agnjl6.jpg',
           width: 1200,
           height: 630,
           alt: 'Horóscopo Literario Leo - H.P. Lovecraft agosto 2025',
@@ -17,7 +17,7 @@ export async function generateMetadata() {
     },
     twitter: {
       card: 'summary_large_image',
-      images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/Leo_Lovecraft_tahvd6.png'],
+      images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1753187282/shared_leo_agnjl6.jpg'],
     },
   })
 }

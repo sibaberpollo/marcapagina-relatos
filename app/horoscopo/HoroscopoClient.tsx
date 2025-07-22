@@ -567,7 +567,7 @@ src={data.authorImage}
       {/* Botones de compartir después del hero */}
       <div className="mb-8">
         <ShareIcons 
-          title="Horóscopo Literario - Franz Kafka y predicciones astrológicas" 
+          title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`}
           slug="horoscopo-literario" 
           className="max-w-md mx-auto"
         />
@@ -809,7 +809,7 @@ src={data.authorImage}
             {/* Botones de compartir debajo de la carta de tarot */}
             <div className="flex justify-center mt-8 mb-4">
               <ShareIcons 
-                title="Horóscopo Literario - Franz Kafka y predicciones astrológicas" 
+                title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`}
                 slug="horoscopo-literario" 
                 className="max-w-md"
               />
