@@ -216,7 +216,109 @@ const literaryHoroscopes = {
   }
 }
 
-export default function HoroscopoClient() {
+// Datos específicos para cada horóscopo
+const horoscopoData = {
+  cancer: {
+    author: 'Franz Kafka',
+    authorImage: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1752236442/Kafka_cancer_qeyz7p.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'agarcia',
+    description: 'Frágil, nocturno, con traumas heredados y la pulsión inagotable de escribir sin que nadie lo lea. El cáncer arquetípico: todo le duele, pero lo convierte en literatura. "Soy literatura o nada", dijo. Murió pidiendo que quemaran todo lo que había escrito. Nadie le hizo caso.',
+    efemerides: [
+      {
+        date: '3 de julio de 1883',
+        title: 'Nace Franz Kafka',
+        description: 'Lo celebra escribiendo cartas imposibles a su padre.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400'
+      },
+      {
+        date: '10 de julio de 1871',
+        title: 'Nace Marcel Proust',
+        description: 'Aún no encuentra la magdalena perfecta.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400'
+      },
+      {
+        date: '18 de julio de 1817',
+        title: 'Muere Jane Austen',
+        description: 'La ironía sobrevivió. Su virginidad, también.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400'
+      }
+    ],
+         tarot: {
+       image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1752495990/tarot-julio-500_eexugw.png',
+       author: 'Alice Munro',
+       subtitle: 'Las tres lunas de Júpiter',
+       card: 'El Ahorcado',
+       phrase: 'La felicidad constante es la curiosidad',
+       description: 'Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.'
+     },
+     writers: undefined
+  },
+  leo: {
+    author: 'H.P. Lovecraft',
+    authorImage: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/Leo_Lovecraft_tahvd6.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'agarcia',
+    description: 'H.P. Lovecraft es nuestro icónico Leo, un signo que brilla como nadie, sufre como todos y crea mundos con una metáfora. Nuestro legendario escritor describió en sus historias desde antiguos tratados, como el innombrable Necronomicón, del árabe Abdul Alhazred -un libro nunca visto, pero del que se murmuran cosas monstruosas, de saberes arcanos y magia ritual, registro de fórmulas olvidadas que permiten contactar con unas entidades sobrenaturales de un inmenso poder-, hasta personajes como el alquimista Charles Le Socier, pasando por un universo de mundos y bestias maravillosas que no dejan de cautivar.',
+    efemerides: [
+      {
+        date: '23 de julio de 1888',
+        title: 'Nace Raymond Chandler',
+        description: 'Ya escribía frases secas desde el útero.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400'
+      },
+      {
+        date: '28 de julio de 1866',
+        title: 'Nace Beatrix Potter',
+        description: 'Crea animales que hablan mejor que muchos políticos.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400'
+      },
+      {
+        date: '30 de julio de 1818',
+        title: 'Nace Emily Brontë',
+        description: 'Cumbres borrascosas y ningún pendiente más.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400'
+      }
+    ],
+    tarot: {
+      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/tarot-leo_onlpy8.png',
+      author: 'Charles Le Sorcier',
+      subtitle: 'El Hechicero Inmortal',
+      card: 'La Fuerza',
+      phrase: 'El conocimiento arcano sobrevive al tiempo',
+      description: 'En el tarot, La Fuerza, la octava carta de los Arcanos Mayores, domina a los hijos de Leo, y corresponde al tránsito del Sol en este signo. Los nacidos en Leo, no dudan de las cosas que tienen que hacer, son buenos para todo, inteligentes, e idealistas. Magnéticos y honestos, les encanta estar en el punto de mira. El león representa su naturaleza apasionada y su fuerza, el coraje, el deseo y la necesidad de conexión humana. Pero, cuidado, cuando estas necesidades no se satisfacen, se vuelven abrumadores y la naturaleza destructiva del león se manifiesta.'
+    },
+    writers: [
+      'Henrik Pontoppidan (Premio Nobel 1917)', 'Alexandre Dumas', 'Elias Canetti (Premio Nobel 1981)', 
+      'Aldous Huxley', 'George Bernard Shaw (Premio Nobel 1925)', 'Giosuè Carducci (Premio Nobel 1906)', 
+      'Malcolm Lowry', 'Eyvind Johnson (Premio Nobel 1974)', 'Emily Brontë', 'Cees Nooteboom', 
+      'Herman Melville', 'Isabel Allende', 'Rómulo Gallegos', 'Knut Hamsun (Premio Nobel 1920)', 
+      'Virgilio Piñera', 'Guy de Maupassant', 'Jostein Gaarder', 'Alfred Döblin', 'Jorge Amado', 
+      'Jacinto Benavente (Premio Nobel 1922)', 'John Galsworthy (Premio Nobel 1932)', 'Stieg Larsson', 
+      'Charles Bukowski', 'V.S. Naipual (Premio Nobel 2001)', 'Herta Müller (Premio Nobel 2009)', 
+      'Jonathan Franzen', 'H.P. Lovecraft', 'Salvatore Quasimodo (Premio Nobel 1959)', 'Emilio Salgari', 
+      'Ray Bradbury'
+    ]
+  }
+}
+
+interface HoroscopoClientProps {
+  signo?: 'cancer' | 'leo'
+}
+
+export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps) {
   const [activeSign, setActiveSign] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -310,12 +412,22 @@ export default function HoroscopoClient() {
   // Eliminar la variable activePrediction
   // const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
 
-  // Detectar el signo actual
-  const currentSign = getCurrentZodiacSign();
+  // Detectar el signo actual o usar el especificado
+  const currentSign = signo === 'cancer' ? 'cancer' : getCurrentZodiacSign();
   
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find(sign => sign.slug === currentSign);
   const currentSignText = literaryHoroscopes[currentSign]?.text || '';
+  
+  // Obtener datos del horóscopo según el signo
+  const data = horoscopoData[signo];
+
+  // Función para obtener el link del signo
+  const getSignLink = (signSlug: string) => {
+    if (signSlug === 'leo') return '/horoscopo' // Signo actual
+    if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible
+    return '#' // Signos futuros (sin link)
+  }
 
   return (
     <div className="relative">
@@ -327,13 +439,13 @@ export default function HoroscopoClient() {
             {/* Left Column - Texto literario de Cáncer */}
             <div className="relative order-2 lg:order-1 flex flex-col justify-center">
               <div className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium mb-4">
-                Signo: Cáncer
+                Signo: {signo === 'cancer' ? 'Cáncer' : 'Leo'}
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-4 font-titles">
-                Franz Kafka
+{data.author}
               </h1>
               <p className="text-lg leading-relaxed text-gray-700 dark:text-gray-300 mb-8 max-w-lg">
-                Frágil, nocturno, con traumas heredados y la pulsión inagotable de escribir sin que nadie lo lea. El cáncer arquetípico: todo le duele, pero lo convierte en literatura. “Soy literatura o nada”, dijo. Murió pidiendo que quemaran todo lo que había escrito. Nadie le hizo caso.
+                {data.description}
               </p>
               {/* Autoría de Adriana */}
               <div className="flex items-center gap-4 mt-6 mb-2">
@@ -346,10 +458,10 @@ export default function HoroscopoClient() {
                 <div className="flex flex-col">
                   <span className="text-sm text-gray-500 dark:text-gray-400">Por:</span>
                   <a
-                    href="/autor/agarcia"
+href={`/autor/${data.authorSlug}`}
                     className="text-base font-semibold text-gray-900 dark:text-gray-100 hover:underline"
                   >
-                    Adriana García S.
+{data.authorCredit}
                   </a>
                 </div>
               </div>
@@ -357,8 +469,8 @@ export default function HoroscopoClient() {
             {/* Right Column - Imagen de Kafka sobre las formas geométricas */}
             <div className="relative order-1 lg:order-2 flex justify-center items-center">
               <img
-                src="https://res.cloudinary.com/dx98vnos1/image/upload/v1752236442/Kafka_cancer_qeyz7p.png"
-                alt="Franz Kafka"
+src={data.authorImage}
+                alt={data.author}
                 className="w-64 h-auto max-h-72 object-contain z-10"
                 style={{ background: 'none', boxShadow: 'none', border: 'none' }}
                 loading="lazy"
@@ -391,81 +503,37 @@ export default function HoroscopoClient() {
               
               {/* Scroll horizontal en móvil */}
               <div className="flex gap-4 overflow-x-auto pb-4 md:hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
-                <div className="flex-shrink-0 w-80">
-                  <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-100 dark:border-purple-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
-                      3 de julio de 1883
+                {data.efemerides.map((efemeride, index) => (
+                  <div key={index} className="flex-shrink-0 w-80">
+                    <div className={`bg-gradient-to-br ${efemeride.color} p-6 rounded-xl border ${efemeride.borderColor} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
+                      <div className={`text-sm font-semibold ${efemeride.textColor} mb-2`}>
+                        {efemeride.date}
+                      </div>
+                      <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                        {efemeride.title}
+                      </div>
+                      <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                        {efemeride.description}
+                      </p>
                     </div>
-                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                      Nace Franz Kafka
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                      Lo celebra escribiendo cartas imposibles a su padre.
-                    </p>
                   </div>
-                </div>
-                <div className="flex-shrink-0 w-80">
-                  <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                      10 de julio de 1871
-                    </div>
-                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                      Nace Marcel Proust
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                      Aún no encuentra la magdalena perfecta.
-                    </p>
-                  </div>
-                </div>
-                <div className="flex-shrink-0 w-80">
-                  <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                    <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
-                      18 de julio de 1817
-                    </div>
-                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                      Muere Jane Austen
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                      La ironía sobrevivió. Su virginidad, también.
-                    </p>
-                  </div>
-                </div>
+                ))}
               </div>
               {/* Grid para desktop */}
               <div className="hidden md:grid md:grid-cols-3 md:gap-6 md:max-w-4xl md:mx-auto">
-                <div className="bg-gradient-to-br from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20 p-6 rounded-xl border border-purple-100 dark:border-purple-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="text-sm font-semibold text-purple-600 dark:text-purple-400 mb-2">
-                    3 de julio de 1883
+                {data.efemerides.map((efemeride, index) => (
+                  <div key={index} className={`bg-gradient-to-br ${efemeride.color} p-6 rounded-xl border ${efemeride.borderColor} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
+                    <div className={`text-sm font-semibold ${efemeride.textColor} mb-2`}>
+                      {efemeride.date}
+                    </div>
+                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
+                      {efemeride.title}
+                    </div>
+                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
+                      {efemeride.description}
+                    </p>
                   </div>
-                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    Nace Franz Kafka
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                    Lo celebra escribiendo cartas imposibles a su padre.
-                  </p>
-                </div>
-                <div className="bg-gradient-to-br from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20 p-6 rounded-xl border border-blue-100 dark:border-blue-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="text-sm font-semibold text-blue-600 dark:text-blue-400 mb-2">
-                    10 de julio de 1871
-                  </div>
-                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    Nace Marcel Proust
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                    Aún no encuentra la magdalena perfecta.
-                  </p>
-                </div>
-                <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20 p-6 rounded-xl border border-green-100 dark:border-green-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                  <div className="text-sm font-semibold text-green-600 dark:text-green-400 mb-2">
-                    18 de julio de 1817
-                  </div>
-                  <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    Muere Jane Austen
-                  </div>
-                  <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                    La ironía sobrevivió. Su virginidad, también.
-                  </p>
-                </div>
+                ))}
               </div>
             </div>
 
@@ -515,11 +583,15 @@ export default function HoroscopoClient() {
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {zodiacSigns.filter(sign => sign.slug !== currentSign).map((sign) => {
                   const literaryText = literaryHoroscopes[sign.slug]?.text || '';
-                  return (
-                    <div
-                      key={sign.name}
-                      className="relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border border-gray-100 dark:border-gray-800 transition-all duration-200"
-                    >
+                  const signLink = getSignLink(sign.slug);
+                  const isClickable = signLink !== '#';
+                  
+                  const cardClasses = `relative bg-white/80 dark:bg-gray-900/70 rounded-xl shadow p-6 flex flex-col items-center text-center border border-gray-100 dark:border-gray-800 transition-all duration-200 ${
+                    isClickable ? 'hover:shadow-lg hover:-translate-y-1 cursor-pointer hover:border-purple-200 dark:hover:border-purple-800' : ''
+                  }`;
+                  
+                  const cardContent = (
+                    <div className={cardClasses}>
                       <div className="mb-2">
                         {sign.image ? (
                           <div 
@@ -540,10 +612,51 @@ export default function HoroscopoClient() {
                       <div className="font-bold text-lg mb-1">{sign.name}</div>
                       <div className="text-sm text-gray-500 mb-3">{sign.date}</div>
                       <div className="text-base text-gray-700 dark:text-gray-300 mb-2">{literaryText}</div>
+                      {isClickable && (
+                        <div className="mt-auto pt-2">
+                          <span className="text-xs text-purple-600 dark:text-purple-400 font-medium">
+                            {sign.slug === 'cancer' ? 'Ver archivo' : 'Ver horóscopo'} →
+                          </span>
+                        </div>
+                      )}
+                    </div>
+                  );
+                  
+                  return (
+                    <div key={sign.name}>
+                      {isClickable ? (
+                        <a href={signLink} className="block">
+                          {cardContent}
+                        </a>
+                      ) : (
+                        cardContent
+                      )}
                     </div>
                   );
                 })}
-            </div>
+              </div>
+
+            {/* Lista de escritores Leo */}
+            {signo === 'leo' && data.writers && (
+              <div className="mt-16">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Escritores Leo
+                  </h3>
+                  <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full"></div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+                  {data.writers.map((writer, index) => (
+                    <div key={index} className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm font-medium">
+                        {writer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </SectionContainer>
@@ -594,8 +707,8 @@ export default function HoroscopoClient() {
               {/* Imagen de la carta */}
               <div className="flex-shrink-0 mb-6 md:mb-0">
                 <img
-                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1752495990/tarot-julio-500_eexugw.png"
-                  alt="Carta del tarot: Las tres lunas de Júpiter"
+                  src={data.tarot.image}
+                  alt={`Carta del tarot: ${data.tarot.subtitle}`}
                   className="w-40 h-auto rounded-lg"
                   loading="lazy"
                 />
@@ -603,19 +716,19 @@ export default function HoroscopoClient() {
               {/* Texto de la carta */}
               <div className="flex-1 text-center md:text-left">
                 <div className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-1">
-                  Alice Munro
+                  {data.tarot.author}
                 </div>
                 <div className="text-base italic text-gray-500 dark:text-gray-400 mb-3">
-                  Las tres lunas de Júpiter
+                  {data.tarot.subtitle}
                 </div>
                 <div className="text-lg font-semibold text-purple-700 dark:text-purple-300 mb-1">
-                  El Ahorcado
+                  {data.tarot.card}
                 </div>
                 <div className="italic text-gray-700 dark:text-gray-300 mb-4">
-                  La felicidad constante es la curiosidad
+                  {data.tarot.phrase}
                 </div>
                 <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
-                  Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.
+                  {data.tarot.description}
                 </div>
               </div>
             </div>
