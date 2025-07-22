@@ -75,6 +75,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/horoscopo`, // página de horóscopo
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/horoscopo/cancer`, // página de horóscopo
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity

@@ -176,8 +176,8 @@ function getCurrentZodiacSign() {
   return 'piscis'
 }
 
-// 1. Definir los textos literarios para cada signo
-const literaryHoroscopes = {
+// 1. Definir los textos literarios para cada época
+const literaryHoroscopesCancer = {
   aries: {
     text: 'Semana tipo Rayuela, pero sin saber en qué capítulo estás ni quién te observa desde la otra acera. Cuidado con los ascensores emocionales: pueden devolverte al inicio.'
   },
@@ -213,6 +213,46 @@ const literaryHoroscopes = {
   },
   piscis: {
     text: 'Te va a caer una revelación como en los cuentos de Clarice Lispector: suave, extraña, inevitable. No intentes explicarla. Solo toma nota. Y si puedes, escribe con la luz apagada.'
+  }
+}
+
+// Textos literarios para Leo (actuales)
+const literaryHoroscopesLeo = {
+  aries: {
+    text: 'Hay algo en el aire que te empuja a hacer declaraciones grandilocuentes tipo prólogo de novela rusa. Pero cuidado: no todas las tragedias merecen 800 páginas.'
+  },
+  tauro: {
+    text: 'Tu fidelidad está a prueba. No con personas, sino con playlists. El algoritmo te traicionará. Serás tentado por una cumbia cósmica. Entrégate.'
+  },
+  geminis: {
+    text: 'Estás a punto de iniciar tres proyectos nuevos. Todos contradictorios. Ninguno urgente. Uno terminará siendo un poema. O una deuda. O ambos.'
+  },
+  cancer: {
+    text: 'Tus emociones te piden subtítulos. Esta semana alguien se los pondrá. ¿El problema? Estarán mal traducidos. No corrijas. Observa.'
+  },
+  leo: {
+    text: 'Tu drama personal cobra dimensiones épicas, tipo tragedia griega pero con ChatGpt. Vas a querer gritar: "¡Yo nací para esto!". Y sí. Pero bájale dos tonos.'
+  },
+  virgo: {
+    text: 'Vas a hacer una lista de listas. Y otra para revisar las anteriores. Si eso no te da paz, prueba con leer en voz alta a alguien que no te interrumpa.'
+  },
+  libra: {
+    text: 'Estás en una fase estética intensa. Cualquier cosa fuera de simetría te altera el chi. Respira. Hasta el mejor verso cojea a veces.'
+  },
+  escorpio: {
+    text: 'Una carta no enviada, una foto no borrada, un mensaje no leído. Todo eso eres tú esta semana. Intenso, como siempre. Pero con estilo noir.'
+  },
+  sagitario: {
+    text: 'Esta semana vas a querer contarle a todos tu próxima idea brillante. No lo hagas. Déjala fermentar. No todo vino se bebe joven.'
+  },
+  capricornio: {
+    text: 'Descubrirás que alguien escribió antes lo que estás pensando. ¿Plagio cósmico? No. Es el inconsciente colectivo pidiéndote una cita en letra chica.'
+  },
+  acuario: {
+    text: 'Te va a tocar ser el raro en una sala de gente rara. Brilla. Nadie como tú para organizar el caos sin que parezca que estás mandando.'
+  },
+  piscis: {
+    text: 'Un sueño extraño va a darte el título de algo importante. No sabrás si es cuento, diario, despedida o mantra.'
   }
 }
 
@@ -256,7 +296,9 @@ const horoscopoData = {
        subtitle: 'Las tres lunas de Júpiter',
        card: 'El Ahorcado',
        phrase: 'La felicidad constante es la curiosidad',
-       description: 'Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.'
+       description: 'Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.',
+       meaningTitle: undefined,
+       meaningDescription: undefined
      },
      writers: undefined
   },
@@ -290,16 +332,50 @@ const horoscopoData = {
         color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
         borderColor: 'border-green-100 dark:border-green-800/30',
         textColor: 'text-green-600 dark:text-green-400'
+      },
+      {
+        date: '31 de julio de 1965',
+        title: 'Nace J.K. Rowling',
+        description: 'Leo con horóscopo ascendente en retweet.',
+        color: 'from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20',
+        borderColor: 'border-amber-100 dark:border-amber-800/30',
+        textColor: 'text-amber-600 dark:text-amber-400'
+      },
+      {
+        date: '5 de agosto de 1850',
+        title: 'Nace Guy de Maupassant',
+        description: 'El primero en describir fantasmas que también eran deudas.',
+        color: 'from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20',
+        borderColor: 'border-teal-100 dark:border-teal-800/30',
+        textColor: 'text-teal-600 dark:text-teal-400'
+      },
+      {
+        date: '9 de agosto de 1896',
+        title: 'Muere Hermann Melville',
+        description: 'Su editor aún esperaba la segunda parte de Moby-Dick.',
+        color: 'from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20',
+        borderColor: 'border-indigo-100 dark:border-indigo-800/30',
+        textColor: 'text-indigo-600 dark:text-indigo-400'
+      },
+      {
+        date: '15 de agosto de 1769',
+        title: 'Nace Napoleón',
+        description: 'No escribió novelas, pero inspiró miles.',
+        color: 'from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20',
+        borderColor: 'border-rose-100 dark:border-rose-800/30',
+        textColor: 'text-rose-600 dark:text-rose-400'
       }
     ],
-    tarot: {
-      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/tarot-leo_onlpy8.png',
-      author: 'Charles Le Sorcier',
-      subtitle: 'El Hechicero Inmortal',
-      card: 'La Fuerza',
-      phrase: 'El conocimiento arcano sobrevive al tiempo',
-      description: 'En el tarot, La Fuerza, la octava carta de los Arcanos Mayores, domina a los hijos de Leo, y corresponde al tránsito del Sol en este signo. Los nacidos en Leo, no dudan de las cosas que tienen que hacer, son buenos para todo, inteligentes, e idealistas. Magnéticos y honestos, les encanta estar en el punto de mira. El león representa su naturaleza apasionada y su fuerza, el coraje, el deseo y la necesidad de conexión humana. Pero, cuidado, cuando estas necesidades no se satisfacen, se vuelven abrumadores y la naturaleza destructiva del león se manifiesta.'
-    },
+         tarot: {
+       image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/tarot-leo_onlpy8.png',
+       author: 'Charles Le Sorcier',
+       subtitle: 'El Hechicero Inmortal',
+       card: 'La Fuerza',
+       phrase: 'El conocimiento arcano sobrevive al tiempo',
+       description: 'En el tarot, La Fuerza, la octava carta de los Arcanos Mayores, domina a los hijos de Leo, y corresponde al tránsito del Sol en este signo. Los nacidos en Leo, no dudan de las cosas que tienen que hacer, son buenos para todo, inteligentes, e idealistas. Magnéticos y honestos, les encanta estar en el punto de mira. El león representa su naturaleza apasionada y su fuerza, el coraje, el deseo y la necesidad de conexión humana. Pero, cuidado, cuando estas necesidades no se satisfacen, se vuelven abrumadores y la naturaleza destructiva del león se manifiesta.',
+       meaningTitle: 'Significado de la tirada',
+       meaningDescription: 'El consultante está enfrentando una situación marcada por una obsesión no resuelta. Hay una energía persistente que ha sobrevivido al tiempo, y ahora exige atención o resolución. Presencia de sabiduría arcana o conocimientos prohibidos. Advertencia: el consultante puede estar atrapado en su pasado. Esta carta representa la eternidad del conocimiento y la conexión con el creador. El relato y su personificación. Le Sorcier no sólo es un personaje: es la encarnación de todos los que buscan dominar la realidad a través del saber. Lovecraft, en las sombras, recuerda que incluso los horrores más grandes existen porque alguien los soñó.'
+     },
     writers: [
       'Henrik Pontoppidan (Premio Nobel 1917)', 'Alexandre Dumas', 'Elias Canetti (Premio Nobel 1981)', 
       'Aldous Huxley', 'George Bernard Shaw (Premio Nobel 1925)', 'Giosuè Carducci (Premio Nobel 1906)', 
@@ -413,11 +489,14 @@ export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps)
   // const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
 
   // Detectar el signo actual o usar el especificado
-  const currentSign = signo === 'cancer' ? 'cancer' : getCurrentZodiacSign();
+  const currentSign = signo === 'cancer' ? 'cancer' : 'leo'; // Leo es el signo actual por defecto
   
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find(sign => sign.slug === currentSign);
-  const currentSignText = literaryHoroscopes[currentSign]?.text || '';
+  
+  // Seleccionar el objeto de textos correcto según el signo
+  const literaryTexts = signo === 'cancer' ? literaryHoroscopesCancer : literaryHoroscopesLeo;
+  const currentSignText = literaryTexts[currentSign]?.text || '';
   
   // Obtener datos del horóscopo según el signo
   const data = horoscopoData[signo];
@@ -501,8 +580,8 @@ src={data.authorImage}
                 <div className="w-24 h-1 bg-gradient-to-r from-purple-400 to-pink-400 mx-auto rounded-full"></div>
               </div>
               
-              {/* Scroll horizontal en móvil */}
-              <div className="flex gap-4 overflow-x-auto pb-4 md:hidden scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
+              {/* Scroll horizontal para todas las pantallas */}
+              <div className="flex gap-4 overflow-x-auto pb-4 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-transparent">
                 {data.efemerides.map((efemeride, index) => (
                   <div key={index} className="flex-shrink-0 w-80">
                     <div className={`bg-gradient-to-br ${efemeride.color} p-6 rounded-xl border ${efemeride.borderColor} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
@@ -519,22 +598,6 @@ src={data.authorImage}
                   </div>
                 ))}
               </div>
-              {/* Grid para desktop */}
-              <div className="hidden md:grid md:grid-cols-3 md:gap-6 md:max-w-4xl md:mx-auto">
-                {data.efemerides.map((efemeride, index) => (
-                  <div key={index} className={`bg-gradient-to-br ${efemeride.color} p-6 rounded-xl border ${efemeride.borderColor} hover:shadow-lg transition-all duration-300 hover:-translate-y-1`}>
-                    <div className={`text-sm font-semibold ${efemeride.textColor} mb-2`}>
-                      {efemeride.date}
-                    </div>
-                    <div className="font-bold text-gray-900 dark:text-gray-100 mb-2">
-                      {efemeride.title}
-                    </div>
-                    <p className="text-gray-600 dark:text-gray-400 text-sm italic">
-                      {efemeride.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
             </div>
 
             {/* Grilla de signos literarios */}
@@ -542,7 +605,7 @@ src={data.authorImage}
               {/* Card horizontal del signo del mes */}
               {(() => {
                 const currentSignData = zodiacSigns.find(sign => sign.slug === currentSign);
-                const currentSignText = literaryHoroscopes[currentSign]?.text || '';
+                const currentSignText = literaryTexts[currentSign]?.text || '';
                 return (
                   <div className="w-full bg-gradient-to-r from-yellow-50 to-orange-50 dark:from-yellow-900/20 dark:to-orange-900/20 rounded-xl shadow-lg border-2 border-orange-200 dark:border-orange-800 p-8">
                     <div className="flex flex-col md:flex-row items-center gap-6">
@@ -582,7 +645,7 @@ src={data.authorImage}
               {/* Grid de los demás signos */}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 {zodiacSigns.filter(sign => sign.slug !== currentSign).map((sign) => {
-                  const literaryText = literaryHoroscopes[sign.slug]?.text || '';
+                  const literaryText = literaryTexts[sign.slug]?.text || '';
                   const signLink = getSignLink(sign.slug);
                   const isClickable = signLink !== '#';
                   
@@ -636,27 +699,7 @@ src={data.authorImage}
                 })}
               </div>
 
-            {/* Lista de escritores Leo */}
-            {signo === 'leo' && data.writers && (
-              <div className="mt-16">
-                <div className="text-center mb-8">
-                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    Escritores Leo
-                  </h3>
-                  <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full"></div>
-                </div>
-                
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
-                  {data.writers.map((writer, index) => (
-                    <div key={index} className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
-                      <p className="text-gray-700 dark:text-gray-300 text-sm font-medium">
-                        {writer}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+
           </div>
         </div>
       </SectionContainer>
@@ -727,9 +770,21 @@ src={data.authorImage}
                 <div className="italic text-gray-700 dark:text-gray-300 mb-4">
                   {data.tarot.phrase}
                 </div>
-                <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed mb-6">
                   {data.tarot.description}
                 </div>
+                
+                {/* Significado de la tirada para Leo */}
+                {data.tarot.meaningTitle && data.tarot.meaningDescription && (
+                  <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+                    <h4 className="text-lg font-semibold text-purple-700 dark:text-purple-300 mb-3">
+                      {data.tarot.meaningTitle}
+                    </h4>
+                    <div className="text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+                      {data.tarot.meaningDescription}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
             {/* Botones de compartir debajo de la carta de tarot */}
@@ -740,6 +795,28 @@ src={data.authorImage}
                 className="max-w-md"
               />
             </div>
+
+            {/* Lista de escritores Leo */}
+            {signo === 'leo' && data.writers && (
+              <div className="mt-16">
+                <div className="text-center mb-8">
+                  <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    Escritores Leo
+                  </h3>
+                  <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full"></div>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 max-w-6xl mx-auto">
+                  {data.writers.map((writer, index) => (
+                    <div key={index} className="bg-gradient-to-br from-amber-50 to-orange-50 dark:from-amber-900/20 dark:to-orange-900/20 p-4 rounded-lg border border-amber-100 dark:border-amber-800/30 hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                      <p className="text-gray-700 dark:text-gray-300 text-sm font-medium">
+                        {writer}
+                      </p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
         </SectionContainer>
       </section>
