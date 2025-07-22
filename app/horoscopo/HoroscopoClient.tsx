@@ -298,7 +298,8 @@ const horoscopoData = {
        phrase: 'La felicidad constante es la curiosidad',
        description: 'Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.',
        meaningTitle: undefined,
-       meaningDescription: undefined
+       meaningDescription: undefined,
+       illustrator: undefined
      },
      writers: undefined
   },
@@ -374,7 +375,11 @@ const horoscopoData = {
        phrase: 'El conocimiento arcano sobrevive al tiempo',
        description: 'En el tarot, La Fuerza, la octava carta de los Arcanos Mayores, domina a los hijos de Leo, y corresponde al tránsito del Sol en este signo. Los nacidos en Leo, no dudan de las cosas que tienen que hacer, son buenos para todo, inteligentes, e idealistas. Magnéticos y honestos, les encanta estar en el punto de mira. El león representa su naturaleza apasionada y su fuerza, el coraje, el deseo y la necesidad de conexión humana. Pero, cuidado, cuando estas necesidades no se satisfacen, se vuelven abrumadores y la naturaleza destructiva del león se manifiesta.',
        meaningTitle: 'Significado de la tirada',
-       meaningDescription: 'El consultante está enfrentando una situación marcada por una obsesión no resuelta. Hay una energía persistente que ha sobrevivido al tiempo, y ahora exige atención o resolución. Presencia de sabiduría arcana o conocimientos prohibidos. Advertencia: el consultante puede estar atrapado en su pasado. Esta carta representa la eternidad del conocimiento y la conexión con el creador. El relato y su personificación. Le Sorcier no sólo es un personaje: es la encarnación de todos los que buscan dominar la realidad a través del saber. Lovecraft, en las sombras, recuerda que incluso los horrores más grandes existen porque alguien los soñó.'
+       meaningDescription: 'El consultante está enfrentando una situación marcada por una obsesión no resuelta. Hay una energía persistente que ha sobrevivido al tiempo, y ahora exige atención o resolución. Presencia de sabiduría arcana o conocimientos prohibidos. Advertencia: el consultante puede estar atrapado en su pasado. Esta carta representa la eternidad del conocimiento y la conexión con el creador. El relato y su personificación. Le Sorcier no sólo es un personaje: es la encarnación de todos los que buscan dominar la realidad a través del saber. Lovecraft, en las sombras, recuerda que incluso los horrores más grandes existen porque alguien los soñó.',
+       illustrator: {
+         name: '@rebecafg68',
+         url: 'https://instagram.com/rebecafg68'
+       }
      },
     writers: [
       'Henrik Pontoppidan (Premio Nobel 1917)', 'Alexandre Dumas', 'Elias Canetti (Premio Nobel 1981)', 
@@ -752,9 +757,23 @@ src={data.authorImage}
                 <img
                   src={data.tarot.image}
                   alt={`Carta del tarot: ${data.tarot.subtitle}`}
-                  className="w-40 h-auto rounded-lg"
+                  className="w-40 h-auto rounded-lg mb-2"
                   loading="lazy"
                 />
+                {/* Crédito del ilustrador si existe */}
+                {data.tarot.illustrator && (
+                  <p className="text-xs text-gray-500 dark:text-gray-400 text-center">
+                    Carta ilustrada por:{' '}
+                    <a 
+                      href={data.tarot.illustrator.url} 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-purple-600 dark:text-purple-400 hover:underline"
+                    >
+                      {data.tarot.illustrator.name}
+                    </a>
+                  </p>
+                )}
               </div>
               {/* Texto de la carta */}
               <div className="flex-1 text-center md:text-left">
