@@ -531,6 +531,88 @@ export async function getRelatedRelatos(slug: string, limit: number = 3): Promis
   }
 }
 
+// Función para obtener una serie específica por su slug
+export async function getSerieBySlug(serieSlug: string): Promise<{
+  serie: any;
+  relatosDeSerie: Relato[];
+}> {
+  try {
+    const serie = await client.fetch(`
+      *[_type == "serie" && slug.current == $serieSlug][0] {
+        title,
+        slug,
+        description,
+        "authors": authors[]-> {
+          name,
+          slug,
+          avatar,
+          occupation,
+          company,
+          twitter,
+          linkedin,
+          github
+        },
+        "relatos": relatos[]-> {
+          title,
+          slug,
+          date,
+          summary,
+          image,
+          readingTime,
+          status,
+          "author": author-> {
+            name,
+            slug,
+            avatar
+          }
+        } | order(seriesOrder asc)
+      }
+    `, { serieSlug });
+    
+    if (!serie) {
+      return { serie: null, relatosDeSerie: [] };
+    }
+    
+    // Filtrar solo relatos publicados
+    const relatosPublicados = serie.relatos.filter(r => r.status === 'published' || !r.status);
+    
+    return {
+      serie,
+      relatosDeSerie: relatosPublicados.map(r => ({ 
+        ...r, 
+        title: toVersal(cleanEmoji(r.title)),
+        readingTime: r.readingTime || calcularTiempoLectura()
+      }))
+    };
+  } catch (error) {
+    console.error(`Error al obtener serie "${serieSlug}":`, error);
+    return { serie: null, relatosDeSerie: [] };
+  }
+}
+
+// Función para obtener todas las series (para generateStaticParams)
+export async function getAllSeries(): Promise<any[]> {
+  try {
+    const series = await client.fetch(`
+      *[_type == "serie"] {
+        slug,
+        title,
+        description,
+        "authors": authors[]-> {
+          name,
+          slug
+        },
+        "totalRelatos": count(relatos[])
+      }
+    `);
+    
+    return series;
+  } catch (error) {
+    console.error('Error al obtener todas las series:', error);
+    return [];
+  }
+}
+
 // Función para obtener la serie de un relato y todos los relatos de esa serie
 export async function getSerieDeRelato(slug: string): Promise<{
   serie: any;

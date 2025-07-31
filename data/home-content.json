@@ -10,6 +10,27 @@
   },
   "items": [
     {
+      "type": "series",
+      "cardType": "series",
+      "seriesName": "Mérida, ciudad Perdida (1990–1993)",
+      "seriesSlug": "merida-ciudad-perdida-1990-1993",
+      "latestChapter": {
+        "title": "El Martirio de Nicacanor",
+        "slug": "el-martirio-de-nicacanor",
+        "preview": "Una nueva serie que explora los límites entre la realidad y la ficción a través de la perspectiva de un personaje complejo.",
+        "order": 1
+      },
+      "previousChapters": [],
+      "firstChapter": {
+        "title": "El Martirio de Nicacanor",
+        "slug": "el-martirio-de-nicacanor",
+        "order": 1
+      },
+      "backgroundColor": "#efa106",
+      "textColor": "#ffffff",
+      "language": "es"
+    },
+    {
       "type": "meme",
       "cardType": "overlay",
       "image": "https://res.cloudinary.com/dx98vnos1/image/upload/v1753219222/Horoscopo_Lovecraft_Leo_vquylp.png",

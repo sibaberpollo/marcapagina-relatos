@@ -1,0 +1,12 @@
+{
+    "mcpServers": {
+        "marcapagina": {
+            "command": "npx",
+            "args": [
+                "-y",
+                "mcp-remote",
+                "https://www.marcapagina.page/api/ctx/mcp"
+            ]
+        }
+    }
+}

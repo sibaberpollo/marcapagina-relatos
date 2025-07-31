@@ -10,8 +10,37 @@ interface Chapter {
   order: number
 }
 
-interface SeriesCardProps {
+interface SerieRelato {
+  title: string
+  slug: {
+    current: string
+  }
+  summary?: string
+  readingTime?: number
+  date?: string
+}
+
+interface SerieAutor {
+  name: string
+  slug: {
+    current: string
+  }
+}
+
+interface Serie {
+  title: string
+  slug?: {
+    current: string
+  }
+  description?: string
+  relatos: SerieRelato[]
+  author?: SerieAutor
+}
+
+// Props para uso estático (home)
+interface StaticSeriesCardProps {
   seriesName: string
+  seriesSlug?: string
   seriesCover?: string
   latestChapter: {
     title: string
@@ -20,24 +49,86 @@ interface SeriesCardProps {
     order: number
   }
   previousChapters: Chapter[]
+  firstChapter?: {
+    title: string
+    slug: string
+    order: number
+  }
   language?: string
   href?: string
   backgroundColor?: string
   textColor?: string
+  serie?: never
+  userProgress?: never
 }
 
-export default function SeriesCard({
+// Props para uso dinámico (página de series)
+interface DynamicSeriesCardProps {
+  serie: Serie
+  userProgress?: number
+  seriesName?: never
+  seriesCover?: never
+  latestChapter?: never
+  previousChapters?: never
+  language?: never
+  href?: never
+  backgroundColor?: never
+  textColor?: never
+}
+
+type SeriesCardProps = StaticSeriesCardProps | DynamicSeriesCardProps
+
+export default function SeriesCard(props: SeriesCardProps) {
+  // Si es uso dinámico (página de series), convertir a formato estático
+  if ('serie' in props && props.serie) {
+    const { serie, userProgress = 0 } = props
+    const firstStory = serie.relatos[0]
+    const restStories = serie.relatos.slice(1)
+    
+    const staticProps: StaticSeriesCardProps = {
+      seriesName: serie.title,
+      seriesSlug: serie.slug?.current,
+      latestChapter: {
+        title: firstStory?.title || '',
+        slug: firstStory?.slug?.current || '',
+        preview: firstStory?.summary || serie.description || '',
+        order: 1
+      },
+      previousChapters: restStories.map((relato, index) => ({
+        title: relato.title,
+        slug: relato.slug.current,
+        order: index + 2
+      })),
+      firstChapter: {
+        title: firstStory?.title || '',
+        slug: firstStory?.slug?.current || '',
+        order: 1
+      },
+      language: 'es',
+      backgroundColor: '#efa106',
+      textColor: '#ffffff'
+    }
+    
+    return <SeriesCardContent {...staticProps} />
+  }
+  
+  // Uso estático (home)
+  return <SeriesCardContent {...props} />
+}
+
+function SeriesCardContent({
   seriesName,
+  seriesSlug,
   seriesCover,
   latestChapter,
   previousChapters,
+  firstChapter,
   language = 'es',
   href,
   backgroundColor = '#ee686b',
   textColor = '#ffffff'
-}: SeriesCardProps) {
+}: StaticSeriesCardProps) {
   const seriesText = language === 'en' ? 'Series' : 'Serie'
-  const chapterText = language === 'en' ? 'Chapter' : 'Capítulo'
 
   // Crear estilos dinámicos con los colores parametrizables
   const cardStyle = {
@@ -79,29 +170,29 @@ export default function SeriesCard({
             </span>
           </div>
 
-                     {/* Header - igual que FeaturedCard */}
-           <div className="px-6 pt-6 pb-2 pr-16 flex-shrink-0 mt-10">
-             <div className="text-left">
-               <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
-                 {seriesText}: <span className="italic">{seriesName}</span>
-               </p>
-               <Link href={`/relato/${latestChapter.slug}`}>
-                 <h3 className="text-xl font-bold leading-tight hover:opacity-80 transition-opacity cursor-pointer" style={{ color: textColor }}>
-                   {chapterText} {latestChapter.order}: {latestChapter.title}
-                 </h3>
-               </Link>
-             </div>
-           </div>
+          {/* Header - con padding para evitar superposición con badge y margin-top grande */}
+          <div className="p-4 pr-16 pb-6 flex-shrink-0 mt-16">
+            <div className="text-left">
+              <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
+                {seriesText}: <span className="italic">{seriesName}</span>
+              </p>
+              <Link href={`/relato/${latestChapter.slug}`}>
+                <h3 className="text-xl font-bold leading-tight hover:opacity-80 transition-opacity cursor-pointer" style={{ color: textColor }}>
+                  {latestChapter.title}
+                </h3>
+              </Link>
+            </div>
+          </div>
 
-                      {/* Preview del último capítulo - igual que FeaturedCard */}
-           <div className="px-6 pb-2 flex-1">
-             <p className="leading-relaxed text-base line-clamp-4" style={{ color: textColor }}>
-               {latestChapter.preview}
-             </p>
-           </div>
+          {/* Preview del último capítulo - más abajo */}
+          <div className="px-4 pb-2 flex-1">
+            <p className="leading-relaxed text-base line-clamp-4" style={{ color: textColor }}>
+              {latestChapter.preview}
+            </p>
+          </div>
 
-           {/* Imagen centrada como separador - SIN fondo */}
-           <div className="flex justify-center py-2 flex-shrink-0">
+          {/* Imagen centrada como separador - SIN fondo */}
+          <div className="flex justify-center py-2 flex-shrink-0">
             {seriesCover ? (
               <Image
                 src={seriesCover}
@@ -117,33 +208,64 @@ export default function SeriesCard({
             )}
           </div>
 
-                     {/* Footer con scroll horizontal de capítulos anteriores */}
-           {previousChapters.length > 0 && (
-             <>
-               <hr className="mx-6 my-2 border-white/30" />
-               <div className="px-6 py-3 flex-shrink-0">
-                 <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
-                   {language === 'en' ? 'Previous chapters' : 'Capítulos anteriores'}
-                 </p>
-                <div className="overflow-x-auto no-scrollbar">
-                  <div className="flex gap-2">
-                    {previousChapters.map((chapter) => (
-                      <Link
-                        key={chapter.slug}
-                        href={`/relato/${chapter.slug}`}
-                        className="flex-shrink-0 px-2 py-1 rounded-full transition-all duration-200 hover:scale-105 hover:opacity-80"
-                        style={buttonStyle}
-                      >
-                        <span className="text-sm font-medium whitespace-nowrap" style={{ color: textColor }}>
-                          {chapter.order}. {chapter.title}
-                        </span>
-                      </Link>
-                    ))}
-                  </div>
+          {/* Botones de navegación */}
+          <div className="px-4 pb-3 flex-shrink-0">
+            <div className="flex gap-2">
+              <Link href={`/relato/${latestChapter.slug}`} className="flex-1">
+                <button 
+                  className="w-full py-2 px-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:opacity-90 text-sm"
+                  style={buttonStyle}
+                >
+                  <span style={{ color: textColor }}>
+                    {language === 'en' ? 'Read Latest' : 'Leer Último'}
+                  </span>
+                </button>
+              </Link>
+              
+              {/* Solo mostrar "Comenzar serie" si hay serie disponible */}
+              {seriesSlug && (
+                <Link href={`/serie/${seriesSlug}`} className="flex-1">
+                  <button 
+                    className="w-full py-2 px-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:opacity-90 border text-sm"
+                    style={{
+                      backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                      borderColor: 'rgba(255, 255, 255, 0.3)',
+                      color: textColor
+                    }}
+                  >
+                    <span style={{ color: textColor }}>
+                      {language === 'en' ? 'Start Series' : 'Comenzar Serie'}
+                    </span>
+                  </button>
+                </Link>
+              )}
+            </div>
+          </div>
+
+          {/* Footer con scroll horizontal de capítulos anteriores */}
+          {previousChapters.length > 0 && (
+            <div className="px-4 pb-3 flex-shrink-0">
+              <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
+                {language === 'en' ? 'Previous chapters' : 'Capítulos anteriores'}
+              </p>
+              <div className="overflow-x-auto no-scrollbar">
+                <div className="flex gap-2">
+                  {previousChapters.map((chapter) => (
+                    <Link
+                      key={chapter.slug}
+                      href={`/relato/${chapter.slug}`}
+                      className="flex-shrink-0 px-2 py-1 rounded-full transition-all duration-200 hover:scale-105 hover:opacity-80"
+                      style={buttonStyle}
+                    >
+                      <span className="text-sm font-medium whitespace-nowrap" style={{ color: textColor }}>
+                        {chapter.order}. {chapter.title}
+                      </span>
+                    </Link>
+                  ))}
                 </div>
-               </div>
-             </>
-           )}
+              </div>
+            </div>
+          )}
 
           {/* Indicador de hover */}
           <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-lg transition-colors pointer-events-none"></div>

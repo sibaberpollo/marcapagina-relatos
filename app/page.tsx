@@ -68,6 +68,7 @@ interface HomeContentItem {
   }>;
   // Para series - datos específicos
   seriesName?: string;
+  seriesSlug?: string;
   seriesCover?: string;
   latestChapter?: {
     title: string;
@@ -80,6 +81,11 @@ interface HomeContentItem {
     slug: string;
     order: number;
   }>;
+  firstChapter?: {
+    title: string;
+    slug: string;
+    order: number;
+  };
 }
 
 interface HomeContentResponse {
@@ -297,9 +303,11 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
     return (
       <SeriesCard
         seriesName={seriesItem.seriesName!}
+        seriesSlug={seriesItem.seriesSlug}
         seriesCover={seriesItem.seriesCover}
         latestChapter={seriesItem.latestChapter!}
         previousChapters={seriesItem.previousChapters || []}
+        firstChapter={seriesItem.firstChapter}
         language={language}
         href={seriesItem.href}
         backgroundColor={seriesItem.bgColor || '#ee686b'}

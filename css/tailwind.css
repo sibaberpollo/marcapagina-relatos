@@ -682,3 +682,17 @@ html.dark .story-menu-item.active {
   width: 3px !important;
   background-color: var(--color-primary-500) !important;
 }
+
+/* Series specific styles */
+.series-story-number:hover {
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: #000 !important;
+}
+
+/* Only highlight the number when hovering specifically over the individual story link */
+a:hover .series-story-number {
+  background-color: var(--color-accent) !important;
+  border-color: var(--color-accent) !important;
+  color: #000 !important;
+}

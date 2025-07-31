@@ -1,6 +1,6 @@
 // app/autor/[slug]/page.tsx
 
-import { getAllAutores, getAutorData, getArticulosByAutor } from '../../../lib/sanity'
+import { getAllAutores, getAutorData, getArticulosByAutor, getSeriesByAutor } from '../../../lib/sanity'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
@@ -29,6 +29,7 @@ interface TabContent {
   summary: string;
   date?: string; 
   series?: string;
+  seriesSlug?: string;
   isExternal?: boolean;
   externalUrl?: string;
   source?: string;
@@ -202,6 +203,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         <AuthorTabContent 
           relatos={formattedRelatos} 
           articulos={articulos}
+          series={series}
           authorSlug={slug}
           defaultTab={defaultTab}
         />

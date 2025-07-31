@@ -4,6 +4,17 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import siteMetadata from '@/data/siteMetadata'
 import { useEffect, useState } from 'react'
+import { BookOpen } from 'lucide-react'
+
+interface SerieContext {
+  title: string
+  currentIndex: number
+  totalStories: number
+}
+
+interface BreadcrumbsProps {
+  serieContext?: SerieContext
+}
 
 const labelMap: Record<string, string> = {
   relato: 'Relatos',
@@ -46,7 +57,7 @@ async function getAuthorName(slug: string): Promise<string> {
   return toTitleCase(slug)
 }
 
-export default function Breadcrumbs() {
+export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
   // ✅ TODOS LOS HOOKS AL PRINCIPIO - ANTES DE CUALQUIER EARLY RETURN
   const pathname = usePathname()
   const [mounted, setMounted] = useState(false)
@@ -70,10 +81,20 @@ export default function Breadcrumbs() {
   if (!mounted) return null
   if (segments.length === 0) return null
 
-  let crumbs: { href: string; label: string }[] = []
+  let crumbs: { href: string; label: string; isSeries?: boolean }[] = []
 
   if (segments[0] === 'relato' && segments.length > 1) {
     crumbs.push({ href: '/cronologico', label: 'Todos los Relatos' })
+    
+    // Add series context if available
+    if (serieContext) {
+      crumbs.push({ 
+        href: pathname, // For now, series don't have dedicated pages
+        label: serieContext.title, 
+        isSeries: true 
+      })
+    }
+    
     crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
   } else if (segments[0] === 'autor' && segments.length > 1) {
     // Para páginas de autor individual: /autor/slug
@@ -120,28 +141,60 @@ export default function Breadcrumbs() {
 
   return (
     <>
-      <nav aria-label="Breadcrumb" className="mt-4 mb-2 text-sm text-gray-500 dark:text-gray-400">
-        <ol className="flex flex-wrap items-center gap-1">
-          <li>
-            <Link href="/" className="hover:underline">
-              Inicio
-            </Link>
-          </li>
-          {crumbs.map((c, idx) => (
-            <li key={c.href} className="flex items-center gap-1">
-              <span className="mx-1">/</span>
-              {idx === crumbs.length - 1 ? (
-                <span aria-current="page" className="text-gray-700 dark:text-gray-300">
-                  {c.label}
-                </span>
-              ) : (
-                <Link href={c.href} className="hover:underline">
-                  {c.label}
-                </Link>
-              )}
+      <nav aria-label="Breadcrumb" className="mt-4 mb-2">
+        <div className="flex flex-col gap-2">
+          {/* Main breadcrumb */}
+          <ol className="flex flex-wrap items-center gap-1 text-sm text-gray-500 dark:text-gray-400">
+            <li>
+              <Link href="/" className="hover:underline">
+                Inicio
+              </Link>
             </li>
-          ))}
-        </ol>
+            {crumbs.map((c, idx) => (
+              <li key={c.href} className="flex items-center gap-1">
+                <span className="mx-1">/</span>
+                {idx === crumbs.length - 1 ? (
+                  <span aria-current="page" className={`${
+                    c.isSeries 
+                      ? 'text-gray-700 dark:text-[var(--color-accent)] font-medium flex items-center gap-1' 
+                      : 'text-gray-700 dark:text-gray-300'
+                  }`}>
+                    {c.isSeries && <BookOpen className="w-4 h-4" />}
+                    {c.label}
+                  </span>
+                ) : (
+                  <Link href={c.href} className={`hover:underline ${
+                    c.isSeries 
+                      ? 'text-gray-600 dark:text-gray-300 hover:text-gray-700 dark:hover:text-[var(--color-accent)] font-medium flex items-center gap-1' 
+                      : ''
+                  }`}>
+                    {c.isSeries && <BookOpen className="w-4 h-4" />}
+                    {c.label}
+                  </Link>
+                )}
+              </li>
+            ))}
+          </ol>
+          
+          {/* Series progress indicator */}
+          {serieContext && (
+            <div className="flex items-center gap-3 text-xs text-gray-600 dark:text-gray-400">
+              <span>Progreso en la serie:</span>
+              <div className="flex items-center gap-2">
+                <div className="w-20 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
+                  <div 
+                    className="h-1.5 rounded-full transition-all duration-300"
+                    style={{ 
+                      width: `${(serieContext.currentIndex / serieContext.totalStories) * 100}%`,
+                      backgroundColor: 'var(--color-accent)'
+                    }}
+                  ></div>
+                </div>
+                <span>{serieContext.currentIndex} / {serieContext.totalStories}</span>
+              </div>
+            </div>
+          )}
+        </div>
       </nav>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
     </>

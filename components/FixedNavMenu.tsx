@@ -7,8 +7,23 @@ import Link from 'next/link'
 import Image from 'next/image'
 import AutoAvatar from '@/components/AutoAvatar'
 import { readingTimeActivities } from '@/data/readingTimeActivities'
-import { Clock } from 'lucide-react'
+import { Clock, BookOpen, ArrowLeft, ArrowRight } from 'lucide-react'
 import ShareIcons from './ShareIcons'
+
+interface SerieRelato {
+  title: string
+  slug: {
+    current: string
+  }
+  summary?: string
+  readingTime?: number
+}
+
+interface Serie {
+  title: string
+  description?: string
+  relatos: SerieRelato[]
+}
 
 interface FixedNavMenuProps {
   title: string
@@ -20,6 +35,7 @@ interface FixedNavMenuProps {
   pathPrefix: string
   readingTime?: { text: string; minutes: number; time: number; words: number }
   seriesName?: string
+  serie?: Serie // Enhanced series context
 }
 
 // Utilidad para enviar eventos a Google Analytics
@@ -43,6 +59,7 @@ export default function FixedNavMenu({
   pathPrefix,
   readingTime,
   seriesName,
+  serie,
 }: FixedNavMenuProps) {
   const [readingProgress, setReadingProgress] = useState(0)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -284,6 +301,69 @@ export default function FixedNavMenu({
         >
           <ShareIcons title={title} slug={slug} className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700" />
         </div>
+
+        {/* Enhanced Series Context Panel */}
+        {serie && (
+          <div className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4">
+            <div className="flex items-center justify-between mb-3">
+              <div className="flex items-center gap-2">
+                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
+                  {serie.title}
+                </h3>
+              </div>
+              <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full border border-gray-200 dark:border-gray-600">
+                {(serie.relatos.findIndex(r => r.slug.current === slug) + 1)} / {serie.relatos.length}
+              </span>
+            </div>
+            
+            {/* Mini Progress Bar */}
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
+              <div 
+                className="h-2 rounded-full transition-all duration-300"
+                style={{ 
+                  width: `${((serie.relatos.findIndex(r => r.slug.current === slug) + 1) / serie.relatos.length) * 100}%`,
+                  backgroundColor: 'var(--color-accent)'
+                }}
+              ></div>
+            </div>
+            
+            {/* Quick Navigation */}
+            <div className="flex justify-between gap-2">
+              {(() => {
+                const currentIndex = serie.relatos.findIndex(r => r.slug.current === slug);
+                const prevStory = currentIndex > 0 ? serie.relatos[currentIndex - 1] : null;
+                const nextStory = currentIndex < serie.relatos.length - 1 ? serie.relatos[currentIndex + 1] : null;
+                
+                return (
+                  <>
+                    {prevStory ? (
+                      <Link href={`/relato/${prevStory.slug.current}`}>
+                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
+                          <ArrowLeft className="w-3 h-3" />
+                          {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
+                        </button>
+                      </Link>
+                    ) : (
+                      <div className="flex-1"></div>
+                    )}
+                    
+                    {nextStory ? (
+                      <Link href={`/relato/${nextStory.slug.current}`}>
+                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
+                          {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
+                          <ArrowRight className="w-3 h-3" />
+                        </button>
+                      </Link>
+                    ) : (
+                      <div className="flex-1"></div>
+                    )}
+                  </>
+                );
+              })()}
+            </div>
+          </div>
+        )}
 
         {/* Animated related posts panel */}
         <div
