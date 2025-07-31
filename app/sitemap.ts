@@ -2,7 +2,7 @@
 
 import { MetadataRoute } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllRelatos, getAllArticulos, getAllAutores, getAllMicrocuentos } from '../lib/sanity'
+import { getAllRelatos, getAllArticulos, getAllAutores, getAllMicrocuentos, getAllSeries } from '../lib/sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Asegurarse de que la URL no termine con slash
@@ -79,6 +79,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       url: `${siteUrl}/horoscopo/cancer`, // página de horóscopo
       lastModified: today,
     },
+    {
+      url: `${siteUrl}/series`, // página principal de series
+      lastModified: today,
+    },
   ]
 
   // Obtener todos los relatos desde Sanity
@@ -109,6 +113,13 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: microcuento.publishedAt || today,
   }))
 
+  // Obtener todas las series desde Sanity
+  const series = await getAllSeries()
+  const seriesRoutes = series.map((serie) => ({
+    url: `${siteUrl}/serie/${serie.slug.current}`,
+    lastModified: today,
+  }))
+
   // Unir todas las rutas en el sitemap
-  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes, ...microcuentosRoutes]
+  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes, ...microcuentosRoutes, ...seriesRoutes]
 }

@@ -21,6 +21,8 @@ const labelMap: Record<string, string> = {
   articulo: 'Artículos',
   autores: 'Autores',
   autor: 'Autores', // autor individual también debe enlazar a /autores
+  serie: 'Series', // serie individual debe enlazar a /series
+  series: 'Series',
   'acerca-de': 'Acerca de',
   cronologico: 'Cronológico',
   playlist: 'Playlist',
@@ -103,6 +105,10 @@ export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
   } else if (segments[0] === 'autores' && segments.length > 1) {
     // Para páginas de autor individual: /autores/slug (si existiera)
     crumbs.push({ href: '/autores', label: 'Autores' })
+    crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
+  } else if (segments[0] === 'serie' && segments.length > 1) {
+    // Para páginas de serie individual: /serie/slug
+    crumbs.push({ href: '/series', label: 'Series' })
     crumbs.push({ href: pathname, label: toTitleCase(segments[1]) })
   } else {
     crumbs = segments.map((seg, index) => {

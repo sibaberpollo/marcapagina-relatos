@@ -159,6 +159,17 @@ function SeriesCardContent({
           style={cardStyle}
         >
           
+          {/* Logo de Transtextos en esquina superior izquierda */}
+          <div className="absolute top-4 left-4 z-10">
+            <img
+              src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
+              alt="Transtextos"
+              className="w-[25px] h-[25px] opacity-100"
+              width={25}
+              height={25}
+            />
+          </div>
+
           {/* Badge de tipo en esquina superior derecha - SIN superposición */}
           <div className="absolute top-3 right-3 z-10">
             <span 
@@ -170,8 +181,8 @@ function SeriesCardContent({
             </span>
           </div>
 
-          {/* Header - con padding para evitar superposición con badge y margin-top grande */}
-          <div className="p-4 pr-16 pb-6 flex-shrink-0 mt-16">
+          {/* Header - con padding para evitar superposición con logo y badge */}
+          <div className="p-4 pl-16 pr-16 pb-6 flex-shrink-0 mt-16">
             <div className="text-left">
               <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
                 {seriesText}: <span className="italic">{seriesName}</span>

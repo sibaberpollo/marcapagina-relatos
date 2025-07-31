@@ -64,9 +64,9 @@ export default async function SeriesPage() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       
-      <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0">
+      <div className="mx-auto max-w-3xl px-4 sm:px-6 xl:max-w-5xl xl:px-0 mb-16">
         {/* Header */}
-        <header className="py-10 text-center">
+        <header className="py-6 text-center mb-8">
           <div className="flex items-center justify-center gap-3 mb-6">
             <BookOpen className="w-8 h-8 text-gray-600 dark:text-gray-400" />
             <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
@@ -150,30 +150,6 @@ export default async function SeriesPage() {
             </p>
           </div>
         )}
-
-        {/* Call to Action */}
-        <div className="mt-16 text-center">
-          <div className="bg-gray-50 dark:bg-gray-800 rounded-lg p-8 border border-gray-200 dark:border-gray-700">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-4">
-              ¿Quieres crear tu propia serie?
-            </h2>
-            <p className="text-gray-600 dark:text-gray-400 mb-6">
-              Si eres autor y tienes relatos relacionados, puedes organizarlos en una serie 
-              para ofrecer una experiencia de lectura más rica a tus lectores.
-            </p>
-            <Link 
-              href="/publica"
-              className="inline-flex items-center gap-2 px-6 py-3 font-medium rounded-lg transition-all duration-200 hover:shadow-md border text-black hover:opacity-90"
-              style={{
-                backgroundColor: 'var(--color-accent)',
-                borderColor: 'var(--color-accent)'
-              }}
-            >
-              <span>Comienza a escribir</span>
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
-        </div>
       </div>
     </>
   )

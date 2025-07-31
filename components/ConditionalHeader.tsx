@@ -10,7 +10,9 @@ export default function ConditionalHeader() {
   // Detectar si estamos en rutas de secciones de Transtextos
   const isTranstextosRoute = pathname.startsWith('/transtextos') || 
                             pathname.startsWith('/publica') || 
-                            pathname.startsWith('/criterios-editoriales')
+                            pathname.startsWith('/criterios-editoriales') ||
+                            pathname.startsWith('/series') ||
+                            pathname.startsWith('/serie/')
   
   // Para relatos individuales, usamos TranstextosHeader por defecto
   // Excepto para algunos relatos específicos que usan el header genérico
