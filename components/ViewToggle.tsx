@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { LayoutGrid, CalendarClock, PenLine } from 'lucide-react'
+import { LayoutGrid, CalendarClock, PenLine, Waypoints } from 'lucide-react'
 
 interface ViewToggleProps {
   total?: number
@@ -13,6 +13,7 @@ export default function ViewToggle({ total }: ViewToggleProps) {
   const isChronological = pathname === '/cronologico'
   const isAutores = pathname === '/autores'
   const isHome = pathname === '/'
+  const isSeries = pathname === '/series'
 
   return (
     <div className="relative mb-6 overflow-x-auto thin-scrollbar">
@@ -38,6 +39,17 @@ export default function ViewToggle({ total }: ViewToggleProps) {
         >
           <CalendarClock className="w-4 h-4" />
           {`Todos${typeof total === 'number' ? ` (${total})` : ''}`}
+        </Link>
+        <Link
+          href="/series"
+          className={`px-4 py-2 rounded-md font-medium transition-colors flex items-center gap-2 ${
+            isSeries
+              ? 'bg-[var(--color-gray-900)] text-[var(--color-text-dark)] dark:bg-[var(--color-gray-100)] dark:text-[var(--color-gray-900)]'
+              : 'bg-[var(--color-gray-100)] dark:bg-[var(--color-gray-800)] text-[var(--color-gray-700)] dark:text-[var(--color-gray-300)] hover:bg-[var(--color-gray-200)] dark:hover:bg-[var(--color-gray-700)]'
+          }`}
+        >
+          <Waypoints className="w-4 h-4" />
+          Series
         </Link>
         <Link
           href="/autores"
