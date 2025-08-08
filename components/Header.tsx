@@ -16,6 +16,7 @@ import SocialDropdown from './SocialDropdown'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
+import UserMenu from './UserMenu'
 
 const socialLinks = [
   {
@@ -203,11 +204,13 @@ const Header = () => {
               <ProjectDropdown />
               <ThemeToggle />
               <PublishDropdown isMobile={false} />
+              <UserMenu />
             </div>
             
             {/* Navegación móvil */}
             <div className="lg:hidden flex items-center gap-1">
               <PublishDropdown isMobile={true} />
+              <UserMenu />
               <ThemeToggle />
             </div>
             
