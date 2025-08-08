@@ -28,7 +28,7 @@ export default function DashboardWrapper({ children }: DashboardWrapperProps) {
         <AppSidebar />
         <SidebarInset>
           <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
-            <SidebarTrigger className="-ml-1" />
+            <SidebarTrigger className="-ml-1 h-8 w-8 touch-manipulation" />
             <Separator
               orientation="vertical"
               className="mr-2 data-[orientation=vertical]:h-4"
@@ -42,7 +42,7 @@ export default function DashboardWrapper({ children }: DashboardWrapperProps) {
                 </BreadcrumbItem>
                 <BreadcrumbSeparator className="hidden md:block" />
                 <BreadcrumbItem>
-                  <BreadcrumbPage>Inicio</BreadcrumbPage>
+                  <BreadcrumbPage>Panel</BreadcrumbPage>
                 </BreadcrumbItem>
               </BreadcrumbList>
             </Breadcrumb>
