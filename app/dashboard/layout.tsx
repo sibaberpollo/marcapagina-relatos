@@ -1,5 +1,4 @@
 import './dashboard-styles.css'
-import { SessionProvider } from 'next-auth/react'
 
 export default function DashboardLayout({
   children,
@@ -8,9 +7,7 @@ export default function DashboardLayout({
 }) {
   return (
     <div className="dashboard-container">
-      <SessionProvider>
-        {children}
-      </SessionProvider>
+      {children}
     </div>
   )
 }
