@@ -13,6 +13,8 @@ export const authOptions: NextAuthOptions = {
   ],
   session: { strategy: 'database' },
   secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET,
+  // Permite confiar en el host recibido en cabeceras (útil para dominios de preview en Vercel)
+  trustHost: true,
   debug: process.env.NODE_ENV !== 'production',
 }
 
