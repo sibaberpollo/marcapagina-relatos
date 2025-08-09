@@ -7,6 +7,11 @@ import TranstextosHeader from './TranstextosHeader'
 export default function ConditionalHeader() {
   const pathname = usePathname()
   
+  // Ocultar header completamente en dashboard (shadcn tiene su propio header)
+  if (pathname.startsWith('/dashboard')) {
+    return null
+  }
+  
   // Detectar si estamos en rutas de secciones de Transtextos
   const isTranstextosRoute = pathname.startsWith('/transtextos') || 
                             pathname.startsWith('/publica') || 
