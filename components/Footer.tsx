@@ -12,7 +12,7 @@ export default function Footer() {
   const isDarkTheme = resolvedTheme === 'dark';
 
   return (
-    <footer className="w-full bg-primary-500 dark:bg-primary-400">
+    <footer className="w-full bg-primary-500 dark:bg-primary-400 mt-20">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         {/* Banner de publicación */}
         <div className="pt-12 pb-8 flex flex-col items-center md:flex-row">
