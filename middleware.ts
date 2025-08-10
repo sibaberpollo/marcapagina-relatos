@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getToken } from 'next-auth/jwt'
 
 const locales = ['es', 'en'];
 const defaultLocale = 'es';
@@ -103,14 +102,7 @@ export async function middleware(request: NextRequest) {
     });
   }
 
-  // Proteger /mi-area con NextAuth JWT
-  if (pathname.startsWith('/mi-area')) {
-    const token = await getToken({ req: request, secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET })
-    if (!token) {
-      const url = new URL('/login-test', request.url)
-      return NextResponse.redirect(url)
-    }
-  }
+  // Nota: La protección de /mi-area se hace en el propio servidor de la página con getServerSession.
 
   // For other routes, just pass the pathname in headers
   const response = NextResponse.next()

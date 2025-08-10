@@ -36,7 +36,7 @@ export default function DashboardWrapper({ children }: DashboardWrapperProps) {
             <Breadcrumb>
               <BreadcrumbList>
                 <BreadcrumbItem className="hidden md:block">
-                  <BreadcrumbLink href="/dashboard">
+                <BreadcrumbLink href="/mi-area">
                     Dashboard
                   </BreadcrumbLink>
                 </BreadcrumbItem>
