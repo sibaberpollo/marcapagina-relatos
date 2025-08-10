@@ -81,6 +81,7 @@ export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
 
   // ✅ EARLY RETURNS DESPUÉS DE TODOS LOS HOOKS
   if (!mounted) return null
+  if (pathname.startsWith('/mi-area')) return null
   if (segments.length === 0) return null
 
   let crumbs: { href: string; label: string; isSeries?: boolean }[] = []

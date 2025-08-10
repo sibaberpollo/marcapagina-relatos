@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { getToken } from 'next-auth/jwt'
 
 const locales = ['es', 'en'];
 const defaultLocale = 'es';
@@ -25,7 +26,7 @@ function getLocale(request: NextRequest): string {
   return locale || defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Handle transtextos subdomain redirect
@@ -100,6 +101,15 @@ export function middleware(request: NextRequest) {
       // Código 308: Permanent Redirect (preserva el método HTTP)
       status: 308
     });
+  }
+
+  // Proteger /mi-area con NextAuth JWT
+  if (pathname.startsWith('/mi-area')) {
+    const token = await getToken({ req: request, secret: process.env.AUTH_SECRET ?? process.env.NEXTAUTH_SECRET })
+    if (!token) {
+      const url = new URL('/login-test', request.url)
+      return NextResponse.redirect(url)
+    }
   }
 
   // For other routes, just pass the pathname in headers

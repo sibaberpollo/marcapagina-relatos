@@ -6,10 +6,13 @@ import SocialIcon from './social-icons'
 import HighlightStroke from './HighlightStroke'
 import PublishBanner from './PublishBanner'
 import { useTheme } from 'next-themes'
+import { usePathname } from 'next/navigation'
 
 export default function Footer() {
   const { resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
+  const pathname = usePathname();
+  if (pathname.startsWith('/mi-area')) return null
 
   return (
     <footer className="w-full bg-primary-500 dark:bg-primary-400 mt-20">
