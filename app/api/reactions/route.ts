@@ -70,27 +70,35 @@ export async function GET(req: NextRequest) {
   const email = session?.user?.email
 
   try {
-    const [counts, currentUserReaction] = await Promise.all([
+    // Si hay usuario, obtener su id para calcular reacción actual y leído en paralelo
+    const user = email ? await prisma.user.findUnique({ where: { email } }) : null
+
+    const [counts, currentUserReaction, read] = await Promise.all([
       prisma.reaction.groupBy({
         by: ['type'],
         where: { slug, contentType },
         _count: { _all: true },
       }),
-      email
-        ? (async () => {
-            const user = await prisma.user.findUnique({ where: { email } })
-            if (!user) return null
-            return prisma.reaction.findUnique({
-              where: { userId_contentType_slug: { userId: user.id, contentType, slug } },
-            })
-          })()
+      user
+        ? prisma.reaction.findUnique({
+            where: { userId_contentType_slug: { userId: user.id, contentType, slug } },
+          })
+        : null,
+      user
+        ? prisma.read.findUnique({
+            where: { userId_contentType_slug: { userId: user.id, contentType, slug } },
+          })
         : null,
     ])
 
     const up = counts.find((c) => c.type === 'UP')?._count._all || 0
     const double = counts.find((c) => c.type === 'DOUBLE')?._count._all || 0
 
-    return Response.json({ counts: { up, double }, userReaction: currentUserReaction?.type || null })
+    return Response.json({
+      counts: { up, double },
+      userReaction: currentUserReaction?.type || null,
+      isRead: Boolean(read),
+    })
   } catch (e) {
     console.error(e)
     return new Response(JSON.stringify({ error: 'Server error' }), { status: 500 })

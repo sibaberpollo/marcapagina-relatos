@@ -70,6 +70,15 @@ export default function FixedNavMenu({
   const [reactionModalOpen, setReactionModalOpen] = useState(false)
   const [hasEngaged, setHasEngaged] = useState(false)
 
+  // Derived values (avoid IIFEs in JSX to keep render static flags stable)
+  const minutes = readingTime ? Math.ceil(readingTime.minutes) : null
+  const remaining = minutes != null ? Math.max(Math.ceil(minutes * (1 - readingProgress / 100)), 0) : 0
+  const acts = minutes != null ? (readingTimeActivities[minutes] || []) : []
+  const currentIndex = serie ? serie.relatos.findIndex((r) => r.slug.current === slug) : -1
+  const prevStory = serie && currentIndex > 0 ? serie.relatos[currentIndex - 1] : null
+  const nextStory = serie && currentIndex >= 0 && currentIndex < (serie?.relatos.length ?? 0) - 1 ? serie!.relatos[currentIndex + 1] : null
+  const seriesProgressPercent = serie && currentIndex >= 0 ? ((currentIndex + 1) / serie.relatos.length) * 100 : 0
+
   // Reduce title to first two words
   const shortenTitle = (t: string) => {
     const words = t.split(' ')
@@ -174,13 +183,9 @@ export default function FixedNavMenu({
     let cancelled = false
     ;(async () => {
       try {
-        const [r1, r2] = await Promise.all([
-          fetch(`/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' }),
-          fetch(`/api/read?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' }),
-        ])
-        const j1 = r1.ok ? await r1.json() : { userReaction: null }
-        const j2 = r2.ok ? await r2.json() : { isRead: false }
-        if (!cancelled) setHasEngaged(Boolean(j1.userReaction) || Boolean(j2.isRead))
+        const r = await fetch(`/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' })
+        const j = r.ok ? await r.json() : { userReaction: null, isRead: false }
+        if (!cancelled) setHasEngaged(Boolean(j.userReaction) || Boolean(j.isRead))
       } catch (_) {
         // ignore network errors
       }
@@ -222,18 +227,15 @@ export default function FixedNavMenu({
             ) : null}
             <span className="font-medium text-gray-900 dark:text-gray-50">
               {shortenTitle(title)}{' '}
-              {readingTime && (() => {
-                const mins = Math.ceil(readingTime.minutes)
-                const remaining = Math.max(Math.ceil(mins * (1 - readingProgress / 100)), 0)
-                const acts = readingTimeActivities[mins] || []
-                return acts.length ? (
+              {readingTime && (
+                acts.length ? (
                   <button
                     onClick={() => {
                       sendGAEvent({
                         action: 'open_reading_time_modal',
                         category: 'ReadingTime',
                         label: title,
-                        value: readingTime ? Math.ceil(readingTime.minutes) : undefined,
+                        value: minutes ?? undefined,
                       })
                       setModalOpen(true)
                     }}
@@ -254,7 +256,7 @@ export default function FixedNavMenu({
                     <span>)</span>
                   </span>
                 )
-              })()}
+              )}
             </span>
           </div>
           <div className="flex space-x-2">
@@ -353,10 +355,10 @@ export default function FixedNavMenu({
             
             {/* Mini Progress Bar */}
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
-              <div 
+             <div 
                 className="h-2 rounded-full transition-all duration-300"
                 style={{ 
-                  width: `${((serie.relatos.findIndex(r => r.slug.current === slug) + 1) / serie.relatos.length) * 100}%`,
+                  width: `${seriesProgressPercent}%`,
                   backgroundColor: 'var(--color-accent)'
                 }}
               ></div>
@@ -364,37 +366,26 @@ export default function FixedNavMenu({
             
             {/* Quick Navigation */}
             <div className="flex justify-between gap-2">
-              {(() => {
-                const currentIndex = serie.relatos.findIndex(r => r.slug.current === slug);
-                const prevStory = currentIndex > 0 ? serie.relatos[currentIndex - 1] : null;
-                const nextStory = currentIndex < serie.relatos.length - 1 ? serie.relatos[currentIndex + 1] : null;
-                
-                return (
-                  <>
-                    {prevStory ? (
-                      <Link href={`/relato/${prevStory.slug.current}`}>
-                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
-                          <ArrowLeft className="w-3 h-3" />
-                          {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
-                        </button>
-                      </Link>
-                    ) : (
-                      <div className="flex-1"></div>
-                    )}
-                    
-                    {nextStory ? (
-                      <Link href={`/relato/${nextStory.slug.current}`}>
-                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
-                          {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
-                          <ArrowRight className="w-3 h-3" />
-                        </button>
-                      </Link>
-                    ) : (
-                      <div className="flex-1"></div>
-                    )}
-                  </>
-                );
-              })()}
+              {prevStory ? (
+                <Link href={`/relato/${prevStory.slug.current}`}>
+                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
+                    <ArrowLeft className="w-3 h-3" />
+                    {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
+                  </button>
+                </Link>
+              ) : (
+                <div className="flex-1"></div>
+              )}
+              {nextStory ? (
+                <Link href={`/relato/${nextStory.slug.current}`}>
+                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
+                    {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </Link>
+              ) : (
+                <div className="flex-1"></div>
+              )}
             </div>
           </div>
         )}
@@ -437,34 +428,30 @@ export default function FixedNavMenu({
       </div>
 
       {/* Modal informativo de tiempo de lectura (separado de reacciones) */}
-      {modalOpen && readingTime && (() => {
-        const mins = Math.ceil(readingTime.minutes)
-        const acts = readingTimeActivities[mins] || []
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div
-              className="absolute inset-0 bg-black opacity-50"
+      {modalOpen && readingTime && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            onClick={() => setModalOpen(false)}
+          />
+          <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
+              Cosas que se hacen en ~{minutes} {minutes === 1 ? 'minuto' : 'minutos'}
+            </h2>
+            <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
+              {acts.map((act) => (
+                <li key={act}>{act}</li>
+              ))}
+            </ul>
+            <button
               onClick={() => setModalOpen(false)}
-            />
-            <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-              <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
-                Cosas que se hacen en ~{mins} {mins === 1 ? 'minuto' : 'minutos'}
-              </h2>
-              <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
-                {acts.map((act) => (
-                  <li key={act}>{act}</li>
-                ))}
-              </ul>
-              <button
-                onClick={() => setModalOpen(false)}
-                className="w-full px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
-              >
-                Cerrar
-              </button>
-            </div>
+              className="w-full px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
+            >
+              Cerrar
+            </button>
           </div>
-        )
-      })()}
+        </div>
+      )}
 
       {/* Modal de Reacciones independiente */}
       <ReactionModal

@@ -1,7 +1,9 @@
 'use client'
 
 import { useEffect, useState } from 'react'
-import { ThumbsUp, CheckCircle2 } from 'lucide-react'
+import { ThumbsUp, Bookmark } from 'lucide-react'
+import { useSession } from 'next-auth/react'
+import LoginModal from './LoginModal'
 
 type ReactionType = 'UP' | 'DOUBLE'
 
@@ -15,10 +17,12 @@ type Props = {
 }
 
 export default function ReactionBar({ slug, contentType = 'relato', compact = false, className = '', showHeading = true, renderMode = 'full' }: Props) {
+  const { status } = useSession()
   const [counts, setCounts] = useState<{ up: number; double: number }>({ up: 0, double: 0 })
   const [userReaction, setUserReaction] = useState<ReactionType | null>(null)
   const [loading, setLoading] = useState(false)
   const [isRead, setIsRead] = useState(false)
+  const [loginOpen, setLoginOpen] = useState(false)
   const CHANNEL = 'engage:update'
 
   async function fetchCounts() {
@@ -27,11 +31,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
       const json = await res.json()
       setCounts(json.counts)
       setUserReaction(json.userReaction)
-    }
-    const r = await fetch(`/api/read?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' })
-    if (r.ok) {
-      const j = await r.json()
-      setIsRead(!!j.isRead)
+      setIsRead(!!json.isRead)
     }
   }
 
@@ -55,6 +55,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   async function react(type: ReactionType) {
     setLoading(true)
     try {
+      if (status === 'unauthenticated') {
+        setLoginOpen(true)
+        return
+      }
       if (userReaction === type) {
         // toggle off
         const res = await fetch('/api/reactions', {
@@ -62,10 +66,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType }),
         })
-        if (res.status === 401) {
-          window.location.href = '/api/auth/signin'
-          return
-        }
+        if (res.status === 401) { setLoginOpen(true); return }
         if (res.ok) {
           setUserReaction(null)
           await fetchCounts()
@@ -77,10 +78,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType, type }),
         })
-        if (res.status === 401) {
-          window.location.href = '/api/auth/signin'
-          return
-        }
+        if (res.status === 401) { setLoginOpen(true); return }
         if (res.ok) {
           setUserReaction(type)
           // Marcar como leído automáticamente al reaccionar
@@ -104,13 +102,17 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   async function toggleRead() {
     setLoading(true)
     try {
+      if (status === 'unauthenticated') {
+        setLoginOpen(true)
+        return
+      }
       if (isRead) {
         const res = await fetch('/api/read', {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType }),
         })
-        if (res.status === 401) { window.location.href = '/api/auth/signin'; return }
+        if (res.status === 401) { setLoginOpen(true); return }
         if (res.ok) {
           setIsRead(false)
           window.dispatchEvent(new CustomEvent(CHANNEL, { detail: { slug, contentType } }))
@@ -121,7 +123,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType, progress: 1 }),
         })
-        if (res.status === 401) { window.location.href = '/api/auth/signin'; return }
+        if (res.status === 401) { setLoginOpen(true); return }
         if (res.ok) {
           setIsRead(true)
           window.dispatchEvent(new CustomEvent(CHANNEL, { detail: { slug, contentType } }))
@@ -133,23 +135,26 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   }
 
   const buttons = (
-      <div className="flex items-center justify-around gap-6">
+      <div className="flex items-center justify-around gap-4 sm:gap-6">
         <button
           disabled={loading}
           onClick={toggleRead}
-          className={`relative p-3 rounded-lg transition-colors border border-black ${
+          className={`group relative p-3 rounded-lg transition-colors border border-black ${
             isRead
               ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
               : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
           }`}
           aria-label="Marcar como leído"
         >
-          <CheckCircle2 className={`h-5 w-5`} />
+          <Bookmark className={`h-5 w-5`} />
+          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+            {isRead ? 'Marcado como leído' : 'Marcar como leído'}
+          </span>
         </button>
         <button
           disabled={loading}
           onClick={() => react('UP')}
-          className={`relative p-3 rounded-lg transition-colors border border-black ${
+          className={`group relative p-3 rounded-lg transition-colors border border-black ${
             userReaction === 'UP'
               ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
               : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
@@ -162,11 +167,14 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
               {counts.up}
             </span>
           )}
+          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+            Like
+          </span>
         </button>
         <button
           disabled={loading}
           onClick={() => react('DOUBLE')}
-          className={`relative p-3 rounded-lg transition-colors border border-black ${
+          className={`group relative p-3 rounded-lg transition-colors border border-black ${
             userReaction === 'DOUBLE'
               ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
               : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
@@ -182,18 +190,27 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
               {counts.double}
             </span>
           )}
+          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+            Superlike
+          </span>
         </button>
       </div>
   )
 
-  if (renderMode === 'buttons') return buttons
+  if (renderMode === 'buttons') return (
+    <>
+      {buttons}
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+    </>
+  )
 
   return (
     <div className={`w-full ${className}`}>
       {showHeading && (
-        <p className="text-center text-sm font-small text-gray-500 dark:text-gray-300 mb-3">REACCIONA</p>
+        <p className="text-center text-xs sm:text-sm font-small text-gray-500 dark:text-gray-300 mb-2 sm:mb-3">REACCIONA</p>
       )}
-      {buttons}
+      <div className="max-w-xs mx-auto sm:max-w-none">{buttons}</div>
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
     </div>
   )
 }
