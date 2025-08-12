@@ -2,7 +2,8 @@ import { getServerSession } from 'next-auth'
 import { redirect } from 'next/navigation'
 import { authOptions } from '../../auth'
 import { prisma } from '@/lib/prisma'
-import { getAutoresBySlugs } from '@/lib/sanity'
+import { getAutoresBySlugs, getRelatosForChronologicalBySlugs } from '@/lib/sanity'
+import BibliotecaTabs from '@/components/mi-area/BibliotecaTabs'
 import AuthorCard from '@/components/AuthorCard'
 import Link from 'next/link'
 
@@ -30,52 +31,20 @@ export default async function Page() {
 
   return (
     <div className="space-y-6">
+      {/* Breadcrumb/Título */}
+      <div className="text-sm text-gray-600">Inicio →</div>
+      <h2 className="text-xl font-semibold">Hola, {session.user?.name?.split(' ')[0] || 'lectora/lector'}</h2>
       <h1 className="text-2xl font-bold">Biblioteca personal</h1>
       <section>
         <h2 className="text-lg font-semibold mb-3">Tu actividad</h2>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div className="rounded-lg border border-gray-200 dark:border-gray-800 p-4">
-            <h3 className="font-semibold mb-2">Leídos</h3>
-            {readSlugs.length === 0 ? (
-              <p className="text-sm text-gray-600 dark:text-gray-300">Aún no marcas lecturas.</p>
-            ) : (
-              <ul className="list-disc list-inside text-sm text-gray-800 dark:text-gray-100 space-y-1">
-                {readSlugs.map((s) => (
-                  <li key={s}><Link href={`/relato/${s}`} className="hover:underline">{s}</Link></li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-800 p-4">
-            <h3 className="font-semibold mb-2">Likes</h3>
-            {liked.length === 0 ? (
-              <p className="text-sm text-gray-600 dark:text-gray-300">Aún no tienes likes.</p>
-            ) : (
-              <ul className="list-disc list-inside text-sm text-gray-800 dark:text-gray-100 space-y-1">
-                {liked.map((s) => (
-                  <li key={s}><Link href={`/relato/${s}`} className="hover:underline">{s}</Link></li>
-                ))}
-              </ul>
-            )}
-          </div>
-          <div className="rounded-lg border border-gray-200 dark:border-gray-800 p-4">
-            <h3 className="font-semibold mb-2">Superlikes</h3>
-            {superliked.length === 0 ? (
-              <p className="text-sm text-gray-600 dark:text-gray-300">Aún no tienes superlikes.</p>
-            ) : (
-              <ul className="list-disc list-inside text-sm text-gray-800 dark:text-gray-100 space-y-1">
-                {superliked.map((s) => (
-                  <li key={s}><Link href={`/relato/${s}`} className="hover:underline">{s}</Link></li>
-                ))}
-              </ul>
-            )}
-          </div>
-        </div>
+        <BibliotecaTabs
+          favorites={await getRelatosForChronologicalBySlugs(superliked)}
+          likes={await getRelatosForChronologicalBySlugs(liked)}
+          read={await getRelatosForChronologicalBySlugs(readSlugs)}
+          initialTab="favorites"
+        />
       </section>
-      <section>
-        <h2 className="text-lg font-semibold mb-3">Autores que sigues</h2>
-        <p className="text-gray-600 dark:text-gray-300">Seguimiento de autores no disponible en este release.</p>
-      </section>
+      {/* Sidebar eliminado en este release */}
     </div>
   )
 }

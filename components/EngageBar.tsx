@@ -26,6 +26,21 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
   }, [])
 
   const shareBaseUrl = typeof window !== 'undefined' ? window.location.href.split('?')[0] : ''
+  const [shareCount, setShareCount] = useState<number>(() => {
+    if (typeof window === 'undefined') return 0
+    const key = `share:${contentType}:${slug}`
+    const v = window.localStorage.getItem(key)
+    return v ? parseInt(v, 10) || 0 : 0
+  })
+
+  function bumpShareCount() {
+    const next = shareCount + 1
+    setShareCount(next)
+    if (typeof window !== 'undefined') {
+      const key = `share:${contentType}:${slug}`
+      window.localStorage.setItem(key, String(next))
+    }
+  }
 
   return (
     <div className={`w-full ${className}`}>
@@ -43,9 +58,12 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
               <button
                 onClick={() => setOpen((v) => !v)}
                 aria-label="Compartir"
-                className="p-3 rounded-lg bg-white text-gray-900 border border-black hover:bg-[var(--color-accent)] transition-colors"
+                className="relative h-12 w-12 rounded-lg bg-white text-gray-900 border border-black hover:bg-[var(--color-accent)] transition-colors flex items-center justify-center"
               >
                 <Share2 className="h-5 w-5" />
+                <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-0.5 rounded bg-black text-[var(--color-accent)]">
+                  {shareCount}
+                </span>
               </button>
               {open && (
                 <div className="absolute right-0 mt-2 w-48 rounded-md border border-black bg-white shadow-lg z-50">
@@ -56,6 +74,7 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block px-3 py-2 hover:bg-gray-100"
+                        onClick={bumpShareCount}
                       >
                         Compartir en Facebook
                       </a>
@@ -66,6 +85,7 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block px-3 py-2 hover:bg-gray-100"
+                        onClick={bumpShareCount}
                       >
                         Compartir en X
                       </a>
@@ -76,6 +96,7 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
                         target="_blank"
                         rel="noopener noreferrer"
                         className="block px-3 py-2 hover:bg-gray-100"
+                        onClick={bumpShareCount}
                       >
                         WhatsApp
                       </a>
@@ -85,6 +106,7 @@ export default function EngageBar({ slug, title, contentType = 'relato', classNa
                         onClick={() => {
                           navigator.clipboard.writeText(shareBaseUrl)
                           setOpen(false)
+                          bumpShareCount()
                         }}
                         className="w-full text-left px-3 py-2 hover:bg-gray-100"
                       >

@@ -196,7 +196,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={toggleRead}
-          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
+          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
           aria-label="Marcar como leído"
         >
           <span className="relative inline-flex h-5 w-5">
@@ -216,7 +216,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={() => react('UP')}
-          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
+          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
           aria-label="Me gustó"
         >
           <span className="relative inline-flex h-5 w-5">
@@ -241,7 +241,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={() => react('DOUBLE')}
-          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
+          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
           aria-label="Me encantó"
         >
           <div className="relative flex items-center">

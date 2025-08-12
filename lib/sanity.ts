@@ -957,6 +957,30 @@ export async function getAllRelatosForChronological(): Promise<ProyectoFormatead
   }
 }
 
+// Obtener relatos por lista de slugs en formato cronológico (para biblioteca personal)
+export async function getRelatosForChronologicalBySlugs(slugs: string[]): Promise<ProyectoFormateado[]> {
+  if (!slugs || slugs.length === 0) return []
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && status == "published" && slug.current in $slugs] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+        title,
+        slug,
+        summary,
+        image,
+        bgColor,
+        publishedAt,
+        date,
+        "tags": tags[]->title,
+        "author": author-> { name, avatar, slug }
+      }
+    `, { slugs })
+    return relatos.map(mapRelatoToProject)
+  } catch (error) {
+    console.error('Error al obtener relatos por slugs:', error)
+    return []
+  }
+}
+
 // Función para mapear un microcuento de Sanity al formato que espera la UI
 function mapMicrocuentoToFormatted(microcuento: Microcuento): MicrocuentoFormateado {
   return {
