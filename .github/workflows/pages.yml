@@ -3,8 +3,10 @@ name: GitHub Pages
 
 on:
   push:
-    branches: main
-  workflow_dispatch:
+    branches-ignore:
+      - '**'
+  workflow_dispatch: 
+    types: []
 
 permissions:
   contents: read
