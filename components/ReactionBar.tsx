@@ -23,6 +23,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   const [loading, setLoading] = useState(false)
   const [isRead, setIsRead] = useState(false)
   const [loginOpen, setLoginOpen] = useState(false)
+  const [loginIntent, setLoginIntent] = useState<'READ' | ReactionType | null>(null)
   const CHANNEL = 'engage:update'
 
   async function fetchCounts() {
@@ -56,6 +57,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
     setLoading(true)
     try {
       if (status === 'unauthenticated') {
+        setLoginIntent(type)
         setLoginOpen(true)
         return
       }
@@ -103,6 +105,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
     setLoading(true)
     try {
       if (status === 'unauthenticated') {
+        setLoginIntent('READ')
         setLoginOpen(true)
         return
       }
@@ -133,6 +136,60 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
       setLoading(false)
     }
   }
+
+  // Construir callbackUrl con intención pendiente
+  function buildCallbackUrl(): string | undefined {
+    if (typeof window === 'undefined' || !loginIntent) return undefined
+    const url = new URL(window.location.href)
+    url.searchParams.set('intent', loginIntent === 'READ' ? 'read' : loginIntent.toLowerCase())
+    url.searchParams.set('slug', slug)
+    url.searchParams.set('contentType', contentType)
+    url.searchParams.set('r', Math.random().toString(36).slice(2))
+    return url.toString()
+  }
+
+  // Al volver logueado con intent en la URL, ejecutar la acción pendiente 1 sola vez
+  useEffect(() => {
+    if (status !== 'authenticated') return
+    try {
+      const params = new URLSearchParams(window.location.search)
+      const intent = params.get('intent')
+      const qSlug = params.get('slug')
+      const qType = params.get('contentType')
+      if (!intent || qSlug !== slug || qType !== contentType) return
+      ;(async () => {
+        if (intent === 'read') {
+          await fetch('/api/read', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug, contentType, progress: 1 }),
+          })
+        } else if (intent === 'up' || intent === 'double') {
+          await fetch('/api/reactions', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug, contentType, type: intent.toUpperCase() }),
+          })
+          // También marcar leído
+          await fetch('/api/read', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ slug, contentType, progress: 1 }),
+          })
+        }
+        await fetchCounts()
+        window.dispatchEvent(new CustomEvent(CHANNEL, { detail: { slug, contentType } }))
+        // Limpiar parámetros de la URL
+        const clean = new URL(window.location.href)
+        clean.searchParams.delete('intent')
+        clean.searchParams.delete('slug')
+        clean.searchParams.delete('contentType')
+        clean.searchParams.delete('r')
+        window.history.replaceState(null, '', clean.toString())
+      })()
+    } catch (_) {}
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [status, slug, contentType])
 
   const buttons = (
       <div className="flex items-center justify-around gap-4 sm:gap-6">
@@ -221,10 +278,11 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
       </div>
   )
 
+  const callbackUrl = buildCallbackUrl()
   if (renderMode === 'buttons') return (
     <>
       {buttons}
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} callbackUrl={callbackUrl} />
     </>
   )
 
@@ -234,7 +292,7 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <p className="text-center text-xs sm:text-sm font-small text-gray-500 dark:text-gray-300 mb-2 sm:mb-3">REACCIONA</p>
       )}
       <div className="max-w-xs mx-auto sm:max-w-none">{buttons}</div>
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} />
+      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} callbackUrl={callbackUrl} />
     </div>
   )
 }
