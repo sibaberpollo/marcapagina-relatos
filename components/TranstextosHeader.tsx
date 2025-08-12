@@ -32,7 +32,7 @@ const navLinks = [
   { title: '← Marcapágina', href: '/' },
   { title: 'Inicio', href: '/transtextos' },
   { title: 'Autores', href: '/autores?filter=transtextos' },
-  { title: 'Acerca de Transtextos', href: '/transtextos/acerca-de' },
+  { title: 'Transtextos', href: '/transtextos/acerca-de' },
 ];
 
 const TranstextosHeader = () => {
@@ -96,13 +96,12 @@ const TranstextosHeader = () => {
                   </CustomLink>
                 ))}
                 <PublishDropdown />
-                <ThemeToggle />
+                {/* Tema fijo claro para este release */}
                 <UserMenu />
               </div>
 
               {/* Botón toggle móvil/tablet */}
               <div className="lg:hidden flex items-center gap-2">
-                <ThemeToggle />
                 <UserMenu />
               </div>
 
