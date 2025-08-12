@@ -3,7 +3,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
-import ShareIcons from '@/components/ShareIcons'
+import EngageBar from '@/components/EngageBar'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -67,11 +67,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
                   {/* Botones de compartir debajo de la fecha */}
                   {slug && (
                     <div className="pt-4">
-                      <ShareIcons 
-                        title={title} 
-                        slug={slug} 
-                        className="flex flex-col items-center"
-                      />
+                      <EngageBar slug={slug} title={title} contentType="post" />
                     </div>
                   )}
                 </div>
@@ -99,11 +95,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
               {/* Botones de compartir al final del post */}
               {slug && (
                 <div className="mb-8">
-                  <ShareIcons 
-                    title={title} 
-                    slug={slug} 
-                    className="flex flex-col items-center"
-                  />
+                  <EngageBar slug={slug} title={title} contentType="post" />
                 </div>
               )}
 

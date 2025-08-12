@@ -20,6 +20,7 @@ model User {
   sessions Session[]
   follows  Follow[]
   reads    Read[]
+  reactions Reaction[]
 
   @@map("users")
 }
@@ -86,5 +87,24 @@ model Read {
 
   @@id([userId, contentType, slug])
   @@map("reads")
+}
+
+/// Reacciones de usuario a contenidos (relatos, artículos, etc.)
+enum ReactionType {
+  UP
+  DOUBLE
+}
+
+model Reaction {
+  userId      String
+  contentType String
+  slug        String
+  type        ReactionType
+  createdAt   DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([userId, contentType, slug])
+  @@map("reactions")
 }
 

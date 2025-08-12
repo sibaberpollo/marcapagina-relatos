@@ -8,7 +8,8 @@ import Image from 'next/image'
 import AutoAvatar from '@/components/AutoAvatar'
 import { readingTimeActivities } from '@/data/readingTimeActivities'
 import { Clock, BookOpen, ArrowLeft, ArrowRight } from 'lucide-react'
-import ShareIcons from './ShareIcons'
+import EngageBar from './EngageBar'
+import ReactionModal from './ReactionModal'
 
 interface SerieRelato {
   title: string
@@ -65,6 +66,9 @@ export default function FixedNavMenu({
   const [menuOpen, setMenuOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const [autoOpened, setAutoOpened] = useState(false)
+  const [reactionModalOpen, setReactionModalOpen] = useState(false)
+  const [hasEngaged, setHasEngaged] = useState(false)
 
   // Reduce title to first two words
   const shortenTitle = (t: string) => {
@@ -155,6 +159,34 @@ export default function FixedNavMenu({
       window.removeEventListener('resize', updateProgress)
     }
   }, [])
+
+  // Abrir modal automáticamente al completar lectura (100%) una sola vez
+  useEffect(() => {
+    if (!autoOpened && readingProgress >= 100 && !hasEngaged) {
+      setReactionModalOpen(true)
+      setAutoOpened(true)
+    }
+  }, [readingProgress, autoOpened, hasEngaged])
+
+  // No mostrar modal si ya hubo interacción (leído o reacción previa)
+  useEffect(() => {
+    const contentType = pathPrefix === 'relato' ? 'relato' : 'post'
+    let cancelled = false
+    ;(async () => {
+      try {
+        const [r1, r2] = await Promise.all([
+          fetch(`/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' }),
+          fetch(`/api/read?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' }),
+        ])
+        const j1 = r1.ok ? await r1.json() : { userReaction: null }
+        const j2 = r2.ok ? await r2.json() : { isRead: false }
+        if (!cancelled) setHasEngaged(Boolean(j1.userReaction) || Boolean(j2.isRead))
+      } catch (_) {
+        // ignore network errors
+      }
+    })()
+    return () => { cancelled = true }
+  }, [slug, pathPrefix])
 
   return (
     <>
@@ -299,7 +331,9 @@ export default function FixedNavMenu({
             shareOpen ? 'max-h-40' : 'max-h-0'
           }`}
         >
-          <ShareIcons title={title} slug={slug} className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700" />
+          <div className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
+            <EngageBar slug={slug} title={title} contentType={pathPrefix === 'relato' ? 'relato' : 'post'} />
+          </div>
         </div>
 
         {/* Enhanced Series Context Panel */}
@@ -402,7 +436,7 @@ export default function FixedNavMenu({
         </div>
       </div>
 
-      {/* Reading time modal with side margins */}
+      {/* Modal informativo de tiempo de lectura (separado de reacciones) */}
       {modalOpen && readingTime && (() => {
         const mins = Math.ceil(readingTime.minutes)
         const acts = readingTimeActivities[mins] || []
@@ -423,7 +457,7 @@ export default function FixedNavMenu({
               </ul>
               <button
                 onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
+                className="w-full px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
               >
                 Cerrar
               </button>
@@ -431,6 +465,14 @@ export default function FixedNavMenu({
           </div>
         )
       })()}
+
+      {/* Modal de Reacciones independiente */}
+      <ReactionModal
+        open={reactionModalOpen}
+        onClose={() => setReactionModalOpen(false)}
+        slug={slug}
+        contentType={pathPrefix === 'relato' ? 'relato' : 'post'}
+      />
     </>
   )
 }

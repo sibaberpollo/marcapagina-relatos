@@ -5,41 +5,19 @@ import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
 import Image from 'next/image'
 import Link from 'next/link'
+import AuthorCard from '@/components/AuthorCard'
 import { Suspense } from 'react'
+import { useSession } from 'next-auth/react'
 
 // Componente para mostrar un autor individual
 function AutorCard({ autor }: { autor: any }) {
   return (
-    <Link
+    <AuthorCard
+      authorSlug={autor.slug.current}
+      authorName={autor.name}
+      authorImage={autor.avatar}
       href={`/autor/${autor.slug.current}`}
-      className="group flex flex-col items-center p-2 sm:p-4 rounded-lg border border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600 transition-colors duration-200 hover:shadow-md dark:hover:shadow-lg"
-    >
-      <div className="mb-2 sm:mb-3">
-        {autor.avatar ? (
-          <Image
-            src={autor.avatar}
-            alt={autor.name}
-            width={60}
-            height={60}
-            className="rounded-full w-12 h-12 sm:w-16 sm:h-16 grayscale"
-          />
-        ) : (
-          <AutoAvatar
-            name={autor.name}
-            size={60}
-            className="rounded-full bg-black text-white font-titles text-lg sm:text-xl flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 grayscale"
-          />
-        )}
-      </div>
-      <h2 className="text-sm sm:text-base font-semibold text-center text-gray-900 dark:text-gray-100 group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
-        {autor.name}
-      </h2>
-      {autor.occupation && (
-        <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-400 text-center mt-0.5 sm:mt-1">
-          {autor.occupation}
-        </p>
-      )}
-    </Link>
+    />
   )
 }
 
@@ -96,6 +74,8 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
   const [autores, setAutores] = useState<any[]>(initialAutores)
   const [filteredAutores, setFilteredAutores] = useState<any[]>(initialAutores)
   const [currentLetter, setCurrentLetter] = useState<string | null>(null)
+  const { data: session } = useSession()
+  const [followingSet, setFollowingSet] = useState<Set<string>>(new Set())
 
   useEffect(() => {
     const filtered = filter === 'transtextos' 
@@ -106,6 +86,24 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
     setAutores(sorted)
     setFilteredAutores(sorted)
   }, [filter, initialAutores])
+
+  // Cargar follows UNA sola vez para la grilla cuando hay sesión
+  useEffect(() => {
+    let mounted = true
+    if (session?.user?.email) {
+      fetch('/api/follow', { cache: 'no-store' })
+        .then((r) => r.json())
+        .then((data) => {
+          if (!mounted) return
+          const set = new Set<string>((data?.follows || []).map((f: any) => f.authorSlug))
+          setFollowingSet(set)
+        })
+        .catch(() => {})
+    } else {
+      setFollowingSet(new Set())
+    }
+    return () => { mounted = false }
+  }, [session?.user?.email])
 
   // Función para filtrar por letra inicial
   const filterByLetter = (letter: string) => {
@@ -147,7 +145,13 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
       <Suspense fallback={<div className="p-4 text-center">Cargando autores...</div>}>
         <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 mt-8">
           {filteredAutores.map((autor) => (
-            <AutorCard key={autor.slug.current} autor={autor} />
+            <AuthorCard
+              key={autor.slug.current}
+              authorSlug={autor.slug.current}
+              authorName={autor.name}
+              authorImage={autor.avatar}
+              href={`/autor/${autor.slug.current}`}
+            />
           ))}
         </div>
         

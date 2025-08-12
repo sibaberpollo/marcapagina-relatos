@@ -79,10 +79,10 @@ export default function ShareIcons({ title, slug, className = '' }: ShareIconsPr
 
   return (
     <div className={`${className}`}>
-      <p className="text-center text-sm font-small text-gray-500 dark:text-gray-300 mb-3 flex items-center justify-center gap-1">
+      <p className="text-center text-sm font-small text-gray-500 dark:text-gray-300 mb-5 flex items-center justify-center gap-1">
         COMPARTE <Heart className="w-4 h-4 stroke-current text-gray-500 dark:text-gray-300" strokeWidth={1.5} />
       </p>
-      <div className="flex justify-around gap-4">
+      <div className="flex justify-around gap-6">
         <button
           onClick={shareFacebook}
           className="p-2 rounded hover:bg-gray-100 dark:hover:bg-gray-800"

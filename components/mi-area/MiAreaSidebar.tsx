@@ -4,9 +4,9 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const navItems = [
-  { href: '/mi-area', label: 'Inicio' },
-  { href: '/mi-area/siguiendo', label: 'Siguiendo' },
-  { href: '/mi-area/leidos', label: 'Leídos' },
+  { href: '/biblioteca-personal', label: 'Inicio' },
+  { href: '/biblioteca-personal/siguiendo', label: 'Siguiendo' },
+  { href: '/biblioteca-personal/leidos', label: 'Leídos' },
 ]
 
 export default function MiAreaSidebar() {
