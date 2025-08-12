@@ -3,7 +3,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
-import ShareIcons from '@/components/ShareIcons'
+import EngageBar from '@/components/EngageBar'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -78,13 +78,9 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
               )}
             </header>
 
-            {/* Botones de compartir antes del contenido */}
+            {/* Barra de engagement unificada antes del contenido */}
             <div className="mb-8">
-              <ShareIcons 
-                title={title} 
-                slug={slug || ''} 
-                className="flex flex-col items-center"
-              />
+              <EngageBar slug={slug || ''} title={title} contentType="post" />
             </div>
 
             {/* Contenido principal con letra capital */}
@@ -104,13 +100,9 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
               </div>
             </div>
 
-            {/* Botones de compartir después del contenido */}
+            {/* Barra de engagement unificada después del contenido */}
             <div className="mb-8">
-              <ShareIcons 
-                title={title} 
-                slug={slug || ''} 
-                className="flex flex-col items-center"
-              />
+              <EngageBar slug={slug || ''} title={title} contentType="post" />
             </div>
 
             {/* Footer import */}

@@ -5,6 +5,8 @@ import CustomLink from './Link'
 import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
+import dynamic from 'next/dynamic'
+const UserMenu = dynamic(() => import('./UserMenu'), { ssr: false })
 import NewLogo from './newLogo'
 import PublishDropdown from './PublishDropdown'
 import SearchBar from './SearchBar'
@@ -30,7 +32,7 @@ const navLinks = [
   { title: '← Marcapágina', href: '/' },
   { title: 'Inicio', href: '/transtextos' },
   { title: 'Autores', href: '/autores?filter=transtextos' },
-  { title: 'Acerca de Transtextos', href: '/transtextos/acerca-de' },
+  { title: 'Transtextos', href: '/transtextos/acerca-de' },
 ];
 
 const TranstextosHeader = () => {
@@ -94,12 +96,13 @@ const TranstextosHeader = () => {
                   </CustomLink>
                 ))}
                 <PublishDropdown />
-                <ThemeToggle />
+                {/* Tema fijo claro para este release */}
+                <UserMenu />
               </div>
 
               {/* Botón toggle móvil/tablet */}
-              <div className="lg:hidden">
-                <ThemeToggle />
+              <div className="lg:hidden flex items-center gap-2">
+                <UserMenu />
               </div>
 
               {/* Icono hamburguesa móvil/tablet */}

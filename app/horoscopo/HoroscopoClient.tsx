@@ -1,7 +1,7 @@
 'use client'
 
 import SectionContainer from '@/components/SectionContainer'
-import ShareIcons from '@/components/ShareIcons'
+import EngageBar from '@/components/EngageBar'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -564,13 +564,9 @@ src={data.authorImage}
         </SectionContainer>
       </section>
 
-      {/* Botones de compartir después del hero */}
-      <div className="mb-8">
-        <ShareIcons 
-          title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`}
-          slug="horoscopo-literario" 
-          className="max-w-md mx-auto"
-        />
+      {/* Compartir (sin reacciones) después del hero */}
+      <div className="mb-8 max-w-md mx-auto">
+        {/* No incluimos reacciones para tipos no 'relato' */}
       </div>
 
       {/* Main Content sobre fondo blanco normal */}
@@ -806,14 +802,7 @@ src={data.authorImage}
                 )}
               </div>
             </div>
-            {/* Botones de compartir debajo de la carta de tarot */}
-            <div className="flex justify-center mt-8 mb-4">
-              <ShareIcons 
-                title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`}
-                slug="horoscopo-literario" 
-                className="max-w-md"
-              />
-            </div>
+            {/* Sin barra de reacciones/compartir dentro del horóscopo en este release */}
 
             {/* Lista de escritores Leo */}
             {signo === 'leo' && data.writers && (

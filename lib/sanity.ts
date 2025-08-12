@@ -274,6 +274,32 @@ export async function getAutorBySlug(slug: string): Promise<Autor | null> {
   }
 }
 
+// Obtener múltiples autores por un conjunto de slugs (optimización para /mi-area)
+export async function getAutoresBySlugs(slugs: string[]): Promise<Autor[]> {
+  if (!slugs || slugs.length === 0) return []
+  try {
+    const autores = await client.fetch(
+      `
+      *[_type == "autor" && slug.current in $slugs] {
+        name,
+        slug,
+        bio,
+        avatar,
+        occupation,
+        company,
+        instagram,
+        "sitios": sitios[]->title
+      }
+      `,
+      { slugs }
+    )
+    return (autores || []).sort((a: any, b: any) => a.name.localeCompare(b.name))
+  } catch (error) {
+    console.error('Error al obtener autores por slugs desde Sanity:', error)
+    return []
+  }
+}
+
 // Obtener los relatos de un autor (solo publicados)
 export async function getRelatosByAutor(autorSlug: string): Promise<Relato[]> {
   try {
@@ -928,6 +954,30 @@ export async function getAllRelatosForChronological(): Promise<ProyectoFormatead
   } catch (error) {
     console.error('Error al obtener todos los relatos:', error);
     return [];
+  }
+}
+
+// Obtener relatos por lista de slugs en formato cronológico (para biblioteca personal)
+export async function getRelatosForChronologicalBySlugs(slugs: string[]): Promise<ProyectoFormateado[]> {
+  if (!slugs || slugs.length === 0) return []
+  try {
+    const relatos = await client.fetch(`
+      *[_type == "relato" && status == "published" && slug.current in $slugs] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+        title,
+        slug,
+        summary,
+        image,
+        bgColor,
+        publishedAt,
+        date,
+        "tags": tags[]->title,
+        "author": author-> { name, avatar, slug }
+      }
+    `, { slugs })
+    return relatos.map(mapRelatoToProject)
+  } catch (error) {
+    console.error('Error al obtener relatos por slugs:', error)
+    return []
   }
 }
 

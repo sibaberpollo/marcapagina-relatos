@@ -25,7 +25,7 @@ function getLocale(request: NextRequest): string {
   return locale || defaultLocale;
 }
 
-export function middleware(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
 
   // Handle transtextos subdomain redirect
@@ -101,6 +101,8 @@ export function middleware(request: NextRequest) {
       status: 308
     });
   }
+
+  // Nota: La protección de /mi-area se hace en el propio servidor de la página con getServerSession.
 
   // For other routes, just pass the pathname in headers
   const response = NextResponse.next()

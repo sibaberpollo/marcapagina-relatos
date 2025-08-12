@@ -16,7 +16,7 @@ import { getRelativeTime } from "@/lib/time";
 import FeaturedSlider from "@/components/FeaturedSlider";
 import FeaturedCard from "@/components/cards/FeaturedCard";
 import { getFeaturedRelatosFromJSON } from "@/lib/home-content";
-import ShareIcons from "@/components/ShareIcons";
+import EngageBar from "@/components/EngageBar";
 
 const editUrl = (path: string) =>
   `${siteMetadata.siteRepo}/blob/main/data/${path}`;
@@ -267,7 +267,9 @@ export default async function PostLayout({
                       {children}
                     </div>
                   )}
-                  <ShareIcons title={title} slug={slug} className="my-4" />
+                  <div className="my-8">
+                    <EngageBar slug={slug} title={title} contentType={isArticle ? 'articulo' : 'relato'} />
+                  </div>
                   {tags && tags.length > 0 && (
                     <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
                       <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">

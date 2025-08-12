@@ -6,13 +6,16 @@ import SocialIcon from './social-icons'
 import HighlightStroke from './HighlightStroke'
 import PublishBanner from './PublishBanner'
 import { useTheme } from 'next-themes'
+import { usePathname } from 'next/navigation'
 
 export default function Footer() {
   const { resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
+  const pathname = usePathname();
+  if (pathname.startsWith('/biblioteca-personal')) return null
 
   return (
-    <footer className="w-full bg-primary-500 dark:bg-primary-400">
+    <footer className="w-full bg-primary-500 dark:bg-primary-400 mt-20">
       <div className="max-w-screen-2xl mx-auto px-4 sm:px-8">
         {/* Banner de publicación */}
         <div className="pt-12 pb-8 flex flex-col items-center md:flex-row">

@@ -2,13 +2,14 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import Link from 'next/link'
 import Image from 'next/image'
 import AutoAvatar from '@/components/AutoAvatar'
 import { readingTimeActivities } from '@/data/readingTimeActivities'
 import { Clock, BookOpen, ArrowLeft, ArrowRight } from 'lucide-react'
-import ShareIcons from './ShareIcons'
+import EngageBar from './EngageBar'
 
 interface SerieRelato {
   title: string
@@ -65,6 +66,16 @@ export default function FixedNavMenu({
   const [menuOpen, setMenuOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
+  const { status } = useSession()
+
+  // Derived values (avoid IIFEs in JSX to keep render static flags stable)
+  const minutes = readingTime ? Math.ceil(readingTime.minutes) : null
+  const remaining = minutes != null ? Math.max(Math.ceil(minutes * (1 - readingProgress / 100)), 0) : 0
+  const acts = minutes != null ? (readingTimeActivities[minutes] || []) : []
+  const currentIndex = serie ? serie.relatos.findIndex((r) => r.slug.current === slug) : -1
+  const prevStory = serie && currentIndex > 0 ? serie.relatos[currentIndex - 1] : null
+  const nextStory = serie && currentIndex >= 0 && currentIndex < (serie?.relatos.length ?? 0) - 1 ? serie!.relatos[currentIndex + 1] : null
+  const seriesProgressPercent = serie && currentIndex >= 0 ? ((currentIndex + 1) / serie.relatos.length) * 100 : 0
 
   // Reduce title to first two words
   const shortenTitle = (t: string) => {
@@ -156,6 +167,8 @@ export default function FixedNavMenu({
     }
   }, [])
 
+  // Ya no usamos modal de reacciones al 100% para evitar invasividad
+
   return (
     <>
       {/* Fixed nav container at bottom */}
@@ -190,18 +203,15 @@ export default function FixedNavMenu({
             ) : null}
             <span className="font-medium text-gray-900 dark:text-gray-50">
               {shortenTitle(title)}{' '}
-              {readingTime && (() => {
-                const mins = Math.ceil(readingTime.minutes)
-                const remaining = Math.max(Math.ceil(mins * (1 - readingProgress / 100)), 0)
-                const acts = readingTimeActivities[mins] || []
-                return acts.length ? (
+              {readingTime && (
+                acts.length ? (
                   <button
                     onClick={() => {
                       sendGAEvent({
                         action: 'open_reading_time_modal',
                         category: 'ReadingTime',
                         label: title,
-                        value: readingTime ? Math.ceil(readingTime.minutes) : undefined,
+                        value: minutes ?? undefined,
                       })
                       setModalOpen(true)
                     }}
@@ -222,7 +232,7 @@ export default function FixedNavMenu({
                     <span>)</span>
                   </span>
                 )
-              })()}
+              )}
             </span>
           </div>
           <div className="flex space-x-2">
@@ -299,7 +309,9 @@ export default function FixedNavMenu({
             shareOpen ? 'max-h-40' : 'max-h-0'
           }`}
         >
-          <ShareIcons title={title} slug={slug} className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700" />
+          <div className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
+            <EngageBar slug={slug} title={title} contentType={pathPrefix === 'relato' ? 'relato' : 'post'} />
+          </div>
         </div>
 
         {/* Enhanced Series Context Panel */}
@@ -319,10 +331,10 @@ export default function FixedNavMenu({
             
             {/* Mini Progress Bar */}
             <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
-              <div 
+             <div 
                 className="h-2 rounded-full transition-all duration-300"
                 style={{ 
-                  width: `${((serie.relatos.findIndex(r => r.slug.current === slug) + 1) / serie.relatos.length) * 100}%`,
+                  width: `${seriesProgressPercent}%`,
                   backgroundColor: 'var(--color-accent)'
                 }}
               ></div>
@@ -330,37 +342,26 @@ export default function FixedNavMenu({
             
             {/* Quick Navigation */}
             <div className="flex justify-between gap-2">
-              {(() => {
-                const currentIndex = serie.relatos.findIndex(r => r.slug.current === slug);
-                const prevStory = currentIndex > 0 ? serie.relatos[currentIndex - 1] : null;
-                const nextStory = currentIndex < serie.relatos.length - 1 ? serie.relatos[currentIndex + 1] : null;
-                
-                return (
-                  <>
-                    {prevStory ? (
-                      <Link href={`/relato/${prevStory.slug.current}`}>
-                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
-                          <ArrowLeft className="w-3 h-3" />
-                          {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
-                        </button>
-                      </Link>
-                    ) : (
-                      <div className="flex-1"></div>
-                    )}
-                    
-                    {nextStory ? (
-                      <Link href={`/relato/${nextStory.slug.current}`}>
-                        <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
-                          {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
-                          <ArrowRight className="w-3 h-3" />
-                        </button>
-                      </Link>
-                    ) : (
-                      <div className="flex-1"></div>
-                    )}
-                  </>
-                );
-              })()}
+              {prevStory ? (
+                <Link href={`/relato/${prevStory.slug.current}`}>
+                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
+                    <ArrowLeft className="w-3 h-3" />
+                    {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
+                  </button>
+                </Link>
+              ) : (
+                <div className="flex-1"></div>
+              )}
+              {nextStory ? (
+                <Link href={`/relato/${nextStory.slug.current}`}>
+                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
+                    {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
+                    <ArrowRight className="w-3 h-3" />
+                  </button>
+                </Link>
+              ) : (
+                <div className="flex-1"></div>
+              )}
             </div>
           </div>
         )}
@@ -402,35 +403,33 @@ export default function FixedNavMenu({
         </div>
       </div>
 
-      {/* Reading time modal with side margins */}
-      {modalOpen && readingTime && (() => {
-        const mins = Math.ceil(readingTime.minutes)
-        const acts = readingTimeActivities[mins] || []
-        return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
-            <div
-              className="absolute inset-0 bg-black opacity-50"
+      {/* Modal informativo de tiempo de lectura (separado de reacciones) */}
+      {modalOpen && readingTime && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center px-4">
+          <div
+            className="absolute inset-0 bg-black opacity-50"
+            onClick={() => setModalOpen(false)}
+          />
+          <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
+            <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
+              Cosas que se hacen en ~{minutes} {minutes === 1 ? 'minuto' : 'minutos'}
+            </h2>
+            <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
+              {acts.map((act) => (
+                <li key={act}>{act}</li>
+              ))}
+            </ul>
+            <button
               onClick={() => setModalOpen(false)}
-            />
-            <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-              <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
-                Cosas que se hacen en ~{mins} {mins === 1 ? 'minuto' : 'minutos'}
-              </h2>
-              <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
-                {acts.map((act) => (
-                  <li key={act}>{act}</li>
-                ))}
-              </ul>
-              <button
-                onClick={() => setModalOpen(false)}
-                className="px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
-              >
-                Cerrar
-              </button>
-            </div>
+              className="w-full px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
+            >
+              Cerrar
+            </button>
           </div>
-        )
-      })()}
+        </div>
+      )}
+
+      {/* Modal de reacciones eliminado para evitar invasividad en el primer release */}
     </>
   )
 }

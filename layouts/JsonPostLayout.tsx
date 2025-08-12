@@ -3,7 +3,7 @@ import Link from '@/components/Link'
 import PageTitle from '@/components/PageTitle'
 import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
-import ShareIcons from '@/components/ShareIcons'
+import EngageBar from '@/components/EngageBar'
 import { PageSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
@@ -65,15 +65,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
                   )}
                   
                   {/* Botones de compartir debajo de la fecha */}
-                  {slug && (
-                    <div className="pt-4">
-                      <ShareIcons 
-                        title={title} 
-                        slug={slug} 
-                        className="flex flex-col items-center"
-                      />
-                    </div>
-                  )}
+                  {/* No mostramos barra de reacciones/compartir en tipos no 'relato' */}
                 </div>
               )}
               
@@ -97,15 +89,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
             {/* Footer */}
             <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
               {/* Botones de compartir al final del post */}
-              {slug && (
-                <div className="mb-8">
-                  <ShareIcons 
-                    title={title} 
-                    slug={slug} 
-                    className="flex flex-col items-center"
-                  />
-                </div>
-              )}
+              {/* Sin barra en footer para este layout */}
 
               {/* Autor */}
               <div className="flex items-center gap-3 mb-6">
