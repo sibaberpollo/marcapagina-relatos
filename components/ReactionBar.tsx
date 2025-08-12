@@ -139,14 +139,19 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={toggleRead}
-          className={`group relative p-3 rounded-lg transition-colors border border-black ${
-            isRead
-              ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
-              : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
-          }`}
+          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
           aria-label="Marcar como leído"
         >
-          <Bookmark className={`h-5 w-5`} />
+          <span className="relative inline-flex h-5 w-5">
+            {!isRead ? (
+              <Bookmark className="h-5 w-5 text-gray-900" />
+            ) : (
+              <>
+                <Bookmark className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
+                <Bookmark className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
+              </>
+            )}
+          </span>
           <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
             {isRead ? 'Marcado como leído' : 'Marcar como leído'}
           </span>
@@ -154,14 +159,19 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={() => react('UP')}
-          className={`group relative p-3 rounded-lg transition-colors border border-black ${
-            userReaction === 'UP'
-              ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
-              : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
-          }`}
+          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
           aria-label="Me gustó"
         >
-          <ThumbsUp className={`h-5 w-5`} />
+          <span className="relative inline-flex h-5 w-5">
+            {userReaction !== 'UP' ? (
+              <ThumbsUp className="h-5 w-5 text-gray-900" />
+            ) : (
+              <>
+                <ThumbsUp className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
+                <ThumbsUp className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
+              </>
+            )}
+          </span>
           {!compact && (
             <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-0.5 rounded bg-black text-[var(--color-accent)]">
               {counts.up}
@@ -174,16 +184,30 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
         <button
           disabled={loading}
           onClick={() => react('DOUBLE')}
-          className={`group relative p-3 rounded-lg transition-colors border border-black ${
-            userReaction === 'DOUBLE'
-              ? 'bg-[var(--color-accent)] text-gray-900 hover:brightness-95'
-              : 'bg-white text-gray-900 hover:bg-[var(--color-accent)]'
-          }`}
+          className={`group relative p-3 rounded-lg transition-colors border border-black bg-white text-gray-900`}
           aria-label="Me encantó"
         >
           <div className="relative flex items-center">
-            <ThumbsUp className={`h-5 w-5`} />
-            <ThumbsUp className={`h-4 w-4 -ml-2`} />
+            <span className="relative inline-flex h-5 w-5">
+              {userReaction !== 'DOUBLE' ? (
+                <ThumbsUp className="h-5 w-5 text-gray-900" />
+              ) : (
+                <>
+                  <ThumbsUp className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
+                  <ThumbsUp className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
+                </>
+              )}
+            </span>
+            <span className="relative -ml-2 inline-flex h-4 w-4">
+              {userReaction !== 'DOUBLE' ? (
+                <ThumbsUp className="h-4 w-4 text-gray-900" />
+              ) : (
+                <>
+                  <ThumbsUp className="absolute inset-0 h-4 w-4 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
+                  <ThumbsUp className="absolute inset-0 h-4 w-4 text-black" fill="none" stroke="currentColor" />
+                </>
+              )}
+            </span>
           </div>
           {!compact && (
             <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-0.5 rounded bg-black text-[var(--color-accent)]">

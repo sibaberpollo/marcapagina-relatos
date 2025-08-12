@@ -2,6 +2,7 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useSession } from 'next-auth/react'
 import { CoreContent } from 'pliny/utils/contentlayer'
 import Link from 'next/link'
 import Image from 'next/image'
@@ -9,7 +10,6 @@ import AutoAvatar from '@/components/AutoAvatar'
 import { readingTimeActivities } from '@/data/readingTimeActivities'
 import { Clock, BookOpen, ArrowLeft, ArrowRight } from 'lucide-react'
 import EngageBar from './EngageBar'
-import ReactionModal from './ReactionModal'
 
 interface SerieRelato {
   title: string
@@ -66,9 +66,7 @@ export default function FixedNavMenu({
   const [menuOpen, setMenuOpen] = useState(false)
   const [shareOpen, setShareOpen] = useState(false)
   const [modalOpen, setModalOpen] = useState(false)
-  const [autoOpened, setAutoOpened] = useState(false)
-  const [reactionModalOpen, setReactionModalOpen] = useState(false)
-  const [hasEngaged, setHasEngaged] = useState(false)
+  const { status } = useSession()
 
   // Derived values (avoid IIFEs in JSX to keep render static flags stable)
   const minutes = readingTime ? Math.ceil(readingTime.minutes) : null
@@ -169,29 +167,7 @@ export default function FixedNavMenu({
     }
   }, [])
 
-  // Abrir modal automáticamente al completar lectura (100%) una sola vez
-  useEffect(() => {
-    if (!autoOpened && readingProgress >= 100 && !hasEngaged) {
-      setReactionModalOpen(true)
-      setAutoOpened(true)
-    }
-  }, [readingProgress, autoOpened, hasEngaged])
-
-  // No mostrar modal si ya hubo interacción (leído o reacción previa)
-  useEffect(() => {
-    const contentType = pathPrefix === 'relato' ? 'relato' : 'post'
-    let cancelled = false
-    ;(async () => {
-      try {
-        const r = await fetch(`/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' })
-        const j = r.ok ? await r.json() : { userReaction: null, isRead: false }
-        if (!cancelled) setHasEngaged(Boolean(j.userReaction) || Boolean(j.isRead))
-      } catch (_) {
-        // ignore network errors
-      }
-    })()
-    return () => { cancelled = true }
-  }, [slug, pathPrefix])
+  // Ya no usamos modal de reacciones al 100% para evitar invasividad
 
   return (
     <>
@@ -453,13 +429,7 @@ export default function FixedNavMenu({
         </div>
       )}
 
-      {/* Modal de Reacciones independiente */}
-      <ReactionModal
-        open={reactionModalOpen}
-        onClose={() => setReactionModalOpen(false)}
-        slug={slug}
-        contentType={pathPrefix === 'relato' ? 'relato' : 'post'}
-      />
+      {/* Modal de reacciones eliminado para evitar invasividad en el primer release */}
     </>
   )
 }
