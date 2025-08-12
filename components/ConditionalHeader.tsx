@@ -8,7 +8,7 @@ export default function ConditionalHeader() {
   const pathname = usePathname()
   
   // Ocultar header completamente en dashboard (shadcn tiene su propio header)
-  if (pathname.startsWith('/dashboard') || pathname.startsWith('/mi-area')) {
+  if (pathname.startsWith('/dashboard') || pathname.startsWith('/biblioteca-personal')) {
     return null
   }
   

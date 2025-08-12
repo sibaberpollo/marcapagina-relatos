@@ -5,6 +5,8 @@ import CustomLink from './Link'
 import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
 import ThemeToggle from './ThemeToggle'
+import dynamic from 'next/dynamic'
+const UserMenu = dynamic(() => import('./UserMenu'), { ssr: false })
 import NewLogo from './newLogo'
 import PublishDropdown from './PublishDropdown'
 import SearchBar from './SearchBar'
@@ -95,11 +97,13 @@ const TranstextosHeader = () => {
                 ))}
                 <PublishDropdown />
                 <ThemeToggle />
+                <UserMenu />
               </div>
 
               {/* Botón toggle móvil/tablet */}
-              <div className="lg:hidden">
+              <div className="lg:hidden flex items-center gap-2">
                 <ThemeToggle />
+                <UserMenu />
               </div>
 
               {/* Icono hamburguesa móvil/tablet */}

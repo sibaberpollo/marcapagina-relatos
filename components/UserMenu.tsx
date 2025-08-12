@@ -84,8 +84,8 @@ export default function UserMenu() {
       {open && (
         <div className="absolute right-0 top-full mt-2 w-48 bg-white dark:bg-gray-950 border border-gray-200 dark:border-gray-800 rounded-md shadow-lg z-50 overflow-hidden">
           <div className="py-1">
-            <Link href="/mi-area" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900" onClick={() => setOpen(false)}>
-              Mi área
+            <Link href="/biblioteca-personal" className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-900" onClick={() => setOpen(false)}>
+              Biblioteca personal
             </Link>
             <button
               onClick={() => {

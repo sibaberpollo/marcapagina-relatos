@@ -12,7 +12,7 @@ export default function Footer() {
   const { resolvedTheme } = useTheme();
   const isDarkTheme = resolvedTheme === 'dark';
   const pathname = usePathname();
-  if (pathname.startsWith('/mi-area')) return null
+  if (pathname.startsWith('/biblioteca-personal')) return null
 
   return (
     <footer className="w-full bg-primary-500 dark:bg-primary-400 mt-20">
