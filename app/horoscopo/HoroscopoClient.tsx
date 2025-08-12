@@ -564,9 +564,9 @@ src={data.authorImage}
         </SectionContainer>
       </section>
 
-      {/* Reacciona + compartir después del hero */}
+      {/* Compartir (sin reacciones) después del hero */}
       <div className="mb-8 max-w-md mx-auto">
-        <EngageBar slug="horoscopo-literario" title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`} contentType="page" />
+        {/* No incluimos reacciones para tipos no 'relato' */}
       </div>
 
       {/* Main Content sobre fondo blanco normal */}
@@ -802,10 +802,7 @@ src={data.authorImage}
                 )}
               </div>
             </div>
-            {/* Botones de compartir debajo de la carta de tarot */}
-            <div className="flex flex-col items-center mt-8 mb-4">
-              <EngageBar slug="horoscopo-literario" title={`Horóscopo Literario ${signo === 'cancer' ? 'Cáncer - Franz Kafka' : 'Leo - H.P. Lovecraft'} y predicciones astrológicas`} contentType="page" />
-            </div>
+            {/* Sin barra de reacciones/compartir dentro del horóscopo en este release */}
 
             {/* Lista de escritores Leo */}
             {signo === 'leo' && data.writers && (

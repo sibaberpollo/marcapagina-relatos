@@ -65,11 +65,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
                   )}
                   
                   {/* Botones de compartir debajo de la fecha */}
-                  {slug && (
-                    <div className="pt-4">
-                      <EngageBar slug={slug} title={title} contentType="post" />
-                    </div>
-                  )}
+                  {/* No mostramos barra de reacciones/compartir en tipos no 'relato' */}
                 </div>
               )}
               
@@ -93,11 +89,7 @@ export default function JsonPostLayout({ content, next, prev, children }: JsonPo
             {/* Footer */}
             <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
               {/* Botones de compartir al final del post */}
-              {slug && (
-                <div className="mb-8">
-                  <EngageBar slug={slug} title={title} contentType="post" />
-                </div>
-              )}
+              {/* Sin barra en footer para este layout */}
 
               {/* Autor */}
               <div className="flex items-center gap-3 mb-6">
