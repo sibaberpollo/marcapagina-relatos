@@ -3,7 +3,7 @@ import { redirect } from 'next/navigation'
 import { authOptions } from '../../auth'
 import { prisma } from '@/lib/prisma'
 import { getAutoresBySlugs } from '@/lib/sanity'
-import AuthorFollowCard from '@/components/AuthorFollowCard'
+import AuthorCard from '@/components/AuthorCard'
 import Link from 'next/link'
 
 export default async function Page() {
@@ -74,22 +74,7 @@ export default async function Page() {
       </section>
       <section>
         <h2 className="text-lg font-semibold mb-3">Autores que sigues</h2>
-        {autores.length === 0 ? (
-          <p className="text-gray-600 dark:text-gray-300">Aún no sigues a ningún autor.</p>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-            {autores.map((autor: any) => (
-              <AuthorFollowCard
-                key={autor.slug.current}
-                authorSlug={autor.slug.current}
-                authorName={autor.name}
-                authorImage={autor.avatar}
-                href={`/autor/${autor.slug.current}`}
-                isFollowing={true}
-              />
-            ))}
-          </div>
-        )}
+        <p className="text-gray-600 dark:text-gray-300">Seguimiento de autores no disponible en este release.</p>
       </section>
     </div>
   )

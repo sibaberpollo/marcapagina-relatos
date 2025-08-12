@@ -5,14 +5,14 @@ import SectionContainer from '@/components/SectionContainer'
 import AutoAvatar from '@/components/AutoAvatar'
 import Image from 'next/image'
 import Link from 'next/link'
-import AuthorFollowCard from '@/components/AuthorFollowCard'
+import AuthorCard from '@/components/AuthorCard'
 import { Suspense } from 'react'
 import { useSession } from 'next-auth/react'
 
 // Componente para mostrar un autor individual
 function AutorCard({ autor }: { autor: any }) {
   return (
-    <AuthorFollowCard
+    <AuthorCard
       authorSlug={autor.slug.current}
       authorName={autor.name}
       authorImage={autor.avatar}
@@ -145,30 +145,12 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
       <Suspense fallback={<div className="p-4 text-center">Cargando autores...</div>}>
         <div className="grid grid-cols-3 md:grid-cols-5 lg:grid-cols-6 gap-4 md:gap-6 mt-8">
           {filteredAutores.map((autor) => (
-            <AuthorFollowCard
+            <AuthorCard
               key={autor.slug.current}
               authorSlug={autor.slug.current}
               authorName={autor.name}
               authorImage={autor.avatar}
               href={`/autor/${autor.slug.current}`}
-              isFollowing={followingSet.has(autor.slug.current)}
-              onToggle={async (authorSlug, next) => {
-                if (next) {
-                  await fetch('/api/follow', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ authorSlug }),
-                  })
-                  setFollowingSet((prev) => new Set(prev).add(authorSlug))
-                } else {
-                  await fetch(`/api/follow?authorSlug=${encodeURIComponent(authorSlug)}`, { method: 'DELETE' })
-                  setFollowingSet((prev) => {
-                    const copy = new Set(prev)
-                    copy.delete(authorSlug)
-                    return copy
-                  })
-                }
-              }}
             />
           ))}
         </div>

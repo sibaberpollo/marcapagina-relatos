@@ -13,54 +13,18 @@ type Props = {
   onToggle?: (authorSlug: string, next: boolean) => Promise<void> | void
 }
 
-export default function AuthorFollowCard({ authorSlug, authorName, authorImage, href, isFollowing: isFollowingProp, onToggle }: Props) {
-  const [isFollowing, setIsFollowing] = useState<boolean>(!!isFollowingProp)
+// Seguimiento deshabilitado temporalmente para primer release
+export default function AuthorFollowCard({ authorSlug, authorName, authorImage, href }: Props) {
+  const [isFollowing, setIsFollowing] = useState<boolean>(false)
   const [loading, setLoading] = useState<boolean>(false)
 
   // Mantener sincronizado con el prop si viene de un padre (usado en /autores)
-  useEffect(() => {
-    if (typeof isFollowingProp === 'boolean') setIsFollowing(isFollowingProp)
-  }, [isFollowingProp])
+  useEffect(() => {}, [])
 
   // Fallback: si no recibimos props de control, consultamos una sola vez para este autor
-  useEffect(() => {
-    if (typeof isFollowingProp === 'boolean') return
-    let mounted = true
-    fetch('/api/follow', { cache: 'no-store' })
-      .then((r) => r.json())
-      .then((data) => {
-        if (!mounted) return
-        const set = new Set<string>((data?.follows || []).map((f: any) => f.authorSlug))
-        setIsFollowing(set.has(authorSlug))
-      })
-      .catch(() => {})
-    return () => {
-      mounted = false
-    }
-  }, [authorSlug, isFollowingProp])
+  useEffect(() => {}, [authorSlug])
 
-  async function toggleFollow() {
-    setLoading(true)
-    try {
-      if (onToggle) {
-        await onToggle(authorSlug, !isFollowing)
-        return
-      }
-      if (!isFollowing) {
-        await fetch('/api/follow', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ authorSlug }),
-        })
-        setIsFollowing(true)
-      } else {
-        await fetch(`/api/follow?authorSlug=${encodeURIComponent(authorSlug)}`, { method: 'DELETE' })
-        setIsFollowing(false)
-      }
-    } finally {
-      setLoading(false)
-    }
-  }
+  async function toggleFollow() { /* disabled */ }
 
   return (
     <div className="border border-gray-200 dark:border-gray-800 rounded-md overflow-hidden h-full bg-white dark:bg-gray-950">
@@ -101,7 +65,7 @@ export default function AuthorFollowCard({ authorSlug, authorName, authorImage, 
           aria-label={isFollowing ? 'Dejar de seguir' : 'Seguir'}
           title={isFollowing ? 'Dejar de seguir' : 'Seguir'}
         >
-          <Star className={`w-5 h-5 ${isFollowing ? 'fill-yellow-400 stroke-yellow-500' : ''}`} />
+          <Star className={`w-5 h-5`} />
         </button>
       </div>
     </div>
