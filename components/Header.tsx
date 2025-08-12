@@ -14,7 +14,6 @@ import {
 import SearchBar from './SearchBar'
 import SocialDropdown from './SocialDropdown'
 import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
 import PublishDropdown from './PublishDropdown'
 import UserMenu from './UserMenu'
 
@@ -202,16 +201,18 @@ const Header = () => {
               ))}
               <ExplorationDropdown />
               <ProjectDropdown />
-              <ThemeToggle />
               <PublishDropdown isMobile={false} />
-              <UserMenu />
+              <div className="ml-2">
+                <UserMenu />
+              </div>
             </div>
             
             {/* Navegación móvil */}
             <div className="lg:hidden flex items-center gap-1">
               <PublishDropdown isMobile={true} />
-              <UserMenu />
-              <ThemeToggle />
+              <div className="ml-2">
+                <UserMenu />
+              </div>
             </div>
             
             {/* Icono hamburguesa en móvil y tablet */}

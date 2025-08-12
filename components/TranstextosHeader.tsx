@@ -4,7 +4,7 @@ import Image from 'next/image'
 import CustomLink from './Link'
 import { Instagram, Menu, X as Close } from 'lucide-react'
 import { useState } from 'react'
-import ThemeToggle from './ThemeToggle'
+// Tema fijo claro; no usamos ThemeToggle en este header
 import dynamic from 'next/dynamic'
 const UserMenu = dynamic(() => import('./UserMenu'), { ssr: false })
 import NewLogo from './newLogo'
@@ -96,12 +96,12 @@ const TranstextosHeader = () => {
                   </CustomLink>
                 ))}
                 <PublishDropdown />
-                {/* Tema fijo claro para este release */}
+                {/* Tema fijo claro para este release; no mostramos toggle */}
                 <UserMenu />
               </div>
 
               {/* Botón toggle móvil/tablet */}
-              <div className="lg:hidden flex items-center gap-2">
+              <div className="lg:hidden flex items-center gap-2 ml-2">
                 <UserMenu />
               </div>
 
