@@ -19,6 +19,9 @@ export default function LoginModal({ open, onClose, callbackUrl, title = 'Inicia
           <h3 className="text-lg font-semibold">{title}</h3>
         </div>
         <div className="p-4 space-y-3">
+          <p className="text-sm text-gray-700 dark:text-gray-300">
+            Inicia sesión para guardar tus lecturas, dar like a tus relatos favoritos y verlos en tu biblioteca.
+          </p>
           <button
             onClick={() => signIn('google', { callbackUrl: cb })}
             className="w-full inline-flex items-center justify-center gap-2 rounded-md px-4 py-2 font-medium bg-[var(--color-accent)] text-black hover:opacity-90"
