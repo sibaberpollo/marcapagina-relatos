@@ -148,7 +148,7 @@ export default function RootLayout({
         />
         <OrganizationSchema />
       </head>
-      <body className="antialiased font-serif">
+      <body className="antialiased font-serif bg-white text-black">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
@@ -159,7 +159,7 @@ export default function RootLayout({
                 <Breadcrumbs />
               </SectionContainer>
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                <main className="mb-auto font-serif">{children}</main>
+                <main className="mb-auto font-serif bg-white text-black">{children}</main>
               </SearchProvider>
             </ConditionalBackgroundWrapper>
             <Footer />
