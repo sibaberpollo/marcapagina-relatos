@@ -17,6 +17,7 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { ThemeProvider } from 'next-themes'
+import CookieBanner from '@/components/CookieBanner'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -88,6 +89,36 @@ export default function RootLayout({
       <head>
         {gaId && (
           <>
+            {/* Consent Mode v2: default denied */}
+            <Script id="consent-default" strategy="beforeInteractive">
+              {`
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('consent', 'default', {
+                  ad_storage: 'denied',
+                  analytics_storage: 'denied',
+                  ad_user_data: 'denied',
+                  ad_personalization: 'denied',
+                  wait_for_update: 2000
+                });
+                window.acceptAllConsent = function(){
+                  gtag('consent', 'update', {
+                    ad_storage: 'granted',
+                    analytics_storage: 'granted',
+                    ad_user_data: 'granted',
+                    ad_personalization: 'granted'
+                  });
+                }
+                window.acceptAnalyticsOnly = function(){
+                  gtag('consent', 'update', {
+                    analytics_storage: 'granted',
+                    ad_storage: 'denied',
+                    ad_user_data: 'denied',
+                    ad_personalization: 'denied'
+                  });
+                }
+              `}
+            </Script>
             <Script
               src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
               strategy="afterInteractive"
@@ -98,8 +129,7 @@ export default function RootLayout({
                 function gtag(){dataLayer.push(arguments);}  
                 gtag('js', new Date());
                 gtag('config', '${gaId}', {
-                  page_path: window.location.pathname,
-                  debug_mode: true
+                  page_path: window.location.pathname
                 });
               `}
             </Script>
@@ -163,6 +193,7 @@ export default function RootLayout({
               </SearchProvider>
             </ConditionalBackgroundWrapper>
             <Footer />
+            <CookieBanner />
           </ThemeProviders>
         </ThemeProvider>
       </body>
