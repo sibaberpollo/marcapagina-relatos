@@ -9,6 +9,13 @@
     "description": "🤖 **MarcaPágina** es un artefacto narrativo para leer literatura contemporánea desde cualquier dispositivo. Somos una plataforma donde los relatos conviven con la música, los memes y los desvíos literarios.\n\nCada semana publicamos nuevos textos de autores emergentes de América Latina, seleccionados con criterio editorial. Puedes explorar más de **[350 relatos y microficciones](/cronologico/)**, visitar nuestras [playlists narrativas](/playlist/) o navegar entre [memes literarios](/memes-y-objetos/) y objetos culturales que expanden el sentido de los textos.\n\nTambién integramos el archivo de [Transtextos](/transtextos/), un proyecto migrado a MarcaPágina que alimenta nuestro feed continuo de escritura breve. Allí la narrativa sucede en tiempo real, sin necesidad de portada ni aviso previo.\n\nMarcaPágina es un espacio de lectura radicalmente libre, donde la literatura no se lee sola ni siempre en silencio. Esto recién comienza."
   },
   "items": [
+
+    {
+      "slug": "aroma-de-vuelta-a-casa",
+      "type": "relato",
+      "cardType": "featured",
+      "transtextos": true
+    },
     {
       "type": "series",
       "cardType": "series",
@@ -97,12 +104,6 @@
       "type": "relato",
       "cardType": "featured",
       "transtextos": false
-    },
-    {
-      "slug": "brisa-marina",
-      "type": "relato",
-      "cardType": "featured",
-      "transtextos": true
     }
   ]
 } 
