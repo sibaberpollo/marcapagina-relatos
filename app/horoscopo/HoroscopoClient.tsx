@@ -392,14 +392,95 @@ const horoscopoData = {
       'Jonathan Franzen', 'H.P. Lovecraft', 'Salvatore Quasimodo (Premio Nobel 1959)', 'Emilio Salgari', 
       'Ray Bradbury'
     ]
+  },
+  virgo: {
+    author: 'Agatha Christie',
+    authorImage: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780888/Agatha-Christie_lzxfnz.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'agarcia',
+    description: '“El detalle mata, pero también salva.” La reina indiscutida del crimen elegante. Virgo de manual: precisión quirúrgica, memoria enciclopédica de venenos y la capacidad de convertir una taza de té en arma homicida. Su obsesión por el orden narrativo dio vida a Poirot y Miss Marple, detectives que resolvían casos con más paciencia que Scotland Yard. Publicó más de 60 novelas, fue la autora más vendida de la historia y aún así desapareció once días, como si la vida misma le pidiera una trama. “Escribo asesinatos porque lavar platos me resulta más monótono”, podría haber dicho (y probablemente lo pensó).',
+    efemerides: [
+      {
+        date: '26 de agosto de 1914',
+        title: 'Nace Julio Cortázar.',
+        description: 'Rayuela, cronopios y un París que nunca existió del todo.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400'
+      },
+      {
+        date: '29 de agosto de 1952',
+        title: 'Muere Margaret Wise Brown.',
+        description: 'Inventó conejitos que se duermen más fácil que algunos lectores.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400'
+      },
+      {
+        date: '4 de septiembre de 1984',
+        title: 'Muere Truman Capote.',
+        description: 'La alta sociedad aún cree que va a volver a la fiesta.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400'
+      },
+      {
+        date: '9 de septiembre de 1828',
+        title: 'Nace León Tolstói.',
+        description: 'Demostró que incluso la guerra necesita notas al pie.',
+        color: 'from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20',
+        borderColor: 'border-amber-100 dark:border-amber-800/30',
+        textColor: 'text-amber-600 dark:text-amber-400'
+      },
+      {
+        date: '14 de septiembre de 1769',
+        title: 'Nace Alexander von Humboldt.',
+        description: 'Escribió de ciencia como si fueran novelas de aventuras.',
+        color: 'from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20',
+        borderColor: 'border-teal-100 dark:border-teal-800/30',
+        textColor: 'text-teal-600 dark:text-teal-400'
+      },
+      {
+        date: '21 de septiembre de 1866',
+        title: 'Nace H.G. Wells.',
+        description: 'El hombre que puso a la ciencia a viajar en tranvía temporal.',
+        color: 'from-indigo-50 to-purple-50 dark:from-indigo-900/20 dark:to-purple-900/20',
+        borderColor: 'border-indigo-100 dark:border-indigo-800/30',
+        textColor: 'text-indigo-600 dark:text-indigo-400'
+      },
+      {
+        date: '21 de septiembre de 1947',
+        title: 'Nace Stephen King.',
+        description: 'La pesadilla más prolífica de Maine.',
+        color: 'from-rose-50 to-red-50 dark:from-rose-900/20 dark:to-red-900/20',
+        borderColor: 'border-rose-100 dark:border-rose-800/30',
+        textColor: 'text-rose-600 dark:text-rose-400'
+      }
+    ],
+    tarot: {
+      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780988/tarot_virgo_jjmode.png',
+      author: 'Mary Shelley',
+      subtitle: 'La pluma como linterna',
+      card: 'El Ermitaño',
+      phrase: 'La luz nace del examen interior',
+      description: 'Virgo, signo mutable de tierra, perfeccionista, lógico y metódico, con espíritu crítico, precisión y paciencia. Odia la improvisación y necesita seguridad. Su carta es El Ermitaño: introspección, sabiduría por reflexión y búsqueda de la verdad interior. En nuestro Tarot literario, Mary Shelley es la ermitaña: no alza una linterna, sino una pluma que ilumina páginas abiertas, símbolo de la creación intelectual y del poder transformador de la imaginación. A lo lejos, Frankenstein aparece en penumbra: eco de la otra cara del conocimiento, la soledad del buscador y el peso de la responsabilidad por lo creado.',
+      meaningTitle: 'Interpretación',
+      meaningDescription: 'El Ermitaño no es aislamiento vacío, sino introspección fértil. Representa la figura que se retira para explorar los abismos del alma y la mente humana, y que vuelve con un descubrimiento luminoso, aunque inquietante: el poder y el peligro de la creación. Invita a encontrar respuestas dentro de uno mismo, evitando, sin embargo, sobre pensar las cosas. Enfocar tus pensamientos y forma de actuar, evitar los impulsos. Para esto será necesario, más que nunca, el saber encontrar equilibrio entre descanso y actividad. Familia y trabajo. Placer y sacrificio.',
+      illustrator: undefined
+    },
+    writers: [
+      'Jorge Luis Borges', 'Álvaro Mutis', 'Johann Wolfgang von Goethe', 'Nicanor Parra',
+      'Cesare Pavese', 'Francisco de Quevedo', 'Adolfo Bioy Casares', 'Javier Marías',
+      'Stephen King', 'Mary Shelley'
+    ]
   }
 }
 
 interface HoroscopoClientProps {
-  signo?: 'cancer' | 'leo'
+  signo?: 'cancer' | 'leo' | 'virgo'
 }
 
-export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps) {
+export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProps) {
   const [activeSign, setActiveSign] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -494,10 +575,11 @@ export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps)
   // const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
 
   // Detectar el signo actual o usar el especificado
-  const currentSign = signo === 'cancer' ? 'cancer' : 'leo'; // Leo es el signo actual por defecto
+  const currentSign = signo;
   
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find(sign => sign.slug === currentSign);
+  const displaySignName = signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : 'Virgo';
   
   // Seleccionar el objeto de textos correcto según el signo
   const literaryTexts = signo === 'cancer' ? literaryHoroscopesCancer : literaryHoroscopesLeo;
@@ -508,7 +590,8 @@ export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps)
 
   // Función para obtener el link del signo
   const getSignLink = (signSlug: string) => {
-    if (signSlug === 'leo') return '/horoscopo' // Signo actual
+    if (signSlug === 'virgo') return '/horoscopo' // Signo actual
+    if (signSlug === 'leo') return '/horoscopo/leo' // Archivo disponible
     if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible
     return '#' // Signos futuros (sin link)
   }
@@ -523,7 +606,7 @@ export default function HoroscopoClient({ signo = 'leo' }: HoroscopoClientProps)
             {/* Left Column - Texto literario de Cáncer */}
             <div className="relative order-2 lg:order-1 flex flex-col justify-center">
               <div className="text-sm uppercase tracking-wide text-gray-500 dark:text-gray-400 font-medium mb-4">
-                Signo: {signo === 'cancer' ? 'Cáncer' : 'Leo'}
+                Signo: {displaySignName}
               </div>
               <h1 className="text-4xl lg:text-6xl font-bold text-gray-900 dark:text-gray-100 mb-4 font-titles">
 {data.author}
@@ -804,12 +887,12 @@ src={data.authorImage}
             </div>
             {/* Sin barra de reacciones/compartir dentro del horóscopo en este release */}
 
-            {/* Lista de escritores Leo */}
-            {signo === 'leo' && data.writers && (
+            {/* Lista de escritores del signo */}
+            {data.writers && (
               <div className="mt-16">
                 <div className="text-center mb-8">
                   <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    Escritores Leo
+                    Escritores {displaySignName}
                   </h3>
                   <div className="w-24 h-1 bg-gradient-to-r from-amber-400 to-orange-400 mx-auto rounded-full"></div>
                 </div>
