@@ -256,6 +256,46 @@ const literaryHoroscopesLeo = {
   }
 }
 
+// Textos literarios para Virgo (nuevos)
+const literaryHoroscopesVirgo = {
+  aries: {
+    text: 'Tus impulsos parecen escritos por Bukowski con resaca: intensos, desprolijos, pero honestos. Esta semana, un sí rápido te salvará de un no eterno.'
+  },
+  tauro: {
+    text: 'Tu paciencia se agrieta como un tomo viejo de Quevedo. No intentes encuadernar lo que ya no pega: cambia de biblioteca antes de que el polvo te adopte.'
+  },
+  geminis: {
+    text: 'Tienes tantas voces dentro que podrías fundar una revista literaria. Solo cuida que no termine siendo suplemento dominical de tu ego.'
+  },
+  cancer: {
+    text: 'El pasado te busca como spam poético. Esta vez no lo abras: escribe tu propio correo fantasma y mándatelo a ti mismo.'
+  },
+  leo: {
+    text: 'Quieres ser protagonista hasta en el pie de página. Tranquilo: incluso en las notas al margen hay gloria, si sabes usar cursivas.'
+  },
+  virgo: {
+    text: 'Tus manías son más rigurosas que un índice analítico. Bien. Solo no intentes clasificar lo inclasificable: hay besos que no entran en la Dewey.'
+  },
+  libra: {
+    text: 'Vas a descubrir que lo imperfecto seduce más que lo exacto, como un haiku torcido que se niega al equilibrio. Déjate llevar por esa grieta.'
+  },
+  escorpio: {
+    text: 'Tu intensidad es tan aguda que harías llorar a Nietzsche en una fonda. No todo requiere martillazos: a veces basta un pie de foto.'
+  },
+  sagitario: {
+    text: 'Se abre ante ti un mapa como novela de aventuras. Pero cuidado: no todos los cofres guardan tesoros; algunos solo polvo y cartas de amor mal escritas.'
+  },
+  capricornio: {
+    text: 'Estás tan ocupado construyendo escaleras que olvidaste mirar si llevan a alguna parte. A veces el verdadero logro es tirarse en la primera grada.'
+  },
+  acuario: {
+    text: 'Tu rareza será aplaudida como performance. Solo recuerda que hasta los dadaístas sabían cuándo cerrar la función.'
+  },
+  piscis: {
+    text: 'El sueño te dictará un párrafo perfecto y al despertar lo habrás olvidado. No importa: lo bello de Piscis es creer que aún lo recuerdas.'
+  }
+}
+
 // Datos específicos para cada horóscopo
 const horoscopoData = {
   cancer: {
@@ -582,7 +622,7 @@ export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProp
   const displaySignName = signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : 'Virgo';
   
   // Seleccionar el objeto de textos correcto según el signo
-  const literaryTexts = signo === 'cancer' ? literaryHoroscopesCancer : literaryHoroscopesLeo;
+  const literaryTexts = signo === 'cancer' ? literaryHoroscopesCancer : signo === 'leo' ? literaryHoroscopesLeo : literaryHoroscopesVirgo;
   const currentSignText = literaryTexts[currentSign]?.text || '';
   
   // Obtener datos del horóscopo según el signo
