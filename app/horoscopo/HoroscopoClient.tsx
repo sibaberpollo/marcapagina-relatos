@@ -274,7 +274,7 @@ const literaryHoroscopesVirgo = {
     text: 'Quieres ser protagonista hasta en el pie de página. Tranquilo: incluso en las notas al margen hay gloria, si sabes usar cursivas.'
   },
   virgo: {
-    text: 'Tus manías son más rigurosas que un índice analítico. Bien. Solo no intentes clasificar lo inclasificable: hay besos que no entran en la Dewey.'
+    text: 'Esta semana serás como un personaje de Borges: buscando un orden imposible en medio de una biblioteca infinita. El truco está en aceptar que a veces el mejor hallazgo es perderse entre estantes.'
   },
   libra: {
     text: 'Vas a descubrir que lo imperfecto seduce más que lo exacto, como un haiku torcido que se niega al equilibrio. Déjate llevar por esa grieta.'
