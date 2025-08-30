@@ -5,6 +5,8 @@ import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
 import AuthorTabContent from '@/components/AuthorTabContent'
+import PersonSchema from '@/components/PersonSchema'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 import { Suspense } from 'react'
 import { type Authors } from 'contentlayer/generated'
 import fs from 'fs'
@@ -191,6 +193,21 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
 
   return (
     <AuthorLayout content={authorContent}>
+      {/* JSON-LD: Person + Breadcrumbs */}
+      <PersonSchema
+        name={author.name}
+        url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autor/${slug}`}
+        image={author.avatar}
+        sameAs={[author.twitter, author.instagram, author.linkedin, author.github, author.website].filter(Boolean) as string[]}
+        description={author.bio}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Inicio', item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/` },
+          { name: 'Autores', item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autores` },
+          { name: author.name, item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autor/${slug}` },
+        ]}
+      />
       {/* Mostrar la biografía del autor */}
       {author.bio && (
         <div className="mb-8">

@@ -38,6 +38,11 @@ export default function OrganizationSchema() {
         publisher: { '@id': siteMetadata.siteUrl },
         inLanguage: siteMetadata.language,
         description: siteMetadata.description,
+        potentialAction: {
+          '@type': 'SearchAction',
+          target: `${siteMetadata.siteUrl}/resultados?q={search_term_string}`,
+          'query-input': 'required name=search_term_string',
+        },
       },
     ],
   }

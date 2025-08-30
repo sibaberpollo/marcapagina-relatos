@@ -14,6 +14,7 @@ import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 import { getRelatoBySlug, getRelatosByAutor, getAllRelatos, getSerieDeRelato } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
@@ -244,6 +245,13 @@ export default async function Page(props: {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Inicio', item: `${siteMetadata.siteUrl}/` },
+          { name: 'Relatos', item: `${siteMetadata.siteUrl}/posts` },
+          { name: post.title, item: `${siteMetadata.siteUrl}/relato/${slug}` },
+        ]}
       />
       <Layout
         content={mainContent}

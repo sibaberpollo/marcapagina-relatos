@@ -13,6 +13,7 @@ import PostBanner from '@/layouts/PostBanner'
 import { getArticuloBySlug, getArticulosByAutor, getAllArticulos } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
 import { ptComponents } from '@/components/PortableTextComponents'
+import BreadcrumbSchema from '@/components/BreadcrumbSchema'
 
 const defaultLayout = 'AlternativeLayout'
 const layouts = { PostSimple, AlternativeLayout, PostBanner }
@@ -191,6 +192,13 @@ export default async function Page(props: {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <BreadcrumbSchema
+        items={[
+          { name: 'Inicio', item: `${siteMetadata.siteUrl}/` },
+          { name: 'Artículos', item: `${siteMetadata.siteUrl}/posts` },
+          { name: post.title, item: `${siteMetadata.siteUrl}/articulo/${slug}` },
+        ]}
       />
       <Layout 
         content={mainContent} 
