@@ -17,6 +17,7 @@ import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
 import { ThemeProvider } from 'next-themes'
+import { SpeedInsights } from '@vercel/speed-insights/next'
 import CookieBanner from '@/components/CookieBanner'
 
 const playfair = Playfair_Display({
@@ -182,6 +183,7 @@ export default function RootLayout({
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+            <SpeedInsights />
             <ConditionalHeader />
             <ConditionalTopBar />
             <ConditionalBackgroundWrapper>
