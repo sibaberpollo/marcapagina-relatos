@@ -5,6 +5,7 @@ import Link from '../Link'
 import { getRelativeTime } from '@/lib/time'
 import { toVersal } from '@/lib/utils'
 import { BookOpen } from 'lucide-react'
+import Avatar from 'react-avatar'
 
 interface FeaturedCardProps {
   title: string
@@ -94,13 +95,17 @@ export default function FeaturedCard({
             >
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="relative flex items-center gap-3">
-                <Image
-                  src={authorImgSrc}
-                  alt={authorName}
-                  width={32}
-                  height={32}
-                  className="rounded-full contrast-150 grayscale brightness-110"
-                />
+                {authorImgSrc ? (
+                  <Image
+                    src={authorImgSrc}
+                    alt={authorName}
+                    width={32}
+                    height={32}
+                    className="rounded-full contrast-150 grayscale brightness-110"
+                  />
+                ) : (
+                  <Avatar name={authorName} size="32" round textSizeRatio={2} fgColor="#ffffff" color="#000000" />
+                )}
                 <div>
                   <span className="text-white font-medium text-left">{authorName}</span>
                   <span className="text-white/80 text-xs mt-0.5 text-left block">{relativeTime}</span>

@@ -3,6 +3,7 @@
 
 import dynamic from 'next/dynamic'
 import { CoreContent } from 'pliny/utils/contentlayer'
+import LoginNudge from './LoginNudge'
 
 const FixedNavMenu = dynamic(
   () => import('@/components/FixedNavMenu'),
@@ -33,16 +34,19 @@ export default function ClientFixedNavWrapper({
   seriesName
 }: ClientFixedNavWrapperProps) {
   return (
-    <FixedNavMenu
-      title={title}
-      authorAvatar={authorAvatar}
-      authorName={authorName}
-      slug={slug}
-      relatedPosts={relatedPosts}
-      author={author}
-      pathPrefix={pathPrefix}
-      readingTime={readingTime}
-      seriesName={seriesName}
-    />
+    <>
+      <FixedNavMenu
+        title={title}
+        authorAvatar={authorAvatar}
+        authorName={authorName}
+        slug={slug}
+        relatedPosts={relatedPosts}
+        author={author}
+        pathPrefix={pathPrefix}
+        readingTime={readingTime}
+        seriesName={seriesName}
+      />
+      {pathPrefix === 'relato' && <LoginNudge slug={slug} />}
+    </>
   )
 }
