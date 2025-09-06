@@ -71,13 +71,7 @@ export const metadata: Metadata = {
   },
 }
 
-
-
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   const basePath = process.env.BASE_PATH || ''
   const gaId = siteMetadata.analytics?.googleAnalytics?.googleAnalyticsId
 
@@ -162,24 +156,12 @@ export default function RootLayout({
           color="#5bbad5"
         />
         <meta name="msapplication-TileColor" content="#000000" />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: light)"
-          content="#fff"
-        />
-        <meta
-          name="theme-color"
-          media="(prefers-color-scheme: dark)"
-          content="#000"
-        />
-        <link
-          rel="alternate"
-          type="application/rss+xml"
-          href={`${basePath}/feed.xml`}
-        />
+        <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
+        <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
+        <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
         <OrganizationSchema />
       </head>
-      <body className="antialiased font-serif bg-white text-black">
+      <body className="bg-white font-serif text-black antialiased">
         <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <ThemeProviders>
             <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
@@ -191,7 +173,7 @@ export default function RootLayout({
                 <Breadcrumbs />
               </SectionContainer>
               <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                <main className="mb-auto font-serif bg-white text-black">{children}</main>
+                <main className="mb-auto bg-white font-serif text-black">{children}</main>
               </SearchProvider>
             </ConditionalBackgroundWrapper>
             <Footer />

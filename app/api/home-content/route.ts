@@ -83,19 +83,20 @@ export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
     const language = searchParams.get('lang') || 'es'
-    
+
     // Leer el archivo JSON correspondiente al idioma
-    const filePath = path.join(process.cwd(), 'data', `home-content${language === 'es' ? '' : `-${language}`}.json`)
-    
+    const filePath = path.join(
+      process.cwd(),
+      'data',
+      `home-content${language === 'es' ? '' : `-${language}`}.json`
+    )
+
     // Si no existe el archivo del idioma específico, usar el español como fallback
     const fallbackPath = path.join(process.cwd(), 'data', 'home-content.json')
     const finalPath = fs.existsSync(filePath) ? filePath : fallbackPath
-    
+
     if (!fs.existsSync(finalPath)) {
-      return NextResponse.json(
-        { error: 'Archivo de contenido no encontrado' },
-        { status: 404 }
-      )
+      return NextResponse.json({ error: 'Archivo de contenido no encontrado' }, { status: 404 })
     }
 
     const fileContent = fs.readFileSync(finalPath, 'utf-8')
@@ -107,9 +108,9 @@ export async function GET(request: NextRequest) {
         try {
           if (item.type === 'relato' || item.type === 'microcuento') {
             if (!item.slug) return null
-            
+
             const sanityData = await getRelatoBySlug(item.slug)
-            
+
             if (sanityData) {
               const enrichedItem: CardProps = {
                 title: item.title || sanityData.title,
@@ -123,7 +124,7 @@ export async function GET(request: NextRequest) {
                 tags: item.tags || sanityData.tags || [],
                 publishedAt: item.publishedAt || sanityData.publishedAt || sanityData.date || '',
               }
-              
+
               return enrichedItem
             }
             return null
@@ -140,19 +141,15 @@ export async function GET(request: NextRequest) {
     )
 
     // Filtrar items nulos
-    const validItems = processedItems.filter(item => item !== null)
+    const validItems = processedItems.filter((item) => item !== null)
 
     return NextResponse.json({
       meta: homeData.meta,
       content: homeData.content,
-      items: validItems
+      items: validItems,
     })
-
   } catch (error) {
     console.error('Error en la API de contenido del home:', error)
-    return NextResponse.json(
-      { error: 'Error interno del servidor' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
-} 
+}

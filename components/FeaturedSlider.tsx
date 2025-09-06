@@ -7,20 +7,20 @@ import 'swiper/css/pagination'
 import FeaturedCard from './cards/FeaturedCard'
 
 interface CardProps {
-  title: string;
-  description: string;
-  imgSrc: string;
-  href: string;
-  authorImgSrc: string;
-  authorName: string;
-  authorHref: string;
-  bgColor: string;
-  tags: string[];
-  publishedAt: string;
+  title: string
+  description: string
+  imgSrc: string
+  href: string
+  authorImgSrc: string
+  authorName: string
+  authorHref: string
+  bgColor: string
+  tags: string[]
+  publishedAt: string
 }
 
 interface FeaturedSliderProps {
-  projects: CardProps[];
+  projects: CardProps[]
 }
 
 export default function FeaturedSlider({ projects }: FeaturedSliderProps) {
@@ -30,7 +30,7 @@ export default function FeaturedSlider({ projects }: FeaturedSliderProps) {
         modules={[Pagination]}
         spaceBetween={20}
         slidesPerView={1}
-        pagination={{ 
+        pagination={{
           clickable: true,
           el: '.swiper-pagination',
           bulletClass: 'swiper-pagination-bullet',
@@ -88,4 +88,4 @@ export default function FeaturedSlider({ projects }: FeaturedSliderProps) {
       `}</style>
     </div>
   )
-} 
+}

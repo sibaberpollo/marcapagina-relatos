@@ -10,7 +10,10 @@ interface LanguageDropdownProps {
   inMobileMenu?: boolean
 }
 
-export default function LanguageDropdown({ isMobile = false, inMobileMenu = false }: LanguageDropdownProps) {
+export default function LanguageDropdown({
+  isMobile = false,
+  inMobileMenu = false,
+}: LanguageDropdownProps) {
   const pathname = usePathname()
   const [isOpen, setIsOpen] = useState(false)
   const dropdownRef = useRef<HTMLDivElement>(null)
@@ -51,10 +54,10 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
       <div className="flex gap-3">
         <CustomLink
           href={basePath}
-          className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
+          className={`rounded-md border px-3 py-2 text-sm font-semibold transition-colors ${
             currentLocale === 'es'
               ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+              : 'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800'
           }`}
           onClick={() => {
             if (currentLocale === 'en') {
@@ -66,10 +69,10 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
         </CustomLink>
         <CustomLink
           href={`/en${basePath}`}
-          className={`px-3 py-2 rounded-md font-semibold border text-sm transition-colors ${
+          className={`rounded-md border px-3 py-2 text-sm font-semibold transition-colors ${
             currentLocale === 'en'
               ? 'bg-gray-900 text-white dark:bg-white dark:text-gray-900'
-              : 'text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800'
+              : 'text-gray-700 hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800'
           }`}
           onClick={() => {
             if (currentLocale === 'es') {
@@ -92,17 +95,23 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
 
   return (
     <div className="relative" ref={dropdownRef}>
-      <button onClick={() => setIsOpen(!isOpen)} className={buttonClasses} aria-label="Cambiar idioma">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className={buttonClasses}
+        aria-label="Cambiar idioma"
+      >
         <span className="mr-1">{currentLocale === 'en' ? '🇬🇧' : '🇪🇸'}</span>
         {currentLocale.toUpperCase()}
-        <ChevronDown className={`w-4 h-4 ml-1 transition-transform ${isOpen ? 'rotate-180' : ''}`} />
+        <ChevronDown
+          className={`ml-1 h-4 w-4 transition-transform ${isOpen ? 'rotate-180' : ''}`}
+        />
       </button>
       {isOpen && (
         <div className={dropdownClasses}>
           <div className="py-1">
             <CustomLink
               href={basePath}
-              className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
               onClick={() => {
                 setIsOpen(false)
                 if (currentLocale === 'en') {
@@ -114,7 +123,7 @@ export default function LanguageDropdown({ isMobile = false, inMobileMenu = fals
             </CustomLink>
             <CustomLink
               href={`/en${basePath}`}
-              className="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+              className="block px-4 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-100 dark:text-gray-200 dark:hover:bg-gray-800"
               onClick={() => {
                 setIsOpen(false)
                 if (currentLocale === 'es') {

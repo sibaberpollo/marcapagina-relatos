@@ -1,29 +1,31 @@
 'use client'
 
-import { FormData } from '../../lib/hooks/useFormState';
+import { FormData } from '../../lib/hooks/useFormState'
 
 interface PreFormularioProps {
-  formData: FormData;
-  handleChange: (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => void;
-  onSubmit: (e: React.FormEvent) => Promise<void>;
-  titulo?: string;
-  descripcion?: string;
+  formData: FormData
+  handleChange: (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => void
+  onSubmit: (e: React.FormEvent) => Promise<void>
+  titulo?: string
+  descripcion?: string
 }
 
 export default function PreFormulario({
   formData,
   handleChange,
   onSubmit,
-  titulo = "Bienvenido a MarcaPágina",
-  descripcion = "Comparte tu relato con nuestra comunidad de lectores. En MarcaPágina publicamos textos que abrazan la creatividad y la imaginación."
+  titulo = 'Bienvenido a MarcaPágina',
+  descripcion = 'Comparte tu relato con nuestra comunidad de lectores. En MarcaPágina publicamos textos que abrazan la creatividad y la imaginación.',
 }: PreFormularioProps) {
   return (
     <div className="prose dark:prose-invert max-w-none">
       {/* Título y descripción eliminados ya que se muestran en el componente padre */}
-      
-      <form 
+
+      <form
         onSubmit={onSubmit}
-        className="mx-auto max-w-xl space-y-6 bg-white dark:bg-gray-800 p-8 border border-black border-2 rounded-lg shadow mt-8"
+        className="mx-auto mt-8 max-w-xl space-y-6 rounded-lg border border-2 border-black bg-white p-8 shadow dark:bg-gray-800"
       >
         {/* Email */}
         <div>
@@ -38,12 +40,12 @@ export default function PreFormulario({
             name="email"
             type="email"
             required
-            className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+            className="mt-1 block w-full rounded-lg border border-2 border-black bg-gray-50 p-2 dark:bg-gray-900"
             value={formData.email}
             onChange={handleChange}
           />
         </div>
-        
+
         {/* Fuente */}
         <div>
           <label
@@ -56,7 +58,7 @@ export default function PreFormulario({
             id="source"
             name="source"
             required
-            className="mt-1 block w-full border border-black border-2 rounded-lg bg-gray-50 dark:bg-gray-900 p-2"
+            className="mt-1 block w-full rounded-lg border border-2 border-black bg-gray-50 p-2 dark:bg-gray-900"
             value={formData.source}
             onChange={handleChange}
           >
@@ -69,16 +71,16 @@ export default function PreFormulario({
             <option value="otra">Otra fuente</option>
           </select>
         </div>
-        
-        <div className="text-center mt-4">
+
+        <div className="mt-4 text-center">
           <button
             type="submit"
-            className="px-6 py-3 bg-black text-[#faff00] rounded-lg font-medium hover:bg-gray-900 hover:scale-105 transition-all duration-200"
+            className="rounded-lg bg-black px-6 py-3 font-medium text-[#faff00] transition-all duration-200 hover:scale-105 hover:bg-gray-900"
           >
             Siguiente
           </button>
         </div>
       </form>
     </div>
-  );
-} 
+  )
+}

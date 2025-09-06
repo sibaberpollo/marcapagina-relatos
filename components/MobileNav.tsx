@@ -71,22 +71,22 @@ const MobileNav = () => {
             <DialogPanel className="fixed top-0 left-0 z-70 h-full w-full bg-white/95 duration-300 dark:bg-gray-950/98">
               <nav
                 ref={navRef}
-                className="mt-8 flex h-full basis-0 flex-col items-center overflow-y-auto pt-2 px-6 text-center w-full"
+                className="mt-8 flex h-full w-full basis-0 flex-col items-center overflow-y-auto px-6 pt-2 text-center"
               >
                 {headerNavLinks
-                 .filter(link => link.href !== '/publica')
-                 .map((link) => (
-                  <Link
-                    key={link.title}
-                    href={link.href}
-                    className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 py-2 text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100 w-full text-center"
-                    onClick={onToggleNav}
-                  >
-                    {link.title}
-                  </Link>
-                ))}
-                <div className="mt-4 mb-8 flex flex-col items-center gap-4 w-full">
-                  <div className="w-full flex justify-center mb-4">
+                  .filter((link) => link.href !== '/publica')
+                  .map((link) => (
+                    <Link
+                      key={link.title}
+                      href={link.href}
+                      className="hover:text-primary-500 dark:hover:text-primary-400 mb-4 w-full py-2 text-center text-2xl font-bold tracking-widest text-gray-900 outline outline-0 dark:text-gray-100"
+                      onClick={onToggleNav}
+                    >
+                      {link.title}
+                    </Link>
+                  ))}
+                <div className="mt-4 mb-8 flex w-full flex-col items-center gap-4">
+                  <div className="mb-4 flex w-full justify-center">
                     <PublishLink variant="mobileNav" onClick={onToggleNav} />
                   </div>
                 </div>

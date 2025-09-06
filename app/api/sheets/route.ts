@@ -23,30 +23,30 @@ export async function POST(req: NextRequest) {
       email: GOOGLE_SERVICE_ACCOUNT_EMAIL,
       key: GOOGLE_PRIVATE_KEY.replace(/\\n/g, '\n'),
       scopes: ['https://www.googleapis.com/auth/spreadsheets'],
-    });
+    })
 
     // Inicializar el documento con las credenciales
-    const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth);
-    
+    const doc = new GoogleSpreadsheet(GOOGLE_SHEET_ID, serviceAccountAuth)
+
     // Cargar información del documento
     await doc.loadInfo()
-    
+
     // Obtener la hoja de cálculo (primera hoja)
     const sheet = doc.sheetsByIndex[0]
-    
+
     // Buscar si el email ya existe
     const rows = await sheet.getRows()
-    let existingRow: GoogleSpreadsheetRow | null = null;
-    
+    let existingRow: GoogleSpreadsheetRow | null = null
+
     for (const row of rows) {
       if (row.get('email') === email) {
-        existingRow = row;
-        break;
+        existingRow = row
+        break
       }
     }
-    
+
     const timestamp = new Date().toISOString()
-    
+
     if (existingRow) {
       // Actualizar fila existente
       // Solo actualizamos los campos nuevos
@@ -55,10 +55,9 @@ export async function POST(req: NextRequest) {
         existingRow.set('archivo_enviado', archivoEnviado ? 'Sí' : 'No')
         existingRow.set('fecha_envio', fechaEnvio || timestamp)
       }
-      
+
       existingRow.set('actualizado', timestamp)
       await existingRow.save()
-      
     } else {
       // Crear nueva fila
       await sheet.addRow({
@@ -70,14 +69,13 @@ export async function POST(req: NextRequest) {
         fecha_registro: fechaRegistro || timestamp,
         fecha_envio: fechaEnvio || '',
         creado: timestamp,
-        actualizado: timestamp
+        actualizado: timestamp,
       })
     }
-    
+
     return NextResponse.json({ success: true })
-    
   } catch (error) {
     console.error('Error en la API de Google Sheets:', error)
     return NextResponse.json({ error: 'Error interno del servidor' }, { status: 500 })
   }
-} 
+}

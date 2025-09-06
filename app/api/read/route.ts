@@ -25,7 +25,8 @@ export async function GET(req: NextRequest) {
 
 export async function POST(req: NextRequest) {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
+  if (!session?.user?.email)
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
 
   const { slug, contentType = 'relato', progress = 1 } = await req.json()
   if (!slug) return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 })
@@ -43,7 +44,8 @@ export async function POST(req: NextRequest) {
 
 export async function DELETE(req: NextRequest) {
   const session = await getServerSession(authOptions)
-  if (!session?.user?.email) return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
+  if (!session?.user?.email)
+    return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401 })
 
   const { slug, contentType = 'relato' } = await req.json()
   if (!slug) return new Response(JSON.stringify({ error: 'Invalid payload' }), { status: 400 })
@@ -51,8 +53,8 @@ export async function DELETE(req: NextRequest) {
   const user = await prisma.user.findUnique({ where: { email: session.user.email } })
   if (!user) return new Response(JSON.stringify({ error: 'User not found' }), { status: 404 })
 
-  await prisma.read.delete({ where: { userId_contentType_slug: { userId: user.id, contentType, slug } } })
+  await prisma.read.delete({
+    where: { userId_contentType_slug: { userId: user.id, contentType, slug } },
+  })
   return new Response(null, { status: 204 })
 }
-
-

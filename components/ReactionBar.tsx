@@ -16,7 +16,14 @@ type Props = {
   renderMode?: 'full' | 'buttons'
 }
 
-export default function ReactionBar({ slug, contentType = 'relato', compact = false, className = '', showHeading = true, renderMode = 'full' }: Props) {
+export default function ReactionBar({
+  slug,
+  contentType = 'relato',
+  compact = false,
+  className = '',
+  showHeading = true,
+  renderMode = 'full',
+}: Props) {
   const { status } = useSession()
   const [counts, setCounts] = useState<{ up: number; double: number }>({ up: 0, double: 0 })
   const [userReaction, setUserReaction] = useState<ReactionType | null>(null)
@@ -27,7 +34,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   const CHANNEL = 'engage:update'
 
   async function fetchCounts() {
-    const res = await fetch(`/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`, { cache: 'no-store' })
+    const res = await fetch(
+      `/api/reactions?slug=${encodeURIComponent(slug)}&contentType=${encodeURIComponent(contentType)}`,
+      { cache: 'no-store' }
+    )
     if (res.ok) {
       const json = await res.json()
       setCounts(json.counts)
@@ -68,7 +78,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType }),
         })
-        if (res.status === 401) { setLoginOpen(true); return }
+        if (res.status === 401) {
+          setLoginOpen(true)
+          return
+        }
         if (res.ok) {
           setUserReaction(null)
           await fetchCounts()
@@ -80,7 +93,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType, type }),
         })
-        if (res.status === 401) { setLoginOpen(true); return }
+        if (res.status === 401) {
+          setLoginOpen(true)
+          return
+        }
         if (res.ok) {
           setUserReaction(type)
           // Marcar como leído automáticamente al reaccionar
@@ -115,7 +131,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType }),
         })
-        if (res.status === 401) { setLoginOpen(true); return }
+        if (res.status === 401) {
+          setLoginOpen(true)
+          return
+        }
         if (res.ok) {
           setIsRead(false)
           window.dispatchEvent(new CustomEvent(CHANNEL, { detail: { slug, contentType } }))
@@ -126,7 +145,10 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ slug, contentType, progress: 1 }),
         })
-        if (res.status === 401) { setLoginOpen(true); return }
+        if (res.status === 401) {
+          setLoginOpen(true)
+          return
+        }
         if (res.ok) {
           setIsRead(true)
           window.dispatchEvent(new CustomEvent(CHANNEL, { detail: { slug, contentType } }))
@@ -192,109 +214,146 @@ export default function ReactionBar({ slug, contentType = 'relato', compact = fa
   }, [status, slug, contentType])
 
   const buttons = (
-      <div className="flex items-center justify-around gap-4 sm:gap-6">
-        <button
-          disabled={loading}
-          onClick={toggleRead}
-          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
-          aria-label="Marcar como leído"
-        >
-          <span className="relative inline-flex h-5 w-5">
-            {!isRead ? (
-              <Bookmark className="h-5 w-5 text-gray-900" />
-            ) : (
-              <>
-                <Bookmark className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
-                <Bookmark className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
-              </>
-            )}
+    <div className="flex items-center justify-around gap-4 sm:gap-6">
+      <button
+        disabled={loading}
+        onClick={toggleRead}
+        className={`group relative flex h-12 w-12 items-center justify-center rounded-lg border border-black bg-white text-gray-900 transition-colors`}
+        aria-label="Marcar como leído"
+      >
+        <span className="relative inline-flex h-5 w-5">
+          {!isRead ? (
+            <Bookmark className="h-5 w-5 text-gray-900" />
+          ) : (
+            <>
+              <Bookmark
+                className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]"
+                fill="currentColor"
+                stroke="none"
+              />
+              <Bookmark
+                className="absolute inset-0 h-5 w-5 text-black"
+                fill="none"
+                stroke="currentColor"
+              />
+            </>
+          )}
+        </span>
+        <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black px-2 py-1 text-[10px] whitespace-nowrap text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+          {isRead ? 'Marcado como leído' : 'Marcar como leído'}
+        </span>
+      </button>
+      <button
+        disabled={loading}
+        onClick={() => react('UP')}
+        className={`group relative flex h-12 w-12 items-center justify-center rounded-lg border border-black bg-white text-gray-900 transition-colors`}
+        aria-label="Me gustó"
+      >
+        <span className="relative inline-flex h-5 w-5">
+          {userReaction !== 'UP' ? (
+            <ThumbsUp className="h-5 w-5 text-gray-900" />
+          ) : (
+            <>
+              <ThumbsUp
+                className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]"
+                fill="currentColor"
+                stroke="none"
+              />
+              <ThumbsUp
+                className="absolute inset-0 h-5 w-5 text-black"
+                fill="none"
+                stroke="currentColor"
+              />
+            </>
+          )}
+        </span>
+        {!compact && (
+          <span className="absolute -top-1 -right-1 rounded bg-black px-1.5 py-0.5 text-[10px] leading-none text-[var(--color-accent)]">
+            {counts.up}
           </span>
-          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
-            {isRead ? 'Marcado como leído' : 'Marcar como leído'}
-          </span>
-        </button>
-        <button
-          disabled={loading}
-          onClick={() => react('UP')}
-          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
-          aria-label="Me gustó"
-        >
+        )}
+        <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black px-2 py-1 text-[10px] whitespace-nowrap text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+          Like
+        </span>
+      </button>
+      <button
+        disabled={loading}
+        onClick={() => react('DOUBLE')}
+        className={`group relative flex h-12 w-12 items-center justify-center rounded-lg border border-black bg-white text-gray-900 transition-colors`}
+        aria-label="Me encantó"
+      >
+        <div className="relative flex items-center">
           <span className="relative inline-flex h-5 w-5">
-            {userReaction !== 'UP' ? (
+            {userReaction !== 'DOUBLE' ? (
               <ThumbsUp className="h-5 w-5 text-gray-900" />
             ) : (
               <>
-                <ThumbsUp className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
-                <ThumbsUp className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
+                <ThumbsUp
+                  className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <ThumbsUp
+                  className="absolute inset-0 h-5 w-5 text-black"
+                  fill="none"
+                  stroke="currentColor"
+                />
               </>
             )}
           </span>
-          {!compact && (
-            <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-0.5 rounded bg-black text-[var(--color-accent)]">
-              {counts.up}
-            </span>
-          )}
-          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
-            Like
+          <span className="relative -ml-2 inline-flex h-4 w-4">
+            {userReaction !== 'DOUBLE' ? (
+              <ThumbsUp className="h-4 w-4 text-gray-900" />
+            ) : (
+              <>
+                <ThumbsUp
+                  className="absolute inset-0 h-4 w-4 text-[var(--color-accent)]"
+                  fill="currentColor"
+                  stroke="none"
+                />
+                <ThumbsUp
+                  className="absolute inset-0 h-4 w-4 text-black"
+                  fill="none"
+                  stroke="currentColor"
+                />
+              </>
+            )}
           </span>
-        </button>
-        <button
-          disabled={loading}
-          onClick={() => react('DOUBLE')}
-          className={`group relative h-12 w-12 rounded-lg transition-colors border border-black bg-white text-gray-900 flex items-center justify-center`}
-          aria-label="Me encantó"
-        >
-          <div className="relative flex items-center">
-            <span className="relative inline-flex h-5 w-5">
-              {userReaction !== 'DOUBLE' ? (
-                <ThumbsUp className="h-5 w-5 text-gray-900" />
-              ) : (
-                <>
-                  <ThumbsUp className="absolute inset-0 h-5 w-5 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
-                  <ThumbsUp className="absolute inset-0 h-5 w-5 text-black" fill="none" stroke="currentColor" />
-                </>
-              )}
-            </span>
-            <span className="relative -ml-2 inline-flex h-4 w-4">
-              {userReaction !== 'DOUBLE' ? (
-                <ThumbsUp className="h-4 w-4 text-gray-900" />
-              ) : (
-                <>
-                  <ThumbsUp className="absolute inset-0 h-4 w-4 text-[var(--color-accent)]" fill="currentColor" stroke="none" />
-                  <ThumbsUp className="absolute inset-0 h-4 w-4 text-black" fill="none" stroke="currentColor" />
-                </>
-              )}
-            </span>
-          </div>
-          {!compact && (
-            <span className="absolute -top-1 -right-1 text-[10px] leading-none px-1.5 py-0.5 rounded bg-black text-[var(--color-accent)]">
-              {counts.double}
-            </span>
-          )}
-          <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 whitespace-nowrap rounded bg-black px-2 py-1 text-[10px] text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
-            Superlike
+        </div>
+        {!compact && (
+          <span className="absolute -top-1 -right-1 rounded bg-black px-1.5 py-0.5 text-[10px] leading-none text-[var(--color-accent)]">
+            {counts.double}
           </span>
-        </button>
-      </div>
+        )}
+        <span className="pointer-events-none absolute -top-7 left-1/2 -translate-x-1/2 rounded bg-black px-2 py-1 text-[10px] whitespace-nowrap text-[var(--color-accent)] opacity-0 transition-opacity group-hover:opacity-100">
+          Superlike
+        </span>
+      </button>
+    </div>
   )
 
   const callbackUrl = buildCallbackUrl()
-  if (renderMode === 'buttons') return (
-    <>
-      {buttons}
-      <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} callbackUrl={callbackUrl} />
-    </>
-  )
+  if (renderMode === 'buttons')
+    return (
+      <>
+        {buttons}
+        <LoginModal
+          open={loginOpen}
+          onClose={() => setLoginOpen(false)}
+          callbackUrl={callbackUrl}
+        />
+      </>
+    )
 
   return (
     <div className={`w-full ${className}`}>
       {showHeading && (
-        <p className="text-center text-xs sm:text-sm font-small text-gray-500 dark:text-gray-300 mb-2 sm:mb-3">REACCIONA</p>
+        <p className="font-small mb-2 text-center text-xs text-gray-500 sm:mb-3 sm:text-sm dark:text-gray-300">
+          REACCIONA
+        </p>
       )}
-      <div className="max-w-xs mx-auto sm:max-w-none">{buttons}</div>
+      <div className="mx-auto max-w-xs sm:max-w-none">{buttons}</div>
       <LoginModal open={loginOpen} onClose={() => setLoginOpen(false)} callbackUrl={callbackUrl} />
     </div>
   )
 }
-
-

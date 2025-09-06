@@ -33,10 +33,12 @@ export default async function Page() {
     <div className="space-y-6">
       {/* Breadcrumb/Título */}
       <div className="text-sm text-gray-600">Inicio →</div>
-      <h2 className="text-xl font-semibold">Hola, {session.user?.name?.split(' ')[0] || 'lectora/lector'}</h2>
+      <h2 className="text-xl font-semibold">
+        Hola, {session.user?.name?.split(' ')[0] || 'lectora/lector'}
+      </h2>
       <h1 className="text-2xl font-bold">Biblioteca personal</h1>
       <section>
-        <h2 className="text-lg font-semibold mb-3">Tu actividad</h2>
+        <h2 className="mb-3 text-lg font-semibold">Tu actividad</h2>
         <BibliotecaTabs
           favorites={await getRelatosForChronologicalBySlugs(superliked)}
           likes={await getRelatosForChronologicalBySlugs(liked)}
@@ -48,6 +50,3 @@ export default async function Page() {
     </div>
   )
 }
-
-
-

@@ -18,7 +18,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params
   const microcuento = await getMicrocuentoBySlug(slug)
-  
+
   if (!microcuento) {
     return {
       title: 'Microcuento no encontrado',
@@ -40,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function MicrocuentoPage({ params }: PageProps) {
   const { slug } = await params
   const microcuento = await getMicrocuentoBySlug(slug)
-  
+
   if (!microcuento) {
     notFound()
   }
@@ -56,7 +56,7 @@ export default async function MicrocuentoPage({ params }: PageProps) {
         image: microcuento.image,
         bgColor: microcuento.bgColor,
         tags: microcuento.tags,
-        publishedAt: microcuento.publishedAt
+        publishedAt: microcuento.publishedAt,
       }}
       prev={prev || undefined}
       next={next || undefined}
@@ -64,4 +64,4 @@ export default async function MicrocuentoPage({ params }: PageProps) {
       <PortableText value={microcuento.body} components={ptComponents} />
     </AlternativeLayout>
   )
-} 
+}

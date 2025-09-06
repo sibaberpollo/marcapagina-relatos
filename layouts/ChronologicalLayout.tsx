@@ -18,14 +18,14 @@ interface ChronologicalLayoutProps {
   basePath?: string
 }
 
-export default function ChronologicalLayout({ 
-  items, 
+export default function ChronologicalLayout({
+  items,
   itemsPerPage = 10,
   currentPage = 1,
-  basePath = '/cronologico'
+  basePath = '/cronologico',
 }: ChronologicalLayoutProps) {
   const totalPages = Math.ceil(items.length / itemsPerPage)
-  
+
   const startIndex = (currentPage - 1) * itemsPerPage
   const endIndex = startIndex + itemsPerPage
   const currentItems = items.slice(startIndex, endIndex)
@@ -47,7 +47,11 @@ export default function ChronologicalLayout({
     range.push(1)
 
     // Calcular el rango alrededor de la página actual
-    for (let i = Math.max(2, currentPage - delta); i <= Math.min(totalPages - 1, currentPage + delta); i++) {
+    for (
+      let i = Math.max(2, currentPage - delta);
+      i <= Math.min(totalPages - 1, currentPage + delta);
+      i++
+    ) {
       range.push(i)
     }
 
@@ -75,98 +79,102 @@ export default function ChronologicalLayout({
     <div className="divide-y divide-gray-200 dark:divide-gray-700">
       {currentItems.map((item, index) => {
         const { day, month } = formatDate(item.publishedAt)
-        
+
         return (
           <article key={index} className="py-6">
             <div className="grid grid-cols-[80px_1fr] gap-4 md:gap-6">
               {/* Columna de fecha */}
               <div className="text-center">
-                <div className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-gray-100">
+                <div className="text-3xl font-bold text-gray-900 md:text-4xl dark:text-gray-100">
                   {day}
                 </div>
-                <div className="text-sm md:text-base font-medium text-gray-600 dark:text-gray-400">
+                <div className="text-sm font-medium text-gray-600 md:text-base dark:text-gray-400">
                   {month}
                 </div>
               </div>
-              
+
               {/* Columna de contenido */}
               <div>
-                <h2 className="text-xl md:text-2xl font-bold mb-2">
+                <h2 className="mb-2 text-xl font-bold md:text-2xl">
                   <Link href={item.href} className="hover:underline">
                     {item.title}
                   </Link>
                 </h2>
-                <div className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-                  Por: <Link href={item.authorHref} className="hover:underline">
+                <div className="mb-2 text-sm text-gray-600 dark:text-gray-400">
+                  Por:{' '}
+                  <Link href={item.authorHref} className="hover:underline">
                     {item.authorName}
                   </Link>
                 </div>
-                <p className="text-gray-600 dark:text-gray-400 line-clamp-2">
-                  {item.description}
-                </p>
+                <p className="line-clamp-2 text-gray-600 dark:text-gray-400">{item.description}</p>
               </div>
             </div>
           </article>
         )
       })}
-      
+
       {/* Paginación mejorada */}
       {totalPages > 1 && (
         <nav className="pt-8 pb-4">
-          <div className="flex items-center justify-center gap-1 flex-wrap">
+          <div className="flex flex-wrap items-center justify-center gap-1">
             {/* Botón Anterior */}
             <Link
               href={currentPage > 1 ? `${basePath}?page=${currentPage - 1}` : '#'}
-              className={`px-3 py-2 text-sm rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors ${
-                currentPage === 1 ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
+              className={`rounded-md bg-gray-100 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 ${
+                currentPage === 1 ? 'pointer-events-none cursor-not-allowed opacity-50' : ''
               }`}
             >
               ← Anterior
             </Link>
-            
+
             {/* Números de página con puntos suspensivos */}
             {getVisiblePages().map((page, index) => {
               if (page === '...') {
                 return (
-                  <span key={`dots-${index}`} className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400">
+                  <span
+                    key={`dots-${index}`}
+                    className="px-3 py-2 text-sm text-gray-500 dark:text-gray-400"
+                  >
                     ...
                   </span>
                 )
               }
-              
+
               const pageNum = page as number
               return (
                 <Link
                   key={pageNum}
                   href={`${basePath}?page=${pageNum}`}
-                  className={`px-3 py-2 text-sm rounded-md transition-colors min-w-[40px] text-center ${
+                  className={`min-w-[40px] rounded-md px-3 py-2 text-center text-sm transition-colors ${
                     currentPage === pageNum
-                      ? 'bg-gray-900 text-white dark:bg-gray-100 dark:text-gray-900 font-medium'
-                      : 'bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700'
+                      ? 'bg-gray-900 font-medium text-white dark:bg-gray-100 dark:text-gray-900'
+                      : 'bg-gray-100 text-gray-700 hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700'
                   }`}
                 >
                   {pageNum}
                 </Link>
               )
             })}
-            
+
             {/* Botón Siguiente */}
             <Link
               href={currentPage < totalPages ? `${basePath}?page=${currentPage + 1}` : '#'}
-              className={`px-3 py-2 text-sm rounded-md bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors ${
-                currentPage === totalPages ? 'opacity-50 cursor-not-allowed pointer-events-none' : ''
+              className={`rounded-md bg-gray-100 px-3 py-2 text-sm text-gray-700 transition-colors hover:bg-gray-200 dark:bg-gray-800 dark:text-gray-300 dark:hover:bg-gray-700 ${
+                currentPage === totalPages
+                  ? 'pointer-events-none cursor-not-allowed opacity-50'
+                  : ''
               }`}
             >
               Siguiente →
             </Link>
           </div>
-          
+
           {/* Información de página */}
-          <div className="text-center mt-4 text-sm text-gray-600 dark:text-gray-400">
+          <div className="mt-4 text-center text-sm text-gray-600 dark:text-gray-400">
             Página {currentPage} de {totalPages} ({items.length} relatos en total)
           </div>
         </nav>
       )}
     </div>
   )
-} 
+}

@@ -40,9 +40,19 @@ interface FixedNavMenuProps {
 }
 
 // Utilidad para enviar eventos a Google Analytics
-function sendGAEvent({ action, category, label, value }: { action: string; category: string; label?: string; value?: string | number }) {
+function sendGAEvent({
+  action,
+  category,
+  label,
+  value,
+}: {
+  action: string
+  category: string
+  label?: string
+  value?: string | number
+}) {
   if (typeof window !== 'undefined' && (window as any).gtag) {
-    (window as any).gtag('event', action, {
+    ;(window as any).gtag('event', action, {
       event_category: category,
       event_label: label,
       value: value,
@@ -70,12 +80,17 @@ export default function FixedNavMenu({
 
   // Derived values (avoid IIFEs in JSX to keep render static flags stable)
   const minutes = readingTime ? Math.ceil(readingTime.minutes) : null
-  const remaining = minutes != null ? Math.max(Math.ceil(minutes * (1 - readingProgress / 100)), 0) : 0
-  const acts = minutes != null ? (readingTimeActivities[minutes] || []) : []
+  const remaining =
+    minutes != null ? Math.max(Math.ceil(minutes * (1 - readingProgress / 100)), 0) : 0
+  const acts = minutes != null ? readingTimeActivities[minutes] || [] : []
   const currentIndex = serie ? serie.relatos.findIndex((r) => r.slug.current === slug) : -1
   const prevStory = serie && currentIndex > 0 ? serie.relatos[currentIndex - 1] : null
-  const nextStory = serie && currentIndex >= 0 && currentIndex < (serie?.relatos.length ?? 0) - 1 ? serie!.relatos[currentIndex + 1] : null
-  const seriesProgressPercent = serie && currentIndex >= 0 ? ((currentIndex + 1) / serie.relatos.length) * 100 : 0
+  const nextStory =
+    serie && currentIndex >= 0 && currentIndex < (serie?.relatos.length ?? 0) - 1
+      ? serie!.relatos[currentIndex + 1]
+      : null
+  const seriesProgressPercent =
+    serie && currentIndex >= 0 ? ((currentIndex + 1) / serie.relatos.length) * 100 : 0
 
   // Reduce title to first two words
   const shortenTitle = (t: string) => {
@@ -93,14 +108,14 @@ export default function FixedNavMenu({
       try {
         const scrollY = window.scrollY || window.pageYOffset || document.documentElement.scrollTop
         const content = document.getElementById('post-content')
-        
+
         if (content) {
           const rect = content.getBoundingClientRect()
           const contentTop = rect.top + scrollY
           const contentHeight = content.offsetHeight || content.scrollHeight || rect.height
           const windowHeight = window.innerHeight || document.documentElement.clientHeight
           const maxScroll = contentTop + contentHeight - windowHeight
-          
+
           if (scrollY <= contentTop) {
             setReadingProgress(0)
           } else if (scrollY >= maxScroll) {
@@ -119,7 +134,7 @@ export default function FixedNavMenu({
           )
           const windowHeight = window.innerHeight || document.documentElement.clientHeight
           const fullHeight = documentHeight - windowHeight
-          
+
           if (fullHeight > 0) {
             const progress = (scrollY / fullHeight) * 100
             setReadingProgress(Math.max(0, Math.min(100, progress)))
@@ -137,28 +152,28 @@ export default function FixedNavMenu({
         }
       }
     }
-    
+
     // Llamar inmediatamente y luego cada vez que se haga scroll
     updateProgress()
-    
+
     // Retraso adicional para Firefox/Vivaldi
     const timeoutId = setTimeout(() => {
       updateProgress()
     }, 100)
-    
+
     window.addEventListener('scroll', updateProgress, { passive: true })
     window.addEventListener('resize', updateProgress, { passive: true })
-    
+
     // Event listener adicional para cuando el DOM cambie
     const observer = new MutationObserver(() => {
       updateProgress()
     })
-    
+
     const postContent = document.getElementById('post-content')
     if (postContent) {
       observer.observe(postContent, { childList: true, subtree: true })
     }
-    
+
     return () => {
       clearTimeout(timeoutId)
       observer.disconnect()
@@ -172,12 +187,9 @@ export default function FixedNavMenu({
   return (
     <>
       {/* Fixed nav container at bottom */}
-      <div className="fixed bottom-0 left-0 w-full bg-white dark:bg-gray-900 shadow-sm z-50">
+      <div className="fixed bottom-0 left-0 z-50 w-full bg-white shadow-sm dark:bg-gray-900">
         {/* Progress bar */}
-        <div
-          id="progress-bar-component"
-          style={{ width: `${readingProgress}%` }}
-        />
+        <div id="progress-bar-component" style={{ width: `${readingProgress}%` }} />
 
         {/* Main row: avatar, title, reading time, toggle button */}
         <div className="flex items-center justify-between p-2">
@@ -194,17 +206,17 @@ export default function FixedNavMenu({
               </Link>
             ) : authorName ? (
               <Link href={`/autor/${author}`}>
-                <AutoAvatar 
-                  name={authorName} 
-                  size={32} 
-                  className="h-8 w-8 rounded-full bg-black text-white font-titles text-sm flex items-center justify-center"
+                <AutoAvatar
+                  name={authorName}
+                  size={32}
+                  className="font-titles flex h-8 w-8 items-center justify-center rounded-full bg-black text-sm text-white"
                 />
               </Link>
             ) : null}
             <span className="font-medium text-gray-900 dark:text-gray-50">
               {shortenTitle(title)}{' '}
-              {readingTime && (
-                acts.length ? (
+              {readingTime &&
+                (acts.length ? (
                   <button
                     onClick={() => {
                       sendGAEvent({
@@ -215,9 +227,9 @@ export default function FixedNavMenu({
                       })
                       setModalOpen(true)
                     }}
-                    className="inline-flex items-center text-gray-900 dark:text-gray-50 hover:underline"
+                    className="inline-flex items-center text-gray-900 hover:underline dark:text-gray-50"
                   >
-                    <span className="flex items-center px-2 py-0.5 rounded text-sm font-bold text-gray-900 dark:text-gray-50">
+                    <span className="flex items-center rounded px-2 py-0.5 text-sm font-bold text-gray-900 dark:text-gray-50">
                       <span>(</span>
                       <span>{remaining} min</span>
                       <Clock className="mx-1 h-4 w-4 text-gray-900 dark:text-gray-50" />
@@ -225,14 +237,13 @@ export default function FixedNavMenu({
                     </span>
                   </button>
                 ) : (
-                  <span className="inline-flex items-center px-2 py-0.5 rounded text-sm font-bold ml-1">
+                  <span className="ml-1 inline-flex items-center rounded px-2 py-0.5 text-sm font-bold">
                     <span>(</span>
                     <span>{remaining} min</span>
                     <Clock className="mx-1 h-4 w-4" />
                     <span>)</span>
                   </span>
-                )
-              )}
+                ))}
             </span>
           </div>
           <div className="flex space-x-2">
@@ -247,7 +258,7 @@ export default function FixedNavMenu({
                 setMenuOpen(!menuOpen)
                 setShareOpen(false)
               }}
-              className="p-1 rounded hover:bg-gray-100 dark:hover:bg-gray-800"
+              className="rounded p-1 hover:bg-gray-100 dark:hover:bg-gray-800"
               aria-label="Toggle menu"
             >
               {menuOpen ? (
@@ -256,7 +267,7 @@ export default function FixedNavMenu({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="h-5 w-5 text-black dark:text-gray-50 hover:text-primary-500"
+                  className="hover:text-primary-500 h-5 w-5 text-black dark:text-gray-50"
                 >
                   <path d="M5 8l5 5 5-5H5z" />
                 </svg>
@@ -266,7 +277,7 @@ export default function FixedNavMenu({
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   fill="currentColor"
-                  className="h-5 w-5 text-black dark:text-gray-50 hover:text-primary-500"
+                  className="hover:text-primary-500 h-5 w-5 text-black dark:text-gray-50"
                 >
                   <path d="M5 12l5-5 5 5H5z" />
                 </svg>
@@ -283,7 +294,7 @@ export default function FixedNavMenu({
                 setShareOpen(!shareOpen)
                 setMenuOpen(false)
               }}
-              className="p-1 rounded bg-gray-200 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
+              className="rounded bg-gray-200 p-1 hover:bg-gray-300 dark:bg-gray-700 dark:hover:bg-gray-600"
               aria-label="Compartir"
             >
               <svg
@@ -309,44 +320,51 @@ export default function FixedNavMenu({
             shareOpen ? 'max-h-40' : 'max-h-0'
           }`}
         >
-          <div className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
-            <EngageBar slug={slug} title={title} contentType={pathPrefix === 'relato' ? 'relato' : 'post'} />
+          <div className="border-t border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+            <EngageBar
+              slug={slug}
+              title={title}
+              contentType={pathPrefix === 'relato' ? 'relato' : 'post'}
+            />
           </div>
         </div>
 
         {/* Enhanced Series Context Panel */}
         {serie && (
-          <div className="bg-gray-50 dark:bg-gray-800 border-t border-gray-200 dark:border-gray-700 p-4">
-            <div className="flex items-center justify-between mb-3">
+          <div className="border-t border-gray-200 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-800">
+            <div className="mb-3 flex items-center justify-between">
               <div className="flex items-center gap-2">
-                <BookOpen className="w-4 h-4 text-gray-600 dark:text-gray-400" />
+                <BookOpen className="h-4 w-4 text-gray-600 dark:text-gray-400" />
                 <h3 className="text-sm font-medium text-gray-800 dark:text-gray-200">
                   {serie.title}
                 </h3>
               </div>
-              <span className="text-xs text-gray-600 dark:text-gray-400 bg-gray-100 dark:bg-gray-700 px-2 py-1 rounded-full border border-gray-200 dark:border-gray-600">
-                {(serie.relatos.findIndex(r => r.slug.current === slug) + 1)} / {serie.relatos.length}
+              <span className="rounded-full border border-gray-200 bg-gray-100 px-2 py-1 text-xs text-gray-600 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-400">
+                {serie.relatos.findIndex((r) => r.slug.current === slug) + 1} /{' '}
+                {serie.relatos.length}
               </span>
             </div>
-            
+
             {/* Mini Progress Bar */}
-            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mb-3">
-             <div 
+            <div className="mb-3 h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+              <div
                 className="h-2 rounded-full transition-all duration-300"
-                style={{ 
+                style={{
                   width: `${seriesProgressPercent}%`,
-                  backgroundColor: 'var(--color-accent)'
+                  backgroundColor: 'var(--color-accent)',
                 }}
               ></div>
             </div>
-            
+
             {/* Quick Navigation */}
             <div className="flex justify-between gap-2">
               {prevStory ? (
                 <Link href={`/relato/${prevStory.slug.current}`}>
-                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center gap-1">
-                    <ArrowLeft className="w-3 h-3" />
-                    {prevStory.title.length > 15 ? prevStory.title.substring(0, 15) + '...' : prevStory.title}
+                  <button className="flex flex-1 items-center gap-1 rounded-lg border border-gray-200 bg-gray-100 px-3 py-2 text-xs text-gray-700 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                    <ArrowLeft className="h-3 w-3" />
+                    {prevStory.title.length > 15
+                      ? prevStory.title.substring(0, 15) + '...'
+                      : prevStory.title}
                   </button>
                 </Link>
               ) : (
@@ -354,9 +372,11 @@ export default function FixedNavMenu({
               )}
               {nextStory ? (
                 <Link href={`/relato/${nextStory.slug.current}`}>
-                  <button className="flex-1 text-xs px-3 py-2 bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors border border-gray-200 dark:border-gray-600 flex items-center justify-end gap-1">
-                    {nextStory.title.length > 15 ? nextStory.title.substring(0, 15) + '...' : nextStory.title}
-                    <ArrowRight className="w-3 h-3" />
+                  <button className="flex flex-1 items-center justify-end gap-1 rounded-lg border border-gray-200 bg-gray-100 px-3 py-2 text-xs text-gray-700 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600">
+                    {nextStory.title.length > 15
+                      ? nextStory.title.substring(0, 15) + '...'
+                      : nextStory.title}
+                    <ArrowRight className="h-3 w-3" />
                   </button>
                 </Link>
               ) : (
@@ -373,12 +393,16 @@ export default function FixedNavMenu({
             (menuOpen ? 'max-h-60' : 'max-h-0')
           }
         >
-          <div className="bg-white dark:bg-gray-900 p-4 border-t border-gray-200 dark:border-gray-700">
-            <h3 className="text-lg font-medium mb-2 text-gray-900 dark:text-gray-50">
+          <div className="border-t border-gray-200 bg-white p-4 dark:border-gray-700 dark:bg-gray-900">
+            <h3 className="mb-2 text-lg font-medium text-gray-900 dark:text-gray-50">
               {seriesName ? (
-                <>Más relatos de la serie <span className="text-gray-900 dark:text-gray-50">{seriesName}</span></>
+                <>
+                  Más relatos de la serie{' '}
+                  <span className="text-gray-900 dark:text-gray-50">{seriesName}</span>
+                </>
               ) : (
-                <>Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
+                <>
+                  Más {pathPrefix === 'relato' ? 'relatos' : 'artículos'} de{' '}
                   <Link href={`/autor/${author}`} className="hover:underline">
                     {authorName}
                   </Link>
@@ -410,18 +434,18 @@ export default function FixedNavMenu({
             className="absolute inset-0 bg-black opacity-50"
             onClick={() => setModalOpen(false)}
           />
-          <div className="relative bg-white dark:bg-gray-800 rounded-lg p-6 max-w-md w-full">
-            <h2 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-50">
+          <div className="relative w-full max-w-md rounded-lg bg-white p-6 dark:bg-gray-800">
+            <h2 className="mb-4 text-lg font-semibold text-gray-900 dark:text-gray-50">
               Cosas que se hacen en ~{minutes} {minutes === 1 ? 'minuto' : 'minutos'}
             </h2>
-            <ul className="list-disc list-inside space-y-2 text-sm mb-4 text-gray-700 dark:text-gray-300">
+            <ul className="mb-4 list-inside list-disc space-y-2 text-sm text-gray-700 dark:text-gray-300">
               {acts.map((act) => (
                 <li key={act}>{act}</li>
               ))}
             </ul>
             <button
               onClick={() => setModalOpen(false)}
-              className="w-full px-4 py-2 bg-gray-900 text-primary-500 dark:bg-primary-500 dark:text-gray-900 rounded hover:bg-gray-800 dark:hover:bg-primary-600"
+              className="text-primary-500 dark:bg-primary-500 dark:hover:bg-primary-600 w-full rounded bg-gray-900 px-4 py-2 hover:bg-gray-800 dark:text-gray-900"
             >
               Cerrar
             </button>

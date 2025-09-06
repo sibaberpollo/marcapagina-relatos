@@ -12,23 +12,20 @@ interface MemeCardProps {
 export default function MemeCard({ item, onClick }: MemeCardProps) {
   const icon =
     item.type === 'meme' ? (
-      <ImageIcon className="w-4 h-4" />
+      <ImageIcon className="h-4 w-4" />
     ) : item.type === 'descarga' || item.type === 'download' ? (
-      <Download className="w-4 h-4" />
+      <Download className="h-4 w-4" />
     ) : (
-      <ShoppingCart className="w-4 h-4" />
+      <ShoppingCart className="h-4 w-4" />
     )
 
   return (
-    <button
-      onClick={onClick}
-      className="group block w-full text-left break-inside-avoid" 
-    >
+    <button onClick={onClick} className="group block w-full break-inside-avoid text-left">
       <div className="overflow-hidden rounded-lg">
         <Image
           src={item.image}
           alt={item.title || ''}
-          className="w-full h-auto"
+          className="h-auto w-full"
           width={600}
           height={400}
         />
@@ -38,9 +35,7 @@ export default function MemeCard({ item, onClick }: MemeCardProps) {
           {icon}
           {item.title}
         </h3>
-        <p className="text-sm text-muted-foreground line-clamp-2">
-          {item.description}
-        </p>
+        <p className="text-muted-foreground line-clamp-2 text-sm">{item.description}</p>
       </div>
     </button>
   )

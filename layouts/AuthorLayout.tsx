@@ -11,7 +11,20 @@ interface Props {
 }
 
 export default function AuthorLayout({ children, content }: Props) {
-  const { name, avatar, occupation, company, email, twitter, bluesky, linkedin, github, website, instagram, sitios } = content
+  const {
+    name,
+    avatar,
+    occupation,
+    company,
+    email,
+    twitter,
+    bluesky,
+    linkedin,
+    github,
+    website,
+    instagram,
+    sitios,
+  } = content
 
   // Determinar si el autor es de Marcapágina
   const isMarcapaginaAuthor = !sitios || sitios.length === 0 || sitios.includes('marcapagina')
@@ -38,14 +51,12 @@ export default function AuthorLayout({ children, content }: Props) {
               <AutoAvatar
                 name={name}
                 size={192}
-                className="h-48 w-48 rounded-full bg-black text-white font-titles text-5xl flex items-center justify-center grayscale"
+                className="font-titles flex h-48 w-48 items-center justify-center rounded-full bg-black text-5xl text-white grayscale"
               />
             )}
             <h3 className="pt-4 pb-2 text-2xl leading-8 font-bold tracking-tight">{name}</h3>
             {!isMarcapaginaAuthor && sitios && sitios.length > 0 && (
-              <div className="text-gray-500 dark:text-gray-400">
-                {sitios[0]}
-              </div>
+              <div className="text-gray-500 dark:text-gray-400">{sitios[0]}</div>
             )}
             <div className="text-gray-500 dark:text-gray-400">{occupation}</div>
             <div className="text-gray-500 dark:text-gray-400">{company}</div>

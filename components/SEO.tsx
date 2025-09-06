@@ -36,4 +36,4 @@ export function PageSEO({ title, description, ogType, ogImage, twImage, children
       {children}
     </>
   )
-} 
+}

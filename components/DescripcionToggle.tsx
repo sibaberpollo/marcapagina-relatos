@@ -1,21 +1,21 @@
-"use client";
-import { useState } from "react";
+'use client'
+import { useState } from 'react'
 
 export default function DescripcionToggle({ text }: { text: string }) {
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false)
   return (
     <div>
       <p
-        className={`text-lg leading-7 text-gray-700 dark:text-gray-300 transition-all ${
-          expanded ? "" : "line-clamp-2"
+        className={`text-lg leading-7 text-gray-700 transition-all dark:text-gray-300 ${
+          expanded ? '' : 'line-clamp-2'
         }`}
         dangerouslySetInnerHTML={{ __html: text }}
       />
       <button
-        className="mt-2 flex items-center gap-2 px-3 py-1.5 rounded bg-gray-200 dark:bg-gray-700 text-black dark:text-gray-100 font-medium shadow-sm hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors focus:outline-none"
+        className="mt-2 flex items-center gap-2 rounded bg-gray-200 px-3 py-1.5 font-medium text-black shadow-sm transition-colors hover:bg-gray-300 focus:outline-none dark:bg-gray-700 dark:text-gray-100 dark:hover:bg-gray-600"
         style={{
-          backgroundColor: "var(--color-gray-200)",
-          color: "var(--color-gray-900)",
+          backgroundColor: 'var(--color-gray-200)',
+          color: 'var(--color-gray-900)',
         }}
         onClick={() => setExpanded((v) => !v)}
         type="button"
@@ -59,5 +59,5 @@ export default function DescripcionToggle({ text }: { text: string }) {
         )}
       </button>
     </div>
-  );
+  )
 }

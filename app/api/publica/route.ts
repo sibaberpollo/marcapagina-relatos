@@ -14,17 +14,17 @@ const transporter = nodemailer.createTransport({
 
 export async function POST(req: NextRequest) {
   try {
-    console.log('Recibida solicitud en /api/publica');
-    
+    console.log('Recibida solicitud en /api/publica')
+
     const data = await req.formData()
     const email = data.get('email') as string
     const description = data.get('description') as string
     const token = data.get('response') as string
-    
-    console.log('Datos extraídos del formulario:', { email });
+
+    console.log('Datos extraídos del formulario:', { email })
 
     if (!token) {
-      console.error('Error: Token Turnstile no proporcionado');
+      console.error('Error: Token Turnstile no proporcionado')
       return NextResponse.json({ error: 'Token Turnstile no proporcionado' }, { status: 400 })
     }
 
@@ -36,7 +36,7 @@ export async function POST(req: NextRequest) {
     })
     const vj = await verify.json()
     if (!vj.success) {
-      console.error('Error: Turnstile inválido', vj['error-codes']);
+      console.error('Error: Turnstile inválido', vj['error-codes'])
       return NextResponse.json(
         { error: 'Turnstile inválido', details: vj['error-codes'] },
         { status: 400 }
@@ -48,21 +48,21 @@ export async function POST(req: NextRequest) {
     for (const key of data.keys()) {
       if (key === 'files') {
         const files = data.getAll('files') as File[]
-        console.log(`Procesando ${files.length} archivos adjuntos`);
+        console.log(`Procesando ${files.length} archivos adjuntos`)
         for (const f of files) {
           const buf = Buffer.from(await f.arrayBuffer())
           attachments.push({ filename: f.name, content: buf })
-          console.log(`Adjunto preparado: ${f.name}, tamaño: ${buf.length} bytes`);
+          console.log(`Adjunto preparado: ${f.name}, tamaño: ${buf.length} bytes`)
         }
       }
     }
 
-    console.log('Configuración de correo:', { 
+    console.log('Configuración de correo:', {
       from: `MarcaPagina <${GMAIL_USER}>`,
       to: email,
       GMAIL_USER_LENGTH: GMAIL_USER?.length || 0,
-      GMAIL_APP_PASSWORD_LENGTH: GMAIL_APP_PASSWORD?.length || 0 
-    });
+      GMAIL_APP_PASSWORD_LENGTH: GMAIL_APP_PASSWORD?.length || 0,
+    })
 
     // 1) Envío de confirmación al remitente (no bloquea errores)
     transporter
@@ -90,12 +90,12 @@ export async function POST(req: NextRequest) {
                </ul>
                <p>— El equipo de MarcaPagina y Transtextos</p>`,
       })
-      .then(info => console.log('Confirmación enviada a remitente:', info.messageId))
-      .catch(err => console.error('Error enviando confirmación al remitente:', err))
+      .then((info) => console.log('Confirmación enviada a remitente:', info.messageId))
+      .catch((err) => console.error('Error enviando confirmación al remitente:', err))
 
     try {
       // 2) Envío interno con copia a equipos de MarcaPagina y Transtextos
-      console.log('Enviando correo interno a:', GMAIL_USER);
+      console.log('Enviando correo interno a:', GMAIL_USER)
       const infoInternal = await transporter.sendMail({
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: GMAIL_USER,
@@ -104,10 +104,10 @@ export async function POST(req: NextRequest) {
         subject: `Nuevo relato para Transtextos de ${email}`,
         text: `De: ${email}\n\n${description}`,
         attachments,
-      });
-      console.log('Correo interno enviado correctamente:', infoInternal.messageId);
+      })
+      console.log('Correo interno enviado correctamente:', infoInternal.messageId)
     } catch (error) {
-      console.error('Error al enviar correo interno:', error);
+      console.error('Error al enviar correo interno:', error)
     }
 
     return NextResponse.json({ message: 'Relato enviado correctamente' })

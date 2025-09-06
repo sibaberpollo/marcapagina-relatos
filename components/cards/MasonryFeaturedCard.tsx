@@ -18,8 +18,8 @@ interface MasonryFeaturedCardProps {
 
 export default function MasonryFeaturedCard(props: MasonryFeaturedCardProps) {
   return (
-    <div className="break-inside-avoid mb-4">
+    <div className="mb-4 break-inside-avoid">
       <FeaturedCard {...props} />
     </div>
   )
-} 
+}

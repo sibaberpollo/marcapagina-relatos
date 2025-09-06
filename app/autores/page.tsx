@@ -16,6 +16,6 @@ export default async function AutoresPage({ searchParams }: PageProps) {
   const params = await searchParams
   const filter = (params.filter as string) || 'todos'
   const allAutores = await getAllAutores()
-  
+
   return <AutoresClient initialAutores={allAutores} filter={filter} />
-} 
+}

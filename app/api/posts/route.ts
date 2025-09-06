@@ -21,9 +21,9 @@ export async function GET(request: NextRequest) {
   try {
     const searchParams = request.nextUrl.searchParams
     const lang = searchParams.get('lang') || 'es'
-    
+
     const postsDirectory = path.join(process.cwd(), 'data', 'posts', lang)
-    
+
     // Verificar si el directorio existe
     if (!fs.existsSync(postsDirectory)) {
       // Si no existe el directorio del idioma, usar español como fallback
@@ -31,8 +31,8 @@ export async function GET(request: NextRequest) {
       if (fs.existsSync(fallbackDirectory)) {
         const fallbackFiles = fs.readdirSync(fallbackDirectory)
         const posts = fallbackFiles
-          .filter(file => file.endsWith('.json'))
-          .map(file => {
+          .filter((file) => file.endsWith('.json'))
+          .map((file) => {
             const filePath = path.join(fallbackDirectory, file)
             const fileContents = fs.readFileSync(filePath, 'utf8')
             const post: Post = JSON.parse(fileContents)
@@ -45,21 +45,21 @@ export async function GET(request: NextRequest) {
               author: post.author,
               image: post.image,
               readingTime: post.readingTime,
-              bgColor: post.bgColor
+              bgColor: post.bgColor,
             }
           })
           .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-        
+
         return NextResponse.json(posts)
       }
-      
+
       return NextResponse.json([])
     }
-    
+
     const files = fs.readdirSync(postsDirectory)
     const posts = files
-      .filter(file => file.endsWith('.json'))
-      .map(file => {
+      .filter((file) => file.endsWith('.json'))
+      .map((file) => {
         const filePath = path.join(postsDirectory, file)
         const fileContents = fs.readFileSync(filePath, 'utf8')
         const post: Post = JSON.parse(fileContents)
@@ -72,17 +72,14 @@ export async function GET(request: NextRequest) {
           author: post.author,
           image: post.image,
           readingTime: post.readingTime,
-          bgColor: post.bgColor
+          bgColor: post.bgColor,
         }
       })
       .sort((a, b) => new Date(b.publishedAt).getTime() - new Date(a.publishedAt).getTime())
-    
+
     return NextResponse.json(posts)
   } catch (error) {
     console.error('Error reading posts:', error)
-    return NextResponse.json(
-      { error: 'Failed to load posts' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'Failed to load posts' }, { status: 500 })
   }
-} 
+}

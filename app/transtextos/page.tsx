@@ -29,10 +29,9 @@ export async function generateMetadata(): Promise<Metadata> {
     title,
     description,
     openGraph: { images: [ogImage] },
-    twitter:   { images: [ogImage] },
+    twitter: { images: [ogImage] },
   })
 }
-
 
 // Interfaz para los datos del relato
 interface RelatoData {
@@ -48,25 +47,35 @@ interface RelatoData {
   publishedAt: string
 }
 
-export default async function TranstextosPage({ searchParams }: { searchParams: Promise<{ [key: string]: string | string[] | undefined }> }) {
+export default async function TranstextosPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}) {
   // Extraemos 'page' manejando string | string[] | undefined
-  const params = await searchParams;
-  const rawPage = params.page;
-  const pageString = Array.isArray(rawPage) ? rawPage[0] : typeof rawPage === 'string' ? rawPage : undefined;
-  const currentPage = Number(pageString) || 1;
+  const params = await searchParams
+  const rawPage = params.page
+  const pageString = Array.isArray(rawPage)
+    ? rawPage[0]
+    : typeof rawPage === 'string'
+      ? rawPage
+      : undefined
+  const currentPage = Number(pageString) || 1
 
-  const siteInfo = await getSiteBySlug('transtextos');
-  const allRelatos = await getAllRelatosForChronologicalBySite('transtextos');
+  const siteInfo = await getSiteBySlug('transtextos')
+  const allRelatos = await getAllRelatosForChronologicalBySite('transtextos')
   return (
     <>
       <SlowConnectionBanner />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 flex items-center gap-2">
+          <h1 className="flex items-center gap-2 text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-50">
             {siteInfo?.title || 'Transtextos'}
-            <Rss className="w-7 h-7" style={{ color: '#f26522' }} />
+            <Rss className="h-7 w-7" style={{ color: '#f26522' }} />
           </h1>
-          <DescripcionToggle text={siteInfo?.description || 'Relatos y narrativas de Transtextos'} />
+          <DescripcionToggle
+            text={siteInfo?.description || 'Relatos y narrativas de Transtextos'}
+          />
         </div>
         <div className="container">
           <ChronologicalView
@@ -78,5 +87,5 @@ export default async function TranstextosPage({ searchParams }: { searchParams: 
         </div>
       </SectionContainer>
     </>
-  );
+  )
 }

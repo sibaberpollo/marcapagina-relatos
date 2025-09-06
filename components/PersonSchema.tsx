@@ -6,7 +6,13 @@ type PersonSchemaProps = {
   description?: string
 }
 
-export default function PersonSchema({ name, url, image, sameAs = [], description }: PersonSchemaProps) {
+export default function PersonSchema({
+  name,
+  url,
+  image,
+  sameAs = [],
+  description,
+}: PersonSchemaProps) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'Person',
@@ -18,8 +24,9 @@ export default function PersonSchema({ name, url, image, sameAs = [], descriptio
   }
 
   return (
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+    <script
+      type="application/ld+json"
+      dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+    />
   )
 }
-
-

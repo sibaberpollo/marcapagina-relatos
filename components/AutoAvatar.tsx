@@ -30,4 +30,4 @@ export default function AutoAvatar({ name, size = 40, className = '' }: AutoAvat
       className={className}
     />
   )
-} 
+}

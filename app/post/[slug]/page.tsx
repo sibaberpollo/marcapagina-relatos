@@ -31,7 +31,7 @@ async function getPost(slug: string, lang: string = 'es'): Promise<Post | null> 
   try {
     const postsDirectory = path.join(process.cwd(), 'data', 'posts', lang)
     const filePath = path.join(postsDirectory, `${slug}.json`)
-    
+
     // Verificar si el archivo existe
     if (!fs.existsSync(filePath)) {
       // Si no existe en el idioma solicitado, intentar con español como fallback
@@ -44,7 +44,7 @@ async function getPost(slug: string, lang: string = 'es'): Promise<Post | null> 
       }
       return null
     }
-    
+
     const fileContents = fs.readFileSync(filePath, 'utf8')
     return JSON.parse(fileContents)
   } catch (error) {
@@ -59,9 +59,9 @@ export async function generateMetadata({ params, searchParams }: PageProps): Pro
   const headersList = await headers()
   const langFromHeader = headersList.get('x-locale')
   const lang = langFromHeader || resolvedSearchParams?.lang || 'es'
-  
+
   const post = await getPost(slug, lang)
-  
+
   if (!post) {
     return {
       title: 'Post no encontrado',
@@ -87,9 +87,9 @@ export default async function PostPage({ params, searchParams }: PageProps) {
   const headersList = await headers()
   const langFromHeader = headersList.get('x-locale')
   const lang = langFromHeader || resolvedSearchParams?.lang || 'es'
-  
+
   const post = await getPost(slug, lang)
-  
+
   if (!post) {
     notFound()
   }
@@ -104,10 +104,10 @@ export default async function PostPage({ params, searchParams }: PageProps) {
         bgColor: post.bgColor || '#E5F3FF',
         tags: post.tags,
         publishedAt: post.publishedAt,
-        slug: post.slug
+        slug: post.slug,
       }}
     >
       <div dangerouslySetInnerHTML={{ __html: post.content }} />
     </JsonPostLayout>
   )
-} 
+}

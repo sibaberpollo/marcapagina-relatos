@@ -19,77 +19,83 @@ export default function PlaylistCard({
   currentTrack,
   previousTracks,
   language = 'es',
-  href
+  href,
 }: PlaylistCardProps) {
   const currentlyPlayingText = language === 'en' ? 'Currently Playing' : 'Sonando Ahora'
   const playlistText = language === 'en' ? 'Playlist' : 'Playlist'
 
   const content = (
-    <div className="bg-[#212121] rounded-lg shadow-lg p-6 min-h-[420px] transition-transform duration-300 hover:scale-[1.02]">
+    <div className="min-h-[420px] rounded-lg bg-[#212121] p-6 shadow-lg transition-transform duration-300 hover:scale-[1.02]">
       {/* Badge de tipo en esquina superior derecha */}
       <div className="absolute top-4 right-4 z-10">
-        <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
-          <Music className="w-3 h-3" />
+        <span className="inline-flex items-center gap-1 rounded-full bg-black/80 px-3 py-1 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">
+          <Music className="h-3 w-3" />
           {playlistText}
         </span>
       </div>
 
       {/* Header con ícono usando colores del proyecto */}
-      <div className="flex items-center mb-6">
-        <div className="w-12 h-12 mr-3 rounded-full bg-gradient-to-br from-primary-400 to-primary-600 flex items-center justify-center">
-          <Music className="w-6 h-6 text-black" />
+      <div className="mb-6 flex items-center">
+        <div className="from-primary-400 to-primary-600 mr-3 flex h-12 w-12 items-center justify-center rounded-full bg-gradient-to-br">
+          <Music className="h-6 w-6 text-black" />
         </div>
-        <h3 className="text-lg font-bold text-white">
-          {currentlyPlayingText}
-        </h3>
+        <h3 className="text-lg font-bold text-white">{currentlyPlayingText}</h3>
       </div>
 
       {/* Tema actual destacado */}
-      <div className="mb-6 p-4 bg-[#333333] rounded-lg border-l-4 border-primary-500">
+      <div className="border-primary-500 mb-6 rounded-lg border-l-4 bg-[#333333] p-4">
         {/* Album cover más grande */}
-        <div className="w-24 h-24 mx-auto mb-4 bg-[#333333] rounded-lg flex items-center justify-center">
+        <div className="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-lg bg-[#333333]">
           {currentTrack.albumCover ? (
-            <img 
-              src={currentTrack.albumCover} 
+            <img
+              src={currentTrack.albumCover}
               alt={`${currentTrack.name} album cover`}
-              className="w-full h-full object-cover rounded-lg"
+              className="h-full w-full rounded-lg object-cover"
             />
           ) : (
-            <Music className="w-8 h-8 text-gray-400" />
+            <Music className="h-8 w-8 text-gray-400" />
           )}
         </div>
-        
+
         {/* Información del tema con animación */}
         <div className="text-center">
-          <p className="font-bold text-white mb-1 text-lg">
-            {currentTrack.name}
-          </p>
-          <p className="text-gray-300 text-sm">
-            {currentTrack.artist}
-          </p>
-          
+          <p className="mb-1 text-lg font-bold text-white">{currentTrack.name}</p>
+          <p className="text-sm text-gray-300">{currentTrack.artist}</p>
+
           {/* Animación de equalizer con amarillo del proyecto */}
-          <div className="flex justify-center mt-3 gap-1">
-            <div className="w-1 bg-primary-500 rounded-full animate-pulse" style={{
-              height: '8px',
-              animationDelay: '0.2s',
-              animationDuration: '1s'
-            }}></div>
-            <div className="w-1 bg-primary-500 rounded-full animate-pulse" style={{
-              height: '16px',
-              animationDelay: '0.4s',
-              animationDuration: '1.2s'
-            }}></div>
-            <div className="w-1 bg-primary-500 rounded-full animate-pulse" style={{
-              height: '12px',
-              animationDelay: '0.6s',
-              animationDuration: '0.8s'
-            }}></div>
-            <div className="w-1 bg-primary-500 rounded-full animate-pulse" style={{
-              height: '20px',
-              animationDelay: '0.8s',
-              animationDuration: '1.4s'
-            }}></div>
+          <div className="mt-3 flex justify-center gap-1">
+            <div
+              className="bg-primary-500 w-1 animate-pulse rounded-full"
+              style={{
+                height: '8px',
+                animationDelay: '0.2s',
+                animationDuration: '1s',
+              }}
+            ></div>
+            <div
+              className="bg-primary-500 w-1 animate-pulse rounded-full"
+              style={{
+                height: '16px',
+                animationDelay: '0.4s',
+                animationDuration: '1.2s',
+              }}
+            ></div>
+            <div
+              className="bg-primary-500 w-1 animate-pulse rounded-full"
+              style={{
+                height: '12px',
+                animationDelay: '0.6s',
+                animationDuration: '0.8s',
+              }}
+            ></div>
+            <div
+              className="bg-primary-500 w-1 animate-pulse rounded-full"
+              style={{
+                height: '20px',
+                animationDelay: '0.8s',
+                animationDuration: '1.4s',
+              }}
+            ></div>
           </div>
         </div>
       </div>
@@ -98,34 +104,33 @@ export default function PlaylistCard({
       {previousTracks.length > 0 && (
         <div className="space-y-3">
           {previousTracks.slice(0, 2).map((track, index) => (
-            <div key={index} className="flex items-center p-3 rounded-lg hover:bg-[#333333] transition-colors cursor-pointer">
+            <div
+              key={index}
+              className="flex cursor-pointer items-center rounded-lg p-3 transition-colors hover:bg-[#333333]"
+            >
               {/* Album cover pequeño */}
-              <div className="w-10 h-10 mr-3 bg-[#333333] rounded flex items-center justify-center flex-shrink-0">
+              <div className="mr-3 flex h-10 w-10 flex-shrink-0 items-center justify-center rounded bg-[#333333]">
                 {track.albumCover ? (
-                  <img 
-                    src={track.albumCover} 
+                  <img
+                    src={track.albumCover}
                     alt={`${track.name} album cover`}
-                    className="w-full h-full object-cover rounded"
+                    className="h-full w-full rounded object-cover"
                   />
                 ) : (
-                  <Music className="w-4 h-4 text-gray-400" />
+                  <Music className="h-4 w-4 text-gray-400" />
                 )}
               </div>
-              
+
               {/* Información del tema */}
-              <div className="flex-1 min-w-0">
-                <p className="font-medium text-white text-sm truncate">
-                  {track.name}
-                </p>
-                <p className="text-gray-300 text-xs truncate">
-                  {track.artist}
-                </p>
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-medium text-white">{track.name}</p>
+                <p className="truncate text-xs text-gray-300">{track.artist}</p>
               </div>
-              
+
               {/* Botón de play */}
               <div className="ml-2 flex-shrink-0">
-                <div className="w-8 h-8 flex items-center justify-center text-gray-400 hover:text-gray-200">
-                  <Play className="w-4 h-4" />
+                <div className="flex h-8 w-8 items-center justify-center text-gray-400 hover:text-gray-200">
+                  <Play className="h-4 w-4" />
                 </div>
               </div>
             </div>
@@ -138,7 +143,7 @@ export default function PlaylistCard({
   // Si tiene href, envolver en link
   if (href) {
     return (
-      <div className="group block w-full h-full break-inside-avoid mb-4 relative">
+      <div className="group relative mb-4 block h-full w-full break-inside-avoid">
         <a href={href} className="block h-full">
           {content}
         </a>
@@ -146,9 +151,5 @@ export default function PlaylistCard({
     )
   }
 
-  return (
-    <div className="group block w-full h-full break-inside-avoid mb-4 relative">
-      {content}
-    </div>
-  )
-} 
+  return <div className="group relative mb-4 block h-full w-full break-inside-avoid">{content}</div>
+}

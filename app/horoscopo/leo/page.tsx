@@ -4,7 +4,8 @@ import HoroscopoClient from '../HoroscopoClient'
 export async function generateMetadata() {
   return genPageMetadata({
     title: 'Horóscopo Leo - H.P. Lovecraft: Agosto 2025',
-    description: 'Horóscopo literario de Leo con H.P. Lovecraft. Archivo del mes de agosto 2025 con predicciones astrológicas y contenido narrativo.',
+    description:
+      'Horóscopo literario de Leo con H.P. Lovecraft. Archivo del mes de agosto 2025 con predicciones astrológicas y contenido narrativo.',
     openGraph: {
       images: [
         {
@@ -17,7 +18,9 @@ export async function generateMetadata() {
     },
     twitter: {
       card: 'summary_large_image',
-      images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1753187282/shared_leo_agnjl6.jpg'],
+      images: [
+        'https://res.cloudinary.com/dx98vnos1/image/upload/v1753187282/shared_leo_agnjl6.jpg',
+      ],
     },
   })
 }
@@ -25,5 +28,3 @@ export async function generateMetadata() {
 export default function HoroscopoLeoPage() {
   return <HoroscopoClient signo="leo" />
 }
-
-

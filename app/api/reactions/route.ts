@@ -104,5 +104,3 @@ export async function GET(req: NextRequest) {
     return new Response(JSON.stringify({ error: 'Server error' }), { status: 500 })
   }
 }
-
-

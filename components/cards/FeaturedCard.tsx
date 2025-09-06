@@ -34,14 +34,14 @@ export default function FeaturedCard({
   tags,
   publishedAt,
   language = 'es',
-  transtextos = false
+  transtextos = false,
 }: FeaturedCardProps) {
   const relativeTime = getRelativeTime(publishedAt)
   const formattedTitle = toVersal(title)
-  
+
   const isRelato = href.includes('/relato/')
   const isMicrocuento = href.includes('/microcuento/')
-  
+
   const getBadgeText = () => {
     if (isMicrocuento) {
       return language === 'en' ? 'Flash fiction' : 'Microcuento'
@@ -51,48 +51,45 @@ export default function FeaturedCard({
 
   return (
     <div className="group relative h-full [&_a]:!text-gray-900 dark:[&_a]:!text-gray-900">
-      <Link href={href} aria-label={`Link to ${title}`} className="block w-full h-full">
-        <div 
-          className="relative flex flex-col rounded-lg overflow-hidden w-full h-full cursor-pointer hover:scale-105 transition-transform duration-200" 
+      <Link href={href} aria-label={`Link to ${title}`} className="block h-full w-full">
+        <div
+          className="relative flex h-full w-full cursor-pointer flex-col overflow-hidden rounded-lg transition-transform duration-200 hover:scale-105"
           style={{ backgroundColor: bgColor }}
         >
-          <div className="flex-1 flex items-center justify-center relative min-h-[320px]">
+          <div className="relative flex min-h-[320px] flex-1 items-center justify-center">
             {transtextos && (
               <div className="absolute top-4 left-4 z-10">
                 <img
                   src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
                   alt="Feed de narrativa"
-                  className="w-[25px] h-[25px] opacity-100"
+                  className="h-[25px] w-[25px] opacity-100"
                   width={25}
                   height={25}
                 />
               </div>
             )}
             <div className="absolute top-4 right-4 z-10">
-              <span className="inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-semibold bg-black/80 text-white shadow-lg backdrop-blur-sm">
-                <BookOpen className="w-3 h-3" />
+              <span className="inline-flex items-center gap-1 rounded-full bg-black/80 px-3 py-1 text-xs font-semibold text-white shadow-lg backdrop-blur-sm">
+                <BookOpen className="h-3 w-3" />
                 {getBadgeText()}
               </span>
             </div>
             <Image
               src={imgSrc}
               alt={title}
-              className="w-[220px] h-[220px] md:w-[280px] md:h-[280px] object-contain"
+              className="h-[220px] w-[220px] object-contain md:h-[280px] md:w-[280px]"
               width={280}
               height={280}
             />
           </div>
-          <div className="flex flex-col mt-auto">
-            <div className="px-6 mb-2">
-              <h2 className="text-xl font-bold leading-8 tracking-tight hover:underline">
+          <div className="mt-auto flex flex-col">
+            <div className="mb-2 px-6">
+              <h2 className="text-xl leading-8 font-bold tracking-tight hover:underline">
                 {formattedTitle}
               </h2>
-              <p className="text-base text-black/90 line-clamp-2 text-left">{description}</p>
+              <p className="line-clamp-2 text-left text-base text-black/90">{description}</p>
             </div>
-            <div 
-              className="w-full px-6 py-3 relative"
-              style={{ backgroundColor: bgColor }}
-            >
+            <div className="relative w-full px-6 py-3" style={{ backgroundColor: bgColor }}>
               <div className="absolute inset-0 bg-black/20"></div>
               <div className="relative flex items-center gap-3">
                 {authorImgSrc ? (
@@ -101,14 +98,23 @@ export default function FeaturedCard({
                     alt={authorName}
                     width={32}
                     height={32}
-                    className="rounded-full contrast-150 grayscale brightness-110"
+                    className="rounded-full brightness-110 contrast-150 grayscale"
                   />
                 ) : (
-                  <Avatar name={authorName} size="32" round textSizeRatio={2} fgColor="#ffffff" color="#000000" />
+                  <Avatar
+                    name={authorName}
+                    size="32"
+                    round
+                    textSizeRatio={2}
+                    fgColor="#ffffff"
+                    color="#000000"
+                  />
                 )}
                 <div>
-                  <span className="text-white font-medium text-left">{authorName}</span>
-                  <span className="text-white/80 text-xs mt-0.5 text-left block">{relativeTime}</span>
+                  <span className="text-left font-medium text-white">{authorName}</span>
+                  <span className="mt-0.5 block text-left text-xs text-white/80">
+                    {relativeTime}
+                  </span>
                 </div>
               </div>
             </div>
@@ -117,4 +123,4 @@ export default function FeaturedCard({
       </Link>
     </div>
   )
-} 
+}

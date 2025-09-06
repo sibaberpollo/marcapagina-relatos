@@ -17,7 +17,7 @@ const Sun = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
-    className="text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)] h-6 w-6"
+    className="h-6 w-6 text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)]"
   >
     <path
       fillRule="evenodd"
@@ -31,7 +31,7 @@ const Moon = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
-    className="text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)] h-6 w-6"
+    className="h-6 w-6 text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)]"
   >
     <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
   </svg>
@@ -45,7 +45,7 @@ const Monitor = () => (
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
-    className="text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)] h-6 w-6"
+    className="h-6 w-6 text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)]"
   >
     <rect x="3" y="3" width="14" height="10" rx="2" ry="2"></rect>
     <line x1="7" y1="17" x2="13" y2="17"></line>
@@ -53,8 +53,6 @@ const Monitor = () => (
   </svg>
 )
 const Blank = () => <svg className="h-6 w-6" />
-
-
 
 const ResetIcon = () => (
   <svg
@@ -68,7 +66,6 @@ const ResetIcon = () => (
       strokeLinejoin="round"
       d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0l3.181 3.183a8.25 8.25 0 0013.803-3.7M4.031 9.865a8.25 8.25 0 0113.803-3.7l3.181 3.182m0-4.991v4.99"
     />
-    
   </svg>
 )
 
@@ -77,7 +74,7 @@ const Settings = () => (
     xmlns="http://www.w3.org/2000/svg"
     viewBox="0 0 20 20"
     fill="currentColor"
-    className="text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)] h-6 w-6"
+    className="h-6 w-6 text-[var(--color-text-light)] group-hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:group-hover:text-[var(--color-accent)]"
   >
     <path
       fillRule="evenodd"
@@ -114,8 +111,11 @@ const ThemeSwitch = () => {
   return (
     <div className="flex items-center">
       <Menu as="div" className="relative inline-block text-left">
-        <div className="hover:text-[var(--color-primary-500)] dark:hover:text-[var(--color-primary-400)] flex items-center justify-center">
-          <MenuButton aria-label="Configuración" className="text-[var(--color-text-light)] hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-accent)]">
+        <div className="flex items-center justify-center hover:text-[var(--color-primary-500)] dark:hover:text-[var(--color-primary-400)]">
+          <MenuButton
+            aria-label="Configuración"
+            className="text-[var(--color-text-light)] hover:text-[var(--color-text-dark)] dark:text-[var(--color-text-dark)] dark:hover:text-[var(--color-accent)]"
+          >
             {mounted ? <Settings /> : <Blank />}
           </MenuButton>
         </div>
@@ -130,12 +130,12 @@ const ThemeSwitch = () => {
         >
           <MenuItems className="ring-opacity-5 absolute right-0 z-50 mt-2 w-40 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black focus:outline-hidden dark:bg-gray-800">
             <div className="p-2">
-              <div className="flex items-center justify-between mb-2">
+              <div className="mb-2 flex items-center justify-between">
                 <span className="text-sm">Zoom:</span>
                 <div className="inline-flex items-center space-x-1">
                   <button
                     onClick={() => handleFontSizeChange(false)}
-                    className="px-1 py-0.5 text-xs rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="rounded px-1 py-0.5 text-xs hover:bg-gray-100 dark:hover:bg-gray-700"
                     disabled={fontSize <= 12}
                   >
                     A-
@@ -150,21 +150,18 @@ const ThemeSwitch = () => {
                       // Update the value in localStorage
                       localStorage.setItem('fontSize', '16')
                     }}
-                    className="px-1 py-0.5 text-xs rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="rounded px-1 py-0.5 text-xs hover:bg-gray-100 dark:hover:bg-gray-700"
                   >
                     <ResetIcon />
                   </button>
 
-
-
                   <button
-                    
                     onClick={() => handleFontSizeChange(true)}
-                    className="px-1 py-0.5 text-xs rounded hover:bg-gray-100 dark:hover:bg-gray-700"
+                    className="rounded px-1 py-0.5 text-xs hover:bg-gray-100 dark:hover:bg-gray-700"
                     disabled={fontSize >= 24}
                   >
-                      A+
-                    </button>
+                    A+
+                  </button>
                 </div>
               </div>
             </div>

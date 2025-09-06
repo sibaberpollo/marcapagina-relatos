@@ -1,6 +1,11 @@
 // app/autor/[slug]/page.tsx
 
-import { getAllAutores, getAutorData, getArticulosByAutor, getSeriesByAutor } from '../../../lib/sanity'
+import {
+  getAllAutores,
+  getAutorData,
+  getArticulosByAutor,
+  getSeriesByAutor,
+} from '../../../lib/sanity'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
@@ -14,46 +19,46 @@ import path from 'path'
 
 // Interfaz para los artículos externos
 interface ExternalArticle {
-  id: string;
-  title: string;
-  url: string;
-  image?: string;
-  summary: string;
-  category: string;
-  date: string;
-  source: string;
+  id: string
+  title: string
+  url: string
+  image?: string
+  summary: string
+  category: string
+  date: string
+  source: string
 }
 
 // Interfaz para el contenido de tablas
 interface TabContent {
-  slug: string;
-  title: string;
-  summary: string;
-  date?: string; 
-  series?: string;
-  seriesSlug?: string;
-  isExternal?: boolean;
-  externalUrl?: string;
-  source?: string;
-  image?: string;
+  slug: string
+  title: string
+  summary: string
+  date?: string
+  series?: string
+  seriesSlug?: string
+  isExternal?: boolean
+  externalUrl?: string
+  source?: string
+  image?: string
 }
 
 // Cargar artículos externos desde el JSON
 function loadExternalArticles(authorSlug: string): ExternalArticle[] {
   try {
-    const filePath = path.join(process.cwd(), 'data', 'external-articles.json');
-    const fileContent = fs.readFileSync(filePath, 'utf8');
-    const articles = JSON.parse(fileContent);
-    
+    const filePath = path.join(process.cwd(), 'data', 'external-articles.json')
+    const fileContent = fs.readFileSync(filePath, 'utf8')
+    const articles = JSON.parse(fileContent)
+
     // El archivo ahora es un array directo de artículos
     if (Array.isArray(articles)) {
-      return articles;
+      return articles
     }
-    
-    return [];
+
+    return []
   } catch (error) {
-    console.error('Error cargando artículos externos:', error);
-    return [];
+    console.error('Error cargando artículos externos:', error)
+    return []
   }
 }
 
@@ -63,14 +68,16 @@ async function updateExternalArticles() {
     // Solo ejecutar en el servidor
     if (typeof window === 'undefined') {
       // Llamar al endpoint de actualización
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/update-external-articles`);
-      const data = await response.json();
-      return data.success;
+      const response = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/update-external-articles`
+      )
+      const data = await response.json()
+      return data.success
     }
-    return false;
+    return false
   } catch (error) {
-    console.error('Error actualizando artículos externos:', error);
-    return false;
+    console.error('Error actualizando artículos externos:', error)
+    return false
   }
 }
 
@@ -85,18 +92,18 @@ export async function generateStaticParams() {
 // Generar metadata para SEO
 export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }) {
   // Aseguramos que params es esperado (awaited)
-  const awaitedParams = await params;
-  const slug = awaitedParams.slug;
-  
-  const { author } = await getAutorData(slug);
-  
+  const awaitedParams = await params
+  const slug = awaitedParams.slug
+
+  const { author } = await getAutorData(slug)
+
   if (!author) {
     return {
       title: 'Autor no encontrado',
       description: 'No se encontró el autor',
     }
   }
-  
+
   return genPageMetadata({
     title: author.name,
     description: `Perfil y obras de ${author.name}`,
@@ -105,23 +112,23 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
 export default async function Page({ params }: { params: Promise<{ slug: string }> }) {
   // Aseguramos que params es esperado (awaited)
-  const awaitedParams = await params;
-  const slug = awaitedParams.slug;
-  
+  const awaitedParams = await params
+  const slug = awaitedParams.slug
+
   // Obtenemos todos los datos del autor en una sola llamada
-  const { author, formattedRelatos, series } = await getAutorData(slug);
-  
+  const { author, formattedRelatos, series } = await getAutorData(slug)
+
   if (!author) {
     return notFound()
   }
-  
+
   // Determinar si debemos usar artículos externos desde el JSON
-  let articulos: TabContent[] = [];
-  
+  let articulos: TabContent[] = []
+
   if (slug === 'pino') {
     // Para José Pino, cargar artículos desde el JSON
-    const externalArticles = loadExternalArticles('pino');
-    articulos = externalArticles.map(article => ({
+    const externalArticles = loadExternalArticles('pino')
+    articulos = externalArticles.map((article) => ({
       slug: article.id, // Usamos el ID como slug
       title: article.title,
       summary: article.summary || '',
@@ -129,25 +136,25 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
       image: article.image,
       isExternal: true,
       externalUrl: article.url,
-      source: article.source
-    }));
-    
+      source: article.source,
+    }))
+
     // Opcionalmente, actualizar el archivo JSON (comentado por defecto para no hacer muchas peticiones)
     // await updateExternalArticles();
   } else {
     // Para otros autores, seguir usando Sanity
-    const articulosData = await getArticulosByAutor(slug);
-    
+    const articulosData = await getArticulosByAutor(slug)
+
     // Formateamos los artículos para la UI
-    articulos = articulosData.map(articulo => {
+    articulos = articulosData.map((articulo) => {
       // Determinar la fuente basado en la URL
-      let source = 'El Estímulo';
+      let source = 'El Estímulo'
       if (articulo.externalUrl && articulo.externalUrl.includes('/ub/')) {
-        source = 'Urbe Bikini';
+        source = 'Urbe Bikini'
       } else if (articulo.source) {
-        source = articulo.source;
+        source = articulo.source
       }
-      
+
       return {
         slug: articulo.slug.current,
         title: articulo.title,
@@ -156,16 +163,19 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         image: articulo.image,
         isExternal: articulo.isExternal,
         externalUrl: articulo.externalUrl,
-        source: source
-      };
-    });
+        source: source,
+      }
+    })
   }
-  
+
   // Determinar el tab por defecto según el autor
-  const defaultTab = (author.defaultTab === 'relatos' || author.defaultTab === 'series' || author.defaultTab === 'articulos') 
-    ? author.defaultTab 
-    : 'relatos'
-  
+  const defaultTab =
+    author.defaultTab === 'relatos' ||
+    author.defaultTab === 'series' ||
+    author.defaultTab === 'articulos'
+      ? author.defaultTab
+      : 'relatos'
+
   // Convertir el autor de Sanity al formato esperado por AuthorLayout
   const authorContent: Omit<Authors, '_id' | '_raw' | 'body'> = {
     name: author.name,
@@ -188,7 +198,7 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     filePath: '',
     toc: [],
     // Estos valores no se usan en el componente, pero son requeridos por el tipo
-    readingTime: { text: '', minutes: 0, time: 0, words: 0 }
+    readingTime: { text: '', minutes: 0, time: 0, words: 0 },
   } as Omit<Authors, '_id' | '_raw' | 'body'>
 
   return (
@@ -198,14 +208,27 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
         name={author.name}
         url={`${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autor/${slug}`}
         image={author.avatar}
-        sameAs={[author.twitter, author.instagram, author.linkedin, author.github, author.website].filter(Boolean) as string[]}
+        sameAs={
+          [author.twitter, author.instagram, author.linkedin, author.github, author.website].filter(
+            Boolean
+          ) as string[]
+        }
         description={author.bio}
       />
       <BreadcrumbSchema
         items={[
-          { name: 'Inicio', item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/` },
-          { name: 'Autores', item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autores` },
-          { name: author.name, item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autor/${slug}` },
+          {
+            name: 'Inicio',
+            item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/`,
+          },
+          {
+            name: 'Autores',
+            item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autores`,
+          },
+          {
+            name: author.name,
+            item: `${process.env.NEXT_PUBLIC_BASE_URL || 'https://marcapagina.page'}/autor/${slug}`,
+          },
         ]}
       />
       {/* Mostrar la biografía del autor */}
@@ -214,11 +237,11 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           <p className="text-gray-700 dark:text-gray-300">{author.bio}</p>
         </div>
       )}
-      
+
       {/* Componente de tabs para filtrar contenido */}
       <Suspense fallback={<div className="p-4 text-center">Cargando contenido...</div>}>
-        <AuthorTabContent 
-          relatos={formattedRelatos} 
+        <AuthorTabContent
+          relatos={formattedRelatos}
           articulos={articulos}
           series={series}
           authorSlug={slug}
@@ -228,4 +251,3 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
     </AuthorLayout>
   )
 }
- 

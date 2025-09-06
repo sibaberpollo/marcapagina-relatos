@@ -13,10 +13,10 @@ interface MasonryImageOverlayCardProps {
 
 export default function MasonryImageOverlayCard(props: MasonryImageOverlayCardProps) {
   return (
-    <div className="break-inside-avoid mb-4 h-full">
+    <div className="mb-4 h-full break-inside-avoid">
       <div className="h-full">
         <ImageOverlayCard {...props} />
       </div>
     </div>
   )
-} 
+}

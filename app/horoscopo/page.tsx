@@ -4,7 +4,8 @@ import HoroscopoClient from './HoroscopoClient'
 export async function generateMetadata() {
   return genPageMetadata({
     title: 'Horóscopo Virgo - Agatha Christie: Septiembre 2025',
-    description: 'Horóscopo literario de Virgo con Agatha Christie. Predicciones astrológicas, efemérides y tarot con un toque narrativo único.',
+    description:
+      'Horóscopo literario de Virgo con Agatha Christie. Predicciones astrológicas, efemérides y tarot con un toque narrativo único.',
     openGraph: {
       images: [
         {
@@ -17,11 +18,13 @@ export async function generateMetadata() {
     },
     twitter: {
       card: 'summary_large_image',
-      images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1755780888/Agatha-Christie_lzxfnz.png'],
+      images: [
+        'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780888/Agatha-Christie_lzxfnz.png',
+      ],
     },
   })
 }
 
 export default function HoroscopoPage() {
   return <HoroscopoClient />
-} 
+}

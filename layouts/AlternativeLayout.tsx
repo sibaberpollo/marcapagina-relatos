@@ -23,7 +23,12 @@ interface AlternativeLayoutProps {
   children: ReactNode
 }
 
-export default function AlternativeLayout({ content, next, prev, children }: AlternativeLayoutProps) {
+export default function AlternativeLayout({
+  content,
+  next,
+  prev,
+  children,
+}: AlternativeLayoutProps) {
   const { title, author, description, image, bgColor, tags, publishedAt, slug } = content
 
   // Formatear la fecha
@@ -32,7 +37,7 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
     return date.toLocaleDateString('es-ES', {
       year: 'numeric',
       month: 'long',
-      day: 'numeric'
+      day: 'numeric',
     })
   }
 
@@ -45,16 +50,16 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
       />
       <SectionContainer>
         <article>
-          <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <div className="mx-auto max-w-3xl px-4 py-8 sm:px-6 lg:px-8">
             {/* Header */}
             <header className="mb-8 text-center">
               <PageTitle>{title}</PageTitle>
-              
+
               {/* Descripción y fecha debajo del título */}
               {(description || publishedAt) && (
-                <div className="mt-4 space-y-2 border-b border-gray-200 dark:border-gray-700 pb-6">
+                <div className="mt-4 space-y-2 border-b border-gray-200 pb-6 dark:border-gray-700">
                   {description && (
-                    <p className="text-lg text-gray-600 dark:text-gray-400 leading-relaxed">
+                    <p className="text-lg leading-relaxed text-gray-600 dark:text-gray-400">
                       {description}
                     </p>
                   )}
@@ -65,15 +70,11 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
                   )}
                 </div>
               )}
-              
+
               {/* Imagen PNG transparente centrada */}
               {image && (
                 <div className="mt-6 mb-6 flex justify-center">
-                  <img
-                    src={image}
-                    alt={title}
-                    className="max-w-full max-h-64 object-contain"
-                  />
+                  <img src={image} alt={title} className="max-h-64 max-w-full object-contain" />
                 </div>
               )}
             </header>
@@ -84,18 +85,24 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
             </div>
 
             {/* Contenido principal con letra capital */}
-            <div className="prose prose-lg dark:prose-invert max-w-none mb-8">
-              <div 
-                className="first-letter:float-left first-letter:text-7xl first-letter:font-bold first-letter:mr-3 first-letter:leading-[0.8]"
-                style={{ 
-                  '--tw-first-letter-color': bgColor
-                } as any}
+            <div className="prose prose-lg dark:prose-invert mb-8 max-w-none">
+              <div
+                className="first-letter:float-left first-letter:mr-3 first-letter:text-7xl first-letter:leading-[0.8] first-letter:font-bold"
+                style={
+                  {
+                    '--tw-first-letter-color': bgColor,
+                  } as any
+                }
               >
-                <style dangerouslySetInnerHTML={{ __html: `
+                <style
+                  dangerouslySetInnerHTML={{
+                    __html: `
                   .prose > div::first-letter {
                     color: ${bgColor} !important;
                   }
-                `}} />
+                `,
+                  }}
+                />
                 {children}
               </div>
             </div>
@@ -106,30 +113,28 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
             </div>
 
             {/* Footer import */}
-            <footer className="border-t border-gray-200 dark:border-gray-700 pt-8">
+            <footer className="border-t border-gray-200 pt-8 dark:border-gray-700">
               {/* Autor */}
-              <div className="flex items-center gap-3 mb-6">
-                <AutoAvatar 
-                  name={author} 
-                  size={40} 
-                  className="h-10 w-10 rounded-full bg-black text-white font-titles text-xl flex items-center justify-center"
+              <div className="mb-6 flex items-center gap-3">
+                <AutoAvatar
+                  name={author}
+                  size={40}
+                  className="font-titles flex h-10 w-10 items-center justify-center rounded-full bg-black text-xl text-white"
                 />
-                <span className="text-gray-700 dark:text-gray-300 font-medium">
-                  {author}
-                </span>
+                <span className="font-medium text-gray-700 dark:text-gray-300">{author}</span>
               </div>
 
               {/* Tags */}
               {tags && tags.length > 0 && (
                 <div className="mb-8">
-                  <h3 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-3">
+                  <h3 className="mb-3 text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                     Etiquetas
                   </h3>
                   <div className="flex flex-wrap gap-2">
                     {tags.map((tag: string) => (
                       <span
                         key={tag}
-                        className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-black text-white dark:bg-gray-700"
+                        className="inline-flex items-center rounded-full bg-black px-3 py-1 text-sm font-medium text-white dark:bg-gray-700"
                       >
                         {tag}
                       </span>
@@ -140,26 +145,26 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
 
               {/* Navegación anterior/siguiente */}
               {(next || prev) && (
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <div className="flex-1">
                     {prev && (
                       <Link
                         href={`/relato/${prev.slug.current}`}
-                        className="text-left hover:underline transition-colors"
+                        className="text-left transition-colors hover:underline"
                       >
-                        <div className="text-xs uppercase tracking-wide mb-1">Anterior</div>
+                        <div className="mb-1 text-xs tracking-wide uppercase">Anterior</div>
                         <div className="font-medium">{prev.title}</div>
                       </Link>
                     )}
                   </div>
-                  
+
                   <div className="flex-1 text-right">
                     {next && (
                       <Link
                         href={`/relato/${next.slug.current}`}
-                        className="text-right hover:underline transition-colors"
+                        className="text-right transition-colors hover:underline"
                       >
-                        <div className="text-xs uppercase tracking-wide mb-1">Siguiente</div>
+                        <div className="mb-1 text-xs tracking-wide uppercase">Siguiente</div>
                         <div className="font-medium">{next.title}</div>
                       </Link>
                     )}
@@ -172,4 +177,4 @@ export default function AlternativeLayout({ content, next, prev, children }: Alt
       </SectionContainer>
     </div>
   )
-} 
+}

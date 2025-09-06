@@ -5,7 +5,7 @@ import Script from 'next/script'
 
 export const metadata = genPageMetadata({
   title: 'Resultados de búsqueda',
-  description: 'Explora el contenido de Marcapágina a través de Google.'
+  description: 'Explora el contenido de Marcapágina a través de Google.',
 })
 
 export default function ResultadosPage() {

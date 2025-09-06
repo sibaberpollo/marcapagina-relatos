@@ -46,13 +46,16 @@ export async function generateMetadata() {
 const pressArticles = [
   {
     id: 1,
-    title: "Marcapágina: la app que quiere convertirse en el mejor lugar para leer literatura en español",
-    publication: "El Estímulo",
-    date: "13 de junio de 2025",
-    url: "https://elestimulo.com/cultura/literatura/2025-06-13/marcapagina-app-literatura-relatos/",
-    description: "Una entrevista y recorrido por la historia del proyecto, desde sus inicios como revista digital hasta la actual plataforma de publicación literaria.",
-    logoSrc: "https://res.cloudinary.com/dx98vnos1/image/upload/v1749903568/marcapagina-1a-520x380_iacr6y.webp",
-    logoAlt: "El Estímulo",
+    title:
+      'Marcapágina: la app que quiere convertirse en el mejor lugar para leer literatura en español',
+    publication: 'El Estímulo',
+    date: '13 de junio de 2025',
+    url: 'https://elestimulo.com/cultura/literatura/2025-06-13/marcapagina-app-literatura-relatos/',
+    description:
+      'Una entrevista y recorrido por la historia del proyecto, desde sus inicios como revista digital hasta la actual plataforma de publicación literaria.',
+    logoSrc:
+      'https://res.cloudinary.com/dx98vnos1/image/upload/v1749903568/marcapagina-1a-520x380_iacr6y.webp',
+    logoAlt: 'El Estímulo',
   },
 ]
 
@@ -95,7 +98,7 @@ export default async function AcercaDePage() {
                   <>
                     {match[1]}
                     <HighlightStroke>
-                      <span className="underline font-semibold">{match[2]}</span>
+                      <span className="font-semibold underline">{match[2]}</span>
                     </HighlightStroke>
                   </>
                 )
@@ -133,7 +136,7 @@ export default async function AcercaDePage() {
 
         {/* Sección de Creadores */}
         <div className="pt-10 pb-8">
-          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 mb-8">
+          <h2 className="mb-8 text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 dark:text-gray-100">
             {isEn ? 'We were/We are:' : 'Fuimos/Somos:'}
           </h2>
           <div className="grid grid-cols-1 gap-10 md:grid-cols-4">
@@ -147,7 +150,7 @@ export default async function AcercaDePage() {
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
+                <h3 className="mt-4 text-center text-xl font-bold text-gray-900 group-hover:text-[#333333] dark:text-gray-100 dark:group-hover:text-[#cccccc]">
                   Anairene
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Contenido</p>
@@ -164,7 +167,7 @@ export default async function AcercaDePage() {
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
+                <h3 className="mt-4 text-center text-xl font-bold text-gray-900 group-hover:text-[#333333] dark:text-gray-100 dark:group-hover:text-[#cccccc]">
                   Hazael
                 </h3>
                 <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos</p>
@@ -181,10 +184,12 @@ export default async function AcercaDePage() {
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
+                <h3 className="mt-4 text-center text-xl font-bold text-gray-900 group-hover:text-[#333333] dark:text-gray-100 dark:group-hover:text-[#cccccc]">
                   Pino
                 </h3>
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Textos/Desarrollo</p>
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+                  Textos/Desarrollo
+                </p>
               </Link>
             </div>
 
@@ -198,10 +203,12 @@ export default async function AcercaDePage() {
                   height={150}
                   className="h-36 w-36 rounded-full object-cover transition-all duration-200 group-hover:scale-105"
                 />
-                <h3 className="mt-4 text-xl font-bold text-center text-gray-900 dark:text-gray-100 group-hover:text-[#333333] dark:group-hover:text-[#cccccc]">
+                <h3 className="mt-4 text-center text-xl font-bold text-gray-900 group-hover:text-[#333333] dark:text-gray-100 dark:group-hover:text-[#cccccc]">
                   Mayling
                 </h3>
-                <p className="text-center text-sm text-gray-600 dark:text-gray-400">Diseño Gráfico</p>
+                <p className="text-center text-sm text-gray-600 dark:text-gray-400">
+                  Diseño Gráfico
+                </p>
               </div>
             </div>
           </div>
@@ -209,31 +216,29 @@ export default async function AcercaDePage() {
 
         {/* Sección de Prensa */}
         <div id="prensa" className="pt-16 pb-8">
-          <h2 className="text-3xl font-extrabold leading-9 tracking-tight text-gray-900 dark:text-gray-100 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 mb-8">
+          <h2 className="mb-8 text-3xl leading-9 font-extrabold tracking-tight text-gray-900 sm:text-4xl sm:leading-10 md:text-4xl md:leading-14 dark:text-gray-100">
             {isEn ? 'Marcapágina in the media' : 'Marcapágina en los medios'}
           </h2>
           <div className="space-y-10">
             {pressArticles.map((article) => (
-              <div key={article.id} className="flex flex-col md:flex-row md:items-start gap-6">
+              <div key={article.id} className="flex flex-col gap-6 md:flex-row md:items-start">
                 <Image
                   src={article.logoSrc}
                   alt={article.logoAlt}
                   width={520}
                   height={380}
-                  className="object-contain w-full h-auto md:w-32 md:h-20"
+                  className="h-auto w-full object-contain md:h-20 md:w-32"
                 />
                 <div>
-                  <h3 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-1">
+                  <h3 className="mb-1 text-xl font-semibold text-gray-900 dark:text-gray-100">
                     <Link href={article.url} target="_blank" rel="noopener noreferrer">
                       {article.title}
                     </Link>
                   </h3>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 mb-1">
+                  <p className="mb-1 text-sm text-gray-500 dark:text-gray-400">
                     {article.publication} · {article.date}
                   </p>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    {article.description}
-                  </p>
+                  <p className="text-gray-700 dark:text-gray-300">{article.description}</p>
                 </div>
               </div>
             ))}

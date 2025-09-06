@@ -84,7 +84,7 @@ export default function SeriesCard(props: SeriesCardProps) {
     const { serie, userProgress = 0 } = props
     const firstStory = serie.relatos[0]
     const restStories = serie.relatos.slice(1)
-    
+
     const staticProps: StaticSeriesCardProps = {
       seriesName: serie.title,
       seriesSlug: serie.slug?.current,
@@ -92,26 +92,26 @@ export default function SeriesCard(props: SeriesCardProps) {
         title: firstStory?.title || '',
         slug: firstStory?.slug?.current || '',
         preview: firstStory?.summary || serie.description || '',
-        order: 1
+        order: 1,
       },
       previousChapters: restStories.map((relato, index) => ({
         title: relato.title,
         slug: relato.slug.current,
-        order: index + 2
+        order: index + 2,
       })),
       firstChapter: {
         title: firstStory?.title || '',
         slug: firstStory?.slug?.current || '',
-        order: 1
+        order: 1,
       },
       language: 'es',
       backgroundColor: '#efa106',
-      textColor: '#ffffff'
+      textColor: '#ffffff',
     }
-    
+
     return <SeriesCardContent {...staticProps} />
   }
-  
+
   // Uso estático (home)
   return <SeriesCardContent {...props} />
 }
@@ -126,45 +126,50 @@ function SeriesCardContent({
   language = 'es',
   href,
   backgroundColor = '#ee686b',
-  textColor = '#ffffff'
+  textColor = '#ffffff',
 }: StaticSeriesCardProps) {
   const seriesText = language === 'en' ? 'Series' : 'Serie'
 
   // Crear estilos dinámicos con los colores parametrizables
   const cardStyle = {
     backgroundColor,
-    color: textColor
+    color: textColor,
   }
 
   const badgeStyle = {
     backgroundColor: 'rgba(0, 0, 0, 0.8)',
-    color: '#ffffff'
+    color: '#ffffff',
   }
 
   const buttonStyle = {
     backgroundColor: 'rgba(255, 255, 255, 0.2)',
-    color: textColor
+    color: textColor,
   }
 
   return (
-    <div className="break-inside-avoid mb-6 w-full min-h-[400px]" style={{ aspectRatio: '4/5' }}>
-      <div className="relative group w-full h-full">
+    <div className="mb-6 min-h-[400px] w-full break-inside-avoid" style={{ aspectRatio: '4/5' }}>
+      <div className="group relative h-full w-full">
         {/* Efecto 3D - Cards de fondo */}
-        <div className="absolute inset-0 rounded-lg transform rotate-1 translate-x-1 translate-y-1 opacity-60" style={{ backgroundColor }}></div>
-        <div className="absolute inset-0 rounded-lg transform rotate-0.5 translate-x-0.5 translate-y-0.5 opacity-80" style={{ backgroundColor }}></div>
-        
+        <div
+          className="absolute inset-0 translate-x-1 translate-y-1 rotate-1 transform rounded-lg opacity-60"
+          style={{ backgroundColor }}
+        ></div>
+        <div
+          className="rotate-0.5 absolute inset-0 translate-x-0.5 translate-y-0.5 transform rounded-lg opacity-80"
+          style={{ backgroundColor }}
+        ></div>
+
         {/* Card principal */}
-        <div 
-          className="relative rounded-lg shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 w-full h-full flex flex-col overflow-hidden"
+        <div
+          className="relative flex h-full w-full transform flex-col overflow-hidden rounded-lg shadow-lg transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
           style={cardStyle}
         >
-          
           {/* Logo de Transtextos en esquina superior izquierda */}
           <div className="absolute top-4 left-4 z-10">
             <img
               src="https://res.cloudinary.com/dx98vnos1/image/upload/v1748543049/android-chrome-192x192-1-e1602674825140_rwwa0n.png"
               alt="Transtextos"
-              className="w-[25px] h-[25px] opacity-100"
+              className="h-[25px] w-[25px] opacity-100"
               width={25}
               height={25}
             />
@@ -172,23 +177,26 @@ function SeriesCardContent({
 
           {/* Badge de tipo en esquina superior derecha - SIN superposición */}
           <div className="absolute top-3 right-3 z-10">
-            <span 
-              className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-semibold shadow-lg backdrop-blur-sm"
+            <span
+              className="inline-flex items-center gap-1 rounded-full px-2 py-1 text-xs font-semibold shadow-lg backdrop-blur-sm"
               style={badgeStyle}
             >
-              <Waypoints className="w-3 h-3" />
+              <Waypoints className="h-3 w-3" />
               {seriesText}
             </span>
           </div>
 
           {/* Header - con padding para evitar superposición con logo y badge */}
-          <div className="p-4 pl-16 pr-16 pb-6 flex-shrink-0 mt-16">
+          <div className="mt-16 flex-shrink-0 p-4 pr-16 pb-6 pl-16">
             <div className="text-left">
-              <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
+              <p className="mb-2 text-sm font-medium" style={{ color: textColor }}>
                 {seriesText}: <span className="italic">{seriesName}</span>
               </p>
               <Link href={`/relato/${latestChapter.slug}`}>
-                <h3 className="text-xl font-bold leading-tight hover:opacity-80 transition-opacity cursor-pointer" style={{ color: textColor }}>
+                <h3
+                  className="cursor-pointer text-xl leading-tight font-bold transition-opacity hover:opacity-80"
+                  style={{ color: textColor }}
+                >
                   {latestChapter.title}
                 </h3>
               </Link>
@@ -196,35 +204,35 @@ function SeriesCardContent({
           </div>
 
           {/* Preview del último capítulo - más abajo */}
-          <div className="px-4 pb-2 flex-1">
-            <p className="leading-relaxed text-base line-clamp-4" style={{ color: textColor }}>
+          <div className="flex-1 px-4 pb-2">
+            <p className="line-clamp-4 text-base leading-relaxed" style={{ color: textColor }}>
               {latestChapter.preview}
             </p>
           </div>
 
           {/* Imagen centrada como separador - SIN fondo */}
-          <div className="flex justify-center py-2 flex-shrink-0">
+          <div className="flex flex-shrink-0 justify-center py-2">
             {seriesCover ? (
               <Image
                 src={seriesCover}
                 alt={seriesName}
                 width={64}
                 height={64}
-                className="w-16 h-16 rounded-lg object-cover"
+                className="h-16 w-16 rounded-lg object-cover"
               />
             ) : (
-              <div className="w-16 h-16 rounded-lg flex items-center justify-center">
-                <Waypoints className="w-6 h-6" style={{ color: textColor }} />
+              <div className="flex h-16 w-16 items-center justify-center rounded-lg">
+                <Waypoints className="h-6 w-6" style={{ color: textColor }} />
               </div>
             )}
           </div>
 
           {/* Botones de navegación */}
-          <div className="px-4 pb-3 flex-shrink-0">
+          <div className="flex-shrink-0 px-4 pb-3">
             <div className="flex gap-2">
               <Link href={`/relato/${latestChapter.slug}`} className="flex-1">
-                <button 
-                  className="w-full py-2 px-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:opacity-90 text-sm"
+                <button
+                  className="w-full rounded-lg px-3 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 hover:opacity-90"
                   style={buttonStyle}
                 >
                   <span style={{ color: textColor }}>
@@ -232,16 +240,16 @@ function SeriesCardContent({
                   </span>
                 </button>
               </Link>
-              
+
               {/* Solo mostrar "Comenzar serie" si hay serie disponible */}
               {seriesSlug && (
                 <Link href={`/serie/${seriesSlug}`} className="flex-1">
-                  <button 
-                    className="w-full py-2 px-3 rounded-lg font-medium transition-all duration-200 hover:scale-105 hover:opacity-90 border text-sm"
+                  <button
+                    className="w-full rounded-lg border px-3 py-2 text-sm font-medium transition-all duration-200 hover:scale-105 hover:opacity-90"
                     style={{
                       backgroundColor: 'rgba(255, 255, 255, 0.1)',
                       borderColor: 'rgba(255, 255, 255, 0.3)',
-                      color: textColor
+                      color: textColor,
                     }}
                   >
                     <span style={{ color: textColor }}>
@@ -255,20 +263,23 @@ function SeriesCardContent({
 
           {/* Footer con scroll horizontal de capítulos anteriores */}
           {previousChapters.length > 0 && (
-            <div className="px-4 pb-3 flex-shrink-0">
-              <p className="text-sm font-medium mb-2" style={{ color: textColor }}>
+            <div className="flex-shrink-0 px-4 pb-3">
+              <p className="mb-2 text-sm font-medium" style={{ color: textColor }}>
                 {language === 'en' ? 'Previous chapters' : 'Capítulos anteriores'}
               </p>
-              <div className="overflow-x-auto no-scrollbar">
+              <div className="no-scrollbar overflow-x-auto">
                 <div className="flex gap-2">
                   {previousChapters.map((chapter) => (
                     <Link
                       key={chapter.slug}
                       href={`/relato/${chapter.slug}`}
-                      className="flex-shrink-0 px-2 py-1 rounded-full transition-all duration-200 hover:scale-105 hover:opacity-80"
+                      className="flex-shrink-0 rounded-full px-2 py-1 transition-all duration-200 hover:scale-105 hover:opacity-80"
                       style={buttonStyle}
                     >
-                      <span className="text-sm font-medium whitespace-nowrap" style={{ color: textColor }}>
+                      <span
+                        className="text-sm font-medium whitespace-nowrap"
+                        style={{ color: textColor }}
+                      >
                         {chapter.order}. {chapter.title}
                       </span>
                     </Link>
@@ -279,9 +290,9 @@ function SeriesCardContent({
           )}
 
           {/* Indicador de hover */}
-          <div className="absolute inset-0 border-2 border-transparent group-hover:border-white/30 rounded-lg transition-colors pointer-events-none"></div>
+          <div className="pointer-events-none absolute inset-0 rounded-lg border-2 border-transparent transition-colors group-hover:border-white/30"></div>
         </div>
       </div>
     </div>
   )
-} 
+}

@@ -9,7 +9,12 @@ interface ChronologicalViewProps {
   basePath?: string
 }
 
-export default function ChronologicalView({ items, itemsPerPage, currentPage, basePath }: ChronologicalViewProps) {
+export default function ChronologicalView({
+  items,
+  itemsPerPage,
+  currentPage,
+  basePath,
+}: ChronologicalViewProps) {
   return (
     <ChronologicalLayout
       items={items}

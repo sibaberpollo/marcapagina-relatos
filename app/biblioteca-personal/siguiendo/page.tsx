@@ -15,10 +15,9 @@ export default async function Page() {
   return (
     <div className="space-y-6">
       <h1 className="text-2xl font-bold">Autores que sigues</h1>
-      <p className="text-gray-700 dark:text-gray-200">Seguimiento de autores no disponible en este release.</p>
+      <p className="text-gray-700 dark:text-gray-200">
+        Seguimiento de autores no disponible en este release.
+      </p>
     </div>
   )
 }
-
-
-

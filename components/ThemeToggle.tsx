@@ -22,11 +22,7 @@ export default function ThemeToggle() {
       className="p-2 font-semibold text-black dark:text-white"
       aria-label="Cambiar tema"
     >
-      {theme === 'dark' ? (
-        <Sun className="w-5 h-5" />
-      ) : (
-        <Moon className="w-5 h-5" />
-      )}
+      {theme === 'dark' ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
     </button>
   )
-} 
+}

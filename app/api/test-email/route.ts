@@ -31,9 +31,6 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ message: 'Correo de prueba enviado exitosamente' })
   } catch (error) {
     console.error('Error al enviar correo de prueba:', error)
-    return NextResponse.json(
-      { error: 'No se pudo enviar el correo de prueba' },
-      { status: 500 }
-    )
+    return NextResponse.json({ error: 'No se pudo enviar el correo de prueba' }, { status: 500 })
   }
 }

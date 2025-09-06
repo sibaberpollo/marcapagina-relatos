@@ -1,46 +1,45 @@
 // layouts/PostLayout.tsx
-import React, { ReactNode } from "react";
-import { CoreContent } from "pliny/utils/contentlayer";
-import type { Authors } from "contentlayer/generated";
-import Comments from "@/components/Comments";
-import Link from "@/components/Link";
-import PageTitle from "@/components/PageTitle";
-import SectionContainer from "@/components/SectionContainer";
-import Image from "@/components/Image";
-import Tag from "@/components/Tag";
-import siteMetadata from "@/data/siteMetadata";
-import seriesMetadata from "@/data/seriesMetadata";
-import ScrollTopAndComment from "@/components/ScrollTopAndComment";
-import { PageSEO } from "@/components/SEO";
-import { getRelativeTime } from "@/lib/time";
-import FeaturedSlider from "@/components/FeaturedSlider";
-import FeaturedCard from "@/components/cards/FeaturedCard";
-import { getFeaturedRelatosFromJSON } from "@/lib/home-content";
-import EngageBar from "@/components/EngageBar";
+import React, { ReactNode } from 'react'
+import { CoreContent } from 'pliny/utils/contentlayer'
+import type { Authors } from 'contentlayer/generated'
+import Comments from '@/components/Comments'
+import Link from '@/components/Link'
+import PageTitle from '@/components/PageTitle'
+import SectionContainer from '@/components/SectionContainer'
+import Image from '@/components/Image'
+import Tag from '@/components/Tag'
+import siteMetadata from '@/data/siteMetadata'
+import seriesMetadata from '@/data/seriesMetadata'
+import ScrollTopAndComment from '@/components/ScrollTopAndComment'
+import { PageSEO } from '@/components/SEO'
+import { getRelativeTime } from '@/lib/time'
+import FeaturedSlider from '@/components/FeaturedSlider'
+import FeaturedCard from '@/components/cards/FeaturedCard'
+import { getFeaturedRelatosFromJSON } from '@/lib/home-content'
+import EngageBar from '@/components/EngageBar'
 
-const editUrl = (path: string) =>
-  `${siteMetadata.siteRepo}/blob/main/data/${path}`;
+const editUrl = (path: string) => `${siteMetadata.siteRepo}/blob/main/data/${path}`
 const discussUrl = (path: string) =>
-  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`;
+  `https://mobile.twitter.com/search?q=${encodeURIComponent(`${siteMetadata.siteUrl}/${path}`)}`
 
 const postDateTemplate: Intl.DateTimeFormatOptions = {
-  weekday: "long",
-  year: "numeric",
-  month: "long",
-  day: "numeric",
-};
+  weekday: 'long',
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+}
 
 interface LayoutProps {
-  content: CoreContent<any>;
-  authorDetails: CoreContent<Authors>[];
-  next?: { path: string; title: string };
-  prev?: { path: string; title: string };
-  children: ReactNode;
+  content: CoreContent<any>
+  authorDetails: CoreContent<Authors>[]
+  next?: { path: string; title: string }
+  prev?: { path: string; title: string }
+  children: ReactNode
 }
 
 interface PostLayoutProps extends LayoutProps {
-  showDropCap?: boolean;
-  autor?: { name: string; slug: string } | null;
+  showDropCap?: boolean
+  autor?: { name: string; slug: string } | null
 }
 
 export default async function PostLayout({
@@ -52,31 +51,19 @@ export default async function PostLayout({
   showDropCap = true,
   autor,
 }: PostLayoutProps) {
-  const {
-    filePath,
-    path,
-    slug,
-    date,
-    title,
-    tags,
-    series,
-    image,
-    bgColor,
-    publishedAt,
-  } = content as any;
-  const relativeTime = publishedAt ? getRelativeTime(publishedAt) : null;
+  const { filePath, path, slug, date, title, tags, series, image, bgColor, publishedAt } =
+    content as any
+  const relativeTime = publishedAt ? getRelativeTime(publishedAt) : null
   // Determinar si es relato o artículo según la ruta
-  const segments = path.split("/");
-  const type = segments[1]; // 'relato' o 'articulo'
-  const isArticle = type === "articulo";
-  const prevLabel = isArticle ? "Artículo anterior" : "Relato anterior";
-  const nextLabel = isArticle ? "Próximo artículo" : "Próximo relato";
-  const basePath = path.split("/")[0];
+  const segments = path.split('/')
+  const type = segments[1] // 'relato' o 'articulo'
+  const isArticle = type === 'articulo'
+  const prevLabel = isArticle ? 'Artículo anterior' : 'Relato anterior'
+  const nextLabel = isArticle ? 'Próximo artículo' : 'Próximo relato'
+  const basePath = path.split('/')[0]
 
-  const featuredRelatos = await getFeaturedRelatosFromJSON();
-  const sliderPosts = featuredRelatos
-    .slice(0, 6)
-    .filter((p) => p.href !== `/${path}`);
+  const featuredRelatos = await getFeaturedRelatosFromJSON()
+  const sliderPosts = featuredRelatos.slice(0, 6).filter((p) => p.href !== `/${path}`)
 
   return (
     <div className="relative">
@@ -90,25 +77,23 @@ export default async function PostLayout({
       <SectionContainer>
         <ScrollTopAndComment />
         <article>
-          <div className="xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700 mb-10">
+          <div className="mb-10 xl:divide-y xl:divide-gray-200 xl:dark:divide-gray-700">
             <header className="pt-6 xl:pb-6">
               <div className="space-y-1 text-center">
                 <dl className="space-y-10">
                   <div>
                     <dt className="sr-only">Publicado</dt>
                     <dd className="text-base leading-6 font-medium text-gray-500 dark:text-gray-400">
-                      {relativeTime && (
-                        <time dateTime={publishedAt}>{relativeTime}</time>
-                      )}
+                      {relativeTime && <time dateTime={publishedAt}>{relativeTime}</time>}
                     </dd>
                   </div>
                 </dl>
                 {autor && autor.name && autor.slug && (
-                  <div className="mb-2 text-[16px] font-semibold text-gray-900 dark:text-gray-100 flex justify-center">
+                  <div className="mb-2 flex justify-center text-[16px] font-semibold text-gray-900 dark:text-gray-100">
                     <a
                       href={`/autor/${autor.slug}`}
-                      className="hover:underline text-gray-900 dark:text-gray-100 text-center"
-                      style={{ display: "inline-block" }}
+                      className="text-center text-gray-900 hover:underline dark:text-gray-100"
+                      style={{ display: 'inline-block' }}
                     >
                       {autor.name}
                     </a>
@@ -124,11 +109,8 @@ export default async function PostLayout({
                 )}
                 {/* Imagen del relato opcional */}
                 {image && (
-                  <div
-                    className="relative w-full"
-                    style={{ backgroundColor: bgColor }}
-                  >
-                    <div className="max-h-[500px] flex items-center justify-center">
+                  <div className="relative w-full" style={{ backgroundColor: bgColor }}>
+                    <div className="flex max-h-[500px] items-center justify-center">
                       <img
                         src={image}
                         alt="Imagen del relato"
@@ -142,16 +124,13 @@ export default async function PostLayout({
               </div>
             </header>
 
-            <div className="grid-rows-[auto_1fr] divide-y-2 divide-black dark:divide-black pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-gray-700">
-              <dl className="hidden md:flex pt-6 pb-10 xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
+            <div className="grid-rows-[auto_1fr] divide-y-2 divide-black pb-8 xl:grid xl:grid-cols-4 xl:gap-x-6 xl:divide-y-0 dark:divide-black dark:divide-gray-700">
+              <dl className="hidden pt-6 pb-10 md:flex xl:border-b xl:border-gray-200 xl:pt-11 xl:dark:border-gray-700">
                 <dt className="sr-only">Authors</dt>
                 <dd>
                   <ul className="flex flex-wrap justify-center gap-4 sm:space-x-12 xl:block xl:space-y-8 xl:space-x-0">
                     {authorDetails.map((author) => (
-                      <li
-                        className="flex items-center space-x-2"
-                        key={author.name}
-                      >
+                      <li className="flex items-center space-x-2" key={author.name}>
                         {author.avatar && (
                           <Image
                             src={author.avatar}
@@ -173,8 +152,8 @@ export default async function PostLayout({
                             {author.twitter && (
                               <Link href={author.twitter} className="hover:underline">
                                 {author.twitter
-                                  .replace("https://twitter.com/", "@")
-                                  .replace("https://x.com/", "@")}
+                                  .replace('https://twitter.com/', '@')
+                                  .replace('https://x.com/', '@')}
                               </Link>
                             )}
                           </dd>
@@ -188,52 +167,41 @@ export default async function PostLayout({
               <div className="divide-y divide-gray-200 xl:col-span-3 xl:row-span-2 xl:pb-0 dark:divide-gray-700">
                 <div
                   id="post-content"
-                  className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-8 break-words bg-white text-black"
+                  className="mx-auto max-w-3xl bg-white px-4 py-8 break-words text-black sm:px-6 lg:px-8"
                 >
                   {showDropCap ? (
-                    <div className="prose max-w-none text-black [&_*]:!text-black [&_p]:!text-xl [&_p]:!leading-8 md:[&_p]:!text-xl md:[&_p]:!leading-8 [&_a]:!no-underline hover:[&_a]:underline">
+                    <div className="prose max-w-none text-black [&_*]:!text-black [&_a]:!no-underline hover:[&_a]:underline [&_p]:!text-xl [&_p]:!leading-8 md:[&_p]:!text-xl md:[&_p]:!leading-8">
                       {(() => {
                         // Si children es un solo div (como PortableText suele hacer), aplica drop-cap al primer <p>
                         if (
                           children &&
-                          typeof children === "object" &&
-                          "type" in children &&
-                          children.type === "div" &&
+                          typeof children === 'object' &&
+                          'type' in children &&
+                          children.type === 'div' &&
                           React.isValidElement(children) &&
                           React.isValidElement(children) &&
-                          Array.isArray(
-                            (children as React.ReactElement<any>).props?.children,
-                          )
+                          Array.isArray((children as React.ReactElement<any>).props?.children)
                         ) {
-                          const innerChildren = (
-                            children as React.ReactElement<any>
-                          ).props.children;
+                          const innerChildren = (children as React.ReactElement<any>).props.children
                           return (
-                            <div
-                              {...(children as React.ReactElement<any>).props}
-                            >
-                              {(innerChildren as React.ReactNode[]).map(
-                                (child, idx) => {
-                                  if (
-                                    idx === 0 &&
-                                    React.isValidElement(child) &&
-                                    child.type === "p"
-                                  ) {
-                                    const childEl =
-                                      child as React.ReactElement<{
-                                        className?: string;
-                                      }>;
-                                    return React.cloneElement(childEl, {
-                                      className:
-                                        (childEl.props.className || "") +
-                                        " drop-cap",
-                                    });
-                                  }
-                                  return child;
-                                },
-                              )}
+                            <div {...(children as React.ReactElement<any>).props}>
+                              {(innerChildren as React.ReactNode[]).map((child, idx) => {
+                                if (
+                                  idx === 0 &&
+                                  React.isValidElement(child) &&
+                                  child.type === 'p'
+                                ) {
+                                  const childEl = child as React.ReactElement<{
+                                    className?: string
+                                  }>
+                                  return React.cloneElement(childEl, {
+                                    className: (childEl.props.className || '') + ' drop-cap',
+                                  })
+                                }
+                                return child
+                              })}
                             </div>
-                          );
+                          )
                         }
                         // Si es un array de elementos
                         if (Array.isArray(children) && children.length > 0) {
@@ -242,44 +210,48 @@ export default async function PostLayout({
                               {React.isValidElement(children[0])
                                 ? React.cloneElement(
                                     children[0] as React.ReactElement<{
-                                      className?: string;
+                                      className?: string
                                     }>,
                                     {
                                       className:
                                         ((
                                           children[0] as React.ReactElement<{
-                                            className?: string;
+                                            className?: string
                                           }>
-                                        ).props.className || "") + " drop-cap",
-                                    },
+                                        ).props.className || '') + ' drop-cap',
+                                    }
                                   )
                                 : children[0]}
                               {children.slice(1)}
                             </>
-                          );
+                          )
                         }
                         // Caso simple
-                        return children;
+                        return children
                       })()}
                     </div>
                   ) : (
-                    <div className="prose max-w-none text-black [&_*]:!text-black [&_p]:!text-xl [&_p]:!leading-8 md:[&_p]:!text-xl md:[&_p]:!leading-8 [&_a]:!no-underline hover:[&_a]:underline">
+                    <div className="prose max-w-none text-black [&_*]:!text-black [&_a]:!no-underline hover:[&_a]:underline [&_p]:!text-xl [&_p]:!leading-8 md:[&_p]:!text-xl md:[&_p]:!leading-8">
                       {children}
                     </div>
                   )}
                   <div className="my-8">
-                    <EngageBar slug={slug} title={title} contentType={isArticle ? 'articulo' : 'relato'} />
+                    <EngageBar
+                      slug={slug}
+                      title={title}
+                      contentType={isArticle ? 'articulo' : 'relato'}
+                    />
                   </div>
                   {tags && tags.length > 0 && (
-                    <div className="mt-8 pt-8 border-t border-gray-200 dark:border-gray-700">
-                      <h2 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+                    <div className="mt-8 border-t border-gray-200 pt-8 dark:border-gray-700">
+                      <h2 className="mb-4 text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
                         Tags
                       </h2>
                       <div className="flex flex-wrap gap-2">
                         {tags.map((tag: string) => (
                           <span
                             key={tag}
-                            className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-black text-white"
+                            className="inline-flex items-center rounded-full bg-black px-3 py-1 text-sm font-medium text-white"
                           >
                             {tag}
                           </span>
@@ -331,18 +303,18 @@ export default async function PostLayout({
           </div>
         </article>
       </SectionContainer>
-      
+
       {/* Sección "También en portada" al ancho completo */}
       {sliderPosts.length > 0 && (
         <SectionContainer>
           <div className="-mt-16 mb-8">
-            <h1 className="text-xs uppercase tracking-wide text-gray-500 dark:text-gray-400 mb-4">
+            <h1 className="mb-4 text-xs tracking-wide text-gray-500 uppercase dark:text-gray-400">
               También en portada:
             </h1>
             <div className="lg:hidden">
               <FeaturedSlider projects={sliderPosts} />
             </div>
-            <div className="hidden lg:grid lg:grid-cols-3 gap-6">
+            <div className="hidden gap-6 lg:grid lg:grid-cols-3">
               {sliderPosts.slice(0, 3).map((project, index) => (
                 <div key={index} className="flex">
                   <FeaturedCard
@@ -364,5 +336,5 @@ export default async function PostLayout({
         </SectionContainer>
       )}
     </div>
-  );
-} 
+  )
+}

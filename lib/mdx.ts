@@ -10,4 +10,4 @@ export const mdxComponents: MDXComponents = {
 export const mdxOptions = {
   remarkPlugins: [],
   rehypePlugins: [],
-} 
+}

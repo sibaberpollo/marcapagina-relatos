@@ -5,6 +5,6 @@ import { prisma } from '@/lib/prisma'
 import { getAutoresBySlugs } from '@/lib/sanity'
 import AuthorFollowCard from '@/components/AuthorFollowCard'
 
-export default async function Page() { redirect('/biblioteca-personal/siguiendo') }
-
-
+export default async function Page() {
+  redirect('/biblioteca-personal/siguiendo')
+}

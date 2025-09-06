@@ -4,11 +4,11 @@ import {
   getSiteBySlug,
   getRelatosBySlugsBatch,
   getRelatosCount,
-} from "../lib/sanity";
-import FeaturedCard from "@/components/cards/FeaturedCard";
-import SectionContainer from "@/components/SectionContainer";
-import ViewToggle from "@/components/ViewToggle";
-import ClientRedirect from "@/components/ClientRedirect";
+} from '../lib/sanity'
+import FeaturedCard from '@/components/cards/FeaturedCard'
+import SectionContainer from '@/components/SectionContainer'
+import ViewToggle from '@/components/ViewToggle'
+import ClientRedirect from '@/components/ClientRedirect'
 import ExpandableText from '@/components/ExpandableText'
 import ChronologicalView from '@/components/ChronologicalView'
 import Link from 'next/link'
@@ -16,100 +16,105 @@ import { Rss } from 'lucide-react'
 
 // Interfaces para la nueva API
 interface CardProps {
-  title: string;
-  description: string;
-  imgSrc: string;
-  href: string;
-  authorImgSrc: string;
-  authorName: string;
-  authorHref: string;
-  bgColor: string;
-  tags: string[];
-  publishedAt: string;
-  cardType?: 'featured' | 'story'; // Nuevo campo para tipo de card
-  transtextos?: boolean;
+  title: string
+  description: string
+  imgSrc: string
+  href: string
+  authorImgSrc: string
+  authorName: string
+  authorHref: string
+  bgColor: string
+  tags: string[]
+  publishedAt: string
+  cardType?: 'featured' | 'story' // Nuevo campo para tipo de card
+  transtextos?: boolean
 }
 
 interface HomeContentItem {
-  slug?: string;
-  type: 'relato' | 'microcuento' | 'meme' | 'quote' | 'playlist' | 'series';
-  cardType?: 'featured' | 'story' | 'overlay' | 'quote' | 'playlist' | 'series'; // Agregar quote, playlist y series como opciones
+  slug?: string
+  type: 'relato' | 'microcuento' | 'meme' | 'quote' | 'playlist' | 'series'
+  cardType?: 'featured' | 'story' | 'overlay' | 'quote' | 'playlist' | 'series' // Agregar quote, playlist y series como opciones
   // Para relatos/microcuentos - campos opcionales que sobreescriben Sanity
-  title?: string;
-  description?: string;
-  imgSrc?: string;
-  authorName?: string;
-  authorImgSrc?: string;
-  bgColor?: string;
-  tags?: string[];
-  publishedAt?: string;
-  transtextos?: boolean;
+  title?: string
+  description?: string
+  imgSrc?: string
+  authorName?: string
+  authorImgSrc?: string
+  bgColor?: string
+  tags?: string[]
+  publishedAt?: string
+  transtextos?: boolean
   // Para memes - datos directos
-  image?: string;
-  image_portada?: string;
-  href?: string;
-  overlayText?: string; // Agregar campo para texto del overlay
-  overlay?: boolean; // Si debe mostrar overlay o no
+  image?: string
+  image_portada?: string
+  href?: string
+  overlayText?: string // Agregar campo para texto del overlay
+  overlay?: boolean // Si debe mostrar overlay o no
   // Para quotes - datos específicos
-  quote?: string;
-  author?: string;
-  textColor?: string;
-  authorColor?: string;
+  quote?: string
+  author?: string
+  textColor?: string
+  authorColor?: string
   // Para playlist - datos específicos
   currentTrack?: {
-    name: string;
-    artist: string;
-    albumCover?: string;
-  };
+    name: string
+    artist: string
+    albumCover?: string
+  }
   previousTracks?: Array<{
-    name: string;
-    artist: string;
-    albumCover?: string;
-  }>;
+    name: string
+    artist: string
+    albumCover?: string
+  }>
   // Para series - datos específicos
-  seriesName?: string;
-  seriesSlug?: string;
-  seriesCover?: string;
+  seriesName?: string
+  seriesSlug?: string
+  seriesCover?: string
   latestChapter?: {
-    title: string;
-    slug: string;
-    preview: string;
-    order: number;
-  };
+    title: string
+    slug: string
+    preview: string
+    order: number
+  }
   previousChapters?: Array<{
-    title: string;
-    slug: string;
-    order: number;
-  }>;
+    title: string
+    slug: string
+    order: number
+  }>
   firstChapter?: {
-    title: string;
-    slug: string;
-    order: number;
-  };
+    title: string
+    slug: string
+    order: number
+  }
 }
 
 interface HomeContentResponse {
   meta: {
-    language: string;
-    version: string;
-    lastUpdated: string;
-  };
+    language: string
+    version: string
+    lastUpdated: string
+  }
   content: {
-    title: string;
-    description: string;
-  };
-  items: (CardProps | HomeContentItem)[];
+    title: string
+    description: string
+  }
+  items: (CardProps | HomeContentItem)[]
 }
 
 // Función para procesar markdown básico a HTML
 function processMarkdown(text: string): string {
-  return text
-    // Procesar negritas **texto** -> <strong>texto</strong>
-    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-    // Procesar enlaces [texto](url) -> <a href="url" class="link-styles">texto</a>
-    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300">$1</a>')
-    // Procesar saltos de línea dobles
-    .replace(/\n\n/g, '<br /><br />');
+  return (
+    text
+      // Procesar negritas **texto** -> <strong>texto</strong>
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      // Procesar enlaces [texto](url) -> <a href="url" class="link-styles">texto</a>
+      .replace(
+        /\[([^\]]+)\]\(([^)]+)\)/g,
+        '<a href="$2" class="!text-gray-900 hover:!text-gray-600 dark:!text-gray-50 dark:hover:!text-gray-300">$1</a>'
+      )
+      // Procesar saltos de línea dobles
+      .replace(/\n\n/g, '<br /><br />')
+  )
 }
 
 // Importar las dependencias necesarias para leer archivos
@@ -126,26 +131,30 @@ import PlaylistCard from '@/components/cards/PlaylistCard'
 import SeriesCard from '@/components/cards/SeriesCard'
 
 // Cache para contenido del home (5 minutos)
-const homeContentCache = new Map<string, { data: HomeContentResponse | null, timestamp: number }>()
+const homeContentCache = new Map<string, { data: HomeContentResponse | null; timestamp: number }>()
 const CACHE_DURATION = 5 * 60 * 1000 // 5 minutos
 
 // Función para obtener contenido del home directamente (OPTIMIZADA CON CACHE)
 async function getHomeContent(language: string = 'es'): Promise<HomeContentResponse | null> {
   const cacheKey = `home-content-${language}`
   const cached = homeContentCache.get(cacheKey)
-  
+
   // Si hay cache válido, retornarlo
   if (cached && Date.now() - cached.timestamp < CACHE_DURATION) {
     return cached.data
   }
   try {
     // Leer el archivo JSON correspondiente al idioma
-    const filePath = path.join(process.cwd(), 'data', `home-content${language === 'es' ? '' : `-${language}`}.json`)
-    
+    const filePath = path.join(
+      process.cwd(),
+      'data',
+      `home-content${language === 'es' ? '' : `-${language}`}.json`
+    )
+
     // Si no existe el archivo del idioma específico, usar el español como fallback
     const fallbackPath = path.join(process.cwd(), 'data', 'home-content.json')
     const finalPath = fs.existsSync(filePath) ? filePath : fallbackPath
-    
+
     if (!fs.existsSync(finalPath)) {
       console.error('Archivo de contenido no encontrado:', finalPath)
       return null
@@ -171,7 +180,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
         try {
           if (item.type === 'relato' || item.type === 'microcuento') {
             const sanityData = relatosMap[item.slug]
-            
+
             if (sanityData) {
               const enrichedItem: CardProps = {
                 title: item.title || sanityData.title,
@@ -187,7 +196,7 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
                 cardType: item.cardType || 'featured',
                 transtextos: item.transtextos || false,
               }
-              
+
               return enrichedItem
             }
             return null
@@ -196,21 +205,28 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
             const currentTrack = await getCurrentTrack()
             const latestTracks = await getLatestTracks(3)
             const previousTracks = latestTracks.slice(1)
-            
+
             return {
               ...item,
-              currentTrack: currentTrack ? {
-                name: currentTrack.name,
-                artist: currentTrack.artist,
-                albumCover: currentTrack.albumCover
-              } : null,
-              previousTracks: previousTracks.map(track => ({
+              currentTrack: currentTrack
+                ? {
+                    name: currentTrack.name,
+                    artist: currentTrack.artist,
+                    albumCover: currentTrack.albumCover,
+                  }
+                : null,
+              previousTracks: previousTracks.map((track) => ({
                 name: track.name,
                 artist: track.artist,
-                albumCover: track.albumCover
-              }))
+                albumCover: track.albumCover,
+              })),
             } as HomeContentItem
-          } else if (item.type === 'meme' || item.type === 'quote' || item.type === 'playlist' || item.type === 'series') {
+          } else if (
+            item.type === 'meme' ||
+            item.type === 'quote' ||
+            item.type === 'playlist' ||
+            item.type === 'series'
+          ) {
             // Para memes, quotes, playlists y series, usar los datos directamente del JSON
             return item as HomeContentItem
           }
@@ -223,37 +239,50 @@ async function getHomeContent(language: string = 'es'): Promise<HomeContentRespo
     )
 
     // Filtrar items nulos
-    const validItems = processedItems.filter(item => item !== null) as (CardProps | HomeContentItem)[]
+    const validItems = processedItems.filter((item) => item !== null) as (
+      | CardProps
+      | HomeContentItem
+    )[]
 
     const result = {
       meta: homeData.meta,
       content: homeData.content,
-      items: validItems
+      items: validItems,
     }
 
     // Guardar en cache
     homeContentCache.set(cacheKey, { data: result, timestamp: Date.now() })
-    
-    return result
 
+    return result
   } catch (error) {
     console.error('Error obteniendo contenido del home:', error)
     const errorResult = null
     // Guardar error en cache por menos tiempo (1 minuto)
-    homeContentCache.set(cacheKey, { data: errorResult, timestamp: Date.now() - CACHE_DURATION + 60000 })
+    homeContentCache.set(cacheKey, {
+      data: errorResult,
+      timestamp: Date.now() - CACHE_DURATION + 60000,
+    })
     return errorResult
   }
 }
 
 // Componente para renderizar el card apropiado según el tipo
-function RenderCard({ item, index, language }: { item: CardProps | HomeContentItem, index: number, language: string }) {
-  const isMeme = 'image' in item && 'type' in item && item.type === 'meme';
-  const isQuote = 'quote' in item && 'type' in item && item.type === 'quote';
-  const isPlaylist = 'currentTrack' in item && 'type' in item && item.type === 'playlist';
-  const isSeries = 'seriesName' in item && 'type' in item && item.type === 'series';
-  
+function RenderCard({
+  item,
+  index,
+  language,
+}: {
+  item: CardProps | HomeContentItem
+  index: number
+  language: string
+}) {
+  const isMeme = 'image' in item && 'type' in item && item.type === 'meme'
+  const isQuote = 'quote' in item && 'type' in item && item.type === 'quote'
+  const isPlaylist = 'currentTrack' in item && 'type' in item && item.type === 'playlist'
+  const isSeries = 'seriesName' in item && 'type' in item && item.type === 'series'
+
   if (isMeme) {
-    const memeItem = item as HomeContentItem;
+    const memeItem = item as HomeContentItem
     return (
       <SimpleMemeItem
         title={memeItem.title}
@@ -268,11 +297,11 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         overlayText={memeItem.overlayText}
         overlay={memeItem.overlay}
       />
-    );
+    )
   }
 
   if (isQuote) {
-    const quoteItem = item as HomeContentItem;
+    const quoteItem = item as HomeContentItem
     return (
       <QuoteCard
         quote={quoteItem.quote!}
@@ -283,11 +312,11 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         href={quoteItem.href}
         language={language}
       />
-    );
+    )
   }
 
   if (isPlaylist) {
-    const playlistItem = item as HomeContentItem;
+    const playlistItem = item as HomeContentItem
     return (
       <PlaylistCard
         currentTrack={playlistItem.currentTrack!}
@@ -295,11 +324,11 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         language={language}
         href={playlistItem.href}
       />
-    );
+    )
   }
 
   if (isSeries) {
-    const seriesItem = item as HomeContentItem;
+    const seriesItem = item as HomeContentItem
     return (
       <SeriesCard
         seriesName={seriesItem.seriesName!}
@@ -313,12 +342,12 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         backgroundColor={seriesItem.bgColor || '#ee686b'}
         textColor="#ffffff"
       />
-    );
+    )
   }
 
   // Para relatos, usar el tipo de card especificado
-  const cardItem = item as CardProps;
-  const cardType = cardItem.cardType || 'featured';
+  const cardItem = item as CardProps
+  const cardType = cardItem.cardType || 'featured'
 
   if (cardType === 'story') {
     return (
@@ -329,12 +358,12 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
         summary={cardItem.description}
         tags={cardItem.tags}
         author={{
-          name: cardItem.authorName
+          name: cardItem.authorName,
         }}
         image={cardItem.imgSrc}
         bgColor={cardItem.bgColor}
       />
-    );
+    )
   }
 
   // Default: usar FeaturedCard (card original)
@@ -352,7 +381,7 @@ function RenderCard({ item, index, language }: { item: CardProps | HomeContentIt
       publishedAt={cardItem.publishedAt}
       transtextos={cardItem.transtextos}
     />
-  );
+  )
 }
 
 interface PageProps {
@@ -363,9 +392,9 @@ export default async function Page({ searchParams }: PageProps) {
   // Leer idioma desde headers del middleware, fallback a searchParams y luego a 'es'
   const headersList = await headers()
   const langFromHeader = headersList.get('x-locale')
-  const resolvedSearchParams = await searchParams;
-  const language = langFromHeader || (resolvedSearchParams.lang as string) || 'es';
-  
+  const resolvedSearchParams = await searchParams
+  const language = langFromHeader || (resolvedSearchParams.lang as string) || 'es'
+
   // OPTIMIZACIÓN: Hacer las queries principales en paralelo con manejo robusto de errores
   let homeContent: HomeContentResponse | null = null
   let totalRelatos = 0
@@ -377,9 +406,9 @@ export default async function Page({ searchParams }: PageProps) {
       getHomeContent(language).catch(() => null),
       getRelatosCount().catch(() => 0), // OPTIMIZADA: Solo obtiene el count, no todos los datos
       getSiteBySlug('transtextos').catch(() => null),
-      getAllRelatosForChronologicalBySite('transtextos').catch(() => []) // Solo para Transtextos
+      getAllRelatosForChronologicalBySite('transtextos').catch(() => []), // Solo para Transtextos
     ])
-    
+
     homeContent = results[0]
     totalRelatos = results[1]
     siteInfo = results[2]
@@ -388,16 +417,16 @@ export default async function Page({ searchParams }: PageProps) {
     console.error('Error cargando datos del home:', error)
     // Los valores por defecto ya están asignados arriba
   }
-  
-  const latestTranstextos = allRelatosTranstextos.slice(0, 5);
-  const currentPage = 1;
+
+  const latestTranstextos = allRelatosTranstextos.slice(0, 5)
+  const currentPage = 1
 
   // Si no pudimos obtener el contenido del home, mostrar un fallback
   if (!homeContent) {
     return (
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-50">
             Error cargando contenido
           </h1>
           <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
@@ -405,28 +434,25 @@ export default async function Page({ searchParams }: PageProps) {
           </p>
         </div>
       </SectionContainer>
-    );
+    )
   }
 
   // Los items ya vienen en el orden correcto desde el JSON
-  const masonryItems = homeContent.items;
+  const masonryItems = homeContent.items
 
   return (
     <>
       <ClientRedirect />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1
-            className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 
-                      sm:text-3xl sm:leading-9 md:text-5xl md:leading-12"
-          >
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-50">
             {homeContent.content.title}
           </h1>
-          <ExpandableText previewLines={2} className="prose dark:prose-invert max-w-none mb-4">
-            <div 
-              className="prose dark:prose-invert max-w-none mb-4 text-lg leading-7 text-gray-700 dark:text-gray-300"
-              dangerouslySetInnerHTML={{ 
-                __html: processMarkdown(homeContent.content.description)
+          <ExpandableText previewLines={2} className="prose dark:prose-invert mb-4 max-w-none">
+            <div
+              className="prose dark:prose-invert mb-4 max-w-none text-lg leading-7 text-gray-700 dark:text-gray-300"
+              dangerouslySetInnerHTML={{
+                __html: processMarkdown(homeContent.content.description),
               }}
             />
           </ExpandableText>
@@ -449,61 +475,70 @@ export default async function Page({ searchParams }: PageProps) {
           </div>
 
           {/* Grid en tablet/desktop (mantiene orden visual) */}
-          <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-6 items-stretch">
+          <div className="hidden items-stretch gap-6 md:grid md:grid-cols-2 lg:grid-cols-3">
             {masonryItems.map((item, index) => (
               <div key={`item-${index}`} className="h-full">
                 <RenderCard item={item} index={index} language={language} />
               </div>
             ))}
           </div>
-
         </div>
       </SectionContainer>
 
       <SectionContainer>
         {/* Contenido del feed con fondo blanco */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow-sm border border-gray-200 dark:border-gray-700 p-6 mb-12">
+        <div className="mb-12 rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800">
           {/* Título con líneas decorativas */}
           <div className="space-y-2 pt-2 pb-8 md:space-y-5">
             <div className="flex items-center justify-center gap-6">
               {/* Línea doble izquierda */}
-              <div className="flex-1 flex items-center justify-end">
+              <div className="flex flex-1 items-center justify-end">
                 <div className="w-full max-w-xs">
-                  <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                  <div className="mb-1 border-t-2 border-gray-900 dark:border-gray-50"></div>
                   <div className="border-t border-gray-900 dark:border-gray-50"></div>
                 </div>
               </div>
-              
+
               {/* Título central */}
               <div className="text-center">
-                <h1 className="text-2xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-4xl sm:leading-9 md:text-6xl md:leading-12 whitespace-nowrap">
+                <h1 className="text-2xl leading-8 font-extrabold tracking-tight whitespace-nowrap text-gray-900 sm:text-4xl sm:leading-9 md:text-6xl md:leading-12 dark:text-gray-50">
                   {siteInfo?.title || 'Transtextos'}
                 </h1>
-                <p className="text-sm text-gray-600 dark:text-gray-400 font-medium tracking-wide uppercase mt-1">
+                <p className="mt-1 text-sm font-medium tracking-wide text-gray-600 uppercase dark:text-gray-400">
                   Feed De Narrativa
                 </p>
               </div>
-              
+
               {/* Línea doble derecha con ícono RSS */}
-              <div className="flex-1 flex items-center justify-start gap-4">
+              <div className="flex flex-1 items-center justify-start gap-4">
                 <div className="w-full max-w-xs">
-                  <div className="border-t-2 border-gray-900 dark:border-gray-50 mb-1"></div>
+                  <div className="mb-1 border-t-2 border-gray-900 dark:border-gray-50"></div>
                   <div className="border-t border-gray-900 dark:border-gray-50"></div>
                 </div>
-                <Link href="/transtextos" className="flex-shrink-0 hover:scale-110 transition-transform">
-                  <Rss className="w-8 h-8" style={{ color: '#f26522' }} />
+                <Link
+                  href="/transtextos"
+                  className="flex-shrink-0 transition-transform hover:scale-110"
+                >
+                  <Rss className="h-8 w-8" style={{ color: '#f26522' }} />
                 </Link>
               </div>
             </div>
           </div>
-          <ChronologicalView items={latestTranstextos} itemsPerPage={10} currentPage={currentPage} />
-          <div className="mt-8 pt-6 border-t border-gray-200 dark:border-gray-700 flex justify-center">
-            <Link href="/transtextos" className="inline-block px-6 py-3 rounded-lg bg-black text-white hover:bg-gray-800 transition-colors font-medium">
+          <ChronologicalView
+            items={latestTranstextos}
+            itemsPerPage={10}
+            currentPage={currentPage}
+          />
+          <div className="mt-8 flex justify-center border-t border-gray-200 pt-6 dark:border-gray-700">
+            <Link
+              href="/transtextos"
+              className="inline-block rounded-lg bg-black px-6 py-3 font-medium text-white transition-colors hover:bg-gray-800"
+            >
               Ver todos
             </Link>
           </div>
         </div>
       </SectionContainer>
     </>
-  );
+  )
 }

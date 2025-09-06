@@ -2,7 +2,13 @@
 
 import { MetadataRoute } from 'next'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllRelatos, getAllArticulos, getAllAutores, getAllMicrocuentos, getAllSeries } from '../lib/sanity'
+import {
+  getAllRelatos,
+  getAllArticulos,
+  getAllAutores,
+  getAllMicrocuentos,
+  getAllSeries,
+} from '../lib/sanity'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   // Asegurarse de que la URL no termine con slash
@@ -80,7 +86,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     {
       url: `${siteUrl}/horoscopo/cancer`, // página de horóscopo
       lastModified: nowIso,
-    },  
+    },
     {
       url: `${siteUrl}/horoscopo/leo`, // página de horóscopo
       lastModified: nowIso,
@@ -142,7 +148,9 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const microcuentosRoutes: MetadataRoute.Sitemap = microcuentos.map((microcuento) => ({
     url: `${siteUrl}/microcuento/${microcuento.href.split('/').pop()}`,
-    lastModified: microcuento.publishedAt ? new Date(microcuento.publishedAt).toISOString() : nowIso,
+    lastModified: microcuento.publishedAt
+      ? new Date(microcuento.publishedAt).toISOString()
+      : nowIso,
     changeFrequency: 'monthly',
   }))
 
@@ -153,5 +161,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   }))
 
   // Unir todas las rutas en el sitemap
-  return [...routes, ...relatosRoutes, ...articulosRoutes, ...autoresRoutes, ...microcuentosRoutes, ...seriesRoutes]
+  return [
+    ...routes,
+    ...relatosRoutes,
+    ...articulosRoutes,
+    ...autoresRoutes,
+    ...microcuentosRoutes,
+    ...seriesRoutes,
+  ]
 }

@@ -50,9 +50,9 @@ export default async function ContactoPage() {
 
   const paragraphs = isEn
     ? [
-        'If you are writing a text, looking for literary editing or wondering how to illustrate your story with Marcapágina\'s visual style, this is a good place to start. We also offer critical readings, visual packages for social media and broader editorial collaborations.',
+        "If you are writing a text, looking for literary editing or wondering how to illustrate your story with Marcapágina's visual style, this is a good place to start. We also offer critical readings, visual packages for social media and broader editorial collaborations.",
         'Marcapágina is not just a digital magazine. It is also a showcase of what we can build. If you like the result and want to contact us to edit your book, develop a similar application, design a platform to publish your own stories or create a visual identity from scratch, write us.',
-        'We work on the design and development of projects that combine narrative, aesthetics and technology: from brochures and magazines to cultural campaigns or web applications. If you have an idea in mind, or just want to tell us something, we\'re here.',
+        "We work on the design and development of projects that combine narrative, aesthetics and technology: from brochures and magazines to cultural campaigns or web applications. If you have an idea in mind, or just want to tell us something, we're here.",
       ]
     : [
         'Si estás escribiendo un texto, buscando una corrección literaria o imaginando cómo ilustrar tu historia con el estilo gráfico de Marcapágina, este es un buen lugar para empezar. También ofrecemos lecturas críticas, paquetes visuales para redes y colaboraciones editoriales más amplias.',

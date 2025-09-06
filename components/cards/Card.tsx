@@ -26,7 +26,7 @@ const Card = ({
     <div
       className={`${
         imgSrc && 'h-full'
-      } relative overflow-hidden rounded-md border border-black border-4 bg-white dark:border-black dark:bg-gray-900`}
+      } relative overflow-hidden rounded-md border border-4 border-black bg-white dark:border-black dark:bg-gray-900`}
     >
       {imgSrc &&
         (href ? (
@@ -41,10 +41,8 @@ const Card = ({
               />
             </Link>
             {authorImgSrc && (
-              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform flex flex-col items-center">
-                <Link
-                    href={authorHref ?? '/'}
-                >
+              <div className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 translate-y-1/2 transform flex-col items-center">
+                <Link href={authorHref ?? '/'}>
                   <Image
                     alt="Autor"
                     src={authorImgSrc}
@@ -56,7 +54,7 @@ const Card = ({
                 {authorName && (
                   <Link
                     href={authorHref ?? '/'}
-                    className="mt-2 text-base font-medium text-gray-900 dark:text-gray-100 hover:underline"
+                    className="mt-2 text-base font-medium text-gray-900 hover:underline dark:text-gray-100"
                   >
                     {authorName}
                   </Link>
@@ -74,7 +72,7 @@ const Card = ({
               height={306}
             />
             {authorImgSrc && (
-              <div className="absolute bottom-0 left-1/2 z-10 -translate-x-1/2 translate-y-1/2 transform flex flex-col items-center">
+              <div className="absolute bottom-0 left-1/2 z-10 flex -translate-x-1/2 translate-y-1/2 transform flex-col items-center">
                 <Image
                   alt="Autor"
                   src={authorImgSrc}
@@ -85,7 +83,7 @@ const Card = ({
                 {authorName && (
                   <Link
                     href={authorHref ?? '/'}
-                    className="mt-2 text-base font-medium text-gray-900 dark:text-gray-100 hover:underline"
+                    className="mt-2 text-base font-medium text-gray-900 hover:underline dark:text-gray-100"
                   >
                     {authorName}
                   </Link>
@@ -109,9 +107,7 @@ const Card = ({
             title
           )}
         </h2>
-        <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">
-          {description}
-        </p>
+        <p className="prose mb-3 max-w-none text-gray-500 dark:text-gray-400">{description}</p>
         {href && (
           <Link
             href={href}

@@ -1,17 +1,7 @@
-"use client"
+'use client'
 
-import * as React from "react"
-import {
-  Home,
-  Users,
-  BookOpen,
-  Heart,
-  Settings,
-  LifeBuoy,
-  Send,
-  User,
-  LogOut,
-} from "lucide-react"
+import * as React from 'react'
+import { Home, Users, BookOpen, Heart, Settings, LifeBuoy, Send, User, LogOut } from 'lucide-react'
 
 import {
   Sidebar,
@@ -27,7 +17,7 @@ import {
   SidebarMenuSub,
   SidebarMenuSubButton,
   SidebarMenuSubItem,
-} from "@/components/ui/sidebar"
+} from '@/components/ui/sidebar'
 import { useSession, signOut } from 'next-auth/react'
 import Link from 'next/link'
 import Avatar from 'react-avatar'
@@ -36,59 +26,59 @@ import Avatar from 'react-avatar'
 const data = {
   navMain: [
     {
-      title: "Dashboard",
-    url: "/biblioteca-personal",
+      title: 'Dashboard',
+      url: '/biblioteca-personal',
       icon: Home,
     },
     {
-      title: "Autores",
-      url: "/dashboard/autores",
+      title: 'Autores',
+      url: '/dashboard/autores',
       icon: Users,
       items: [
         {
-          title: "Seguidos",
-          url: "/dashboard/autores/seguidos",
+          title: 'Seguidos',
+          url: '/dashboard/autores/seguidos',
         },
         {
-          title: "Explorar",
-          url: "/dashboard/autores/explorar",
+          title: 'Explorar',
+          url: '/dashboard/autores/explorar',
         },
       ],
     },
     {
-      title: "Lectura",
-      url: "/dashboard/lectura",
+      title: 'Lectura',
+      url: '/dashboard/lectura',
       icon: BookOpen,
       items: [
         {
-          title: "Leídos",
-          url: "/dashboard/lectura/leidos",
+          title: 'Leídos',
+          url: '/dashboard/lectura/leidos',
         },
         {
-          title: "Pendientes",
-          url: "/dashboard/lectura/pendientes",
+          title: 'Pendientes',
+          url: '/dashboard/lectura/pendientes',
         },
         {
-          title: "Favoritos",
-          url: "/dashboard/lectura/favoritos",
+          title: 'Favoritos',
+          url: '/dashboard/lectura/favoritos',
         },
       ],
     },
     {
-      title: "Mis Favoritos",
-      url: "/dashboard/favoritos",
+      title: 'Mis Favoritos',
+      url: '/dashboard/favoritos',
       icon: Heart,
     },
   ],
   navSecondary: [
     {
-      title: "Soporte",
-      url: "#",
+      title: 'Soporte',
+      url: '#',
       icon: LifeBuoy,
     },
     {
-      title: "Feedback",
-      url: "#",
+      title: 'Feedback',
+      url: '#',
       icon: Send,
     },
   ],
@@ -103,14 +93,12 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
         <SidebarMenu>
           <SidebarMenuItem>
             <SidebarMenuButton size="lg" asChild>
-            <Link href="/biblioteca-personal">
-                <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-[var(--color-accent)] text-sidebar-primary-foreground">
-                  <span className="text-black font-bold">://</span>
+              <Link href="/biblioteca-personal">
+                <div className="text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg bg-[var(--color-accent)]">
+                  <span className="font-bold text-black">://</span>
                 </div>
                 <div className="grid flex-1 text-left text-sm leading-tight">
-                  <span className="truncate font-semibold">
-                    Marca Página
-                  </span>
+                  <span className="truncate font-semibold">Marca Página</span>
                   <span className="truncate text-xs">Dashboard</span>
                 </div>
               </Link>
@@ -174,11 +162,11 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
               <div className="flex items-center gap-2 p-2">
                 {session?.user ? (
                   <>
-                    <Avatar 
-                      name={session.user.name || session.user.email || 'Usuario'} 
-                      src={session.user.image || undefined} 
-                      size="32" 
-                      round 
+                    <Avatar
+                      name={session.user.name || session.user.email || 'Usuario'}
+                      src={session.user.image || undefined}
+                      size="32"
+                      round
                       textSizeRatio={2}
                       color="#FAFF00"
                     />
@@ -186,13 +174,13 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
                       <span className="truncate font-semibold">
                         {session.user.name || 'Usuario'}
                       </span>
-                      <span className="truncate text-xs text-muted-foreground">
+                      <span className="text-muted-foreground truncate text-xs">
                         {session.user.email}
                       </span>
                     </div>
                     <button
                       onClick={() => signOut()}
-                      className="ml-auto p-1 rounded hover:bg-accent"
+                      className="hover:bg-accent ml-auto rounded p-1"
                     >
                       <LogOut className="h-4 w-4" />
                     </button>

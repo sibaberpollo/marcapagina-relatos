@@ -4,7 +4,8 @@ import HoroscopoClient from '../HoroscopoClient'
 export async function generateMetadata() {
   return genPageMetadata({
     title: 'Horóscopo Cáncer - Franz Kafka: Archivo Julio 2025',
-    description: 'Horóscopo literario de Cáncer con Franz Kafka. Archivo del mes de julio 2025 con predicciones astrológicas y contenido narrativo.',
+    description:
+      'Horóscopo literario de Cáncer con Franz Kafka. Archivo del mes de julio 2025 con predicciones astrológicas y contenido narrativo.',
     openGraph: {
       images: [
         {
@@ -17,11 +18,13 @@ export async function generateMetadata() {
     },
     twitter: {
       card: 'summary_large_image',
-      images: ['https://res.cloudinary.com/dx98vnos1/image/upload/v1752500593/horoscopo-cancer_kfnera.jpg'],
+      images: [
+        'https://res.cloudinary.com/dx98vnos1/image/upload/v1752500593/horoscopo-cancer_kfnera.jpg',
+      ],
     },
   })
 }
 
 export default function HoroscopoCancerPage() {
   return <HoroscopoClient signo="cancer" />
-} 
+}

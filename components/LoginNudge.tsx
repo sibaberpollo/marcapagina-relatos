@@ -13,11 +13,14 @@ export default function LoginNudge({ slug }: Props) {
   const { status } = useSession()
   const [open, setOpen] = useState(false)
 
-  const STORAGE_KEYS = useMemo(() => ({
-    pv: 'mp_pv_count',
-    ms: 'mp_read_ms_total',
-    last: 'mp_last_login_nudge',
-  }), [])
+  const STORAGE_KEYS = useMemo(
+    () => ({
+      pv: 'mp_pv_count',
+      ms: 'mp_read_ms_total',
+      last: 'mp_last_login_nudge',
+    }),
+    []
+  )
 
   // Incrementar PV al montar en relatos
   useEffect(() => {
@@ -26,7 +29,7 @@ export default function LoginNudge({ slug }: Props) {
       const pv = parseInt(localStorage.getItem(STORAGE_KEYS.pv) || '0', 10) || 0
       localStorage.setItem(STORAGE_KEYS.pv, String(pv + 1))
     } catch (_) {}
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   // Cronómetro de lectura (visible only)
@@ -88,13 +91,5 @@ export default function LoginNudge({ slug }: Props) {
     } catch (_) {}
   }, [status, STORAGE_KEYS])
 
-  return (
-    <LoginModal
-      open={open}
-      onClose={() => setOpen(false)}
-      title="¡Gracias por leer!"
-    />
-  )
+  return <LoginModal open={open} onClose={() => setOpen(false)} title="¡Gracias por leer!" />
 }
-
-

@@ -15,9 +15,9 @@ export async function generateMetadata() {
   const headersList = await headers()
   const pathname = headersList.get('x-pathname') || ''
   const locale = getLocaleFromHeaders(headersList)
-  
+
   const pageData = await getMemePageData(locale)
-  
+
   return genPageMetadata({
     title: pageData.title,
     description: pageData.description,
@@ -27,29 +27,23 @@ export async function generateMetadata() {
 export default async function MemesPage() {
   const headersList = await headers()
   const locale = getLocaleFromHeaders(headersList)
-  
+
   const memeItems = await getMemeItems(locale)
   const pageData = await getMemePageData(locale)
 
   const periodIndex = pageData.description.indexOf('. ')
   const firstPart =
     periodIndex !== -1 ? pageData.description.slice(0, periodIndex + 1) : pageData.description
-  const restPart =
-    periodIndex !== -1 ? pageData.description.slice(periodIndex + 1).trimStart() : ''
+  const restPart = periodIndex !== -1 ? pageData.description.slice(periodIndex + 1).trimStart() : ''
 
   return (
     <SectionContainer>
       <div className="py-8">
         <PageTitle>{pageData.title}</PageTitle>
-        <ExpandableText
-          previewLines={1}
-          className="prose dark:prose-invert max-w-none mb-4"
-        >
-          <p className="mt-2 text-lg text-muted-foreground">{firstPart}</p>
-          {restPart && (
-            <p className="mt-2 text-lg text-muted-foreground">{restPart}</p>
-          )}
-          <p className="mt-2 text-lg text-muted-foreground">{pageData.subtitle}</p>
+        <ExpandableText previewLines={1} className="prose dark:prose-invert mb-4 max-w-none">
+          <p className="text-muted-foreground mt-2 text-lg">{firstPart}</p>
+          {restPart && <p className="text-muted-foreground mt-2 text-lg">{restPart}</p>}
+          <p className="text-muted-foreground mt-2 text-lg">{pageData.subtitle}</p>
         </ExpandableText>
         <div className="mt-8">
           <MemeGallery items={memeItems} />

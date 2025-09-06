@@ -6,7 +6,7 @@ const GMAIL_APP_PASSWORD = process.env.GMAIL_APP_PASSWORD!
 
 const transporter = nodemailer.createTransport({
   service: 'gmail',
-  auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD }
+  auth: { user: GMAIL_USER, pass: GMAIL_APP_PASSWORD },
 })
 
 export async function POST(req: NextRequest) {
@@ -33,9 +33,9 @@ export async function POST(req: NextRequest) {
                 <li><a href="https://www.threads.com/@marcapagina.page" target="_blank">Threads</a></li>
                 <li><a href="https://bsky.app/profile/marcapagina.bsky.social" target="_blank">Bluesky</a></li>
               </ul>
-              <p>— MarcaPagina</p>`
+              <p>— MarcaPagina</p>`,
       })
-      .catch(err => console.error('Error enviando confirmación de contacto:', err))
+      .catch((err) => console.error('Error enviando confirmación de contacto:', err))
 
     // Correo interno
     await transporter.sendMail({
@@ -44,7 +44,7 @@ export async function POST(req: NextRequest) {
       cc: 'pino.jose@gmail.com',
       replyTo: email,
       subject: `Contacto: ${motivo} - ${nombre}`,
-      text: `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono || 'No proporcionado'}\nMotivo: ${motivo}\n\n${mensaje}`
+      text: `Nombre: ${nombre}\nEmail: ${email}\nTeléfono: ${telefono || 'No proporcionado'}\nMotivo: ${motivo}\n\n${mensaje}`,
     })
 
     return NextResponse.json({ message: 'Mensaje enviado correctamente' })

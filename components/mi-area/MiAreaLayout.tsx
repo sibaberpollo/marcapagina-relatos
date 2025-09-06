@@ -12,5 +12,3 @@ export default function MiAreaLayout({ children }: { children: ReactNode }) {
     </div>
   )
 }
-
-

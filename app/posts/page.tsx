@@ -31,15 +31,15 @@ export const metadata: Metadata = {
 async function getAllPosts(lang: string = 'es'): Promise<Post[]> {
   try {
     const postsDirectory = path.join(process.cwd(), 'data', 'posts', lang)
-    
+
     if (!fs.existsSync(postsDirectory)) {
       // Si no existe el directorio del idioma, usar español como fallback
       const fallbackDirectory = path.join(process.cwd(), 'data', 'posts', 'es')
       if (fs.existsSync(fallbackDirectory)) {
         const fallbackFiles = fs.readdirSync(fallbackDirectory)
         return fallbackFiles
-          .filter(file => file.endsWith('.json'))
-          .map(file => {
+          .filter((file) => file.endsWith('.json'))
+          .map((file) => {
             const filePath = path.join(fallbackDirectory, file)
             const fileContents = fs.readFileSync(filePath, 'utf8')
             return JSON.parse(fileContents)
@@ -48,11 +48,11 @@ async function getAllPosts(lang: string = 'es'): Promise<Post[]> {
       }
       return []
     }
-    
+
     const files = fs.readdirSync(postsDirectory)
     return files
-      .filter(file => file.endsWith('.json'))
-      .map(file => {
+      .filter((file) => file.endsWith('.json'))
+      .map((file) => {
         const filePath = path.join(postsDirectory, file)
         const fileContents = fs.readFileSync(filePath, 'utf8')
         return JSON.parse(fileContents)
@@ -74,14 +74,17 @@ export default async function PostsPage() {
     const date = new Date(dateString)
     return date.toLocaleDateString('es-ES', {
       year: 'numeric',
-      month: 'long', 
-      day: 'numeric'
+      month: 'long',
+      day: 'numeric',
     })
   }
 
   return (
     <>
-      <PageSEO title={`Posts - ${siteMetadata.title}`} description="Todos nuestros posts y artículos" />
+      <PageSEO
+        title={`Posts - ${siteMetadata.title}`}
+        description="Todos nuestros posts y artículos"
+      />
       <SectionContainer>
         <div className="divide-y divide-gray-200 dark:divide-gray-700">
           <div className="space-y-2 pt-6 pb-8 md:space-y-5">
@@ -90,7 +93,7 @@ export default async function PostsPage() {
               Todos nuestros posts y artículos
             </p>
           </div>
-          
+
           <div className="grid gap-8 pt-8">
             {posts.length === 0 ? (
               <p className="text-gray-500 dark:text-gray-400">No hay posts disponibles.</p>
@@ -100,27 +103,27 @@ export default async function PostsPage() {
                   <div className="space-y-4">
                     <div className="space-y-2">
                       <Link href={`/post/${post.slug}`} className="block">
-                        <h2 className="text-2xl font-bold leading-8 tracking-tight text-gray-900 group-hover:text-primary-600 dark:text-gray-100 dark:group-hover:text-primary-400 transition-colors">
+                        <h2 className="group-hover:text-primary-600 dark:group-hover:text-primary-400 text-2xl leading-8 font-bold tracking-tight text-gray-900 transition-colors dark:text-gray-100">
                           {post.title}
                         </h2>
                       </Link>
-                      
+
                       <div className="flex flex-wrap gap-2">
                         {post.tags.map((tag) => (
                           <span
                             key={tag}
-                            className="inline-flex items-center px-2 py-1 rounded-full text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-800 dark:text-gray-200"
+                            className="inline-flex items-center rounded-full bg-gray-100 px-2 py-1 text-xs font-medium text-gray-800 dark:bg-gray-800 dark:text-gray-200"
                           >
                             {tag}
                           </span>
                         ))}
                       </div>
                     </div>
-                    
+
                     <div className="prose max-w-none text-gray-500 dark:text-gray-400">
                       <p>{post.description}</p>
                     </div>
-                    
+
                     <div className="flex items-center justify-between">
                       <div className="flex items-center space-x-3">
                         <span className="text-sm text-gray-500 dark:text-gray-400">
@@ -131,20 +134,20 @@ export default async function PostsPage() {
                           {formatDate(post.publishedAt)}
                         </time>
                       </div>
-                      
+
                       <span className="text-sm text-gray-500 dark:text-gray-400">
                         {post.readingTime}
                       </span>
                     </div>
                   </div>
-                  
+
                   {post.image && (
                     <div className="mt-4">
                       <Link href={`/post/${post.slug}`}>
                         <img
                           src={post.image}
                           alt={post.title}
-                          className="w-full h-48 object-cover rounded-lg group-hover:opacity-75 transition-opacity"
+                          className="h-48 w-full rounded-lg object-cover transition-opacity group-hover:opacity-75"
                         />
                       </Link>
                     </div>
@@ -157,4 +160,4 @@ export default async function PostsPage() {
       </SectionContainer>
     </>
   )
-} 
+}

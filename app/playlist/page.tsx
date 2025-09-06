@@ -11,13 +11,13 @@ function getLocaleFromHeaders(headers: Headers): string {
 export async function generateMetadata() {
   const headersList = await headers()
   const locale = getLocaleFromHeaders(headersList)
-  
+
   const playlistData = await getPlaylistContent(locale)
-  
+
   if (!playlistData) {
     return genPageMetadata({
       title: 'Playlist | Marcapágina',
-      description: 'Playlist literaria de Marcapágina'
+      description: 'Playlist literaria de Marcapágina',
     })
   }
 
@@ -46,14 +46,14 @@ export async function generateMetadata() {
 export default async function PlaylistPage() {
   const headersList = await headers()
   const locale = getLocaleFromHeaders(headersList)
-  
+
   const playlistData = await getPlaylistContent(locale)
-  
+
   if (!playlistData) {
     return (
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">
-          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 dark:text-gray-50 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12">
+          <h1 className="text-xl leading-8 font-extrabold tracking-tight text-gray-900 sm:text-3xl sm:leading-9 md:text-5xl md:leading-12 dark:text-gray-50">
             Error cargando playlist
           </h1>
           <p className="text-lg leading-7 text-gray-700 dark:text-gray-300">
@@ -73,14 +73,12 @@ export default async function PlaylistPage() {
         <div className="space-y-8 divide-y divide-gray-200 dark:divide-gray-700">
           <div className="pt-8 pb-8">
             <PageTitle>{content.title}</PageTitle>
-            <p className="mt-2 text-lg text-muted-foreground">
-              {content.description}
-            </p>
+            <p className="text-muted-foreground mt-2 text-lg">{content.description}</p>
 
             <div className="mt-8 space-y-6">
               <div className="aspect-video">
                 <iframe
-                  className="w-full h-full rounded-md"
+                  className="h-full w-full rounded-md"
                   src={embeds.youtube.url}
                   title={embeds.youtube.title}
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
@@ -91,7 +89,7 @@ export default async function PlaylistPage() {
               </div>
               <div className="aspect-[16/10]">
                 <iframe
-                  className="w-full h-full rounded-md"
+                  className="h-full w-full rounded-md"
                   src={embeds.spotify.url}
                   title={embeds.spotify.title}
                   allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
@@ -108,12 +106,12 @@ export default async function PlaylistPage() {
 
             <section className="mt-12 space-y-4">
               <h2 className="text-xl font-semibold">{content.sections.featured.title}</h2>
-              <ul className="list-disc list-inside space-y-1">
+              <ul className="list-inside list-disc space-y-1">
                 {tracks.map((track, index) => (
                   <li key={track.id}>
                     {index === 0 && track.isFeatured ? (
-                      <div className="bg-gray-100 dark:bg-gray-800 rounded-md px-3 py-1 inline-block">
-                        🔥 <strong>{track.name}</strong> – {track.artist} 
+                      <div className="inline-block rounded-md bg-gray-100 px-3 py-1 dark:bg-gray-800">
+                        🔥 <strong>{track.name}</strong> – {track.artist}
                         {track.isNew && <small> ({isEn ? 'new' : 'nuevo'})</small>}
                       </div>
                     ) : (
@@ -127,10 +125,10 @@ export default async function PlaylistPage() {
               </ul>
             </section>
 
-            <div 
+            <div
               className="mt-12"
-              dangerouslySetInnerHTML={{ 
-                __html: processMarkdown(content.footer)
+              dangerouslySetInnerHTML={{
+                __html: processMarkdown(content.footer),
               }}
             />
           </div>
