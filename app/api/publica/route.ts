@@ -99,7 +99,7 @@ export async function POST(req: NextRequest) {
       const infoInternal = await transporter.sendMail({
         from: `MarcaPagina <${GMAIL_USER}>`,
         to: GMAIL_USER,
-        cc: 'pino.jose@gmail.com, transtextos@gmail.com, mirco.ferri.yv@gmail.com, joacofe@gmail.com',
+        cc: 'pino.jose@gmail.com, transtextos@gmail.com, luis.garmendia67@gmail.com, mirco.ferri.yv@gmail.com, joacofe@gmail.com',
         replyTo: email,
         subject: `Nuevo relato para Transtextos de ${email}`,
         text: `De: ${email}\n\n${description}`,
