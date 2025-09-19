@@ -1,6 +1,6 @@
 'use client'
 
-import Link from '@/components/Link'
+import Link from '@/components/common/Link'
 
 interface RelatoItem {
   title: string

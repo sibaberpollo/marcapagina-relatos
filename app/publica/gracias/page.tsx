@@ -1,7 +1,7 @@
 // File: tailwind-nextjs-starter-blog/app/publica/gracias/page.tsx
 
-import Image from '@/components/Image'
-import SocialIcon from '@/components/social-icons'
+import Image from '@/components/common/Image'
+import SocialIcon from '@/components/common/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import Link from 'next/link'
 import { genPageMetadata } from 'app/seo'

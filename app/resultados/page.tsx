@@ -1,5 +1,5 @@
-import SectionContainer from '@/components/SectionContainer'
-import PageTitle from '@/components/PageTitle'
+import SectionContainer from '@/components/layout/SectionContainer'
+import PageTitle from '@/components/common/PageTitle'
 import { genPageMetadata } from 'app/seo'
 import Script from 'next/script'
 

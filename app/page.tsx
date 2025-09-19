@@ -5,12 +5,12 @@ import {
   getRelatosBySlugsBatch,
   getRelatosCount,
 } from '../lib/sanity'
-import FeaturedCard from '@/components/cards/FeaturedCard'
-import SectionContainer from '@/components/SectionContainer'
-import ViewToggle from '@/components/ViewToggle'
-import ClientRedirect from '@/components/ClientRedirect'
-import ExpandableText from '@/components/ExpandableText'
-import ChronologicalView from '@/components/ChronologicalView'
+import FeaturedCard from '@/components/content/cards/FeaturedCard'
+import SectionContainer from '@/components/layout/SectionContainer'
+import ViewToggle from '@/components/content/ViewToggle'
+import ClientRedirect from '@/components/common/ClientRedirect'
+import ExpandableText from '@/components/common/ExpandableText'
+import ChronologicalView from '@/components/content/ChronologicalView'
 import Link from 'next/link'
 import { Rss } from 'lucide-react'
 
@@ -123,12 +123,12 @@ import path from 'path'
 import { headers } from 'next/headers'
 import { getCurrentTrack, getLatestTracks } from '../lib/playlist'
 
-import SimpleMemeItem from '@/components/SimpleMemeItem'
-import MasonryFeaturedCard from '@/components/cards/MasonryFeaturedCard'
-import FeaturedStoryCard from '@/components/cards/FeaturedStoryCard'
-import QuoteCard from '@/components/cards/QuoteCard'
-import PlaylistCard from '@/components/cards/PlaylistCard'
-import SeriesCard from '@/components/cards/SeriesCard'
+import SimpleMemeItem from '@/components/features/memes/SimpleMemeItem'
+import MasonryFeaturedCard from '@/components/content/cards/MasonryFeaturedCard'
+import FeaturedStoryCard from '@/components/content/cards/FeaturedStoryCard'
+import QuoteCard from '@/components/content/cards/QuoteCard'
+import PlaylistCard from '@/components/content/cards/PlaylistCard'
+import SeriesCard from '@/components/content/cards/SeriesCard'
 
 // Cache para contenido del home (5 minutos)
 const homeContentCache = new Map<string, { data: HomeContentResponse | null; timestamp: number }>()

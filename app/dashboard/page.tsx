@@ -1,7 +1,7 @@
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../auth'
 import { redirect } from 'next/navigation'
-import DashboardWrapper from '@/components/dashboard/DashboardWrapper'
+import DashboardWrapper from '@/components/features/dashboard/DashboardWrapper'
 
 export default async function DashboardPage() {
   const session = await getServerSession(authOptions)

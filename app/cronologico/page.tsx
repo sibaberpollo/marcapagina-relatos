@@ -1,9 +1,9 @@
 import { getAllRelatosForChronological } from '../../lib/sanity'
-import ChronologicalView from '@/components/ChronologicalView'
+import ChronologicalView from '@/components/content/ChronologicalView'
 import siteMetadata from '@/data/siteMetadata'
-import SectionContainer from '@/components/SectionContainer'
-import ViewToggle from '@/components/ViewToggle'
-import SlowConnectionBanner from '@/components/SlowConnectionBanner'
+import SectionContainer from '@/components/layout/SectionContainer'
+import ViewToggle from '@/components/content/ViewToggle'
+import SlowConnectionBanner from '@/components/common/SlowConnectionBanner'
 import { genPageMetadata } from 'app/seo'
 
 export const metadata = genPageMetadata({

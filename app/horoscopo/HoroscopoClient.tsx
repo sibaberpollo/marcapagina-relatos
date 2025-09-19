@@ -1,7 +1,7 @@
 'use client'
 
-import SectionContainer from '@/components/SectionContainer'
-import EngageBar from '@/components/EngageBar'
+import SectionContainer from '@/components/layout/SectionContainer'
+import EngageBar from '@/components/content/reactions/EngageBar'
 import { useState, useEffect, useRef } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 

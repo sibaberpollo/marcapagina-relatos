@@ -1,7 +1,7 @@
 import { getSiteBySlug } from '../../../lib/sanity'
-import SectionContainer from '@/components/SectionContainer'
-import SlowConnectionBanner from '@/components/SlowConnectionBanner'
-import Link from '@/components/Link'
+import SectionContainer from '@/components/layout/SectionContainer'
+import SlowConnectionBanner from '@/components/common/SlowConnectionBanner'
+import Link from '@/components/common/Link'
 import { genPageMetadata } from 'app/seo'
 import type { Metadata } from 'next'
 

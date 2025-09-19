@@ -3,21 +3,21 @@
 import { useState, useEffect } from 'react'
 import Script from 'next/script'
 import { usePathname, useRouter } from 'next/navigation'
-import SectionContainer from '@/components/SectionContainer'
-import PageTitle from '@/components/PageTitle'
-import { DesafioTimeline } from '@/components/DesafioTimeline'
-import RelatoDesafio from '@/components/RelatoDesafio'
-import PreguntasDesafio from '@/components/PreguntasDesafio'
+import SectionContainer from '@/components/layout/SectionContainer'
+import PageTitle from '@/components/common/PageTitle'
+import { DesafioTimeline } from '@/components/content/DesafioTimeline'
+import RelatoDesafio from '@/components/content/RelatoDesafio'
+import PreguntasDesafio from '@/components/content/PreguntasDesafio'
 import siteMetadata from '@/data/siteMetadata'
 
 // Importar hooks y componentes personalizados
 import { useFormState } from '../../lib/hooks/useFormState'
 import { useTurnstile } from '../../lib/hooks/useTurnstile'
 import { useDesafio } from '../../lib/hooks/useDesafio'
-import FormularioPublica from '../../components/forms/FormularioPublica'
-import PreFormulario from '../../components/forms/PreFormulario'
-import HighlightStroke from '@/components/HighlightStroke'
-import TranstextoMigrationModal from '@/components/TranstextoMigrationModal'
+import FormularioPublica from '@/components/content/forms/FormularioPublica'
+import PreFormulario from '@/components/content/forms/PreFormulario'
+import HighlightStroke from '@/components/common/HighlightStroke'
+import TranstextoMigrationModal from '@/components/features/transtextos/TranstextoMigrationModal'
 
 // Utilidad para enviar eventos a Google Analytics
 function sendGAEvent({

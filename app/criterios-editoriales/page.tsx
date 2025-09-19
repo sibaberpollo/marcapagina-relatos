@@ -1,6 +1,6 @@
 import { genPageMetadata } from 'app/seo'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
+import PageTitle from '@/components/common/PageTitle'
+import SectionContainer from '@/components/layout/SectionContainer'
 
 export const metadata = genPageMetadata({
   title: 'Criterios Editoriales',

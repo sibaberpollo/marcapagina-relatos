@@ -1,4 +1,4 @@
-import MiAreaLayout from '@/components/mi-area/MiAreaLayout'
+import MiAreaLayout from '@/components/features/mi-area/MiAreaLayout'
 import { ReactNode } from 'react'
 
 export default function Layout({ children }: { children: ReactNode }) {

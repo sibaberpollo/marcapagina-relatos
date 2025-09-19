@@ -3,7 +3,7 @@ import { notFound } from 'next/navigation'
 import { getMicrocuentoBySlug, getRelatedMicrocuentos, getAllMicrocuentoSlugs } from '@/lib/sanity'
 import AlternativeLayout from '@/layouts/AlternativeLayout'
 import { PortableText } from '@portabletext/react'
-import { ptComponents } from '@/components/PortableTextComponents'
+import { ptComponents } from '@/components/content/PortableTextComponents'
 import siteMetadata from '@/data/siteMetadata'
 
 interface PageProps {

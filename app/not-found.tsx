@@ -1,6 +1,6 @@
-import Link from '@/components/Link'
-import SectionContainer from '@/components/SectionContainer'
-import Image from '@/components/Image'
+import Link from '@/components/common/Link'
+import SectionContainer from '@/components/layout/SectionContainer'
+import Image from '@/components/common/Image'
 
 export default function NotFound() {
   return (

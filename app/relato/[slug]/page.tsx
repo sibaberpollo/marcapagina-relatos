@@ -9,11 +9,11 @@ import siteMetadata from '@/data/siteMetadata'
 import seriesMetadata from '@/data/seriesMetadata'
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import ClientFixedNavWrapper from '@/components/ClientFixedNavWrapper'
+import ClientFixedNavWrapper from '@/components/navigation/ClientFixedNavWrapper'
 import PostSimple from '@/layouts/PostSimple'
 import PostLayout from '@/layouts/PostLayout'
 import PostBanner from '@/layouts/PostBanner'
-import BreadcrumbSchema from '@/components/BreadcrumbSchema'
+import BreadcrumbSchema from '@/components/seo/BreadcrumbSchema'
 import {
   getRelatoBySlug,
   getRelatosByAutor,
@@ -21,7 +21,7 @@ import {
   getSerieDeRelato,
 } from '../../../lib/sanity'
 import { PortableText } from '@portabletext/react'
-import { ptComponents } from '@/components/PortableTextComponents'
+import { ptComponents } from '@/components/content/PortableTextComponents'
 import {
   BookOpen,
   Clock,

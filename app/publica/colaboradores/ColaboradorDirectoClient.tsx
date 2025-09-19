@@ -3,13 +3,13 @@
 import { useEffect } from 'react'
 import Script from 'next/script'
 import { useRouter } from 'next/navigation'
-import PageTitle from '@/components/PageTitle'
+import PageTitle from '@/components/common/PageTitle'
 import siteMetadata from '@/data/siteMetadata'
 
 // Importar hooks y componentes personalizados
 import { useFormState } from '../../../lib/hooks/useFormState'
 import { useTurnstile } from '../../../lib/hooks/useTurnstile'
-import FormularioPublica from '../../../components/forms/FormularioPublica'
+import FormularioPublica from '@/components/content/forms/FormularioPublica'
 
 // Utilidad para enviar eventos a Google Analytics
 function sendGAEvent({

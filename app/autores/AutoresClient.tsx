@@ -1,11 +1,11 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import SectionContainer from '@/components/SectionContainer'
-import AutoAvatar from '@/components/AutoAvatar'
+import SectionContainer from '@/components/layout/SectionContainer'
+import AutoAvatar from '@/components/content/authors/AutoAvatar'
 import Image from 'next/image'
 import Link from 'next/link'
-import AuthorCard from '@/components/AuthorCard'
+import AuthorCard from '@/components/content/authors/AuthorCard'
 import { Suspense } from 'react'
 import { useSession } from 'next-auth/react'
 

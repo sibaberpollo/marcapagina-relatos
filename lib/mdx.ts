@@ -1,5 +1,5 @@
 import { MDXComponents } from 'mdx/types'
-import { components } from '@/components/MDXComponents'
+import { components } from '@/components/content/MDXComponents'
 
 export const defaultLayout = 'PostLayout'
 

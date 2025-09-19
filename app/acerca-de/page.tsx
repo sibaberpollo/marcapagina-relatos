@@ -1,10 +1,10 @@
-import Image from '@/components/Image'
-import SocialIcon from '@/components/social-icons'
-import SectionContainer from '@/components/SectionContainer'
+import Image from '@/components/common/Image'
+import SocialIcon from '@/components/common/social-icons'
+import SectionContainer from '@/components/layout/SectionContainer'
 import siteMetadata from '@/data/siteMetadata'
 import Link from 'next/link'
 import { genPageMetadata } from 'app/seo'
-import HighlightStroke from '@/components/HighlightStroke'
+import HighlightStroke from '@/components/common/HighlightStroke'
 import { headers } from 'next/headers'
 
 function getLocaleFromHeaders(headers: Headers): string {

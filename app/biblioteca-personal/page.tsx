@@ -3,8 +3,8 @@ import { redirect } from 'next/navigation'
 import { authOptions } from '../../auth'
 import { prisma } from '@/lib/prisma'
 import { getAutoresBySlugs, getRelatosForChronologicalBySlugs } from '@/lib/sanity'
-import BibliotecaTabs from '@/components/mi-area/BibliotecaTabs'
-import AuthorCard from '@/components/AuthorCard'
+import BibliotecaTabs from '@/components/features/mi-area/BibliotecaTabs'
+import AuthorCard from '@/components/content/authors/AuthorCard'
 import Link from 'next/link'
 
 export default async function Page() {

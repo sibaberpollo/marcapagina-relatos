@@ -35,12 +35,10 @@ export async function POST(req: NextRequest) {
     const sheet = doc.sheetsByIndex[0]
 
     const escapedEmail = email.replace(/['\\]/g, '\\$&')
-    const [existingRow] = await sheet.getRows(
-      {
-        query: `email = '${escapedEmail}'`,
-        limit: 1,
-      } as Parameters<typeof sheet.getRows>[0]
-    )
+    const [existingRow] = await sheet.getRows({
+      query: `email = '${escapedEmail}'`,
+      limit: 1,
+    } as Parameters<typeof sheet.getRows>[0])
 
     const timestamp = new Date().toISOString()
 

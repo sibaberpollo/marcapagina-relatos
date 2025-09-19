@@ -1,9 +1,9 @@
 import { ReactNode } from 'react'
 import type { Authors } from 'contentlayer/generated'
-import SocialIcon from '@/components/social-icons'
-import Image from '@/components/Image'
-import SectionContainer from '@/components/SectionContainer'
-import AutoAvatar from '@/components/AutoAvatar'
+import SocialIcon from '@/components/common/social-icons'
+import Image from '@/components/common/Image'
+import SectionContainer from '@/components/layout/SectionContainer'
+import AutoAvatar from '@/components/content/authors/AutoAvatar'
 
 interface Props {
   children: ReactNode

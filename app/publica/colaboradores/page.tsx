@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 import ColaboradorDirectoClient from './ColaboradorDirectoClient'
-import SectionContainer from '@/components/SectionContainer'
+import SectionContainer from '@/components/layout/SectionContainer'
 
 export const metadata: Metadata = {
   title: 'Colaboradores - MarcaPágina',

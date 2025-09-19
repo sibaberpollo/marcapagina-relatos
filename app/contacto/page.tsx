@@ -1,9 +1,9 @@
-import SectionContainer from '@/components/SectionContainer'
-import PageTitle from '@/components/PageTitle'
-import SocialIcon from '@/components/social-icons'
+import SectionContainer from '@/components/layout/SectionContainer'
+import PageTitle from '@/components/common/PageTitle'
+import SocialIcon from '@/components/common/social-icons'
 import siteMetadata from '@/data/siteMetadata'
 import { genPageMetadata } from 'app/seo'
-import FormularioContacto from '@/components/forms/FormularioContacto'
+import FormularioContacto from '@/components/content/forms/FormularioContacto'
 import { headers } from 'next/headers'
 
 function getLocaleFromHeaders(headers: Headers): string {

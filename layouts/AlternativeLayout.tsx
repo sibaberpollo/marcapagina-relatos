@@ -1,10 +1,10 @@
 import { ReactNode } from 'react'
-import Link from '@/components/Link'
-import PageTitle from '@/components/PageTitle'
-import SectionContainer from '@/components/SectionContainer'
-import AutoAvatar from '@/components/AutoAvatar'
-import EngageBar from '@/components/EngageBar'
-import { PageSEO } from '@/components/SEO'
+import Link from '@/components/common/Link'
+import PageTitle from '@/components/common/PageTitle'
+import SectionContainer from '@/components/layout/SectionContainer'
+import AutoAvatar from '@/components/content/authors/AutoAvatar'
+import EngageBar from '@/components/content/reactions/EngageBar'
+import { PageSEO } from '@/components/seo/SEO'
 import siteMetadata from '@/data/siteMetadata'
 
 interface AlternativeLayoutProps {
