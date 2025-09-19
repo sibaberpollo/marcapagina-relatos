@@ -16,7 +16,6 @@ import OrganizationSchema from '@/components/seo/OrganizationSchema'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
-import { ThemeProvider } from 'next-themes'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import CookieBanner from '@/components/common/CookieBanner'
 
@@ -162,24 +161,22 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationSchema />
       </head>
       <body className="bg-white font-serif text-black antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
-          <ThemeProviders>
-            <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
-            <SpeedInsights />
-            <ConditionalHeader />
-            <ConditionalTopBar />
-            <ConditionalBackgroundWrapper>
-              <SectionContainer>
-                <Breadcrumbs />
-              </SectionContainer>
-              <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
-                <main className="mb-auto bg-white font-serif text-black">{children}</main>
-              </SearchProvider>
-            </ConditionalBackgroundWrapper>
-            <Footer />
-            <CookieBanner />
-          </ThemeProviders>
-        </ThemeProvider>
+        <ThemeProviders>
+          <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
+          <SpeedInsights />
+          <ConditionalHeader />
+          <ConditionalTopBar />
+          <ConditionalBackgroundWrapper>
+            <SectionContainer>
+              <Breadcrumbs />
+            </SectionContainer>
+            <SearchProvider searchConfig={siteMetadata.search as SearchConfig}>
+              <main className="mb-auto bg-white font-serif text-black">{children}</main>
+            </SearchProvider>
+          </ConditionalBackgroundWrapper>
+          <Footer />
+          <CookieBanner />
+        </ThemeProviders>
       </body>
     </html>
   )
