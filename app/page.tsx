@@ -406,7 +406,7 @@ export default async function Page({ searchParams }: PageProps) {
       getHomeContent(language).catch(() => null),
       getRelatosCount().catch(() => 0), // OPTIMIZADA: Solo obtiene el count, no todos los datos
       getSiteBySlug('transtextos').catch(() => null),
-      getAllRelatosForChronologicalBySite('transtextos').catch(() => []), // Solo para Transtextos
+      getAllRelatosForChronologicalBySite('transtextos', { limit: 5 }).catch(() => []), // Solo para Transtextos
     ])
 
     homeContent = results[0]
@@ -418,7 +418,7 @@ export default async function Page({ searchParams }: PageProps) {
     // Los valores por defecto ya están asignados arriba
   }
 
-  const latestTranstextos = allRelatosTranstextos.slice(0, 5)
+  const latestTranstextos = allRelatosTranstextos
   const currentPage = 1
 
   // Si no pudimos obtener el contenido del home, mostrar un fallback

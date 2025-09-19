@@ -1190,12 +1190,15 @@ export async function getSiteBySlug(slug: string): Promise<Site | null> {
 
 // Función para obtener todos los relatos filtrados por sitio para la vista cronológica
 export async function getAllRelatosForChronologicalBySite(
-  siteSlug: string
+  siteSlug: string,
+  options: { limit?: number } = {}
 ): Promise<ProyectoFormateado[]> {
+  const limit = Number.isFinite(options.limit) ? Math.max(0, Math.trunc(options.limit!)) : null
+  const rangeClause = limit === null ? '' : `[0...${limit}]`
   try {
     const relatos = await client.fetch(
       `
-      *[_type == "relato" && status == "published" && site->slug.current == $siteSlug] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+      *[_type == "relato" && status == "published" && site->slug.current == $siteSlug] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) ${rangeClause} {
         title,
         slug,
         summary,

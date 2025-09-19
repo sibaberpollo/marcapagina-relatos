@@ -1,5 +1,3 @@
-'use client'
-
 import NextImage, { ImageProps } from 'next/image'
 
 // Usar variables de entorno para la configuración de Cloudinary

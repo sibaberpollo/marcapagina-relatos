@@ -34,16 +34,13 @@ export async function POST(req: NextRequest) {
     // Obtener la hoja de cálculo (primera hoja)
     const sheet = doc.sheetsByIndex[0]
 
-    // Buscar si el email ya existe
-    const rows = await sheet.getRows()
-    let existingRow: GoogleSpreadsheetRow | null = null
-
-    for (const row of rows) {
-      if (row.get('email') === email) {
-        existingRow = row
-        break
-      }
-    }
+    const escapedEmail = email.replace(/['\\]/g, '\\$&')
+    const [existingRow] = await sheet.getRows(
+      {
+        query: `email = '${escapedEmail}'`,
+        limit: 1,
+      } as Parameters<typeof sheet.getRows>[0]
+    )
 
     const timestamp = new Date().toISOString()
 

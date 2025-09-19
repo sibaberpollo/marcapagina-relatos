@@ -1,5 +1,3 @@
-'use client'
-
 import FeaturedCard from './FeaturedCard'
 
 interface MasonryFeaturedCardProps {

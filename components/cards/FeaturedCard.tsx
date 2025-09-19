@@ -1,11 +1,8 @@
-'use client'
-
 import Image from '../Image'
 import Link from '../Link'
 import { getRelativeTime } from '@/lib/time'
 import { toVersal } from '@/lib/utils'
 import { BookOpen } from 'lucide-react'
-import Avatar from 'react-avatar'
 
 interface FeaturedCardProps {
   title: string
@@ -20,6 +17,13 @@ interface FeaturedCardProps {
   publishedAt: string
   language?: string
   transtextos?: boolean
+}
+
+function getInitials(name: string): string {
+  if (!name) return ''
+  const parts = name.trim().split(/\s+/)
+  const initials = parts.slice(0, 2).map((part) => part.charAt(0).toUpperCase())
+  return initials.join('') || ''
 }
 
 export default function FeaturedCard({
@@ -38,6 +42,7 @@ export default function FeaturedCard({
 }: FeaturedCardProps) {
   const relativeTime = getRelativeTime(publishedAt)
   const formattedTitle = toVersal(title)
+  const authorInitials = getInitials(authorName) || '?'
 
   const isRelato = href.includes('/relato/')
   const isMicrocuento = href.includes('/microcuento/')
@@ -101,14 +106,9 @@ export default function FeaturedCard({
                     className="rounded-full brightness-110 contrast-150 grayscale"
                   />
                 ) : (
-                  <Avatar
-                    name={authorName}
-                    size="32"
-                    round
-                    textSizeRatio={2}
-                    fgColor="#ffffff"
-                    color="#000000"
-                  />
+                  <div className="flex h-8 w-8 items-center justify-center rounded-full bg-black text-xs font-semibold text-white uppercase">
+                    {authorInitials}
+                  </div>
                 )}
                 <div>
                   <span className="text-left font-medium text-white">{authorName}</span>
