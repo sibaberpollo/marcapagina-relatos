@@ -978,7 +978,7 @@ export async function getDesafioById(id: string): Promise<Desafio | null> {
 export async function getAllRelatosForChronological(): Promise<ProyectoFormateado[]> {
   try {
     const relatos = await client.fetch(`
-      *[_type == "relato" && status == "published"] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+      *[_type == "relato" && status == "published"] | order(coalesce(date + "T00:00:00Z", publishedAt) desc) {
         title,
         slug,
         summary,
@@ -1010,7 +1010,7 @@ export async function getRelatosForChronologicalBySlugs(
   try {
     const relatos = await client.fetch(
       `
-      *[_type == "relato" && status == "published" && slug.current in $slugs] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) {
+      *[_type == "relato" && status == "published" && slug.current in $slugs] | order(coalesce(date + "T00:00:00Z", publishedAt) desc) {
         title,
         slug,
         summary,
@@ -1198,7 +1198,7 @@ export async function getAllRelatosForChronologicalBySite(
   try {
     const relatos = await client.fetch(
       `
-      *[_type == "relato" && status == "published" && site->slug.current == $siteSlug] | order(coalesce(publishedAt, date + "T00:00:00Z") desc) ${rangeClause} {
+      *[_type == "relato" && status == "published" && site->slug.current == $siteSlug] | order(coalesce(date + "T00:00:00Z", publishedAt) desc) ${rangeClause} {
         title,
         slug,
         summary,
@@ -1527,13 +1527,13 @@ export async function searchRelatos(params: {
 
     // Filtro por fecha desde
     if (dateFrom) {
-      filters.push('coalesce(publishedAt, date) >= $dateFrom')
+      filters.push('coalesce(date, publishedAt) >= $dateFrom')
       queryParams.dateFrom = dateFrom
     }
 
     // Filtro por fecha hasta
     if (dateTo) {
-      filters.push('coalesce(publishedAt, date) <= $dateTo')
+      filters.push('coalesce(date, publishedAt) <= $dateTo')
       queryParams.dateTo = dateTo
     }
 
@@ -1598,7 +1598,7 @@ export async function searchRelatos(params: {
 
     // Query principal para obtener resultados
     const resultsQuery = `
-      *[${whereClause}] | order(coalesce(publishedAt, date) desc)[${offset}...${offset + limit}] {
+      *[${whereClause}] | order(coalesce(date, publishedAt) desc)[${offset}...${offset + limit}] {
         ${fields}
       }
     `
@@ -1669,7 +1669,7 @@ export async function getAllRelatosForMCP(): Promise<{
   try {
     // Obtener todos los relatos con información completa
     const relatos = await client.fetch(`
-      *[_type == "relato" && status == "published"] | order(coalesce(publishedAt, date) desc) {
+      *[_type == "relato" && status == "published"] | order(coalesce(date, publishedAt) desc) {
         _id,
         title,
         slug,
