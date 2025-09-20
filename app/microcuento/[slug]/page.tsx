@@ -26,13 +26,32 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   return {
-    title: `${microcuento.title} - ${siteMetadata.title}`,
+    title: microcuento.title,
     description: microcuento.description,
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: microcuento.title,
       description: microcuento.description,
+      siteName: siteMetadata.title,
+      locale: 'es_ES',
       type: 'article',
+      publishedTime: microcuento.publishedAt,
+      modifiedTime: microcuento.publishedAt,
+      url: `${siteMetadata.siteUrl}/microcuento/${slug}`,
+      images: microcuento.image ? [microcuento.image] : [siteMetadata.socialBanner],
       authors: [microcuento.author],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: microcuento.title,
+      description: microcuento.description,
+      images: microcuento.image ? [microcuento.image] : [siteMetadata.socialBanner],
+    },
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/microcuento/${slug}`,
     },
   }
 }
@@ -47,8 +66,41 @@ export default async function MicrocuentoPage({ params }: PageProps) {
 
   const { prev, next } = await getRelatedMicrocuentos(slug)
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    '@id': `${siteMetadata.siteUrl}/microcuento/${slug}`,
+    name: microcuento.title,
+    headline: microcuento.title,
+    author: {
+      '@type': 'Person',
+      name: microcuento.author
+    },
+    datePublished: microcuento.publishedAt,
+    dateModified: microcuento.publishedAt,
+    description: microcuento.description,
+    genre: 'Microcuento',
+    inLanguage: 'es-ES',
+    image: microcuento.image,
+    url: `${siteMetadata.siteUrl}/microcuento/${slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: siteMetadata.title,
+      url: siteMetadata.siteUrl
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteMetadata.siteUrl}/microcuento/${slug}`
+    }
+  }
+
   return (
-    <AlternativeLayout
+    <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
+      <AlternativeLayout
       content={{
         title: microcuento.title,
         author: microcuento.author,
@@ -60,8 +112,9 @@ export default async function MicrocuentoPage({ params }: PageProps) {
       }}
       prev={prev || undefined}
       next={next || undefined}
-    >
-      <PortableText value={microcuento.body} components={ptComponents} />
-    </AlternativeLayout>
+      >
+        <PortableText value={microcuento.body} components={ptComponents} />
+      </AlternativeLayout>
+    </>
   )
 }

@@ -156,6 +156,10 @@ export async function generateMetadata(props: {
   return {
     title: post.title,
     description: post.summary,
+    robots: {
+      index: true,
+      follow: true,
+    },
     openGraph: {
       title: post.title,
       description: post.summary,
@@ -164,7 +168,7 @@ export async function generateMetadata(props: {
       type: 'article',
       publishedTime: publishedAt,
       modifiedTime: modifiedAt,
-      url: siteMetadata.siteUrl + `/relato/${slug}`,
+      url: `${siteMetadata.siteUrl}/relato/${slug}`,
       images: ogImages,
       authors: [post.author.name],
     },
@@ -173,6 +177,9 @@ export async function generateMetadata(props: {
       title: post.title,
       description: post.summary,
       images: ogImages.map(({ url }) => url),
+    },
+    alternates: {
+      canonical: `${siteMetadata.siteUrl}/relato/${slug}`,
     },
   }
 }
@@ -232,14 +239,31 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
 
   const jsonLd = {
     '@context': 'https://schema.org',
-    '@type': 'BlogPosting',
+    '@type': 'CreativeWork',
+    '@id': `${siteMetadata.siteUrl}/relato/${slug}`,
+    name: post.title,
     headline: post.title,
+    author: {
+      '@type': 'Person',
+      name: post.author.name,
+      url: `${siteMetadata.siteUrl}/autor/${post.author.slug.current}`
+    },
     datePublished: post.date,
     dateModified: post.date,
     description: post.summary,
+    genre: 'Literatura',
+    inLanguage: 'es-ES',
     image: isTranstextos ? undefined : post.image,
-    url: siteMetadata.siteUrl + `/relato/${slug}`,
-    author: authorDetails.map((a) => ({ '@type': 'Person', name: a.name })),
+    url: `${siteMetadata.siteUrl}/relato/${slug}`,
+    publisher: {
+      '@type': 'Organization',
+      name: siteMetadata.title,
+      url: siteMetadata.siteUrl
+    },
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': `${siteMetadata.siteUrl}/relato/${slug}`
+    }
   }
 
   const Layout = layouts[defaultLayout]

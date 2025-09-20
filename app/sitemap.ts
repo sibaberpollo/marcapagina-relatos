@@ -109,14 +109,14 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}/relato/${relato.slug.current}`,
     lastModified: relato.date ? new Date(relato.date).toISOString() : nowIso,
     changeFrequency: 'weekly',
-    priority: 0.8,
+    priority: 0.9,
   }))
 
   const articulosRoutes: MetadataRoute.Sitemap = articulos.map((articulo) => ({
     url: `${siteUrl}/articulo/${articulo.slug.current}`,
     lastModified: articulo.date ? new Date(articulo.date).toISOString() : nowIso,
     changeFrequency: 'weekly',
-    priority: 0.7,
+    priority: 0.6,
   }))
 
   // Calcular lastModified de autores a partir de su contenido más reciente
@@ -142,8 +142,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     lastModified: latestByAuthor.get(autor.slug.current)
       ? new Date(latestByAuthor.get(autor.slug.current) as string).toISOString()
       : nowIso,
-    changeFrequency: 'weekly',
-    priority: 0.6,
+    changeFrequency: 'monthly',
+    priority: 0.8,
   }))
 
   const microcuentosRoutes: MetadataRoute.Sitemap = microcuentos.map((microcuento) => ({
@@ -158,6 +158,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     url: `${siteUrl}/serie/${serie.slug.current}`,
     lastModified: nowIso,
     changeFrequency: 'weekly',
+    priority: 0.7,
   }))
 
   // Unir todas las rutas en el sitemap

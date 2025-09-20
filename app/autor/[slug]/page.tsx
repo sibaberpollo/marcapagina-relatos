@@ -104,9 +104,28 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
     }
   }
 
+  // Obtener datos para descripción mejorada
+  const { formattedRelatos } = await getAutorData(slug)
+  const articulosData = slug === 'pino' ? loadExternalArticles('pino') : await getArticulosByAutor(slug)
+
+  const relatosCount = formattedRelatos?.length || 0
+  const articulosCount = articulosData?.length || 0
+
+  const descriptionParts = [`Descubre ${relatosCount} relatos`]
+  if (articulosCount > 0) {
+    descriptionParts.push(` y ${articulosCount} artículos`)
+  }
+  descriptionParts.push(` de ${author.name}.`)
+
+  if (author.bio) {
+    descriptionParts.push(` ${author.bio.slice(0, 100)}${author.bio.length > 100 ? '...' : ''}`)
+  } else {
+    descriptionParts.push(' Autor de literatura contemporánea en MarcaPágina.')
+  }
+
   return genPageMetadata({
     title: author.name,
-    description: `Perfil y obras de ${author.name}`,
+    description: descriptionParts.join(''),
   })
 }
 

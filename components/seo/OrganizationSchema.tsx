@@ -40,7 +40,14 @@ export default function OrganizationSchema() {
         description: siteMetadata.description,
         potentialAction: {
           '@type': 'SearchAction',
-          target: `${siteMetadata.siteUrl}/resultados?q={search_term_string}`,
+          target: {
+            '@type': 'EntryPoint',
+            urlTemplate: `${siteMetadata.siteUrl}/resultados?q={search_term_string}`,
+            actionPlatform: [
+              'http://schema.org/DesktopWebPlatform',
+              'http://schema.org/MobileWebPlatform'
+            ]
+          },
           'query-input': 'required name=search_term_string',
         },
       },
