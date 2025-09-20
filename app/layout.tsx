@@ -23,11 +23,15 @@ const playfair = Playfair_Display({
   subsets: ['latin'],
   variable: '--font-playfair',
   display: 'swap',
+  preload: true,
+  weight: ['400', '700'],
 })
 const sourceSerif = Source_Serif_4({
   subsets: ['latin'],
   variable: '--font-source-serif',
   display: 'swap',
+  preload: true,
+  weight: ['400', '500', '600'],
 })
 
 export const metadata: Metadata = {
@@ -158,6 +162,29 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <meta name="theme-color" media="(prefers-color-scheme: light)" content="#fff" />
         <meta name="theme-color" media="(prefers-color-scheme: dark)" content="#000" />
         <link rel="alternate" type="application/rss+xml" href={`${basePath}/feed.xml`} />
+
+        {/* Preload critical fonts for better LCP */}
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
+          as="style"
+        />
+        <link
+          rel="preload"
+          href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600&display=swap"
+          as="style"
+        />
+        <noscript>
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&display=swap"
+          />
+          <link
+            rel="stylesheet"
+            href="https://fonts.googleapis.com/css2?family=Source+Serif+4:wght@400;500;600&display=swap"
+          />
+        </noscript>
+
         <OrganizationSchema />
       </head>
       <body className="bg-white font-serif text-black antialiased">

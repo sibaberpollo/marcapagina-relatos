@@ -7,9 +7,9 @@
 
 /* Core theme configuration */
 @theme {
-  /* Font families */
-  --font-titles: var(--font-playfair), serif;
-  --font-body: var(--font-source-serif), serif;
+  /* Font families - optimized with fallbacks */
+  --font-titles: var(--font-playfair), "Playfair Display", "Times New Roman", serif;
+  --font-body: var(--font-source-serif), "Source Serif 4", "Times New Roman", serif;
 
   /* Colores principales */
   --color-accent: #faff00; /* Amarillo fosforescente */

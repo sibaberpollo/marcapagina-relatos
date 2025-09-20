@@ -4125,34 +4125,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@fontsource/literata@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/literata@npm:5.2.5"
-  checksum: c81bd6159d16d801db5631a992fb0b4cffef9ec9c311b280e9980704d7500bcb354dac1727582f0dc316944aa7ad7b67e93dd954f16f909485fafc7ec05c0d39
-  languageName: node
-  linkType: hard
-
-"@fontsource/playfair-display@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/playfair-display@npm:5.2.5"
-  checksum: e86081dbc6f58b05cddb38f9bc67dc110a2e06bdee22fba114a6649d28d871afeb06e73c75d801783e459fd5c5acdec2b7d52762733e53c3a564a0772973b5e1
-  languageName: node
-  linkType: hard
-
-"@fontsource/source-serif-pro@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/source-serif-pro@npm:5.2.5"
-  checksum: c49425f1e79ba0efa7112bb75cd2000467c97c0eea5ee36ce46a499c93d187794bf88874257b14829b33f5629551a206c2d1653676593720b2ff0427b71ab587
-  languageName: node
-  linkType: hard
-
-"@fontsource/unbounded@npm:^5.2.5":
-  version: 5.2.5
-  resolution: "@fontsource/unbounded@npm:5.2.5"
-  checksum: bc5bc11c9b64df06bd5ab22a01420ce5cbbbcaf4f690a8bb1363a837573f10f06db016665f1f3a96678216c995c2bc36e7525efed941f4ab81efbe51519d6e91
-  languageName: node
-  linkType: hard
-
 "@giscus/react@npm:^3.0.0":
   version: 3.1.0
   resolution: "@giscus/react@npm:3.1.0"
@@ -20841,10 +20813,6 @@ __metadata:
     "@babel/runtime": ^7.27.3
     "@eslint/eslintrc": ^3.2.0
     "@eslint/js": ^9.16.0
-    "@fontsource/literata": ^5.2.5
-    "@fontsource/playfair-display": ^5.2.5
-    "@fontsource/source-serif-pro": ^5.2.5
-    "@fontsource/unbounded": ^5.2.5
     "@headlessui/react": 2.2.0
     "@modelcontextprotocol/sdk": ^1.16.0
     "@next-auth/prisma-adapter": ^1.0.7
