@@ -10,9 +10,11 @@ import { useState, type ReactNode } from 'react'
 import { Menu, X as Close, Instagram, Facebook, Twitter } from 'lucide-react'
 
 const topLinks = [
+  { title: 'Inicio', href: '/' },
+  { title: 'Narrativa', href: '/transtextos' },
   { title: 'Autores', href: '/autores' },
-  { title: 'Horóscopo', href: '/horoscopo' },
-  { title: 'Memes & objetos', href: '/memes-merch-descargas' },
+  { title: '♌ Horóscopo', href: '/horoscopo' },
+  { title: 'Memes', href: '/memes-merch-descargas' },
   { title: 'Playlist', href: '/playlist' },
   { title: 'Acerca de', href: '/acerca-de' },
   { title: 'Contacto', href: '/contacto' },
