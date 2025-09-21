@@ -57,6 +57,16 @@ function AuthorFilters({
       </div>
 
       <div className="mt-5 flex flex-wrap justify-start gap-1">
+        <button
+          onClick={() => onLetterFilter('todos')}
+          className={`flex h-8 items-center justify-center rounded-md border border-gray-300 px-2 text-sm font-medium transition-colors hover:border-gray-400 dark:border-gray-600 dark:hover:border-gray-500 ${
+            currentLetter === null
+              ? 'border-black bg-black text-white dark:border-white dark:bg-white dark:text-black'
+              : ''
+          }`}
+        >
+          Todos
+        </button>
         {alphabet.map((letter) => (
           <button
             key={letter}
@@ -82,8 +92,8 @@ interface AutoresClientProps {
 
 export default function AutoresClient({ initialAutores, filter }: AutoresClientProps) {
   const [autores, setAutores] = useState<any[]>(initialAutores)
-  const [filteredAutores, setFilteredAutores] = useState<any[]>(initialAutores)
-  const [currentLetter, setCurrentLetter] = useState<string | null>(null)
+  const [filteredAutores, setFilteredAutores] = useState<any[]>([])
+  const [currentLetter, setCurrentLetter] = useState<string | null>('A')
   const { data: session } = useSession()
   const [followingSet, setFollowingSet] = useState<Set<string>>(new Set())
 
@@ -95,7 +105,10 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
 
     const sorted = filtered.sort((a, b) => a.name.localeCompare(b.name))
     setAutores(sorted)
-    setFilteredAutores(sorted)
+
+    // Filtrar por la letra 'A' al inicio
+    const filteredByA = sorted.filter((autor) => autor.name.toUpperCase().startsWith('A'))
+    setFilteredAutores(filteredByA)
   }, [filter, initialAutores])
 
   // Cargar follows UNA sola vez para la grilla cuando hay sesión
@@ -120,7 +133,11 @@ export default function AutoresClient({ initialAutores, filter }: AutoresClientP
 
   // Función para filtrar por letra inicial
   const filterByLetter = (letter: string) => {
-    if (currentLetter === letter) {
+    if (letter === 'todos') {
+      // Mostrar todos los autores
+      setCurrentLetter(null)
+      setFilteredAutores(autores)
+    } else if (currentLetter === letter) {
       // Si se hace clic en la misma letra, mostrar todos
       setCurrentLetter(null)
       setFilteredAutores(autores)
