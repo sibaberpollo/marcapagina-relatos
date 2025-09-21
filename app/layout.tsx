@@ -13,6 +13,7 @@ import SectionContainer from '@/components/layout/SectionContainer'
 import ConditionalBackgroundWrapper from '@/components/layout/ConditionalBackgroundWrapper'
 import siteMetadata from '@/data/siteMetadata'
 import OrganizationSchema from '@/components/seo/OrganizationSchema'
+import NavigationSchema from '@/components/seo/NavigationSchema'
 import { ThemeProviders } from './theme-providers'
 import { Metadata } from 'next'
 import Script from 'next/script'
@@ -186,6 +187,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </noscript>
 
         <OrganizationSchema />
+        <NavigationSchema />
       </head>
       <body className="bg-white font-serif text-black antialiased">
         <ThemeProviders>

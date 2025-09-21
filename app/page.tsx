@@ -15,6 +15,7 @@ import Link from 'next/link'
 import { Rss } from 'lucide-react'
 import { Metadata } from 'next'
 import siteMetadata from '@/data/siteMetadata'
+import FAQSchema from '@/components/seo/FAQSchema'
 
 // Metadata específica para el home
 export const metadata: Metadata = {
@@ -473,8 +474,29 @@ export default async function Page({ searchParams }: PageProps) {
   // Los items ya vienen en el orden correcto desde el JSON
   const masonryItems = homeContent.items
 
+  // FAQ para mejorar fichas enriquecidas
+  const faqs = [
+    {
+      question: "¿Qué es MarcaPágina?",
+      answer: "MarcaPágina es una plataforma literaria que reúne más de 300 relatos y microcuentos inéditos de autores emergentes de América Latina. Ofrecemos un espacio para descubrir nueva literatura contemporánea."
+    },
+    {
+      question: "¿Quiénes pueden publicar en MarcaPágina?",
+      answer: "Aceptamos textos de autores emergentes de América Latina. Revisa nuestros criterios editoriales y proceso de envío en la sección 'Publica'."
+    },
+    {
+      question: "¿Los contenidos son gratuitos?",
+      answer: "Sí, todos los relatos y microcuentos en MarcaPágina son de acceso completamente gratuito. Nuestra misión es democratizar el acceso a la literatura de calidad."
+    },
+    {
+      question: "¿Qué tipos de textos publican?",
+      answer: "Publicamos principalmente relatos, microcuentos y contenido multimedia relacionado con literatura. También incluimos series de textos y perfiles de autores."
+    }
+  ]
+
   return (
     <>
+      <FAQSchema faqs={faqs} />
       <ClientRedirect />
       <SectionContainer>
         <div className="space-y-2 pt-6 pb-4 md:space-y-5">

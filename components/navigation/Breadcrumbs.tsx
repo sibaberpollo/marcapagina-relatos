@@ -130,18 +130,27 @@ export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
   const jsonLd = {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
+    '@id': `${siteMetadata.siteUrl}${pathname}#breadcrumbs`,
     itemListElement: [
       {
         '@type': 'ListItem',
         position: 1,
         name: 'Inicio',
-        item: siteMetadata.siteUrl,
+        item: {
+          '@type': 'WebPage',
+          '@id': `${siteMetadata.siteUrl}#webpage`,
+          url: siteMetadata.siteUrl
+        }
       },
       ...crumbs.map((c, idx) => ({
         '@type': 'ListItem',
         position: idx + 2,
         name: c.label,
-        item: siteMetadata.siteUrl.replace(/\/$/, '') + c.href,
+        item: {
+          '@type': 'WebPage',
+          '@id': `${siteMetadata.siteUrl.replace(/\/$/, '')}${c.href}#webpage`,
+          url: `${siteMetadata.siteUrl.replace(/\/$/, '')}${c.href}`
+        }
       })),
     ],
   }

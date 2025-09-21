@@ -38,17 +38,16 @@ export default function OrganizationSchema() {
         publisher: { '@id': siteMetadata.siteUrl },
         inLanguage: siteMetadata.language,
         description: siteMetadata.description,
-        potentialAction: {
-          '@type': 'SearchAction',
-          target: {
-            '@type': 'EntryPoint',
-            urlTemplate: `${siteMetadata.siteUrl}/resultados?q={search_term_string}`,
-            actionPlatform: [
-              'http://schema.org/DesktopWebPlatform',
-              'http://schema.org/MobileWebPlatform'
-            ]
-          },
-          'query-input': 'required name=search_term_string',
+        mainEntity: {
+          '@type': 'WebPage',
+          '@id': `${siteMetadata.siteUrl}#webpage`,
+          url: siteMetadata.siteUrl,
+          name: siteMetadata.title,
+          about: {
+            '@type': 'Thing',
+            name: 'Literatura',
+            description: 'Relatos y microcuentos de autores emergentes'
+          }
         },
       },
     ],
