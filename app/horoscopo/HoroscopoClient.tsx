@@ -308,6 +308,46 @@ const literaryHoroscopesVirgo = {
   },
 }
 
+// Textos literarios para Libra (nuevos)
+const literaryHoroscopesLibra = {
+  aries: {
+    text: 'Irrumpes en la sobremesa como si fueras un mosquetero de Dumas, pero la reunión era un club de lectura de Marguerite Yourcenar. Brinda igual: tu espada es una cuchara de postre.',
+  },
+  tauro: {
+    text: 'Intentas etiquetar cada emoción con la minucia de un bibliotecario de Umberto Eco. La vida responde con una edición pirata. Acepta que ciertas pasiones vienen sin índice.',
+  },
+  geminis: {
+    text: 'Organizas debate interno como si Italo Calvino te hubiera multiplicado en capítulos alternos. Antes de votar, pregúntale a cuál versión le toca lavar los platos.',
+  },
+  cancer: {
+    text: 'Tu nostalgia arma escenas como una novela de Yasunari Kawabata: delicada, lenta y nevada aun en primavera. Autorízate un escándalo mínimo, quizá un sticker en mayúsculas.',
+  },
+  leo: {
+    text: 'Buscas brillar con la solemnidad de una epopeya de Sor Juana, pero el público quiere un remate a lo Dorothy Parker. Ensaya tu rugido en tres sílabas y con abanico prestado.',
+  },
+  virgo: {
+    text: 'Detectas errores en el universo con la obsesión de una correctora de Tolstói. Antes de demandar a la Vía Láctea, recuerda que los mejores manuscritos incluyen una mancha de té.',
+  },
+  libra: {
+    text: 'Moderás un salón donde Jane Austen compara notas con Molière y todos esperan tu veredicto. Dicta sentencia: que la ironía lleve guantes blancos, pero que se escuche la carcajada.',
+  },
+  escorpio: {
+    text: 'Tu sospecha olfatea secretos como inspector salido de Dostoievski, aunque el caso sea un mensaje sin responder. Usa la intensidad para escribir la confesión, no para revisar celulares.',
+  },
+  sagitario: {
+    text: 'Planeas escapar en globo rumbo a la biblioteca de Julio Verne, pero terminas programando un tour virtual guiado por Cervantes. Igual aventura, menos maletas.',
+  },
+  capricornio: {
+    text: 'Construyes objetivos con la disciplina de George Eliot supervisando una hacienda victoriana. Añade un intermedio picaresco: ni el progreso resiste tanta agenda sin merienda.',
+  },
+  acuario: {
+    text: 'Fundas una comuna futurista digna de Ursula K. Le Guin y le pones horario de lectura obligatoria. Invita a alguien del realismo mágico antes de que te declaren profe sin recreo.',
+  },
+  piscis: {
+    text: 'Sueñas un epílogo marino dictado por Kobo Abe y despiertas con arena en el teclado. Anótalo antes de que Homero reclame derechos de autor.',
+  },
+}
+
 // Datos específicos para cada horóscopo
 const horoscopoData = {
   cancer: {
@@ -566,13 +606,108 @@ const horoscopoData = {
       'Mary Shelley',
     ],
   },
+  libra: {
+    author: 'Oscar Wilde',
+    authorImage:
+      'https://res.cloudinary.com/dx98vnos1/image/upload/v1758729122/Oscar_Wilde_Libra_s9czcr.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'agarcia',
+    description:
+      'El dandy irlandés que convertía cada paradoja en epigrama y cada tragedia en arte. Libra puro: obsesionado con la belleza, adicto a la controversia elegante y capaz de encontrar simetría hasta en la cárcel. "Puedo resistir todo, excepto la tentación", dijo, y fue su guía de vida. Escribió sobre el amor como quien diseña jardines: con artificio perfecto y pasión genuina. Su genio radicaba en hacer que lo frívolo pareciera profundo y lo profundo, frívolo.',
+    efemerides: [
+      {
+        date: '16 de octubre de 1854',
+        title: 'Nace Oscar Wilde',
+        description: 'Dublin prepara su primer escándalo literario.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400',
+      },
+      {
+        date: '4 de octubre de 1535',
+        title: 'Se publica la primera Biblia completa en inglés',
+        description: 'El equilibrio entre fe y literatura encuentra su traducción.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400',
+      },
+      {
+        date: '7 de octubre de 1849',
+        title: 'Muere Edgar Allan Poe',
+        description: 'El misterio de su muerte aún alimenta teorías como cuentos.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400',
+      },
+      {
+        date: '14 de octubre de 1644',
+        title: 'Nace William Penn',
+        description: 'Fundador de Pensilvania, donde la utopía tuvo código postal.',
+        color: 'from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20',
+        borderColor: 'border-amber-100 dark:border-amber-800/30',
+        textColor: 'text-amber-600 dark:text-amber-400',
+      },
+      {
+        date: '21 de octubre de 1772',
+        title: 'Nace Samuel Taylor Coleridge',
+        description: 'Sus sueños con opio crearon los mejores versos de la historia.',
+        color: 'from-teal-50 to-cyan-50 dark:from-teal-900/20 dark:to-cyan-900/20',
+        borderColor: 'border-teal-100 dark:border-teal-800/30',
+        textColor: 'text-teal-600 dark:text-teal-400',
+      },
+    ],
+    tarot: {
+      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1758729122/tarot_libra_pc62ow.png',
+      author: 'Miguel de Cervantes • Italo Calvino • William Faulkner',
+      subtitle: 'VIII – Arcano Mayor Original',
+      card: 'El Árbitro del Otoño',
+      phrase: 'La balanza escucha antes de dictar sentencia',
+      description:
+        'Libra se reconoce en La Justicia y en la Reina de Espadas: equilibrio, armonía y decisiones conscientes. El Árbitro del Otoño viste hojas secas y sostiene una balanza de frutos, recordando que cada elección deja huella y que la belleza nace del contraste que no niega la verdad.',
+      meaningTitle: 'Lectura general',
+      meaningDescription: `El Árbitro del Otoño enseña que la justicia no siempre dicta, a veces escucha. Representa el equilibrio entre razón y emoción, entre lo vivido y lo soñado. Su justicia no impone, sino que busca sentido en la maraña de lo humano. Nos recuerda que la belleza surge de lo gastado, lo imperfecto y lo temporal.
+
+Consejo:
+• Escucha antes de decidir.
+• No confundas armonía con perfección.
+• Reconoce la sabiduría de lo vivido y el valor de lo efímero.
+
+Atención / Sombras:
+• Riesgo de superficialidad estética sin ética.
+• Juicios apresurados que no dejan espacio a los matices.
+• Dureza sin compasión.
+• Desconexión con la raíz interior y con el tiempo profundo.
+
+Palabras clave: Justicia poética, equilibrio estacional, sabiduría narrativa, belleza melancólica, memoria profunda, legado cultural, escucha atenta, realismo mágico, claridad sin rigidez.`,
+      illustrator: undefined,
+    },
+    writers: [
+      'Oscar Wilde',
+      'Miguel de Cervantes',
+      'Italo Calvino',
+      'William Faulkner',
+      'F. Scott Fitzgerald',
+      'Truman Capote',
+      'Graham Greene',
+      'Gore Vidal',
+      'Donna Leon',
+      'Doris Lessing (Premio Nobel 2007)',
+      'Mario Puzo',
+      'Arthur Miller',
+      'John le Carré',
+      'Harold Pinter (Premio Nobel 2005)',
+      'Ursula K. Le Guin',
+      'Anne Rice',
+      'Elfriede Jelinek (Premio Nobel 2004)',
+    ],
+  },
 }
 
 interface HoroscopoClientProps {
-  signo?: 'cancer' | 'leo' | 'virgo'
+  signo?: 'cancer' | 'leo' | 'virgo' | 'libra'
 }
 
-export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProps) {
+export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProps) {
   const [activeSign, setActiveSign] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -671,7 +806,8 @@ export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProp
 
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find((sign) => sign.slug === currentSign)
-  const displaySignName = signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : 'Virgo'
+  const displaySignName =
+    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : 'Libra'
 
   // Seleccionar el objeto de textos correcto según el signo
   const literaryTexts =
@@ -679,7 +815,9 @@ export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProp
       ? literaryHoroscopesCancer
       : signo === 'leo'
         ? literaryHoroscopesLeo
-        : literaryHoroscopesVirgo
+        : signo === 'virgo'
+          ? literaryHoroscopesVirgo
+          : literaryHoroscopesLibra
   const currentSignText = literaryTexts[currentSign]?.text || ''
 
   // Obtener datos del horóscopo según el signo
@@ -687,7 +825,8 @@ export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProp
 
   // Función para obtener el link del signo
   const getSignLink = (signSlug: string) => {
-    if (signSlug === 'virgo') return '/horoscopo' // Signo actual
+    if (signSlug === 'libra') return '/horoscopo' // Signo actual
+    if (signSlug === 'virgo') return '/horoscopo/virgo' // Archivo disponible
     if (signSlug === 'leo') return '/horoscopo/leo' // Archivo disponible
     if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible
     return '#' // Signos futuros (sin link)
@@ -916,7 +1055,10 @@ export default function HoroscopoClient({ signo = 'virgo' }: HoroscopoClientProp
                       {isClickable && (
                         <div className="mt-auto pt-2">
                           <span className="text-xs font-medium text-purple-600 dark:text-purple-400">
-                            {sign.slug === 'cancer' ? 'Ver archivo' : 'Ver horóscopo'} →
+                            {['cancer', 'leo', 'virgo'].includes(sign.slug)
+                              ? 'Ver archivo'
+                              : 'Ver horóscopo'}{' '}
+                            →
                           </span>
                         </div>
                       )}

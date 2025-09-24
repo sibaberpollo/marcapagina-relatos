@@ -3,23 +3,23 @@ import HoroscopoClient from './HoroscopoClient'
 
 export async function generateMetadata() {
   return genPageMetadata({
-    title: 'Horóscopo Virgo - Agatha Christie: Septiembre 2025',
+    title: 'Horóscopo Libra - Oscar Wilde: Octubre 2025',
     description:
-      'Horóscopo literario de Virgo con Agatha Christie. Predicciones astrológicas, efemérides y tarot con un toque narrativo único.',
+      'Horóscopo literario de Libra con Oscar Wilde. Predicciones astrológicas absurdas, efemérides literarias y tarot con elegancia narrativa.',
     openGraph: {
       images: [
         {
-          url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780888/Agatha-Christie_lzxfnz.png',
+          url: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1760000000/Oscar-Wilde-Libra_placeholder.png',
           width: 1200,
           height: 630,
-          alt: 'Horóscopo Literario Virgo - Agatha Christie septiembre 2025',
+          alt: 'Horóscopo Literario Libra - Oscar Wilde octubre 2025',
         },
       ],
     },
     twitter: {
       card: 'summary_large_image',
       images: [
-        'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780888/Agatha-Christie_lzxfnz.png',
+        'https://res.cloudinary.com/dx98vnos1/image/upload/v1760000000/Oscar-Wilde-Libra_placeholder.png',
       ],
     },
   })

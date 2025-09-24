@@ -74,7 +74,7 @@ export default async function MicrocuentoPage({ params }: PageProps) {
     headline: microcuento.title,
     author: {
       '@type': 'Person',
-      name: microcuento.author
+      name: microcuento.author,
     },
     datePublished: microcuento.publishedAt,
     dateModified: microcuento.publishedAt,
@@ -86,12 +86,12 @@ export default async function MicrocuentoPage({ params }: PageProps) {
     publisher: {
       '@type': 'Organization',
       name: siteMetadata.title,
-      url: siteMetadata.siteUrl
+      url: siteMetadata.siteUrl,
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${siteMetadata.siteUrl}/microcuento/${slug}`
-    }
+      '@id': `${siteMetadata.siteUrl}/microcuento/${slug}`,
+    },
   }
 
   return (
@@ -101,17 +101,17 @@ export default async function MicrocuentoPage({ params }: PageProps) {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <AlternativeLayout
-      content={{
-        title: microcuento.title,
-        author: microcuento.author,
-        description: microcuento.description,
-        image: microcuento.image,
-        bgColor: microcuento.bgColor,
-        tags: microcuento.tags,
-        publishedAt: microcuento.publishedAt,
-      }}
-      prev={prev || undefined}
-      next={next || undefined}
+        content={{
+          title: microcuento.title,
+          author: microcuento.author,
+          description: microcuento.description,
+          image: microcuento.image,
+          bgColor: microcuento.bgColor,
+          tags: microcuento.tags,
+          publishedAt: microcuento.publishedAt,
+        }}
+        prev={prev || undefined}
+        next={next || undefined}
       >
         <PortableText value={microcuento.body} components={ptComponents} />
       </AlternativeLayout>

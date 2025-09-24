@@ -16,7 +16,7 @@ interface InternalLinkingSchemaProps {
 export default function InternalLinkingSchema({
   currentUrl,
   currentTitle,
-  relatedLinks
+  relatedLinks,
 }: InternalLinkingSchemaProps) {
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -28,17 +28,17 @@ export default function InternalLinkingSchema({
       '@type': 'WebSite',
       '@id': `${siteMetadata.siteUrl}#website`,
       url: siteMetadata.siteUrl,
-      name: siteMetadata.title
+      name: siteMetadata.title,
     },
-    relatedLink: relatedLinks.map(link => ({
+    relatedLink: relatedLinks.map((link) => ({
       '@type': 'WebPage',
       url: link.url,
       name: link.title,
-      ...(link.description && { description: link.description })
+      ...(link.description && { description: link.description }),
     })),
     significantLink: relatedLinks
-      .filter(link => link.type === 'autor' || link.type === 'serie')
-      .map(link => link.url)
+      .filter((link) => link.type === 'autor' || link.type === 'serie')
+      .map((link) => link.url),
   }
 
   return (

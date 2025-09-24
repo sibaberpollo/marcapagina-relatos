@@ -139,8 +139,8 @@ export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
         item: {
           '@type': 'WebPage',
           '@id': `${siteMetadata.siteUrl}#webpage`,
-          url: siteMetadata.siteUrl
-        }
+          url: siteMetadata.siteUrl,
+        },
       },
       ...crumbs.map((c, idx) => ({
         '@type': 'ListItem',
@@ -149,8 +149,8 @@ export default function Breadcrumbs({ serieContext }: BreadcrumbsProps = {}) {
         item: {
           '@type': 'WebPage',
           '@id': `${siteMetadata.siteUrl.replace(/\/$/, '')}${c.href}#webpage`,
-          url: `${siteMetadata.siteUrl.replace(/\/$/, '')}${c.href}`
-        }
+          url: `${siteMetadata.siteUrl.replace(/\/$/, '')}${c.href}`,
+        },
       })),
     ],
   }

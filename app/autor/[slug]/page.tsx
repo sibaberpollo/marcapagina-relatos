@@ -106,7 +106,8 @@ export async function generateMetadata({ params }: { params: Promise<{ slug: str
 
   // Obtener datos para descripción mejorada
   const { formattedRelatos } = await getAutorData(slug)
-  const articulosData = slug === 'pino' ? loadExternalArticles('pino') : await getArticulosByAutor(slug)
+  const articulosData =
+    slug === 'pino' ? loadExternalArticles('pino') : await getArticulosByAutor(slug)
 
   const relatosCount = formattedRelatos?.length || 0
   const articulosCount = articulosData?.length || 0

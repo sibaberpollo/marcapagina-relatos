@@ -24,9 +24,9 @@ export default function NavigationSchema() {
       url: item.url,
       position: index + 1,
       isPartOf: {
-        '@id': `${siteMetadata.siteUrl}#website`
-      }
-    }))
+        '@id': `${siteMetadata.siteUrl}#website`,
+      },
+    })),
   }
 
   return (

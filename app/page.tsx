@@ -477,21 +477,25 @@ export default async function Page({ searchParams }: PageProps) {
   // FAQ para mejorar fichas enriquecidas
   const faqs = [
     {
-      question: "¿Qué es MarcaPágina?",
-      answer: "MarcaPágina es una plataforma literaria que reúne más de 300 relatos y microcuentos inéditos de autores emergentes de América Latina. Ofrecemos un espacio para descubrir nueva literatura contemporánea."
+      question: '¿Qué es MarcaPágina?',
+      answer:
+        'MarcaPágina es una plataforma literaria que reúne más de 300 relatos y microcuentos inéditos de autores emergentes de América Latina. Ofrecemos un espacio para descubrir nueva literatura contemporánea.',
     },
     {
-      question: "¿Quiénes pueden publicar en MarcaPágina?",
-      answer: "Aceptamos textos de autores emergentes de América Latina. Revisa nuestros criterios editoriales y proceso de envío en la sección 'Publica'."
+      question: '¿Quiénes pueden publicar en MarcaPágina?',
+      answer:
+        "Aceptamos textos de autores emergentes de América Latina. Revisa nuestros criterios editoriales y proceso de envío en la sección 'Publica'.",
     },
     {
-      question: "¿Los contenidos son gratuitos?",
-      answer: "Sí, todos los relatos y microcuentos en MarcaPágina son de acceso completamente gratuito. Nuestra misión es democratizar el acceso a la literatura de calidad."
+      question: '¿Los contenidos son gratuitos?',
+      answer:
+        'Sí, todos los relatos y microcuentos en MarcaPágina son de acceso completamente gratuito. Nuestra misión es democratizar el acceso a la literatura de calidad.',
     },
     {
-      question: "¿Qué tipos de textos publican?",
-      answer: "Publicamos principalmente relatos, microcuentos y contenido multimedia relacionado con literatura. También incluimos series de textos y perfiles de autores."
-    }
+      question: '¿Qué tipos de textos publican?',
+      answer:
+        'Publicamos principalmente relatos, microcuentos y contenido multimedia relacionado con literatura. También incluimos series de textos y perfiles de autores.',
+    },
   ]
 
   return (

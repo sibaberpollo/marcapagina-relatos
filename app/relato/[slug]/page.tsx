@@ -246,7 +246,7 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     author: {
       '@type': 'Person',
       name: post.author.name,
-      url: `${siteMetadata.siteUrl}/autor/${post.author.slug.current}`
+      url: `${siteMetadata.siteUrl}/autor/${post.author.slug.current}`,
     },
     datePublished: post.date,
     dateModified: post.date,
@@ -258,12 +258,12 @@ export default async function Page(props: { params: Promise<{ slug: string }> })
     publisher: {
       '@type': 'Organization',
       name: siteMetadata.title,
-      url: siteMetadata.siteUrl
+      url: siteMetadata.siteUrl,
     },
     mainEntityOfPage: {
       '@type': 'WebPage',
-      '@id': `${siteMetadata.siteUrl}/relato/${slug}`
-    }
+      '@id': `${siteMetadata.siteUrl}/relato/${slug}`,
+    },
   }
 
   const Layout = layouts[defaultLayout]

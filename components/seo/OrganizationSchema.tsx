@@ -46,8 +46,8 @@ export default function OrganizationSchema() {
           about: {
             '@type': 'Thing',
             name: 'Literatura',
-            description: 'Relatos y microcuentos de autores emergentes'
-          }
+            description: 'Relatos y microcuentos de autores emergentes',
+          },
         },
       },
     ],
