@@ -329,7 +329,7 @@ const literaryHoroscopesLibra = {
     text: 'Detectas errores en el universo con la obsesión de una correctora de Tolstói. Antes de demandar a la Vía Láctea, recuerda que los mejores manuscritos incluyen una mancha de té.',
   },
   libra: {
-    text: 'Moderás un salón donde Jane Austen compara notas con Molière y todos esperan tu veredicto. Dicta sentencia: que la ironía lleve guantes blancos, pero que se escuche la carcajada.',
+    text: 'Moderarás un salón donde Jane Austen compara notas con Molière y todos esperan tu veredicto. Dicta sentencia: que la ironía lleve guantes blancos, pero que se escuche la carcajada.',
   },
   escorpio: {
     text: 'Tu sospecha olfatea secretos como inspector salido de Dostoievski, aunque el caso sea un mensaje sin responder. Usa la intensidad para escribir la confesión, no para revisar celulares.',
