@@ -348,6 +348,46 @@ const literaryHoroscopesLibra = {
   },
 }
 
+// Textos literarios para Escorpio (nuevos)
+const literaryHoroscopesEscorpio = {
+  aries: {
+    text: 'Tu ímpetu de Hemingway choca con el noir de Highsmith. Quieres la acción pura; Escorpio prefiere el crimen perfecto sin testigos. Esta semana, antes de lanzarte al precipicio, lee una página de "El talento de Mr. Ripley". Aprenderás que hay formas más oscuras de ganar.',
+  },
+  tauro: {
+    text: 'Buscas raíces eternas como en García Márquez; Escorpio te murmura: "Las raíces más profundas se pudren en la oscuridad". Tu solidez encuentra grietas. Esta semana, acepta que algunos cimientos están diseñados para colapsar. A veces lo podrido es lo más honesto.',
+  },
+  geminis: {
+    text: 'Eres Italo Calvino multiplicado en capítulos. Hablas en juicios paralelos, en historias que se ramifican. Escorpio, como Dostoievski, toma cada palabra tuya y la convierte en confesión. Cuidado: alguien está escribiendo tu monólogo interior en sangre.',
+  },
+  cancer: {
+    text: 'Tu nostalgia tipo Kawabata encuentra a Escorpio buceando en los abismos de Clarice Lispector. Ambos son agua, pero tú miras hacia el pasado y Escorpio hacia las capas donde nada respira. Esta semana, sumérgete sin mapa. Lo profundo necesita dos pares de ojos.',
+  },
+  leo: {
+    text: 'Tu brillo épico estilo Byron asusta a Escorpio. No es envidia; es que ves demasiado como quien lee bajo un foco en una novela negra. Leo quiere ser la estrella del drama; Escorpio quiere saber qué secreto acecha tras tu corona. Déjate editar por la sombra.',
+  },
+  virgo: {
+    text: 'Ambos son obsesivos, pero tú como Borges en su biblioteca infinita, y Escorpio como Patricia Highsmith corrigiendo crímenes. Tú buscas el detalle perfecto; Escorpio, la mentira perfecta. Esta semana, descubre que la corrección verdadera vive en lo que duele.',
+  },
+  libra: {
+    text: 'Tu balance wildeano choca con la amargura de Escorpio. Tú dices: "La belleza es lo único que vale". Escorpio responde: "La belleza es la mejor mentira". Uno quiere un epigrama; el otro, una confesión. Elige: la gracia o la verdad. No puedes tener ambas. <a href="/horoscopo/libra" class="text-purple-600 dark:text-purple-400 hover:underline font-semibold">Retorna a tu horóscopo de Libra.</a>',
+  },
+  escorpio: {
+    text: 'Esta semana serás el personaje de Highsmith observando tu propio crimen. Lo incómodo es que ya lo escribiste todo en un diario que nadie encontrará. El revelador es que ese diario eres tú. Cada secreto que guardas es la página que no te atreves a releer.',
+  },
+  sagitario: {
+    text: 'Quieres escribir La Odisea de Julio Verne; Escorpio sugiere quedarse en la oscuridad sin mapa. Viajar lejos es cobardia; viajar profundo es suicidio intelectual. Esta semana, descubre que el mejor laberinto no es geográfico: está escrito en Camus y Sartre.',
+  },
+  capricornio: {
+    text: 'Eres el arquitecto de George Eliot construyendo imperios victorianos. Escorpio es el arqueólogo que sabe que los mejores palacios están enterrados. Tu disciplina es admirable; esta semana, planta una novela negra en el sótano. Florecerá en tinta invisible.',
+  },
+  acuario: {
+    text: 'Tu utopía de Le Guin choca con el cinismo de Bukowski. Tú crees en reformas; Escorpio en la corrupción como verdad universal. El futuro que imaginas ya está podrido en la ficción. Esta semana, lee un cuento de Poe. Es más honesto que tu revolución.',
+  },
+  piscis: {
+    text: 'Sueñas con Murakami en espacios paralelos; Escorpio habita en los de Maupassant donde los espectros no responden. Ambos saben leer lo invisible, pero tú lo poetizas y Escorpio lo disecciona. Esta semana, comparte tu pesadilla más visceral. Escorpio comprenderá porque ya la escribió.',
+  },
+}
+
 // Datos específicos para cada horóscopo
 const horoscopoData = {
   cancer: {
@@ -701,13 +741,83 @@ Palabras clave: Justicia poética, equilibrio estacional, sabiduría narrativa, 
       'Elfriede Jelinek (Premio Nobel 2004)',
     ],
   },
+  escorpio: {
+    author: 'Patricia Highsmith',
+    authorImage:
+      'https://res.cloudinary.com/dx98vnos1/image/upload/v1761664881/Patricia_Highsmith_c0spde.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'phighsmith',
+    description:
+      'Escorpio encarnado: oscuro, moralmente ambiguo, obsesionado con los abismos de la naturaleza humana. Patricia Highsmith escribía crimen como quien respira. Su Tom Ripley no es un villano; es la verdad incómoda de lo que somos cuando nadie nos mira. Creó historias donde el culpable y la víctima intercambian máscaras. Vivió en retiro, desconfiando del mundo, escribiendo las verdades más oscuras con la precisión de un cirujano. "He trabajado duro durante años para ser excepcional. Ahora que lo soy, no me sorprende", dijo sin arrogancia: era observación.',
+    efemerides: [
+      {
+        date: '8 de noviembre de 1949',
+        title: 'Publica "El talento de Mr. Ripley"',
+        description: 'Nace el socio perfecto: amable, culto, asesino.',
+        color: 'from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20',
+        borderColor: 'border-red-100 dark:border-red-800/30',
+        textColor: 'text-red-600 dark:text-red-400',
+      },
+      {
+        date: '10 de noviembre de 1883',
+        title: 'Nace Djuna Barnes',
+        description: 'Escritora de la noche: París en tinta negra y verdades prohibidas.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400',
+      },
+      {
+        date: '13 de noviembre de 1850',
+        title: 'Nace Robert Louis Stevenson',
+        description: 'El Jekyll y Hyde fue primero biografía personal, luego ficción.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400',
+      },
+      {
+        date: '19 de noviembre de 1918',
+        title: 'Nace Ivo Andrić',
+        description: 'El puente de Visegrad: historias donde el pasado es maldición y luz.',
+        color: 'from-amber-50 to-yellow-50 dark:from-amber-900/20 dark:to-yellow-900/20',
+        borderColor: 'border-amber-100 dark:border-amber-800/30',
+        textColor: 'text-amber-600 dark:text-amber-400',
+      },
+    ],
+    tarot: {
+      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1761663939/Marcapa%CC%81gina_qkuq7h.png',
+      author: 'Eugène Ionesco',
+      subtitle: 'La Silla Vacía del Espejo',
+      card: 'La Justicia — Arcano XI',
+      phrase: '¿Qué pesa más, la verdad o tu necesidad de tener razón?',
+      description:
+        'En un escenario vacío, iluminado por una luz demasiado blanca, se alza una figura sentada sobre una silla que no toca el suelo. Lleva una balanza en una mano y una pluma de escriba en la otra, pero la balanza está torcida, y los platillos contienen cosas imposibles: en uno, una máscara que ríe; en el otro, una máscara que llora. La figura no tiene rostro, sino un espejo que refleja al espectador —aunque el reflejo aparece siempre un poco desfasado, como si llegara con retraso desde otro mundo.\n\nA su alrededor, sillas vacías discuten entre sí. Un coro de objetos murmura palabras incoherentes: "Equilibrio, desequilibrio, justicia, injusticia, ¿quién pesa al que pesa?". Un viento de aire ligero (de Libra) hace temblar los papeles del juicio, pero nadie puede leerlos porque están escritos en un idioma que se deshace al pronunciarlo.\n\nLibra aporta el deseo de armonía, pero aquí la armonía se vuelve absurda: la balanza busca nivelar lo que no puede compararse. Ionesco aporta la lógica rota del teatro del absurdo: la razón como comedia, la moral como escena vacía, la justicia como un diálogo circular donde nadie entiende su papel. La Justicia no mira con los ojos, sino con el espejo: nos devuelve la imagen deformada de nuestras justificaciones.',
+      meaningTitle: 'Lectura General',
+      meaningDescription:
+        'La Justicia te pregunta: "¿Qué pesa más, la verdad o tu necesidad de tener razón?". No hay respuesta lógica —solo el eco de tus propias palabras vacías. En el mundo del absurdo, la balanza no juzga: oscila. Busca el equilibrio sabiendo que nunca lo encontrarás del todo, porque el equilibrio perfecto sería la inmovilidad —y eso es la muerte del diálogo.\n\nInvertida: Cuando esta carta aparece invertida, el espejo se rompe. La Justicia se ríe de sí misma. El juicio pierde su peso. El consultante puede sentirse atrapado en la burocracia del alma: culpable de algo que no existe o inocente de algo que no recuerda. El consejo: no busques sentido donde el sentido ha huido. A veces, la única justicia posible es el reconocimiento del absurdo.',
+      illustrator: undefined,
+    },
+    writers: [
+      'Patricia Highsmith',
+      'Diane Arbus',
+      'Bette Davis',
+      'Pablo Neruda',
+      'James Baldwin',
+      'Sylvia Plath',
+      'Charles Bukowski',
+      'Truman Capote',
+      'Tennessee Williams',
+      'David Lynch',
+      'Isabel Allende',
+      'Clarice Lispector',
+    ],
+  },
 }
 
 interface HoroscopoClientProps {
-  signo?: 'cancer' | 'leo' | 'virgo' | 'libra'
+  signo?: 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio'
 }
 
-export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProps) {
+export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientProps) {
   const [activeSign, setActiveSign] = useState('')
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -807,7 +917,7 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find((sign) => sign.slug === currentSign)
   const displaySignName =
-    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : 'Libra'
+    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : signo === 'libra' ? 'Libra' : 'Escorpio'
 
   // Seleccionar el objeto de textos correcto según el signo
   const literaryTexts =
@@ -817,7 +927,9 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
         ? literaryHoroscopesLeo
         : signo === 'virgo'
           ? literaryHoroscopesVirgo
-          : literaryHoroscopesLibra
+          : signo === 'libra'
+            ? literaryHoroscopesLibra
+            : literaryHoroscopesEscorpio
   const currentSignText = literaryTexts[currentSign]?.text || ''
 
   // Obtener datos del horóscopo según el signo
@@ -825,7 +937,8 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
 
   // Función para obtener el link del signo
   const getSignLink = (signSlug: string) => {
-    if (signSlug === 'libra') return '/horoscopo' // Signo actual
+    if (signSlug === 'escorpio') return '/horoscopo' // Signo actual
+    if (signSlug === 'libra') return '/horoscopo/libra' // Archivo disponible
     if (signSlug === 'virgo') return '/horoscopo/virgo' // Archivo disponible
     if (signSlug === 'leo') return '/horoscopo/leo' // Archivo disponible
     if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible
@@ -899,24 +1012,6 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
               <p className="mb-8 max-w-lg text-lg leading-relaxed text-gray-700 dark:text-gray-300">
                 {data.description}
               </p>
-              {/* Autoría de Adriana */}
-              <div className="mt-6 mb-2 flex items-center gap-4">
-                <img
-                  src="https://res.cloudinary.com/dx98vnos1/image/upload/v1749824794/Adriana_Garcia_Sojo_dgbs6y.png"
-                  alt="Adriana García S."
-                  className="h-14 w-14 rounded-full border-2 border-gray-200 object-cover shadow-sm dark:border-gray-700"
-                  loading="lazy"
-                />
-                <div className="flex flex-col">
-                  <span className="text-sm text-gray-500 dark:text-gray-400">Por:</span>
-                  <a
-                    href={`/autor/${data.authorSlug}`}
-                    className="text-base font-semibold text-gray-900 hover:underline dark:text-gray-100"
-                  >
-                    {data.authorCredit}
-                  </a>
-                </div>
-              </div>
             </div>
             {/* Right Column - Imagen de Kafka sobre las formas geométricas */}
             <div className="relative order-1 flex items-center justify-center lg:order-2">
@@ -978,7 +1073,7 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
               const currentSignData = zodiacSigns.find((sign) => sign.slug === currentSign)
               const currentSignText = literaryTexts[currentSign]?.text || ''
               return (
-                <div className="w-full rounded-xl border-2 border-orange-200 bg-gradient-to-r from-yellow-50 to-orange-50 p-8 shadow-lg dark:border-orange-800 dark:from-yellow-900/20 dark:to-orange-900/20">
+                <div className="w-full rounded-xl border-2 border-red-200 bg-gradient-to-r from-red-50 to-rose-50 p-8 shadow-lg dark:border-red-800 dark:from-red-900/20 dark:to-rose-900/20">
                   <div className="flex flex-col items-center gap-6 md:flex-row">
                     <div className="flex-shrink-0">
                       {currentSignData?.image ? (
@@ -1004,9 +1099,10 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
                       <div className="mb-4 text-lg text-gray-600 dark:text-gray-400">
                         {currentSignData?.date}
                       </div>
-                      <div className="text-xl leading-relaxed text-gray-700 dark:text-gray-300">
-                        {currentSignText}
-                      </div>
+                      <div
+                        className="text-xl leading-relaxed text-gray-700 dark:text-gray-300"
+                        dangerouslySetInnerHTML={{ __html: currentSignText }}
+                      />
                     </div>
                   </div>
                 </div>
@@ -1049,9 +1145,10 @@ export default function HoroscopoClient({ signo = 'libra' }: HoroscopoClientProp
                       </div>
                       <div className="mb-1 text-lg font-bold">{sign.name}</div>
                       <div className="mb-3 text-sm text-gray-500">{sign.date}</div>
-                      <div className="mb-2 text-base text-gray-700 dark:text-gray-300">
-                        {literaryText}
-                      </div>
+                      <div
+                        className="mb-2 text-base text-gray-700 dark:text-gray-300"
+                        dangerouslySetInnerHTML={{ __html: literaryText }}
+                      />
                       {isClickable && (
                         <div className="mt-auto pt-2">
                           <span className="text-xs font-medium text-purple-600 dark:text-purple-400">

@@ -1,5 +1,5 @@
 import { genPageMetadata } from 'app/seo'
-import HoroscopoClient from './HoroscopoClient'
+import HoroscopoClient from '../HoroscopoClient'
 
 export async function generateMetadata() {
   return genPageMetadata({
@@ -25,6 +25,6 @@ export async function generateMetadata() {
   })
 }
 
-export default function HoroscopoPage() {
+export default function HoroscopoEscorpioPage() {
   return <HoroscopoClient signo="escorpio" />
 }
