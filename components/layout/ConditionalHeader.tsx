@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation'
 import Header from './Header'
+import NeoHeader from './NeoHeader'
 import TranstextosHeader from '../features/transtextos/TranstextosHeader'
 
 export default function ConditionalHeader() {
@@ -10,6 +11,11 @@ export default function ConditionalHeader() {
   // Ocultar header completamente en dashboard (shadcn tiene su propio header)
   if (pathname.startsWith('/dashboard') || pathname.startsWith('/biblioteca-personal')) {
     return null
+  }
+
+  // Homepage usa NeoHeader
+  if (pathname === '/') {
+    return <NeoHeader />
   }
 
   // Detectar si estamos en rutas de secciones de Transtextos

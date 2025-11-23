@@ -16,6 +16,11 @@
   --color-accent-hover: #faff00; /* Mantener amarillo puro en hover */
   --color-accent-dark: #c0c000; /* Amarillo fosforescente en modo oscuro */
 
+  /* Neo-Brutalist Palette */
+  --color-neo-yellow: #FFFF00;
+  --color-neo-black: #000000;
+  --color-neo-white: #FFFFFF;
+
   /* Kraft-inspired primary (cálido, terroso, papel) */
   --color-primary-50: #ffffd0; /* amarillo muy claro */
   --color-primary-100: #ffffc0;

@@ -7,7 +7,7 @@ import { Analytics, AnalyticsConfig } from 'pliny/analytics'
 import { SearchProvider, SearchConfig } from 'pliny/search'
 import ConditionalHeader from '@/components/layout/ConditionalHeader'
 import ConditionalTopBar from '@/components/layout/ConditionalTopBar'
-import Footer from '@/components/layout/Footer'
+import ConditionalFooter from '@/components/layout/ConditionalFooter'
 import Breadcrumbs from '@/components/navigation/Breadcrumbs'
 import SectionContainer from '@/components/layout/SectionContainer'
 import ConditionalBackgroundWrapper from '@/components/layout/ConditionalBackgroundWrapper'
@@ -203,7 +203,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <main className="mb-auto bg-white font-serif text-black">{children}</main>
             </SearchProvider>
           </ConditionalBackgroundWrapper>
-          <Footer />
+          <ConditionalFooter />
           <CookieBanner />
         </ThemeProviders>
       </body>
