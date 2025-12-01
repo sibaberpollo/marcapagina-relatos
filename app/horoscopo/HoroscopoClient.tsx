@@ -388,40 +388,40 @@ const literaryHoroscopesEscorpio = {
 // Textos literarios para Sagitario (nuevos)
 const literaryHoroscopesSagitario = {
   aries: {
-    text: 'Tu ímpetu se cruza con la flecha de Sagitario. Ambos quieren la verdad ahora, sin rodeos ni protocolo. Pero cuidado: tú golpeas puertas; Sagitario las salta. Esta semana, aprende que hay batallas que se ganan a caballo, no a pie.',
+    text: 'Actuarás con la urgencia de un personaje de Hemingway cruzando la frontera. Directo, veloz, sin preámbulos. Solo que esta vez el toro eres tú. Frena antes del precipicio o hazlo con estilo.',
   },
   tauro: {
-    text: 'Sagitario te invita a un viaje filosófico. Tú llevas maleta de ocho ruedas; Sagitario solo un cuaderno y una pregunta sin respuesta. Verás que la aventura verdadera no es cambiar de lugar, sino cambiar de idea.',
+    text: 'Aferrado a tu rutina como si fuera una novela de Proust: repetitiva, detallada, infinita. Esta semana alguien te robará una página. Deja que lo haga. A veces perder el hilo es encontrar el desenlace.',
   },
   geminis: {
-    text: 'Hablan el mismo idioma: curiosidad sin tregua, conversaciones que derivan en otros temas. Pero Sagitario busca síntesis donde tú amas el detalle. Esta semana, alguien te pedirá que elijas un solo final. Respira hondo y elige.',
+    text: 'Pareces un cuento de Pessoa escrito por todos sus heterónimos a la vez. Demasiadas voces, ningún consenso. Esta semana: silencia a dos y deja hablar solo al que tiene algo útil que decir.',
   },
   cancer: {
-    text: 'Sagitario te saca de la cueva emocional con una antorcha y una carcajada. Te dice: "El mundo está afuera". Tú respondes: "Y adentro también". Ambos tienen razón, pero esta semana, atrévete a salir sin mapa de regreso.',
+    text: 'Tu melancolía podría ilustrar un epistolario de Sylvia Plath. Hermoso, sí, pero agotador. Esta semana: sal del frasco de cristal. Abre la ventana aunque entre ruido. El mundo no muerde tanto como temes.',
   },
   leo: {
-    text: 'Tu drama encuentra en Sagitario un coro que aplaude... pero luego cambia de tema. No es desprecio: es que Sagitario no cree en escenas largas. Esta semana, serás protagonista y filósofo. Elige cuándo rugir y cuándo reír.',
+    text: 'Quieres montar una obra donde tú seas autor, director y protagonista. Muy Orson Welles, pero sin presupuesto. Esta semana: comparte el escenario o terminarás aplaudiendo solo frente al espejo.',
   },
   virgo: {
-    text: 'Sagitario desordena tu lista de pendientes con una pregunta: "¿Y si nada de eso importa?". Te ofende y te libera al mismo tiempo. Esta semana, permítete un error hermoso. Los mejores libros tienen erratas sublimes.',
+    text: 'Corriges errores que nadie más ve, como un editor fantasma de Flaubert. Admirable, pero exhausto. Esta semana: deja pasar una coma mal puesta. El cielo no se cae por un punto y coma fuera de lugar.',
   },
   libra: {
-    text: 'Buscas el equilibrio; Sagitario lo rompe con una risa y una teoría nueva. Te dice: "La verdad pesa más que la armonía". Tú respondes: "¿Y si la armonía es la verdad?". Esta semana, debatan hasta el amanecer. Nadie ganará, pero ambos crecerán.',
+    text: 'Estás diseñando una portada perfecta para un libro que aún no escribes. Todo equilibrio, ninguna historia. Esta semana: escribe tres páginas feas. La belleza puede venir después, o nunca. Ambas opciones son válidas.',
   },
   escorpio: {
-    text: 'Sagitario es luz donde tú eres profundidad. Te molesta su optimismo; le inquieta tu intensidad. Pero ambos buscan la verdad. Tú excavas; Sagitario dispara al cielo. Esta semana, reconoce que hay más de un camino hacia lo real.',
+    text: 'Lees entre líneas como si fueras detective en una novela de Chandler. Todo te parece sospechoso, hasta el saludo del vecino. Esta semana: no todo tiene doble fondo. A veces un café es solo un café.',
   },
   sagitario: {
-    text: 'Esta semana serás Jane Austen observando una velada social: irónico, filósofo, divertido, pero con la flecha ya lista. Sabes exactamente qué decir y cuándo callarte. El problema es que también sabes que nadie más lo sabe. Disfruta tu lucidez con humor.',
+    text: 'Esta semana escribirás diálogos brillantes pero solo en tu cabeza. Cuando intentes decirlos en voz alta, saldrá otra cosa. Acéptalo: la improvisación también es un arte. Hasta Kerouac editaba después.',
   },
   capricornio: {
-    text: 'Eres el arquitecto; Sagitario el nómade. Tú construyes para quedarte; Sagitario construye para irse. Esta semana, descubre que las mejores estructuras son las que pueden desmontarse y armarse en otro lugar. La sabiduría también viaja.',
+    text: 'Construyes tu vida como si fuera una saga de Balzac: planificada, ambiciosa, con presupuesto detallado. Esta semana: un imprevisto te cambiará el capítulo. No lo resistas. Las mejores tramas nunca fueron lineales.',
   },
   acuario: {
-    text: 'Ustedes comparten visión de futuro, pero tú reformas sistemas y Sagitario cuestiona sus bases. Ambos son rebeldes con biblioteca. Esta semana, un libro prestado entre ustedes cambiará una conversación. Léanlo juntos. Discutan sin tregua.',
+    text: 'Propones ideas tan raras que parecen salidas de un relato de Bradbury. La mitad te aplaude, la otra mitad huye. Esta semana: no expliques tanto. Los visionarios nunca convencen a todos. Ni falta que hace.',
   },
   piscis: {
-    text: 'Sagitario te dice: "Deja de soñar y camina". Tú respondes: "Camino mientras sueño". Ambos tienen razón. Esta semana, el viaje será tan real como imaginario. Lleva un cuaderno. Anota lo que ves y lo que inventas. No marques la diferencia.',
+    text: 'Vives en una bruma poética digna de Neruda en modo soñador. Bonito, pero poco práctico. Esta semana: aterriza dos horas al día. Paga una cuenta, responde un correo. Luego vuelve a tu nube. Balance.',
   },
 }
 
