@@ -1,9 +1,6 @@
 'use client'
 
 import SectionContainer from '@/components/layout/SectionContainer'
-import EngageBar from '@/components/content/reactions/EngageBar'
-import { useState, useEffect, useRef } from 'react'
-import { useRouter, useSearchParams } from 'next/navigation'
 
 const zodiacSigns = [
   {
@@ -369,7 +366,7 @@ const literaryHoroscopesEscorpio = {
     text: 'Ambos son obsesivos, pero tú como Borges en su biblioteca infinita, y Escorpio como Patricia Highsmith corrigiendo crímenes. Tú buscas el detalle perfecto; Escorpio, la mentira perfecta. Esta semana, descubre que la corrección verdadera vive en lo que duele.',
   },
   libra: {
-    text: 'Tu balance wildeano choca con la amargura de Escorpio. Tú dices: "La belleza es lo único que vale". Escorpio responde: "La belleza es la mejor mentira". Uno quiere un epigrama; el otro, una confesión. Elige: la gracia o la verdad. No puedes tener ambas. <a href="/horoscopo/libra" class="text-purple-600 dark:text-purple-400 hover:underline font-semibold">Retorna a tu horóscopo de Libra.</a>',
+    text: 'Tu balance wildeano choca con la amargura de Escorpio. Tú dices: "La belleza es lo único que vale". Escorpio responde: "La belleza es la mejor mentira". Uno quiere un epigrama; el otro, una confesión. Elige: la gracia o la verdad. No puedes tener ambas.',
   },
   escorpio: {
     text: 'Esta semana serás el personaje de Highsmith observando tu propio crimen. Lo incómodo es que ya lo escribiste todo en un diario que nadie encontrará. El revelador es que ese diario eres tú. Cada secreto que guardas es la página que no te atreves a releer.',
@@ -385,6 +382,46 @@ const literaryHoroscopesEscorpio = {
   },
   piscis: {
     text: 'Sueñas con Murakami en espacios paralelos; Escorpio habita en los de Maupassant donde los espectros no responden. Ambos saben leer lo invisible, pero tú lo poetizas y Escorpio lo disecciona. Esta semana, comparte tu pesadilla más visceral. Escorpio comprenderá porque ya la escribió.',
+  },
+}
+
+// Textos literarios para Sagitario (nuevos)
+const literaryHoroscopesSagitario = {
+  aries: {
+    text: 'Tu ímpetu se cruza con la flecha de Sagitario. Ambos quieren la verdad ahora, sin rodeos ni protocolo. Pero cuidado: tú golpeas puertas; Sagitario las salta. Esta semana, aprende que hay batallas que se ganan a caballo, no a pie.',
+  },
+  tauro: {
+    text: 'Sagitario te invita a un viaje filosófico. Tú llevas maleta de ocho ruedas; Sagitario solo un cuaderno y una pregunta sin respuesta. Verás que la aventura verdadera no es cambiar de lugar, sino cambiar de idea.',
+  },
+  geminis: {
+    text: 'Hablan el mismo idioma: curiosidad sin tregua, conversaciones que derivan en otros temas. Pero Sagitario busca síntesis donde tú amas el detalle. Esta semana, alguien te pedirá que elijas un solo final. Respira hondo y elige.',
+  },
+  cancer: {
+    text: 'Sagitario te saca de la cueva emocional con una antorcha y una carcajada. Te dice: "El mundo está afuera". Tú respondes: "Y adentro también". Ambos tienen razón, pero esta semana, atrévete a salir sin mapa de regreso.',
+  },
+  leo: {
+    text: 'Tu drama encuentra en Sagitario un coro que aplaude... pero luego cambia de tema. No es desprecio: es que Sagitario no cree en escenas largas. Esta semana, serás protagonista y filósofo. Elige cuándo rugir y cuándo reír.',
+  },
+  virgo: {
+    text: 'Sagitario desordena tu lista de pendientes con una pregunta: "¿Y si nada de eso importa?". Te ofende y te libera al mismo tiempo. Esta semana, permítete un error hermoso. Los mejores libros tienen erratas sublimes.',
+  },
+  libra: {
+    text: 'Buscas el equilibrio; Sagitario lo rompe con una risa y una teoría nueva. Te dice: "La verdad pesa más que la armonía". Tú respondes: "¿Y si la armonía es la verdad?". Esta semana, debatan hasta el amanecer. Nadie ganará, pero ambos crecerán.',
+  },
+  escorpio: {
+    text: 'Sagitario es luz donde tú eres profundidad. Te molesta su optimismo; le inquieta tu intensidad. Pero ambos buscan la verdad. Tú excavas; Sagitario dispara al cielo. Esta semana, reconoce que hay más de un camino hacia lo real.',
+  },
+  sagitario: {
+    text: 'Esta semana serás Jane Austen observando una velada social: irónico, filósofo, divertido, pero con la flecha ya lista. Sabes exactamente qué decir y cuándo callarte. El problema es que también sabes que nadie más lo sabe. Disfruta tu lucidez con humor.',
+  },
+  capricornio: {
+    text: 'Eres el arquitecto; Sagitario el nómade. Tú construyes para quedarte; Sagitario construye para irse. Esta semana, descubre que las mejores estructuras son las que pueden desmontarse y armarse en otro lugar. La sabiduría también viaja.',
+  },
+  acuario: {
+    text: 'Ustedes comparten visión de futuro, pero tú reformas sistemas y Sagitario cuestiona sus bases. Ambos son rebeldes con biblioteca. Esta semana, un libro prestado entre ustedes cambiará una conversación. Léanlo juntos. Discutan sin tregua.',
+  },
+  piscis: {
+    text: 'Sagitario te dice: "Deja de soñar y camina". Tú respondes: "Camino mientras sueño". Ambos tienen razón. Esta semana, el viaje será tan real como imaginario. Lleva un cuaderno. Anota lo que ves y lo que inventas. No marques la diferencia.',
   },
 }
 
@@ -424,19 +461,6 @@ const horoscopoData = {
         textColor: 'text-green-600 dark:text-green-400',
       },
     ],
-    tarot: {
-      image:
-        'https://res.cloudinary.com/dx98vnos1/image/upload/v1752495990/tarot-julio-500_eexugw.png',
-      author: 'Alice Munro',
-      subtitle: 'Las tres lunas de Júpiter',
-      card: 'El Ahorcado',
-      phrase: 'La felicidad constante es la curiosidad',
-      description:
-        'Las tres lunas interiores de Júpiter —Ío, Europa y Ganímedes— mantienen una resonancia orbital: tocan la misma nota, pero en octavas diferentes. Las transformaciones que atraviesan los personajes en los libros de Alice Munro resuenan en nuestras vidas, invitándonos a observar con compasión infinita nuestro viaje y el de quienes nos rodean. Permite que el silencio sideral acentúe la sensibilidad y la tenacidad de Cáncer, uniendo corazón y mente para perseverar.',
-      meaningTitle: undefined,
-      meaningDescription: undefined,
-      illustrator: undefined,
-    },
     writers: undefined,
   },
   leo: {
@@ -505,22 +529,6 @@ const horoscopoData = {
         textColor: 'text-rose-600 dark:text-rose-400',
       },
     ],
-    tarot: {
-      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1753183953/tarot-leo_onlpy8.png',
-      author: 'Charles Le Sorcier',
-      subtitle: 'El Hechicero Inmortal',
-      card: 'La Fuerza',
-      phrase: 'El conocimiento arcano sobrevive al tiempo',
-      description:
-        'En el tarot, La Fuerza, la octava carta de los Arcanos Mayores, domina a los hijos de Leo, y corresponde al tránsito del Sol en este signo. Los nacidos en Leo, no dudan de las cosas que tienen que hacer, son buenos para todo, inteligentes, e idealistas. Magnéticos y honestos, les encanta estar en el punto de mira. El león representa su naturaleza apasionada y su fuerza, el coraje, el deseo y la necesidad de conexión humana. Pero, cuidado, cuando estas necesidades no se satisfacen, se vuelven abrumadores y la naturaleza destructiva del león se manifiesta.',
-      meaningTitle: 'Significado de la tirada',
-      meaningDescription:
-        'El consultante está enfrentando una situación marcada por una obsesión no resuelta. Hay una energía persistente que ha sobrevivido al tiempo, y ahora exige atención o resolución. Presencia de sabiduría arcana o conocimientos prohibidos. Advertencia: el consultante puede estar atrapado en su pasado. Esta carta representa la eternidad del conocimiento y la conexión con el creador. El relato y su personificación. Le Sorcier no sólo es un personaje: es la encarnación de todos los que buscan dominar la realidad a través del saber. Lovecraft, en las sombras, recuerda que incluso los horrores más grandes existen porque alguien los soñó.',
-      illustrator: {
-        name: '@rebecafg68',
-        url: 'https://instagram.com/rebecafg68',
-      },
-    },
     writers: [
       'Henrik Pontoppidan (Premio Nobel 1917)',
       'Alexandre Dumas',
@@ -620,19 +628,6 @@ const horoscopoData = {
         textColor: 'text-rose-600 dark:text-rose-400',
       },
     ],
-    tarot: {
-      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1755780988/tarot_virgo_jjmode.png',
-      author: 'Mary Shelley',
-      subtitle: 'La pluma como linterna',
-      card: 'El Ermitaño',
-      phrase: 'La luz nace del examen interior',
-      description:
-        'Virgo, signo mutable de tierra, perfeccionista, lógico y metódico, con espíritu crítico, precisión y paciencia. Odia la improvisación y necesita seguridad. Su carta es El Ermitaño: introspección, sabiduría por reflexión y búsqueda de la verdad interior. En nuestro Tarot literario, Mary Shelley es la ermitaña: no alza una linterna, sino una pluma que ilumina páginas abiertas, símbolo de la creación intelectual y del poder transformador de la imaginación. A lo lejos, Frankenstein aparece en penumbra: eco de la otra cara del conocimiento, la soledad del buscador y el peso de la responsabilidad por lo creado.',
-      meaningTitle: 'Interpretación',
-      meaningDescription:
-        'El Ermitaño no es aislamiento vacío, sino introspección fértil. Representa la figura que se retira para explorar los abismos del alma y la mente humana, y que vuelve con un descubrimiento luminoso, aunque inquietante: el poder y el peligro de la creación. Invita a encontrar respuestas dentro de uno mismo, evitando, sin embargo, sobre pensar las cosas. Enfocar tus pensamientos y forma de actuar, evitar los impulsos. Para esto será necesario, más que nunca, el saber encontrar equilibrio entre descanso y actividad. Familia y trabajo. Placer y sacrificio.',
-      illustrator: undefined,
-    },
     writers: [
       'Jorge Luis Borges',
       'Álvaro Mutis',
@@ -696,31 +691,6 @@ const horoscopoData = {
         textColor: 'text-teal-600 dark:text-teal-400',
       },
     ],
-    tarot: {
-      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1758729122/tarot_libra_pc62ow.png',
-      author: 'Miguel de Cervantes • Italo Calvino • William Faulkner',
-      subtitle: 'VIII – Arcano Mayor Original',
-      card: 'El Árbitro del Otoño',
-      phrase: 'La balanza escucha antes de dictar sentencia',
-      description:
-        'Libra se reconoce en La Justicia y en la Reina de Espadas: equilibrio, armonía y decisiones conscientes. El Árbitro del Otoño viste hojas secas y sostiene una balanza de frutos, recordando que cada elección deja huella y que la belleza nace del contraste que no niega la verdad.',
-      meaningTitle: 'Lectura general',
-      meaningDescription: `El Árbitro del Otoño enseña que la justicia no siempre dicta, a veces escucha. Representa el equilibrio entre razón y emoción, entre lo vivido y lo soñado. Su justicia no impone, sino que busca sentido en la maraña de lo humano. Nos recuerda que la belleza surge de lo gastado, lo imperfecto y lo temporal.
-
-Consejo:
-• Escucha antes de decidir.
-• No confundas armonía con perfección.
-• Reconoce la sabiduría de lo vivido y el valor de lo efímero.
-
-Atención / Sombras:
-• Riesgo de superficialidad estética sin ética.
-• Juicios apresurados que no dejan espacio a los matices.
-• Dureza sin compasión.
-• Desconexión con la raíz interior y con el tiempo profundo.
-
-Palabras clave: Justicia poética, equilibrio estacional, sabiduría narrativa, belleza melancólica, memoria profunda, legado cultural, escucha atenta, realismo mágico, claridad sin rigidez.`,
-      illustrator: undefined,
-    },
     writers: [
       'Oscar Wilde',
       'Miguel de Cervantes',
@@ -783,19 +753,6 @@ Palabras clave: Justicia poética, equilibrio estacional, sabiduría narrativa, 
         textColor: 'text-amber-600 dark:text-amber-400',
       },
     ],
-    tarot: {
-      image: 'https://res.cloudinary.com/dx98vnos1/image/upload/v1761663939/Marcapa%CC%81gina_qkuq7h.png',
-      author: 'Eugène Ionesco',
-      subtitle: 'La Silla Vacía del Espejo',
-      card: 'La Justicia — Arcano XI',
-      phrase: '¿Qué pesa más, la verdad o tu necesidad de tener razón?',
-      description:
-        'En un escenario vacío, iluminado por una luz demasiado blanca, se alza una figura sentada sobre una silla que no toca el suelo. Lleva una balanza en una mano y una pluma de escriba en la otra, pero la balanza está torcida, y los platillos contienen cosas imposibles: en uno, una máscara que ríe; en el otro, una máscara que llora. La figura no tiene rostro, sino un espejo que refleja al espectador —aunque el reflejo aparece siempre un poco desfasado, como si llegara con retraso desde otro mundo.\n\nA su alrededor, sillas vacías discuten entre sí. Un coro de objetos murmura palabras incoherentes: "Equilibrio, desequilibrio, justicia, injusticia, ¿quién pesa al que pesa?". Un viento de aire ligero (de Libra) hace temblar los papeles del juicio, pero nadie puede leerlos porque están escritos en un idioma que se deshace al pronunciarlo.\n\nLibra aporta el deseo de armonía, pero aquí la armonía se vuelve absurda: la balanza busca nivelar lo que no puede compararse. Ionesco aporta la lógica rota del teatro del absurdo: la razón como comedia, la moral como escena vacía, la justicia como un diálogo circular donde nadie entiende su papel. La Justicia no mira con los ojos, sino con el espejo: nos devuelve la imagen deformada de nuestras justificaciones.',
-      meaningTitle: 'Lectura General',
-      meaningDescription:
-        'La Justicia te pregunta: "¿Qué pesa más, la verdad o tu necesidad de tener razón?". No hay respuesta lógica —solo el eco de tus propias palabras vacías. En el mundo del absurdo, la balanza no juzga: oscila. Busca el equilibrio sabiendo que nunca lo encontrarás del todo, porque el equilibrio perfecto sería la inmovilidad —y eso es la muerte del diálogo.\n\nInvertida: Cuando esta carta aparece invertida, el espejo se rompe. La Justicia se ríe de sí misma. El juicio pierde su peso. El consultante puede sentirse atrapado en la burocracia del alma: culpable de algo que no existe o inocente de algo que no recuerda. El consejo: no busques sentido donde el sentido ha huido. A veces, la única justicia posible es el reconocimiento del absurdo.',
-      illustrator: undefined,
-    },
     writers: [
       'Patricia Highsmith',
       'Diane Arbus',
@@ -811,113 +768,88 @@ Palabras clave: Justicia poética, equilibrio estacional, sabiduría narrativa, 
       'Clarice Lispector',
     ],
   },
+  sagitario: {
+    author: 'Jane Austen',
+    authorImage:
+      'https://res.cloudinary.com/dx98vnos1/image/upload/v1764592800/jane_austen_sagitario_q5ssic.png',
+    authorCredit: 'Adriana García S.',
+    authorSlug: 'jausten',
+    description:
+      'Sagitario en estado puro: aventurera intelectual disfrazada de señorita inglesa. Jane Austen disparaba verdades filosóficas con ironía quirúrgica desde la sala de té. Observaba el mundo como antropóloga y lo narraba como comediante. Sus novelas son flechas certeras hacia la hipocresía social, envueltas en bailes de salón. "Declaro, después de todo, que no hay placer como la lectura", escribió, y lo decía en serio aunque sus personajes no siempre. Murió joven pero dejó un legado que sigue provocando conversaciones, risas y tesis doctorales. Sagitario no conquista territorios: conquista mentes.',
+    efemerides: [
+      {
+        date: '1 de diciembre de 1948',
+        title: 'Muere Alejandra Kollontai',
+        description: 'Revolucionaria, diplomática, novelista. La libertad también se escribe.',
+        color: 'from-red-50 to-orange-50 dark:from-red-900/20 dark:to-orange-900/20',
+        borderColor: 'border-red-100 dark:border-red-800/30',
+        textColor: 'text-red-600 dark:text-red-400',
+      },
+      {
+        date: '3 de diciembre de 1857',
+        title: 'Nace Joseph Conrad',
+        description: 'Del mar a la selva: el viaje como metáfora del alma.',
+        color: 'from-blue-50 to-indigo-50 dark:from-blue-900/20 dark:to-indigo-900/20',
+        borderColor: 'border-blue-100 dark:border-blue-800/30',
+        textColor: 'text-blue-600 dark:text-blue-400',
+      },
+      {
+        date: '16 de diciembre de 1775',
+        title: 'Nace Jane Austen',
+        description: 'La ironía británica encuentra su templo portátil.',
+        color: 'from-purple-50 to-pink-50 dark:from-purple-900/20 dark:to-pink-900/20',
+        borderColor: 'border-purple-100 dark:border-purple-800/30',
+        textColor: 'text-purple-600 dark:text-purple-400',
+      },
+      {
+        date: '16 de diciembre de 1917',
+        title: 'Nace Arthur C. Clarke',
+        description: 'Filósofo del espacio: la ciencia ficción como profecía.',
+        color: 'from-cyan-50 to-teal-50 dark:from-cyan-900/20 dark:to-teal-900/20',
+        borderColor: 'border-cyan-100 dark:border-cyan-800/30',
+        textColor: 'text-cyan-600 dark:text-cyan-400',
+      },
+      {
+        date: '18 de diciembre de 1856',
+        title: 'Nace J.J. Thomson',
+        description: 'Descubre el electrón y lo escribe como quien narra una aventura.',
+        color: 'from-green-50 to-emerald-50 dark:from-green-900/20 dark:to-emerald-900/20',
+        borderColor: 'border-green-100 dark:border-green-800/30',
+        textColor: 'text-green-600 dark:text-green-400',
+      },
+    ],
+    writers: [
+      'Jane Austen',
+      'Gustave Flaubert',
+      'Joseph Conrad',
+      'Willa Cather',
+      'Noel Coward',
+      'Arthur C. Clarke',
+      'Philip K. Dick',
+      'William Blake',
+      'Emily Dickinson',
+      'Louisa May Alcott',
+      'C.S. Lewis',
+      'Noam Chomsky',
+      'Jorge Semprún',
+      'José Ortega y Gasset',
+      'Edmond Rostand',
+    ],
+  },
 }
 
 interface HoroscopoClientProps {
-  signo?: 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio'
+  signo?: 'cancer' | 'leo' | 'virgo' | 'libra' | 'escorpio' | 'sagitario'
 }
 
-export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientProps) {
-  const [activeSign, setActiveSign] = useState('')
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const zodiacSectionRef = useRef<HTMLDivElement>(null)
-  const zodiacScrollRef = useRef<HTMLDivElement>(null)
-
-  // Eliminar toda la lógica de selección de signo, scroll, y el grid horizontal de tabs
-  // En su lugar, mostrar todos los signos en una grilla
-
-  // Eliminar la función scrollToActiveSign
-  // const scrollToActiveSign = (signSlug: string) => {
-  //   if (!zodiacScrollRef.current) return
-
-  //   const signIndex = zodiacSigns.findIndex(sign => sign.slug === signSlug)
-  //   if (signIndex === -1) return
-
-  //   const scrollContainer = zodiacScrollRef.current
-  //   const containerWidth = scrollContainer.offsetWidth
-
-  //   // Calcular el ancho aproximado de cada elemento (incluyendo gap)
-  //   // w-16 md:w-20 lg:w-24 + gap-4 + padding + texto
-  //   const itemWidth = window.innerWidth >= 1024 ? 120 : window.innerWidth >= 768 ? 100 : 80
-
-  //   // Calcular la posición del signo activo
-  //   const signPosition = signIndex * itemWidth
-
-  //   // Calcular el scroll para centrar el signo
-  //   const scrollLeft = signPosition - (containerWidth / 2) + (itemWidth / 2)
-
-  //   // Hacer scroll suave
-  //   scrollContainer.scrollTo({
-  //     left: Math.max(0, scrollLeft),
-  //     behavior: 'smooth'
-  //   })
-  // }
-
-  // Eliminar el useEffect para establecer el signo activo al cargar la página
-  // useEffect(() => {
-  //   // Primero verificar si hay un signo en la URL
-  //   const signFromUrl = searchParams.get('sign')
-
-  //   if (signFromUrl && zodiacSigns.some(sign => sign.slug === signFromUrl)) {
-  //     // Si hay un signo válido en la URL, usarlo
-  //     setActiveSign(signFromUrl)
-
-  //     // Hacer scroll automático a la sección de signos al cargar y centrar el signo
-  //     setTimeout(() => {
-  //       zodiacSectionRef.current?.scrollIntoView({
-  //         behavior: 'smooth',
-  //         block: 'start'
-  //       })
-  //       // Centrar el signo en el scroll horizontal
-  //       setTimeout(() => scrollToActiveSign(signFromUrl), 100)
-  //     }, 300)
-  //   } else {
-  //     // Si no, detectar automáticamente el signo actual
-  //     const currentSign = getCurrentZodiacSign()
-  //     setActiveSign(currentSign)
-
-  //     // Centrar el signo detectado automáticamente
-  //     setTimeout(() => scrollToActiveSign(currentSign), 500)
-  //   }
-  // }, [searchParams])
-
-  // Eliminar el Efecto adicional para centrar el signo cuando cambie activeSign
-  // useEffect(() => {
-  //   if (activeSign) {
-  //     // Pequeño delay para asegurar que el DOM esté listo
-  //     setTimeout(() => scrollToActiveSign(activeSign), 200)
-  //   }
-  // }, [activeSign])
-
-  // Eliminar la función handleSignChange
-  // const handleSignChange = (signSlug) => {
-  //   setActiveSign(signSlug)
-  //   // Navegar a la nueva URL con parámetros
-  //   router.push(`/horoscopo?sign=${signSlug}`, { scroll: false })
-
-  //   // Centrar el signo seleccionado en el scroll horizontal
-  //   setTimeout(() => scrollToActiveSign(signSlug), 100)
-
-  //   // Hacer scroll suave a la sección del menú zodiacal
-  //   setTimeout(() => {
-  //     zodiacSectionRef.current?.scrollIntoView({
-  //       behavior: 'smooth',
-  //       block: 'start'
-  //     })
-  //   }, 100)
-  // }
-
-  // Eliminar la variable activePrediction
-  // const activePrediction = horoscopePredictions[activeSign] || horoscopePredictions.aries
-
+export default function HoroscopoClient({ signo = 'sagitario' }: HoroscopoClientProps) {
   // Detectar el signo actual o usar el especificado
   const currentSign = signo
 
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find((sign) => sign.slug === currentSign)
   const displaySignName =
-    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : signo === 'libra' ? 'Libra' : 'Escorpio'
+    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : signo === 'libra' ? 'Libra' : signo === 'escorpio' ? 'Escorpio' : 'Sagitario'
 
   // Seleccionar el objeto de textos correcto según el signo
   const literaryTexts =
@@ -929,7 +861,9 @@ export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientP
           ? literaryHoroscopesVirgo
           : signo === 'libra'
             ? literaryHoroscopesLibra
-            : literaryHoroscopesEscorpio
+            : signo === 'escorpio'
+              ? literaryHoroscopesEscorpio
+              : literaryHoroscopesSagitario
   const currentSignText = literaryTexts[currentSign]?.text || ''
 
   // Obtener datos del horóscopo según el signo
@@ -937,11 +871,12 @@ export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientP
 
   // Función para obtener el link del signo
   const getSignLink = (signSlug: string) => {
-    if (signSlug === 'escorpio') return '/horoscopo' // Signo actual
-    if (signSlug === 'libra') return '/horoscopo/libra' // Archivo disponible
-    if (signSlug === 'virgo') return '/horoscopo/virgo' // Archivo disponible
-    if (signSlug === 'leo') return '/horoscopo/leo' // Archivo disponible
-    if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible
+    if (signSlug === 'sagitario') return '/horoscopo' // Signo actual (Diciembre 2025)
+    if (signSlug === 'escorpio') return '/horoscopo/escorpio' // Archivo disponible (Noviembre 2025)
+    if (signSlug === 'libra') return '/horoscopo/libra' // Archivo disponible (Octubre 2025)
+    if (signSlug === 'virgo') return '/horoscopo/virgo' // Archivo disponible (Septiembre 2025)
+    if (signSlug === 'leo') return '/horoscopo/leo' // Archivo disponible (Agosto 2025)
+    if (signSlug === 'cancer') return '/horoscopo/cancer' // Archivo disponible (Julio 2025)
     return '#' // Signos futuros (sin link)
   }
 
@@ -1152,7 +1087,7 @@ export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientP
                       {isClickable && (
                         <div className="mt-auto pt-2">
                           <span className="text-xs font-medium text-purple-600 dark:text-purple-400">
-                            {['cancer', 'leo', 'virgo'].includes(sign.slug)
+                            {['cancer', 'leo', 'virgo', 'libra', 'escorpio'].includes(sign.slug)
                               ? 'Ver archivo'
                               : 'Ver horóscopo'}{' '}
                             →
@@ -1179,147 +1114,30 @@ export default function HoroscopoClient({ signo = 'escorpio' }: HoroscopoClientP
         </div>
       </SectionContainer>
 
-      {/* Bloque de la carta del tarot con fondo geométrico al final */}
-      <section className="relative overflow-hidden py-16 lg:py-24">
-        {/* Fondo geométrico idéntico al hero */}
-        <div className="pointer-events-none absolute inset-0">
-          {/* Textura de papel/brush sutil */}
-          <div
-            className="absolute inset-0 opacity-15"
-            style={{
-              backgroundImage: `
-              radial-gradient(circle at 20% 30%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
-              radial-gradient(circle at 80% 20%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
-              radial-gradient(circle at 40% 70%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
-              radial-gradient(circle at 90% 80%, rgba(0, 0, 0, 0.02) 0%, transparent 40%),
-              radial-gradient(circle at 10% 90%, rgba(0, 0, 0, 0.02) 0%, transparent 40%)
-            `,
-            }}
-          ></div>
-          <div
-            className="absolute inset-0 opacity-10"
-            style={{
-              backgroundImage: `
-              linear-gradient(45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
-              linear-gradient(-45deg, rgba(0, 0, 0, 0.01) 25%, transparent 25%),
-              linear-gradient(45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%),
-              linear-gradient(-45deg, transparent 75%, rgba(0, 0, 0, 0.01) 75%)
-            `,
-              backgroundSize: '60px 60px',
-              backgroundPosition: '0 0, 0 30px, 30px -30px, -30px 0px',
-            }}
-          ></div>
-          {/* Formas geométricas sutiles */}
-          <div className="absolute top-20 left-[10%] h-32 w-32 animate-pulse rounded-full bg-gradient-to-br from-cyan-200 to-cyan-300 opacity-30 dark:from-cyan-700 dark:to-cyan-800"></div>
-          <div className="absolute top-40 right-[15%] h-24 w-24 rotate-45 transform bg-gradient-to-br from-blue-200 to-blue-300 opacity-25 dark:from-blue-600 dark:to-blue-700"></div>
-          <div className="absolute top-60 left-[20%] h-20 w-20 rounded-full bg-gradient-to-br from-purple-200 to-purple-300 opacity-20 dark:from-purple-700 dark:to-purple-800"></div>
-          <div className="absolute top-10 right-[30%] h-16 w-16 rounded-full bg-gradient-to-br from-pink-200 to-pink-300 opacity-15 dark:from-pink-700 dark:to-pink-800"></div>
-          <div className="absolute top-80 right-[8%] h-28 w-28 rotate-12 transform bg-gradient-to-br from-green-200 to-green-300 opacity-20 dark:from-green-700 dark:to-green-800"></div>
-
-          {/* Partículas pequeñas flotantes */}
-          <div className="absolute top-16 left-[65%] h-2 w-2 animate-pulse rounded-full bg-gray-400 opacity-30 dark:bg-gray-500"></div>
-          <div
-            className="absolute top-52 right-[25%] h-2 w-2 animate-pulse rounded-full bg-gray-400 opacity-35 dark:bg-gray-500"
-            style={{ animationDelay: '1s' }}
-          ></div>
-          <div
-            className="absolute top-72 left-[15%] h-2 w-2 animate-pulse rounded-full bg-gray-400 opacity-25 dark:bg-gray-500"
-            style={{ animationDelay: '2s' }}
-          ></div>
-          <div
-            className="absolute top-28 right-[40%] h-2 w-2 animate-pulse rounded-full bg-gray-400 opacity-20 dark:bg-gray-500"
-            style={{ animationDelay: '0.5s' }}
-          ></div>
-        </div>
+      {/* Lista de escritores del signo */}
+      {data.writers && (
         <SectionContainer>
-          <div className="mx-auto max-w-4xl px-4">
-            <h2 className="mb-6 text-center text-2xl font-bold tracking-wide text-gray-900 dark:text-gray-100">
-              Lectura del Tarot
-            </h2>
-            <div className="flex flex-col items-center gap-8 rounded-xl p-8 md:flex-row">
-              {/* Imagen de la carta */}
-              <div className="mb-6 flex-shrink-0 md:mb-0">
-                <img
-                  src={data.tarot.image}
-                  alt={`Carta del tarot: ${data.tarot.subtitle}`}
-                  className="mb-2 h-auto w-40 rounded-lg"
-                  loading="lazy"
-                />
-                {/* Crédito del ilustrador si existe */}
-                {data.tarot.illustrator && (
-                  <p className="text-center text-xs text-gray-500 dark:text-gray-400">
-                    Carta ilustrada por:{' '}
-                    <a
-                      href={data.tarot.illustrator.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-600 hover:underline dark:text-purple-400"
-                    >
-                      {data.tarot.illustrator.name}
-                    </a>
-                  </p>
-                )}
-              </div>
-              {/* Texto de la carta */}
-              <div className="flex-1 text-center md:text-left">
-                <div className="mb-1 text-xl font-bold text-gray-900 dark:text-gray-100">
-                  {data.tarot.author}
-                </div>
-                <div className="mb-3 text-base text-gray-500 italic dark:text-gray-400">
-                  {data.tarot.subtitle}
-                </div>
-                <div className="mb-1 text-lg font-semibold text-purple-700 dark:text-purple-300">
-                  {data.tarot.card}
-                </div>
-                <div className="mb-4 text-gray-700 italic dark:text-gray-300">
-                  {data.tarot.phrase}
-                </div>
-                <div className="mb-6 text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                  {data.tarot.description}
-                </div>
-
-                {/* Significado de la tirada para Leo */}
-                {data.tarot.meaningTitle && data.tarot.meaningDescription && (
-                  <div className="mt-6 border-t border-gray-200 pt-6 dark:border-gray-700">
-                    <h4 className="mb-3 text-lg font-semibold text-purple-700 dark:text-purple-300">
-                      {data.tarot.meaningTitle}
-                    </h4>
-                    <div className="text-base leading-relaxed text-gray-700 dark:text-gray-300">
-                      {data.tarot.meaningDescription}
-                    </div>
-                  </div>
-                )}
-              </div>
+          <div className="py-16">
+            <div className="mb-8 text-center">
+              <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
+                Escritores {displaySignName}
+              </h3>
+              <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-amber-400 to-orange-400"></div>
             </div>
-            {/* Sin barra de reacciones/compartir dentro del horóscopo en este release */}
 
-            {/* Lista de escritores del signo */}
-            {data.writers && (
-              <div className="mt-16">
-                <div className="mb-8 text-center">
-                  <h3 className="mb-2 text-2xl font-bold text-gray-900 dark:text-gray-100">
-                    Escritores {displaySignName}
-                  </h3>
-                  <div className="mx-auto h-1 w-24 rounded-full bg-gradient-to-r from-amber-400 to-orange-400"></div>
+            <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {data.writers.map((writer, index) => (
+                <div
+                  key={index}
+                  className="rounded-lg border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-amber-800/30 dark:from-amber-900/20 dark:to-orange-900/20"
+                >
+                  <p className="text-sm font-medium text-gray-700 dark:text-gray-300">{writer}</p>
                 </div>
-
-                <div className="mx-auto grid max-w-6xl grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-                  {data.writers.map((writer, index) => (
-                    <div
-                      key={index}
-                      className="rounded-lg border border-amber-100 bg-gradient-to-br from-amber-50 to-orange-50 p-4 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-amber-800/30 dark:from-amber-900/20 dark:to-orange-900/20"
-                    >
-                      <p className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                        {writer}
-                      </p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
+              ))}
+            </div>
           </div>
         </SectionContainer>
-      </section>
+      )}
     </div>
   )
 }

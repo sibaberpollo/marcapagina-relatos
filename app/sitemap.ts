@@ -80,15 +80,27 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
       lastModified: nowIso,
     },
     {
-      url: `${siteUrl}/horoscopo`, // página de horóscopo
+      url: `${siteUrl}/horoscopo`, // página de horóscopo (Sagitario - Diciembre 2025)
       lastModified: nowIso,
     },
     {
-      url: `${siteUrl}/horoscopo/cancer`, // página de horóscopo
+      url: `${siteUrl}/horoscopo/cancer`, // archivo horóscopo Cáncer (Julio 2025)
       lastModified: nowIso,
     },
     {
-      url: `${siteUrl}/horoscopo/leo`, // página de horóscopo
+      url: `${siteUrl}/horoscopo/leo`, // archivo horóscopo Leo (Agosto 2025)
+      lastModified: nowIso,
+    },
+    {
+      url: `${siteUrl}/horoscopo/virgo`, // archivo horóscopo Virgo (Septiembre 2025)
+      lastModified: nowIso,
+    },
+    {
+      url: `${siteUrl}/horoscopo/libra`, // archivo horóscopo Libra (Octubre 2025)
+      lastModified: nowIso,
+    },
+    {
+      url: `${siteUrl}/horoscopo/escorpio`, // archivo horóscopo Escorpio (Noviembre 2025)
       lastModified: nowIso,
     },
     {
