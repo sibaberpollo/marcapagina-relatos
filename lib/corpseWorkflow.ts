@@ -21,7 +21,7 @@ export interface CorpseState {
   corpse: {
     id: string
     title: string
-    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
+    status: string
     maxContributors: number
     currentContributorId?: string
   }

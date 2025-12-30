@@ -20,6 +20,7 @@ model User {
   sessions      Session[]
   corpseSegments CorpseSegment[]
   corpseAuthors  CorpseAuthor[]
+  moderations   CorpseModeration[]
 
   @@map("users")
 }
@@ -122,6 +123,7 @@ model ExquisiteCorpse {
   // Relations
   segments            CorpseSegment[]
   authors             CorpseAuthor[]
+  moderation          CorpseModeration?
 
   @@map("exquisite_corpses")
 }
@@ -162,4 +164,29 @@ model CorpseAuthor {
   @@index([corpseId])
   @@index([userId])
   @@map("corpse_authors")
+}
+
+enum ModerationDecision {
+  approved
+  rejected
+}
+
+model CorpseModeration {
+  id            String             @id @default(cuid())
+  corpseId      String             @unique
+  moderatorId   String
+  decision      ModerationDecision
+  feedback      String?
+  reason        String?            // e.g., "quality", "appropriateness", "incomplete"
+  reviewedAt    DateTime           @default(now())
+  transtextosId String?            // ID of created Transtextos post
+
+  // Relations
+  corpse        ExquisiteCorpse    @relation(fields: [corpseId], references: [id], onDelete: Cascade)
+  moderator     User               @relation(fields: [moderatorId], references: [id])
+
+  @@index([corpseId])
+  @@index([moderatorId])
+  @@index([decision])
+  @@map("corpse_moderations")
 }
