@@ -1,4 +1,5 @@
 import { prisma } from '@/lib/prisma'
+import { contentValidator } from '@/lib/contentValidation'
 import type { Server } from 'socket.io'
 
 // In-memory storage for drafts (temporary, not persisted)
@@ -227,25 +228,21 @@ export class CorpseWorkflow {
   }
 
   /**
-   * Validate segment content
+   * Validate segment content using the content validator
    */
-  validateSegment(content: string): { isValid: boolean; error?: string; wordCount: number } {
-    const wordCount = content
-      .trim()
-      .split(/\s+/)
-      .filter((word) => word.length > 0).length
-
-    if (wordCount < 50) {
-      return { isValid: false, error: 'El segmento debe tener al menos 50 palabras', wordCount }
+  validateSegment(content: string): {
+    isValid: boolean
+    error?: string
+    wordCount: number
+    warnings?: string[]
+  } {
+    const result = contentValidator.validate(content)
+    return {
+      isValid: result.isValid,
+      error: result.error,
+      wordCount: result.wordCount,
+      warnings: result.warnings,
     }
-
-    if (wordCount > 100) {
-      return { isValid: false, error: 'El segmento no puede exceder 100 palabras', wordCount }
-    }
-
-    // Additional validation could go here (profanity, etc.)
-
-    return { isValid: true, wordCount }
   }
 
   /**

@@ -3,8 +3,12 @@
 import * as React from 'react'
 import { useSession } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
+import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { socketManager } from '@/lib/socket'
+import { CircularTimer } from './CircularTimer'
+import { WordCounter } from './WordCounter'
+import { clientContentValidator } from '@/lib/contentValidation'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 
 interface ContributionInterfaceProps {
@@ -60,128 +64,14 @@ export function ContributionInterface({
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isSkipping, setIsSkipping] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+  const [validationWarnings, setValidationWarnings] = React.useState<string[]>([])
   const [wordCount, setWordCount] = React.useState(0)
   const [timeRemaining, setTimeRemaining] = React.useState<number | null>(null)
 
   // Refs for focus management
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
 
-  // Initialize component
-  React.useEffect(() => {
-    if (status === 'loading') return
-    if (!session?.user) {
-      router.push('/?login=true')
-      return
-    }
-
-    initializeContribution()
-  }, [status, session, router])
-
-  // Handle real-time updates
-  React.useEffect(() => {
-    if (!corpseId) return
-
-    const handleUserJoined = (data: any) => {
-      console.log('User joined:', data)
-      fetchCorpseState()
-    }
-
-    const handleSegmentSubmitted = (data: any) => {
-      console.log('Segment submitted:', data)
-      fetchCorpseState()
-    }
-
-    const handleStatusUpdated = (data: any) => {
-      console.log('Status updated:', data)
-      if (data.status === 'ended' || data.status === 'completed') {
-        router.push(`/micronarrativas/${corpseId}`)
-      }
-      fetchCorpseState()
-    }
-
-    const handleQueueUpdated = (data: any) => {
-      console.log('Queue updated:', data)
-      fetchCorpseState()
-    }
-
-    const handleTimerExpired = () => {
-      console.log('Timer expired')
-      fetchCorpseState()
-    }
-
-    const handleTimerStarted = (data: any) => {
-      console.log('Timer started:', data)
-      if (data.userId === userId) {
-        setTimeRemaining(data.duration)
-      }
-    }
-
-    // Set up event listeners
-    socketManager.onUserJoined(handleUserJoined)
-    socketManager.onSegmentSubmitted(handleSegmentSubmitted)
-    socketManager.onStatusUpdated(handleStatusUpdated)
-    socketManager.onQueueUpdated(handleQueueUpdated)
-    socketManager.on('timer-expired', handleTimerExpired)
-    socketManager.on('timer-started', handleTimerStarted)
-
-    return () => {
-      socketManager.off('user-joined', handleUserJoined)
-      socketManager.off('segment-submitted', handleSegmentSubmitted)
-      socketManager.off('status-updated', handleStatusUpdated)
-      socketManager.off('queue-updated', handleQueueUpdated)
-      socketManager.off('timer-expired', handleTimerExpired)
-      socketManager.off('timer-started', handleTimerStarted)
-    }
-  }, [corpseId, userId, router])
-
-  // Timer countdown effect
-  React.useEffect(() => {
-    if (timeRemaining === null || timeRemaining <= 0) return
-
-    const interval = setInterval(() => {
-      setTimeRemaining((prev) => {
-        if (prev === null || prev <= 1) {
-          // Timer expired
-          fetchCorpseState()
-          return 0
-        }
-        return prev - 1
-      })
-    }, 1000)
-
-    return () => clearInterval(interval)
-  }, [timeRemaining])
-
-  // Auto-save draft every 30 seconds
-  React.useEffect(() => {
-    if (!draft.trim()) return
-
-    const interval = setInterval(() => {
-      saveDraftToAPI()
-    }, 30000)
-
-    return () => clearInterval(interval)
-  }, [draft])
-
-  const initializeContribution = async () => {
-    try {
-      setIsLoading(true)
-      setError(null)
-
-      // Join WebSocket room
-      await socketManager.joinCorpse(corpseId)
-
-      // Fetch initial state
-      await fetchCorpseState()
-    } catch (error) {
-      console.error('Error initializing contribution:', error)
-      setError('Error al cargar la interfaz de contribución')
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const fetchCorpseState = async () => {
+  const fetchCorpseState = React.useCallback(async () => {
     try {
       const response = await fetch(`/api/corpse/${corpseId}/contribute`)
       if (!response.ok) {
@@ -205,7 +95,7 @@ export function ContributionInterface({
       console.error('Error fetching corpse state:', error)
       setError('Error al obtener el estado actual')
     }
-  }
+  }, [corpseId])
 
   const updateWordCount = (text: string) => {
     const count = text
@@ -220,6 +110,15 @@ export function ContributionInterface({
     setDraft(text)
     updateWordCount(text)
 
+    // Real-time validation
+    const validation = clientContentValidator.validate(text)
+    setValidationWarnings(validation.warnings || [])
+
+    // Clear error when user starts typing again
+    if (error) {
+      setError(null)
+    }
+
     // Auto-save to localStorage as backup
     try {
       localStorage.setItem(`corpse-draft-${corpseId}`, text)
@@ -228,7 +127,43 @@ export function ContributionInterface({
     }
   }
 
-  const saveDraftToAPI = async () => {
+  // Memoized handlers for real-time updates
+  const handleUserJoined = React.useCallback(() => {
+    fetchCorpseState()
+  }, [fetchCorpseState])
+
+  const handleSegmentSubmitted = React.useCallback(() => {
+    fetchCorpseState()
+  }, [fetchCorpseState])
+
+  const handleStatusUpdated = React.useCallback(
+    (data: { status: string }) => {
+      if (data.status === 'ended' || data.status === 'completed') {
+        router.push(`/micronarrativas/${corpseId}`)
+      }
+      fetchCorpseState()
+    },
+    [router, corpseId, fetchCorpseState]
+  )
+
+  const handleQueueUpdated = React.useCallback(() => {
+    fetchCorpseState()
+  }, [fetchCorpseState])
+
+  const handleTimerExpired = React.useCallback(() => {
+    fetchCorpseState()
+  }, [fetchCorpseState])
+
+  const handleTimerStarted = React.useCallback(
+    (data: { userId: string; duration: number }) => {
+      if (data.userId === userId) {
+        setTimeRemaining(data.duration)
+      }
+    },
+    [userId]
+  )
+
+  const saveDraftToAPI = React.useCallback(async () => {
     if (!draft.trim()) return
 
     try {
@@ -244,7 +179,96 @@ export function ContributionInterface({
     } catch (error) {
       console.error('Error saving draft:', error)
     }
-  }
+  }, [corpseId, draft])
+
+  const initializeContribution = React.useCallback(async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      // Join WebSocket room
+      await socketManager.joinCorpse(corpseId)
+
+      // Fetch initial state
+      await fetchCorpseState()
+    } catch (error) {
+      console.error('Error initializing contribution:', error)
+      setError('Error al cargar la interfaz de contribución')
+    } finally {
+      setIsLoading(false)
+    }
+  }, [corpseId, fetchCorpseState])
+
+  // Handle real-time updates
+  React.useEffect(() => {
+    if (!corpseId) return
+
+    // Set up event listeners
+    socketManager.onUserJoined(handleUserJoined as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    socketManager.onSegmentSubmitted(handleSegmentSubmitted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    socketManager.onStatusUpdated(handleStatusUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    socketManager.onQueueUpdated(handleQueueUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    socketManager.on('timer-expired', handleTimerExpired)
+    socketManager.on('timer-started', handleTimerStarted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+
+    return () => {
+      socketManager.off('user-joined', handleUserJoined as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('segment-submitted', handleSegmentSubmitted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('status-updated', handleStatusUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('queue-updated', handleQueueUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('timer-expired', handleTimerExpired)
+      socketManager.off('timer-started', handleTimerStarted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    }
+  }, [
+    corpseId,
+    fetchCorpseState,
+    handleUserJoined,
+    handleSegmentSubmitted,
+    handleStatusUpdated,
+    handleQueueUpdated,
+    handleTimerExpired,
+    handleTimerStarted,
+  ])
+
+  // Initialize component
+  React.useEffect(() => {
+    if (status === 'loading') return
+    if (!session?.user) {
+      router.push('/?login=true')
+      return
+    }
+
+    initializeContribution()
+  }, [status, session, router, initializeContribution])
+
+  // Timer countdown effect
+  React.useEffect(() => {
+    if (timeRemaining === null || timeRemaining <= 0) return
+
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev === null || prev <= 1) {
+          // Timer expired
+          fetchCorpseState()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [timeRemaining, fetchCorpseState])
+
+  // Auto-save draft every 30 seconds
+  React.useEffect(() => {
+    if (!draft.trim()) return
+
+    const interval = setInterval(() => {
+      saveDraftToAPI()
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [draft, saveDraftToAPI])
 
   const handleSubmit = async () => {
     if (!corpseState?.currentContributor || corpseState.currentContributor.userId !== userId) {
@@ -252,13 +276,10 @@ export function ContributionInterface({
       return
     }
 
-    if (wordCount < 50) {
-      setError('El segmento debe tener al menos 50 palabras')
-      return
-    }
-
-    if (wordCount > 100) {
-      setError('El segmento no puede exceder 100 palabras')
+    // Client-side validation
+    const validation = clientContentValidator.validate(draft)
+    if (!validation.isValid) {
+      setError(validation.error || 'Error de validación')
       return
     }
 
@@ -266,7 +287,7 @@ export function ContributionInterface({
       setIsSubmitting(true)
       setError(null)
 
-      await socketManager.submitSegment(corpseId, draft, wordCount)
+      await socketManager.submitSegment(corpseId, draft, validation.wordCount)
 
       // Clear draft
       setDraft('')
@@ -371,19 +392,8 @@ export function ContributionInterface({
               </div>
             </div>
             {timeRemaining !== null && isCurrentUserTurn && (
-              <div className="text-right">
-                <div className="mb-1 text-sm text-gray-600 dark:text-gray-400">Tiempo restante</div>
-                <div
-                  className={cn(
-                    'font-mono text-2xl font-bold',
-                    timeRemaining <= 30
-                      ? 'text-red-600 dark:text-red-400'
-                      : 'text-gray-900 dark:text-gray-100'
-                  )}
-                >
-                  {Math.floor(timeRemaining / 60)}:
-                  {(timeRemaining % 60).toString().padStart(2, '0')}
-                </div>
+              <div className="flex items-center justify-center">
+                <CircularTimer timeRemaining={timeRemaining} totalTime={120} size={80} />
               </div>
             )}
           </div>
@@ -408,6 +418,26 @@ export function ContributionInterface({
       {error && (
         <div className="mb-6 rounded-md bg-red-50 p-4 dark:bg-red-900/50">
           <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+        </div>
+      )}
+
+      {/* Validation Warnings */}
+      {validationWarnings.length > 0 && !error && (
+        <div className="mb-6 rounded-md bg-yellow-50 p-4 dark:bg-yellow-900/50">
+          <div className="flex">
+            <div className="ml-3">
+              <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
+                Sugerencias para mejorar tu contribución:
+              </h3>
+              <div className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
+                <ul className="list-inside list-disc space-y-1">
+                  {validationWarnings.map((warning, index) => (
+                    <li key={index}>{warning}</li>
+                  ))}
+                </ul>
+              </div>
+            </div>
+          </div>
         </div>
       )}
 
@@ -442,28 +472,11 @@ export function ContributionInterface({
           />
         </div>
 
-        {/* Word Count and Validation */}
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div
-              className={cn(
-                'text-sm font-medium',
-                wordCount < 50
-                  ? 'text-red-600 dark:text-red-400'
-                  : wordCount > 100
-                    ? 'text-orange-600 dark:text-orange-400'
-                    : 'text-green-600 dark:text-green-400'
-              )}
-            >
-              {wordCount} palabras
-            </div>
-            {!isWordCountValid && (
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                (requiere 50-100 palabras)
-              </span>
-            )}
-          </div>
+        {/* Word Counter */}
+        <WordCounter current={wordCount} min={50} max={100} />
 
+        {/* Status */}
+        <div className="flex justify-end">
           <div className="text-xs text-gray-500 dark:text-gray-400">
             {isCurrentUserTurn ? 'Es tu turno' : 'Esperando tu turno'}
           </div>
@@ -526,9 +539,11 @@ export function ContributionInterface({
               <div key={segment.id} className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
                 <div className="mb-2 flex items-center gap-2">
                   {segment.author.image && (
-                    <img
+                    <Image
                       src={segment.author.image}
                       alt={segment.author.name || 'Autor'}
+                      width={24}
+                      height={24}
                       className="h-6 w-6 rounded-full"
                     />
                   )}
