@@ -123,6 +123,7 @@ model ExquisiteCorpse {
   // Relations
   segments            CorpseSegment[]
   authors             CorpseAuthor[]
+  invitations         CorpseInvitation[]
   moderation          CorpseModeration?
 
   @@map("exquisite_corpses")
@@ -169,6 +170,31 @@ model CorpseAuthor {
 enum ModerationDecision {
   approved
   rejected
+}
+
+enum InvitationStatus {
+  sent
+  accepted
+  expired
+  declined
+}
+
+model CorpseInvitation {
+  id        String      @id @default(cuid())
+  corpseId  String
+  invitedEmail String
+  token     String      @unique
+  status    InvitationStatus @default(sent)
+  sentAt    DateTime    @default(now())
+  acceptedAt DateTime?
+
+  // Relations
+  corpse    ExquisiteCorpse @relation(fields: [corpseId], references: [id], onDelete: Cascade)
+
+  @@unique([corpseId, invitedEmail])
+  @@index([corpseId])
+  @@index([token])
+  @@map("corpse_invitations")
 }
 
 model CorpseModeration {

@@ -8,10 +8,6 @@ import { Server } from 'socket.io'
 // Store io instance (this would be set up in the socket route)
 let io: Server | null = null
 
-export function setSocketServer(server: Server) {
-  io = server
-}
-
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const session = await getServerSession(authOptions)
