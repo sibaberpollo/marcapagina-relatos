@@ -123,6 +123,8 @@ class SocketManager {
       }, this.reconnectDelay * this.reconnectAttempts)
     } else {
       console.error('Max reconnection attempts reached')
+      // Emit a custom event for UI to handle disconnection
+      this.socket?.emit('max-reconnect-attempts-reached')
     }
   }
 

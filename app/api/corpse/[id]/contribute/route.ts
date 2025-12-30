@@ -52,10 +52,34 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       default:
         return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
     }
-  } catch (error) {
-    console.error('Error in contribute API:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
+   } catch (error) {
+     console.error('Error in contribute API:', error)
+
+     // Provide more specific error messages based on error type
+     if (error instanceof Error) {
+       if (error.message.includes('network') || error.message.includes('timeout')) {
+         return NextResponse.json({
+           error: 'Error de conexión. Por favor, verifica tu conexión a internet e intenta nuevamente.',
+           code: 'NETWORK_ERROR',
+           retryable: true
+         }, { status: 503 })
+       }
+
+       if (error.message.includes('validation') || error.message.includes('invalid')) {
+         return NextResponse.json({
+           error: 'Datos inválidos proporcionados.',
+           code: 'VALIDATION_ERROR',
+           retryable: false
+         }, { status: 400 })
+       }
+     }
+
+     return NextResponse.json({
+       error: 'Ha ocurrido un error interno del servidor. Por favor, intenta nuevamente.',
+       code: 'INTERNAL_ERROR',
+       retryable: true
+     }, { status: 500 })
+   }
 }
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -107,8 +131,32 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       draft: draft || '',
       isCurrentContributor: state.currentContributor?.userId === user.id,
     })
-  } catch (error) {
-    console.error('Error getting corpse state:', error)
-    return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
-  }
+   } catch (error) {
+     console.error('Error getting corpse state:', error)
+
+     // Provide more specific error messages
+     if (error instanceof Error) {
+       if (error.message.includes('not found') || error.message.includes('Not authorized')) {
+         return NextResponse.json({
+           error: 'No tienes acceso a esta micronarrativa o no existe.',
+           code: 'NOT_FOUND_OR_UNAUTHORIZED',
+           retryable: false
+         }, { status: 404 })
+       }
+
+       if (error.message.includes('network') || error.message.includes('timeout')) {
+         return NextResponse.json({
+           error: 'Error de conexión. Por favor, verifica tu conexión a internet.',
+           code: 'NETWORK_ERROR',
+           retryable: true
+         }, { status: 503 })
+       }
+     }
+
+     return NextResponse.json({
+       error: 'Error al cargar el estado de la micronarrativa. Por favor, intenta nuevamente.',
+       code: 'LOAD_ERROR',
+       retryable: true
+     }, { status: 500 })
+   }
 }

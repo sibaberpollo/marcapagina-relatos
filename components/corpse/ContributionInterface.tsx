@@ -10,6 +10,10 @@ import { useCorpseTranslations } from '@/lib/i18n'
 import { CircularTimer } from './CircularTimer'
 import { WordCounter } from './WordCounter'
 import { clientContentValidator } from '@/lib/contentValidation'
+import { CorpseErrorBoundary } from '@/components/common/ErrorBoundary'
+import { ContributionSkeleton } from './CorpseSkeletons'
+import { useCorpseErrorHandler, useNetworkStatus, useAsyncOperation } from '@/lib/corpseErrorHandling'
+import { toast } from '@/components/ui/use-toast'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 
 interface ContributionInterfaceProps {
@@ -60,12 +64,13 @@ export function ContributionInterface({
   const router = useRouter()
   const { data: session, status } = useSession()
   const translations = useCorpseTranslations()
-  const [corpseState, setCorpseState] = React.useState<CorpseState | null>(null)
-  const [draft, setDraft] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(true)
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [isSkipping, setIsSkipping] = React.useState(false)
   const [error, setError] = React.useState<string | null>(null)
+
+  const [corpseState, setCorpseState] = React.useState<CorpseState | null>(null)
+  const [draft, setDraft] = React.useState('')
   const [validationWarnings, setValidationWarnings] = React.useState<string[]>([])
   const [wordCount, setWordCount] = React.useState(0)
   const [timeRemaining, setTimeRemaining] = React.useState<number | null>(null)
@@ -370,17 +375,8 @@ export function ContributionInterface({
   }
 
   // Loading state
-  if (isLoading) {
-    return (
-      <div className="flex min-h-screen items-center justify-center">
-        <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
-            {translations?.contributionInterface?.loading || 'Cargando interfaz de contribución...'}
-          </p>
-        </div>
-      </div>
-    )
+  if (fetchStateOperation.loading && !corpseState) {
+    return <ContributionSkeleton />
   }
 
   // Error state
