@@ -351,10 +351,14 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
       </div>
 
       {/* Header */}
-      <header className="mb-8">
-        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">{corpse.title}</h1>
-        {corpse.prompt && <p className="text-gray-600 dark:text-gray-400">{corpse.prompt}</p>}
-        <div className="mt-4 flex items-center gap-4">
+      <header className="mb-6 sm:mb-8">
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-100">
+          {corpse.title}
+        </h1>
+        {corpse.prompt && (
+          <p className="text-sm text-gray-600 sm:text-base dark:text-gray-400">{corpse.prompt}</p>
+        )}
+        <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <span className="text-sm text-gray-500 dark:text-gray-400">
             Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}
           </span>
@@ -372,11 +376,11 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
       )}
 
       {/* Progress */}
-      <section className="mb-8" aria-labelledby="progress-heading">
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+      <section className="mb-6 sm:mb-8" aria-labelledby="progress-heading">
+        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
           <h2
             id="progress-heading"
-            className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100"
+            className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
           >
             Progreso
           </h2>
@@ -425,20 +429,20 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
       )}
 
       {/* Queue */}
-      <section className="mb-8" aria-labelledby="queue-heading">
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+      <section className="mb-6 sm:mb-8" aria-labelledby="queue-heading">
+        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
           <h2
             id="queue-heading"
-            className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100"
+            className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
           >
             Cola de participantes
           </h2>
           {corpseState.queue.length === 0 ? (
-            <p className="text-gray-500 dark:text-gray-400">
+            <p className="text-sm text-gray-500 sm:text-base dark:text-gray-400">
               No hay participantes aún. ¡Sé el primero en unirte!
             </p>
           ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
               {corpseState.queue.map((participant) => (
                 <ContributorCard
                   key={participant.userId}
@@ -464,7 +468,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
 
       {/* Actions */}
       <div
-        className="flex flex-col gap-4 sm:flex-row"
+        className="flex flex-col gap-3 sm:flex-row"
         role="group"
         aria-label="Acciones disponibles"
       >
@@ -473,10 +477,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             onClick={handleJoinQueue}
             disabled={isJoining}
             className={cn(
-              'flex-1 rounded-md px-6 py-3 font-medium transition-colors',
+              'min-h-[44px] flex-1 rounded-md px-4 py-3 text-base font-medium transition-colors sm:px-6',
               isJoining
                 ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
-                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800'
             )}
             aria-describedby={isFull ? 'queue-full-message' : undefined}
           >
@@ -499,10 +503,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             onClick={handleVoteToEnd}
             disabled={isVoting}
             className={cn(
-              'rounded-md border px-6 py-3 font-medium transition-colors',
+              'min-h-[44px] rounded-md border px-4 py-3 text-base font-medium transition-colors sm:px-6',
               isVoting
                 ? 'cursor-not-allowed border-gray-300 text-gray-500 dark:border-gray-600 dark:text-gray-400'
-                : 'border-red-300 text-red-700 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/20'
+                : 'border-red-300 text-red-700 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-100 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/20 dark:active:bg-red-800/30'
             )}
           >
             {isVoting ? (

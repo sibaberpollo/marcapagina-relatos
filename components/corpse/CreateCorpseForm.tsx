@@ -99,7 +99,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           required
           maxLength={100}
           className={cn(
-            'block w-full rounded-md border px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-100',
+            'block min-h-[44px] w-full rounded-md border px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-100',
             errors.title
               ? 'border-red-300 dark:border-red-600'
               : 'border-gray-300 dark:border-gray-600'
@@ -130,7 +130,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           id="promptId"
           name="promptId"
           onChange={handlePromptChange}
-          className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           aria-describedby="prompt-help"
         >
           <option value="">Sin prompt específico (libre creación)</option>
@@ -188,7 +188,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           id="maxContributors"
           name="maxContributors"
           defaultValue="7"
-          className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           aria-describedby="contributors-help"
         >
           <option value="7">7 colaboradores</option>
@@ -206,7 +206,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
         <button
           type="submit"
           disabled={isSubmitting}
-          className="inline-flex items-center gap-2 rounded-md bg-blue-600 px-4 py-2 font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-700 dark:hover:bg-blue-800"
+          className="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-base font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-700 dark:hover:bg-blue-800 dark:active:bg-blue-900"
         >
           {isSubmitting ? (
             <>

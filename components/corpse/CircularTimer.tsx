@@ -10,13 +10,10 @@ interface CircularTimerProps {
   className?: string
 }
 
-export function CircularTimer({
-  timeRemaining,
-  totalTime,
-  size = 120,
-  className,
-}: CircularTimerProps) {
-  const radius = (size - 8) / 2
+export function CircularTimer({ timeRemaining, totalTime, size, className }: CircularTimerProps) {
+  // Default size based on responsive breakpoints
+  const responsiveSize = size || 80
+  const radius = (responsiveSize - 8) / 2
   const circumference = radius * 2 * Math.PI
   const strokeDasharray = circumference
   const strokeDashoffset = circumference - (timeRemaining / totalTime) * circumference
@@ -43,8 +40,8 @@ export function CircularTimer({
       </div>
 
       <svg
-        width={size}
-        height={size}
+        width={responsiveSize}
+        height={responsiveSize}
         className="-rotate-90 transform"
         aria-labelledby="timer-label"
         role="img"
@@ -52,8 +49,8 @@ export function CircularTimer({
       >
         {/* Background circle */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={responsiveSize / 2}
+          cy={responsiveSize / 2}
           r={radius}
           stroke="currentColor"
           strokeWidth="4"
@@ -62,8 +59,8 @@ export function CircularTimer({
         />
         {/* Progress circle */}
         <circle
-          cx={size / 2}
-          cy={size / 2}
+          cx={responsiveSize / 2}
+          cy={responsiveSize / 2}
           r={radius}
           stroke="currentColor"
           strokeWidth="4"

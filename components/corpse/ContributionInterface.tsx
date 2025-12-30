@@ -73,6 +73,13 @@ export function ContributionInterface({
   const submitButtonRef = React.useRef<HTMLButtonElement>(null)
   const skipButtonRef = React.useRef<HTMLButtonElement>(null)
 
+  // Focus management effect
+  React.useEffect(() => {
+    if (corpseState?.currentContributor?.userId === userId && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }, [corpseState?.currentContributor?.userId, userId])
+
   const fetchCorpseState = React.useCallback(async () => {
     try {
       const response = await fetch(`/api/corpse/${corpseId}/contribute`)
@@ -385,13 +392,6 @@ export function ContributionInterface({
   const isCurrentUserTurn = corpseState.currentContributor?.userId === userId
   const isWordCountValid = wordCount >= 50 && wordCount <= 100
 
-  // Focus management effect
-  React.useEffect(() => {
-    if (isCurrentUserTurn && textareaRef.current) {
-      textareaRef.current.focus()
-    }
-  }, [isCurrentUserTurn])
-
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* Screen reader status updates */}
@@ -402,20 +402,20 @@ export function ContributionInterface({
       </div>
 
       {/* Header */}
-      <header className="mb-8">
-        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
+      <header className="mb-6 sm:mb-8">
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-100">
           Contribuir a "{corpse.title}"
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-sm text-gray-600 sm:text-base dark:text-gray-400">
           Escribe tu segmento de 50-100 palabras para esta micronarrativa colectiva
         </p>
       </header>
 
       {/* Status and Timer */}
       <div className="mb-6">
-        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-          <div className="mb-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
+          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
               <div className="text-sm text-gray-600 dark:text-gray-400">
                 Tu posición: {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
               </div>
@@ -425,7 +425,18 @@ export function ContributionInterface({
             </div>
             {timeRemaining !== null && isCurrentUserTurn && (
               <div className="flex items-center justify-center">
-                <CircularTimer timeRemaining={timeRemaining} totalTime={120} size={80} />
+                <CircularTimer
+                  timeRemaining={timeRemaining}
+                  totalTime={120}
+                  size={60}
+                  className="sm:hidden"
+                />
+                <CircularTimer
+                  timeRemaining={timeRemaining}
+                  totalTime={120}
+                  size={80}
+                  className="hidden sm:block"
+                />
               </div>
             )}
           </div>
@@ -474,7 +485,7 @@ export function ContributionInterface({
       )}
 
       {/* Writing Interface */}
-      <div className="mb-6 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+      <div className="mb-6 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
         <div className="mb-4">
           <label
             htmlFor="contribution"
@@ -495,7 +506,7 @@ export function ContributionInterface({
                 : 'Espera tu turno para contribuir'
             }
             className={cn(
-              'h-64 w-full resize-none rounded-md border px-3 py-2 focus:ring-2 focus:outline-none',
+              'min-h-[120px] w-full resize-none rounded-md border px-3 py-3 text-base focus:ring-2 focus:outline-none sm:h-64',
               !isCurrentUserTurn
                 ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-700'
                 : 'bg-white focus:ring-blue-500 dark:bg-gray-900',
@@ -525,16 +536,20 @@ export function ContributionInterface({
 
       {/* Action Buttons */}
       {isCurrentUserTurn && (
-        <div className="flex gap-4" role="group" aria-label="Acciones de contribución">
+        <div
+          className="flex flex-col gap-3 sm:flex-row sm:gap-4"
+          role="group"
+          aria-label="Acciones de contribución"
+        >
           <button
             ref={submitButtonRef}
             onClick={handleSubmit}
             disabled={isSubmitting || !isWordCountValid}
             className={cn(
-              'flex-1 rounded-md px-6 py-3 font-medium transition-colors',
+              'min-h-[44px] flex-1 rounded-md px-4 py-3 text-base font-medium transition-colors sm:px-6',
               isSubmitting || !isWordCountValid
                 ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
-                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800'
             )}
             aria-describedby={!isWordCountValid ? 'word-count-help' : undefined}
           >
@@ -547,7 +562,10 @@ export function ContributionInterface({
                 Enviando...
               </>
             ) : (
-              'Enviar contribución (Ctrl+Enter)'
+              <>
+                <span className="hidden sm:inline">Enviar contribución (Ctrl+Enter)</span>
+                <span className="sm:hidden">Enviar contribución</span>
+              </>
             )}
           </button>
 
@@ -556,10 +574,10 @@ export function ContributionInterface({
             onClick={handleSkip}
             disabled={isSkipping}
             className={cn(
-              'rounded-md border px-6 py-3 font-medium transition-colors',
+              'min-h-[44px] rounded-md border px-4 py-3 text-base font-medium transition-colors sm:px-6',
               isSkipping
                 ? 'cursor-not-allowed border-gray-300 text-gray-500 dark:border-gray-600 dark:text-gray-400'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-600'
             )}
           >
             {isSkipping ? (
@@ -571,7 +589,10 @@ export function ContributionInterface({
                 Saltando...
               </>
             ) : (
-              'Saltar turno (Escape)'
+              <>
+                <span className="hidden sm:inline">Saltar turno (Escape)</span>
+                <span className="sm:hidden">Saltar turno</span>
+              </>
             )}
           </button>
         </div>

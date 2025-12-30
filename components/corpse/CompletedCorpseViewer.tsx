@@ -70,13 +70,15 @@ export function CompletedCorpseViewer({
           )}
         </div>
 
-        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">{corpse.title}</h1>
+        <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-100">
+          {corpse.title}
+        </h1>
 
         {corpse.prompt && (
-          <p className="text-lg text-gray-600 dark:text-gray-400">{corpse.prompt}</p>
+          <p className="text-base text-gray-600 sm:text-lg dark:text-gray-400">{corpse.prompt}</p>
         )}
 
-        <div className="mt-4 flex flex-wrap items-center gap-4 text-sm text-gray-500 dark:text-gray-400">
+        <div className="mt-4 flex flex-wrap items-center gap-2 text-sm text-gray-500 sm:gap-4 dark:text-gray-400">
           <div className="flex items-center gap-1">
             <Users className="h-4 w-4" />
             {authors.length} colaborador{authors.length !== 1 ? 'es' : ''}
@@ -95,7 +97,7 @@ export function CompletedCorpseViewer({
           <Vote className="h-5 w-5" />
           Información de Votación
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
           <div className="text-center">
             <div className="text-2xl font-bold text-blue-600">{votingInfo.votesToEnd}</div>
             <div className="text-sm text-gray-600 dark:text-gray-400">Votos para terminar</div>

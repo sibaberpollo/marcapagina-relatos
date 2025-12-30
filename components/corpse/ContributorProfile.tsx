@@ -25,7 +25,7 @@ export function ContributorProfile({
   className = '',
 }: ContributorProfileProps) {
   return (
-    <div className={`flex items-center gap-3 ${className}`}>
+    <div className={`flex items-center gap-3 p-2 ${className}`}>
       <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
         {image ? (
           <Image
@@ -47,7 +47,7 @@ export function ContributorProfile({
       <div className="min-w-0 flex-1">
         <Link
           href={`/autor/${userId}`}
-          className="block truncate font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
+          className="block flex min-h-[44px] items-center truncate font-medium text-blue-600 hover:text-blue-800 active:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 dark:active:text-blue-200"
           aria-label={`Ver perfil de ${name || 'autor anónimo'}`}
         >
           {name || 'Autor anónimo'}
@@ -88,7 +88,7 @@ export function ContributorCard({
 
   return (
     <article
-      className={`rounded-lg border border-gray-200 bg-white p-4 shadow-sm transition-all dark:border-gray-700 dark:bg-gray-800 ${
+      className={`rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all sm:p-4 dark:border-gray-700 dark:bg-gray-800 ${
         isCurrentContributor ? 'ring-2 ring-blue-500' : ''
       } ${className}`}
       aria-label={`Participante: ${displayName}. ${currentStatus}.`}
@@ -104,7 +104,7 @@ export function ContributorCard({
         <div className="ml-2 flex flex-col items-end gap-1">
           {isCurrentContributor && (
             <span
-              className="inline-flex items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              className="inline-flex min-h-[24px] items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
               aria-live="polite"
               aria-atomic="true"
             >
@@ -113,7 +113,7 @@ export function ContributorCard({
             </span>
           )}
           <span
-            className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+            className={`inline-flex min-h-[24px] items-center rounded-full px-2 py-1 text-xs font-medium ${
               hasContributed
                 ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
                 : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
