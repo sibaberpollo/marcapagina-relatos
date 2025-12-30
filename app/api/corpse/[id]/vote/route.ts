@@ -20,8 +20,6 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const resolvedParams = await params
     const corpseId = resolvedParams.id
-    const body = await request.json()
-    const { action, content } = body
 
     // Verify user is authorized for this corpse
     const author = await prisma.corpseAuthor.findFirst({
@@ -31,29 +29,26 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       return NextResponse.json({ error: 'Not authorized for this corpse' }, { status: 403 })
     }
 
-    switch (action) {
-      case 'save-draft':
-        if (typeof content !== 'string') {
-          return NextResponse.json({ error: 'Content must be a string' }, { status: 400 })
-        }
-        corpseWorkflow.saveDraft(corpseId, user.id, content)
-        return NextResponse.json({ success: true })
-
-      case 'get-draft': {
-        const draft = corpseWorkflow.getDraft(corpseId, user.id)
-        return NextResponse.json({ draft: draft || '' })
-      }
-
-      case 'clear-draft': {
-        corpseWorkflow.clearDraft(corpseId, user.id)
-        return NextResponse.json({ success: true })
-      }
-
-      default:
-        return NextResponse.json({ error: 'Invalid action' }, { status: 400 })
+    // Check if user has already voted
+    if (author.voteToEnd) {
+      return NextResponse.json({ error: 'Already voted to end' }, { status: 400 })
     }
+
+    // Use workflow to handle voting
+    const result = await corpseWorkflow.voteToEnd(corpseId, user.id)
+    if (!result.success) {
+      return NextResponse.json({ error: result.error }, { status: 400 })
+    }
+
+    return NextResponse.json({
+      success: true,
+      votesToEnd: result.votesToEnd,
+      totalAuthors: result.totalAuthors,
+      threshold: result.threshold,
+      ended: result.ended,
+    })
   } catch (error) {
-    console.error('Error in contribute API:', error)
+    console.error('Error in vote API:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
@@ -83,32 +78,12 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'Not authorized for this corpse' }, { status: 403 })
     }
 
-    // Get corpse state (without sensitive info)
-    const state = await corpseWorkflow.getCorpseState(corpseId)
-    if (!state) {
-      return NextResponse.json({ error: 'Corpse not found' }, { status: 404 })
-    }
+    // Get voting status with user-specific info
+    const votingStatus = await corpseWorkflow.getVotingStatus(corpseId, user.id)
 
-    // Get user's draft
-    const draft = corpseWorkflow.getDraft(corpseId, user.id)
-
-    // Return state and draft
-    return NextResponse.json({
-      state: {
-        ...state,
-        // Don't expose full queue details, just user's position
-        queue: state.queue.map((q) => ({
-          userId: q.userId,
-          position: q.position,
-          hasContributed: q.hasContributed,
-          isCurrentUser: q.userId === user.id,
-        })),
-      },
-      draft: draft || '',
-      isCurrentContributor: state.currentContributor?.userId === user.id,
-    })
+    return NextResponse.json(votingStatus)
   } catch (error) {
-    console.error('Error getting corpse state:', error)
+    console.error('Error getting voting status:', error)
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }

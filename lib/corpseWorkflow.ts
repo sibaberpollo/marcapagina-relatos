@@ -20,7 +20,7 @@ export interface CorpseState {
   corpse: {
     id: string
     title: string
-    status: 'active' | 'ended' | 'completed'
+    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
     maxContributors: number
     currentContributorId?: string
   }
@@ -347,6 +347,9 @@ export class CorpseWorkflow {
         author: newSegment.author,
       })
 
+      // Check if corpse should be completed (all authors contributed)
+      await this.checkCompletion(corpseId)
+
       console.log(`Segment submitted for corpse ${corpseId} by user ${userId}`)
 
       return { success: true }
@@ -476,6 +479,195 @@ export class CorpseWorkflow {
     } catch (error) {
       console.error('Error joining corpse:', error)
       return { success: false, error: 'Error al unirse a la micronarrativa' }
+    }
+  }
+
+  /**
+   * Handle voting to end the corpse
+   */
+  async voteToEnd(
+    corpseId: string,
+    userId: string
+  ): Promise<{
+    success: boolean
+    error?: string
+    votesToEnd?: number
+    totalAuthors?: number
+    threshold?: number
+    ended?: boolean
+  }> {
+    try {
+      // Verify user is part of the corpse
+      const author = await prisma.corpseAuthor.findFirst({
+        where: { corpseId, userId },
+      })
+      if (!author) {
+        return { success: false, error: 'Not authorized for this corpse' }
+      }
+
+      // Check if already voted
+      if (author.voteToEnd) {
+        return { success: false, error: 'Already voted to end' }
+      }
+
+      // Update vote
+      await prisma.corpseAuthor.updateMany({
+        where: { corpseId, userId },
+        data: { voteToEnd: true },
+      })
+
+      // Check voting status
+      const votingResult = await this.checkVotingThreshold(corpseId)
+
+      return {
+        success: true,
+        votesToEnd: votingResult.votesToEnd,
+        totalAuthors: votingResult.totalAuthors,
+        threshold: votingResult.threshold,
+        ended: votingResult.ended,
+      }
+    } catch (error) {
+      console.error('Error voting to end:', error)
+      return { success: false, error: 'Error al votar' }
+    }
+  }
+
+  /**
+   * Check if voting threshold is reached and handle completion
+   */
+  private async checkVotingThreshold(corpseId: string): Promise<{
+    votesToEnd: number
+    totalAuthors: number
+    threshold: number
+    ended: boolean
+  }> {
+    const corpse = await prisma.exquisiteCorpse.findUnique({
+      where: { id: corpseId },
+      include: { authors: true },
+    })
+
+    if (!corpse) {
+      throw new Error('Corpse not found')
+    }
+
+    const totalAuthors = corpse.authors.length
+    const votesToEnd = corpse.authors.filter((author) => author.voteToEnd).length
+    const threshold = Math.ceil(totalAuthors * 0.6)
+
+    if (votesToEnd >= threshold) {
+      // End the corpse
+      await this.endCorpse(corpseId)
+      return { votesToEnd, totalAuthors, threshold, ended: true }
+    }
+
+    return { votesToEnd, totalAuthors, threshold, ended: false }
+  }
+
+  /**
+   * End a corpse and prepare for moderation
+   */
+  private async endCorpse(corpseId: string): Promise<void> {
+    await prisma.exquisiteCorpse.update({
+      where: { id: corpseId },
+      data: {
+        status: 'ended',
+        endedAt: new Date(),
+      },
+    })
+
+    // Clean up workflow resources
+    this.cleanupCorpse(corpseId)
+
+    console.log(`Corpse ${corpseId} ended by majority vote`)
+  }
+
+  /**
+   * Check if corpse should be completed (all authors contributed)
+   */
+  async checkCompletion(corpseId: string): Promise<boolean> {
+    const corpse = await prisma.exquisiteCorpse.findUnique({
+      where: { id: corpseId },
+      include: {
+        authors: true,
+        segments: true,
+      },
+    })
+
+    if (!corpse || corpse.status !== 'active') {
+      return false
+    }
+
+    // Check if all authors have contributed (or skipped)
+    const totalSegments = corpse.segments.length
+    const expectedSegments = corpse.authors.length
+
+    if (totalSegments >= expectedSegments) {
+      // Mark as completed and prepare for moderation
+      await this.completeCorpse(corpseId)
+      return true
+    }
+
+    return false
+  }
+
+  /**
+   * Complete a corpse and trigger moderation workflow
+   */
+  private async completeCorpse(corpseId: string): Promise<void> {
+    await prisma.exquisiteCorpse.update({
+      where: { id: corpseId },
+      data: {
+        status: 'pending_moderation',
+        endedAt: new Date(),
+      },
+    })
+
+    // Clean up workflow resources
+    this.cleanupCorpse(corpseId)
+
+    console.log(`Corpse ${corpseId} completed - marked as pending_moderation`)
+    // TODO: Trigger notification to moderators
+  }
+
+  /**
+   * Get voting status for a corpse
+   */
+  async getVotingStatus(
+    corpseId: string,
+    userId?: string
+  ): Promise<{
+    votesToEnd: number
+    totalAuthors: number
+    threshold: number
+    userVoted: boolean
+    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
+  }> {
+    const corpse = await prisma.exquisiteCorpse.findUnique({
+      where: { id: corpseId },
+      include: { authors: true },
+    })
+
+    if (!corpse) {
+      throw new Error('Corpse not found')
+    }
+
+    const totalAuthors = corpse.authors.length
+    const votesToEnd = corpse.authors.filter((author) => author.voteToEnd).length
+    const threshold = Math.ceil(totalAuthors * 0.6)
+
+    // Check if specific user has voted
+    let userVoted = false
+    if (userId) {
+      const author = corpse.authors.find((a) => a.userId === userId)
+      userVoted = author?.voteToEnd ?? false
+    }
+
+    return {
+      votesToEnd,
+      totalAuthors,
+      threshold,
+      userVoted,
+      status: corpse.status,
     }
   }
 

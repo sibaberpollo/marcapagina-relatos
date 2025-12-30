@@ -106,6 +106,7 @@ enum CorpseStatus {
   active
   ended
   completed
+  pending_moderation
 }
 
 model ExquisiteCorpse {

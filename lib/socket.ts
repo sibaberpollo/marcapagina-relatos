@@ -5,7 +5,7 @@ export interface CorpseRoomState {
     id: string
     title: string
     prompt?: string
-    status: 'active' | 'ended' | 'completed'
+    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
     maxContributors: number
     currentContributorId?: string
     createdAt: Date
@@ -58,7 +58,7 @@ export interface QueueUpdatedEvent {
 }
 
 export interface StatusUpdatedEvent {
-  status: 'active' | 'ended' | 'completed'
+  status: 'active' | 'ended' | 'completed' | 'pending_moderation'
 }
 
 class SocketManager {

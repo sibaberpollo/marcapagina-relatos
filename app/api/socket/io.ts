@@ -108,6 +108,13 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return
         }
 
+        // Check if corpse was completed by this submission
+        const wasCompleted = await corpseWorkflow.checkCompletion(corpseId)
+        if (wasCompleted) {
+          io.to(corpseId).emit('status-updated', { status: 'completed' })
+          console.log(`Corpse ${corpseId} completed by user ${user.id}`)
+        }
+
         console.log(`Segment submitted for corpse ${corpseId} by user ${user.id}`)
       } catch (error) {
         console.error('Error submitting segment:', error)
@@ -165,50 +172,24 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return
         }
 
-        // Update vote
-        await prisma.corpseAuthor.updateMany({
-          where: { corpseId, userId: user.id },
-          data: { voteToEnd: true },
-        })
-
-        // Check if majority threshold reached (60%)
-        const corpse = await prisma.exquisiteCorpse.findUnique({
-          where: { id: corpseId },
-          include: { authors: true },
-        })
-
-        if (!corpse) {
-          socket.emit('error', 'Corpse not found')
+        // Use workflow to handle voting
+        const result = await corpseWorkflow.voteToEnd(corpseId, user.id)
+        if (!result.success) {
+          socket.emit('error', result.error)
           return
         }
 
-        const totalAuthors = corpse.authors.length
-        const votesToEnd = corpse.authors.filter((author) => author.voteToEnd).length
-        const threshold = Math.ceil(totalAuthors * 0.6)
-
-        if (votesToEnd >= threshold) {
-          // End the corpse
-          await prisma.exquisiteCorpse.update({
-            where: { id: corpseId },
-            data: {
-              status: 'ended',
-              endedAt: new Date(),
-            },
-          })
-
-          // Clean up workflow resources
-          corpseWorkflow.cleanupCorpse(corpseId)
-
+        if (result.ended) {
           io.to(corpseId).emit('status-updated', { status: 'ended' })
-          console.log(`Corpse ${corpseId} ended by majority vote`)
         } else {
-          // Update queue
           io.to(corpseId).emit('queue-updated', {
-            votesToEnd,
-            totalAuthors,
-            threshold,
+            votesToEnd: result.votesToEnd!,
+            totalAuthors: result.totalAuthors!,
+            threshold: result.threshold!,
           })
         }
+
+        console.log(`Vote submitted for corpse ${corpseId} by user ${user.id}`)
       } catch (error) {
         console.error('Error voting to end:', error)
         socket.emit('error', 'Failed to vote')
