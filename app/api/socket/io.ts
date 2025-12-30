@@ -4,6 +4,7 @@ import { Server as NetServer } from 'http'
 import { prisma } from '@/lib/prisma'
 import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../auth'
+import { corpseWorkflow } from '@/lib/corpseWorkflow'
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -51,18 +52,10 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
           return
         }
 
-        // Verify corpse exists and is active
-        const corpse = await prisma.exquisiteCorpse.findUnique({
-          where: { id: corpseId },
-          include: {
-            authors: {
-              include: { user: { select: { id: true, name: true, image: true } } },
-            },
-          },
-        })
-
-        if (!corpse || corpse.status === 'completed') {
-          socket.emit('error', 'Corpse not found or completed')
+        // Use workflow to join corpse
+        const result = await corpseWorkflow.joinCorpse(corpseId, user.id, io)
+        if (!result.success) {
+          socket.emit('error', result.error)
           return
         }
 
@@ -70,17 +63,11 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         socket.join(corpseId)
         console.log(`User ${user.id} joined corpse room: ${corpseId}`)
 
-        // Notify others in the room
-        socket.to(corpseId).emit('user-joined', {
-          userId: user.id,
-          user: { id: user.id, name: user.name, image: user.image },
-        })
-
-        // Send current room state to the user
-        socket.emit('room-state', {
-          corpse,
-          authors: corpse.authors,
-        })
+        // Get current state and send to user
+        const state = await corpseWorkflow.getCorpseState(corpseId)
+        if (state) {
+          socket.emit('room-state', state)
+        }
       } catch (error) {
         console.error('Error joining corpse room:', error)
         socket.emit('error', 'Failed to join room')
@@ -95,94 +82,70 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     })
 
     // Handle segment submission
-    socket.on(
-      'submit-segment',
-      async (data: { corpseId: string; content: string; wordCount: number }) => {
-        try {
-          const session = await getServerSession(authOptions)
-          if (!session?.user?.email) {
-            socket.emit('error', 'Authentication required')
-            return
-          }
-
-          // Get user from database
-          const user = await prisma.user.findUnique({
-            where: { email: session.user.email },
-          })
-          if (!user) {
-            socket.emit('error', 'User not found')
-            return
-          }
-
-          const { corpseId, content, wordCount } = data
-
-          // Validate input
-          if (!content || wordCount < 50 || wordCount > 100) {
-            socket.emit('error', 'Invalid segment content or word count')
-            return
-          }
-
-          // Get current corpse state
-          const corpse = await prisma.exquisiteCorpse.findUnique({
-            where: { id: corpseId },
-            include: {
-              segments: { orderBy: { position: 'desc' }, take: 1 },
-              authors: true,
-            },
-          })
-
-          if (!corpse || corpse.status !== 'active') {
-            socket.emit('error', 'Corpse not active')
-            return
-          }
-
-          // Check if user is authorized to contribute
-          const isAuthor = corpse.authors.some((author) => author.userId === user.id)
-          if (!isAuthor) {
-            socket.emit('error', 'Not authorized to contribute to this corpse')
-            return
-          }
-
-          // Check if it's the user's turn
-          const lastSegment = corpse.segments[0]
-          if (lastSegment && lastSegment.authorId === user.id) {
-            socket.emit('error', 'Not your turn to contribute')
-            return
-          }
-
-          // Create new segment
-          const newSegment = await prisma.corpseSegment.create({
-            data: {
-              corpseId,
-              authorId: user.id,
-              content,
-              wordCount,
-              position: (lastSegment?.position || 0) + 1,
-            },
-            include: {
-              author: { select: { id: true, name: true, image: true } },
-            },
-          })
-
-          // Update author's contribution status
-          await prisma.corpseAuthor.updateMany({
-            where: { corpseId, userId: user.id },
-            data: { hasContributed: true },
-          })
-
-          // Broadcast new segment to room
-          io.to(corpseId).emit('segment-submitted', {
-            segment: newSegment,
-            author: newSegment.author,
-          })
-
-          console.log(`Segment submitted for corpse ${corpseId} by user ${user.id}`)
-        } catch (error) {
-          console.error('Error submitting segment:', error)
-          socket.emit('error', 'Failed to submit segment')
+    socket.on('submit-segment', async (data: { corpseId: string; content: string }) => {
+      try {
+        const session = await getServerSession(authOptions)
+        if (!session?.user?.email) {
+          socket.emit('error', 'Authentication required')
+          return
         }
+
+        // Get user from database
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email },
+        })
+        if (!user) {
+          socket.emit('error', 'User not found')
+          return
+        }
+
+        const { corpseId, content } = data
+
+        // Use workflow to submit segment
+        const result = await corpseWorkflow.submitSegment(corpseId, user.id, content, io)
+        if (!result.success) {
+          socket.emit('error', result.error)
+          return
+        }
+
+        console.log(`Segment submitted for corpse ${corpseId} by user ${user.id}`)
+      } catch (error) {
+        console.error('Error submitting segment:', error)
+        socket.emit('error', 'Failed to submit segment')
       }
-    )
+    })
+
+    // Handle skipping turn
+    socket.on('skip-turn', async (corpseId: string) => {
+      try {
+        const session = await getServerSession(authOptions)
+        if (!session?.user?.email) {
+          socket.emit('error', 'Authentication required')
+          return
+        }
+
+        // Get user from database
+        const user = await prisma.user.findUnique({
+          where: { email: session.user.email },
+        })
+        if (!user) {
+          socket.emit('error', 'User not found')
+          return
+        }
+
+        // Use workflow to skip turn
+        const result = await corpseWorkflow.skipTurn(corpseId, user.id, io)
+        if (!result.success) {
+          socket.emit('error', result.error)
+          return
+        }
+
+        console.log(`Turn skipped for user ${user.id} on corpse ${corpseId}`)
+      } catch (error) {
+        console.error('Error skipping turn:', error)
+        socket.emit('error', 'Failed to skip turn')
+      }
+    })
 
     // Handle voting to end corpse
     socket.on('vote-to-end', async (corpseId: string) => {
@@ -232,6 +195,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
               endedAt: new Date(),
             },
           })
+
+          // Clean up workflow resources
+          corpseWorkflow.cleanupCorpse(corpseId)
 
           io.to(corpseId).emit('status-updated', { status: 'ended' })
           console.log(`Corpse ${corpseId} ended by majority vote`)
