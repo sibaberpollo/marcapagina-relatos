@@ -259,6 +259,38 @@ class SocketManager {
     })
   }
 
+  skipTurn(corpseId: string): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (!this.socket) {
+        reject(new Error('Socket not initialized'))
+        return
+      }
+
+      const timeout = setTimeout(() => {
+        reject(new Error('Skip turn timeout'))
+      }, 5000)
+
+      this.socket.emit('skip-turn', corpseId)
+
+      // Listen for success (turn-skipped event) or error
+      const successHandler = () => {
+        clearTimeout(timeout)
+        this.socket?.off('turn-skipped', successHandler)
+        resolve()
+      }
+
+      const errorHandler = (message: string) => {
+        clearTimeout(timeout)
+        this.socket?.off('error', errorHandler)
+        this.socket?.off('turn-skipped', successHandler)
+        reject(new Error(message))
+      }
+
+      this.socket.on('turn-skipped', successHandler)
+      this.socket.on('error', errorHandler)
+    })
+  }
+
   // Cleanup
   disconnect() {
     if (this.socket) {
@@ -270,6 +302,13 @@ class SocketManager {
   // Connection status
   get isConnected(): boolean {
     return this.socket?.connected ?? false
+  }
+
+  // Add event listener
+  on(event: string, callback: (...args: unknown[]) => void) {
+    if (this.socket) {
+      this.socket.on(event, callback)
+    }
   }
 
   // Remove all listeners for a specific event

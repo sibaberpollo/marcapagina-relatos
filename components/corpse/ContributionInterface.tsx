@@ -1,0 +1,552 @@
+'use client'
+
+import * as React from 'react'
+import { useSession } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
+import { cn } from '@/lib/utils'
+import { socketManager } from '@/lib/socket'
+import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
+
+interface ContributionInterfaceProps {
+  corpseId: string
+  corpse: ExquisiteCorpse & {
+    authors: (CorpseAuthor & { user: { id: string; name: string | null; image: string | null } })[]
+    segments: (CorpseSegment & {
+      author: { id: string; name: string | null; image: string | null }
+    })[]
+  }
+  userId: string
+  author: CorpseAuthor
+}
+
+interface CorpseState {
+  corpse: {
+    id: string
+    title: string
+    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
+    maxContributors: number
+    currentContributorId?: string
+  }
+  queue: Array<{
+    userId: string
+    position: number
+    hasContributed: boolean
+    isCurrentUser: boolean
+  }>
+  currentContributor?: {
+    userId: string
+    position: number
+    hasContributed: boolean
+  }
+  nextContributor?: {
+    userId: string
+    position: number
+    hasContributed: boolean
+  }
+  timeRemaining?: number
+}
+
+export function ContributionInterface({
+  corpseId,
+  corpse,
+  userId,
+  author,
+}: ContributionInterfaceProps) {
+  const router = useRouter()
+  const { data: session, status } = useSession()
+  const [corpseState, setCorpseState] = React.useState<CorpseState | null>(null)
+  const [draft, setDraft] = React.useState('')
+  const [isLoading, setIsLoading] = React.useState(true)
+  const [isSubmitting, setIsSubmitting] = React.useState(false)
+  const [isSkipping, setIsSkipping] = React.useState(false)
+  const [error, setError] = React.useState<string | null>(null)
+  const [wordCount, setWordCount] = React.useState(0)
+  const [timeRemaining, setTimeRemaining] = React.useState<number | null>(null)
+
+  // Refs for focus management
+  const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+
+  // Initialize component
+  React.useEffect(() => {
+    if (status === 'loading') return
+    if (!session?.user) {
+      router.push('/?login=true')
+      return
+    }
+
+    initializeContribution()
+  }, [status, session, router])
+
+  // Handle real-time updates
+  React.useEffect(() => {
+    if (!corpseId) return
+
+    const handleUserJoined = (data: any) => {
+      console.log('User joined:', data)
+      fetchCorpseState()
+    }
+
+    const handleSegmentSubmitted = (data: any) => {
+      console.log('Segment submitted:', data)
+      fetchCorpseState()
+    }
+
+    const handleStatusUpdated = (data: any) => {
+      console.log('Status updated:', data)
+      if (data.status === 'ended' || data.status === 'completed') {
+        router.push(`/micronarrativas/${corpseId}`)
+      }
+      fetchCorpseState()
+    }
+
+    const handleQueueUpdated = (data: any) => {
+      console.log('Queue updated:', data)
+      fetchCorpseState()
+    }
+
+    const handleTimerExpired = () => {
+      console.log('Timer expired')
+      fetchCorpseState()
+    }
+
+    const handleTimerStarted = (data: any) => {
+      console.log('Timer started:', data)
+      if (data.userId === userId) {
+        setTimeRemaining(data.duration)
+      }
+    }
+
+    // Set up event listeners
+    socketManager.onUserJoined(handleUserJoined)
+    socketManager.onSegmentSubmitted(handleSegmentSubmitted)
+    socketManager.onStatusUpdated(handleStatusUpdated)
+    socketManager.onQueueUpdated(handleQueueUpdated)
+    socketManager.on('timer-expired', handleTimerExpired)
+    socketManager.on('timer-started', handleTimerStarted)
+
+    return () => {
+      socketManager.off('user-joined', handleUserJoined)
+      socketManager.off('segment-submitted', handleSegmentSubmitted)
+      socketManager.off('status-updated', handleStatusUpdated)
+      socketManager.off('queue-updated', handleQueueUpdated)
+      socketManager.off('timer-expired', handleTimerExpired)
+      socketManager.off('timer-started', handleTimerStarted)
+    }
+  }, [corpseId, userId, router])
+
+  // Timer countdown effect
+  React.useEffect(() => {
+    if (timeRemaining === null || timeRemaining <= 0) return
+
+    const interval = setInterval(() => {
+      setTimeRemaining((prev) => {
+        if (prev === null || prev <= 1) {
+          // Timer expired
+          fetchCorpseState()
+          return 0
+        }
+        return prev - 1
+      })
+    }, 1000)
+
+    return () => clearInterval(interval)
+  }, [timeRemaining])
+
+  // Auto-save draft every 30 seconds
+  React.useEffect(() => {
+    if (!draft.trim()) return
+
+    const interval = setInterval(() => {
+      saveDraftToAPI()
+    }, 30000)
+
+    return () => clearInterval(interval)
+  }, [draft])
+
+  const initializeContribution = async () => {
+    try {
+      setIsLoading(true)
+      setError(null)
+
+      // Join WebSocket room
+      await socketManager.joinCorpse(corpseId)
+
+      // Fetch initial state
+      await fetchCorpseState()
+    } catch (error) {
+      console.error('Error initializing contribution:', error)
+      setError('Error al cargar la interfaz de contribución')
+    } finally {
+      setIsLoading(false)
+    }
+  }
+
+  const fetchCorpseState = async () => {
+    try {
+      const response = await fetch(`/api/corpse/${corpseId}/contribute`)
+      if (!response.ok) {
+        throw new Error('Failed to fetch corpse state')
+      }
+
+      const data = await response.json()
+      setCorpseState(data.state)
+      setDraft(data.draft || '')
+
+      // Update time remaining if user is current contributor
+      if (data.isCurrentContributor && data.state.timeRemaining) {
+        setTimeRemaining(data.state.timeRemaining)
+      } else {
+        setTimeRemaining(null)
+      }
+
+      // Update word count
+      updateWordCount(data.draft || '')
+    } catch (error) {
+      console.error('Error fetching corpse state:', error)
+      setError('Error al obtener el estado actual')
+    }
+  }
+
+  const updateWordCount = (text: string) => {
+    const count = text
+      .trim()
+      .split(/\s+/)
+      .filter((word) => word.length > 0).length
+    setWordCount(count)
+  }
+
+  const handleTextChange = (event: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const text = event.target.value
+    setDraft(text)
+    updateWordCount(text)
+
+    // Auto-save to localStorage as backup
+    try {
+      localStorage.setItem(`corpse-draft-${corpseId}`, text)
+    } catch (error) {
+      console.warn('Failed to save draft to localStorage:', error)
+    }
+  }
+
+  const saveDraftToAPI = async () => {
+    if (!draft.trim()) return
+
+    try {
+      const response = await fetch(`/api/corpse/${corpseId}/contribute`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save-draft', content: draft }),
+      })
+
+      if (!response.ok) {
+        throw new Error('Failed to save draft')
+      }
+    } catch (error) {
+      console.error('Error saving draft:', error)
+    }
+  }
+
+  const handleSubmit = async () => {
+    if (!corpseState?.currentContributor || corpseState.currentContributor.userId !== userId) {
+      setError('No es tu turno para contribuir')
+      return
+    }
+
+    if (wordCount < 50) {
+      setError('El segmento debe tener al menos 50 palabras')
+      return
+    }
+
+    if (wordCount > 100) {
+      setError('El segmento no puede exceder 100 palabras')
+      return
+    }
+
+    try {
+      setIsSubmitting(true)
+      setError(null)
+
+      await socketManager.submitSegment(corpseId, draft, wordCount)
+
+      // Clear draft
+      setDraft('')
+      localStorage.removeItem(`corpse-draft-${corpseId}`)
+      updateWordCount('')
+
+      // Clear time remaining
+      setTimeRemaining(null)
+    } catch (error) {
+      console.error('Error submitting segment:', error)
+      setError('Error al enviar el segmento. Inténtalo de nuevo.')
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  const handleSkip = async () => {
+    if (!corpseState?.currentContributor || corpseState.currentContributor.userId !== userId) {
+      setError('No es tu turno para saltar')
+      return
+    }
+
+    try {
+      setIsSkipping(true)
+      setError(null)
+
+      await socketManager.skipTurn(corpseId)
+
+      // Clear draft
+      setDraft('')
+      localStorage.removeItem(`corpse-draft-${corpseId}`)
+      updateWordCount('')
+
+      // Clear time remaining
+      setTimeRemaining(null)
+    } catch (error) {
+      console.error('Error skipping turn:', error)
+      setError('Error al saltar el turno. Inténtalo de nuevo.')
+    } finally {
+      setIsSkipping(false)
+    }
+  }
+
+  // Loading state
+  if (isLoading) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Cargando interfaz de contribución...
+          </p>
+        </div>
+      </div>
+    )
+  }
+
+  // Error state
+  if (error && !corpseState) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <p className="mb-4 text-red-600 dark:text-red-400">{error}</p>
+          <button
+            onClick={() => window.location.reload()}
+            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
+          >
+            Reintentar
+          </button>
+        </div>
+      </div>
+    )
+  }
+
+  if (!corpseState) return null
+
+  const isCurrentUserTurn = corpseState.currentContributor?.userId === userId
+  const isWordCountValid = wordCount >= 50 && wordCount <= 100
+
+  return (
+    <div className="mx-auto max-w-4xl px-4 py-8">
+      {/* Header */}
+      <div className="mb-8">
+        <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
+          Contribuir a "{corpse.title}"
+        </h1>
+        <p className="text-gray-600 dark:text-gray-400">
+          Escribe tu segmento de 50-100 palabras para esta micronarrativa colectiva
+        </p>
+      </div>
+
+      {/* Status and Timer */}
+      <div className="mb-6">
+        <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+          <div className="mb-4 flex items-center justify-between">
+            <div className="flex items-center gap-4">
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Tu posición: {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
+                Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}
+              </div>
+            </div>
+            {timeRemaining !== null && isCurrentUserTurn && (
+              <div className="text-right">
+                <div className="mb-1 text-sm text-gray-600 dark:text-gray-400">Tiempo restante</div>
+                <div
+                  className={cn(
+                    'font-mono text-2xl font-bold',
+                    timeRemaining <= 30
+                      ? 'text-red-600 dark:text-red-400'
+                      : 'text-gray-900 dark:text-gray-100'
+                  )}
+                >
+                  {Math.floor(timeRemaining / 60)}:
+                  {(timeRemaining % 60).toString().padStart(2, '0')}
+                </div>
+              </div>
+            )}
+          </div>
+
+          {/* Progress Bar */}
+          <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+            <div
+              className="h-2 rounded-full bg-blue-600 transition-all duration-300"
+              style={{
+                width: `${(corpseState.queue.filter((q) => q.hasContributed).length / corpse.authors.length) * 100}%`,
+              }}
+            />
+          </div>
+          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+            {corpseState.queue.filter((q) => q.hasContributed).length} de {corpse.authors.length}{' '}
+            contribuciones completadas
+          </div>
+        </div>
+      </div>
+
+      {/* Error Message */}
+      {error && (
+        <div className="mb-6 rounded-md bg-red-50 p-4 dark:bg-red-900/50">
+          <p className="text-sm text-red-800 dark:text-red-200">{error}</p>
+        </div>
+      )}
+
+      {/* Writing Interface */}
+      <div className="mb-6 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+        <div className="mb-4">
+          <label
+            htmlFor="contribution"
+            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-100"
+          >
+            Tu contribución (50-100 palabras)
+          </label>
+          <textarea
+            ref={textareaRef}
+            id="contribution"
+            value={draft}
+            onChange={handleTextChange}
+            disabled={!isCurrentUserTurn}
+            placeholder={
+              isCurrentUserTurn
+                ? 'Comienza a escribir tu segmento...'
+                : 'Espera tu turno para contribuir'
+            }
+            className={cn(
+              'h-64 w-full resize-none rounded-md border px-3 py-2 focus:ring-2 focus:outline-none',
+              !isCurrentUserTurn
+                ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-700'
+                : 'bg-white focus:ring-blue-500 dark:bg-gray-900',
+              'border-gray-300 text-gray-900 dark:border-gray-600 dark:text-gray-100'
+            )}
+            aria-describedby="word-count-help"
+          />
+        </div>
+
+        {/* Word Count and Validation */}
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div
+              className={cn(
+                'text-sm font-medium',
+                wordCount < 50
+                  ? 'text-red-600 dark:text-red-400'
+                  : wordCount > 100
+                    ? 'text-orange-600 dark:text-orange-400'
+                    : 'text-green-600 dark:text-green-400'
+              )}
+            >
+              {wordCount} palabras
+            </div>
+            {!isWordCountValid && (
+              <span className="text-xs text-gray-500 dark:text-gray-400">
+                (requiere 50-100 palabras)
+              </span>
+            )}
+          </div>
+
+          <div className="text-xs text-gray-500 dark:text-gray-400">
+            {isCurrentUserTurn ? 'Es tu turno' : 'Esperando tu turno'}
+          </div>
+        </div>
+      </div>
+
+      {/* Action Buttons */}
+      {isCurrentUserTurn && (
+        <div className="flex gap-4">
+          <button
+            onClick={handleSubmit}
+            disabled={isSubmitting || !isWordCountValid}
+            className={cn(
+              'flex-1 rounded-md px-6 py-3 font-medium transition-colors',
+              isSubmitting || !isWordCountValid
+                ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
+                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
+            )}
+          >
+            {isSubmitting ? (
+              <>
+                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                Enviando...
+              </>
+            ) : (
+              'Enviar contribución'
+            )}
+          </button>
+
+          <button
+            onClick={handleSkip}
+            disabled={isSkipping}
+            className={cn(
+              'rounded-md border px-6 py-3 font-medium transition-colors',
+              isSkipping
+                ? 'cursor-not-allowed border-gray-300 text-gray-500 dark:border-gray-600 dark:text-gray-400'
+                : 'border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700'
+            )}
+          >
+            {isSkipping ? (
+              <>
+                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent"></div>
+                Saltando...
+              </>
+            ) : (
+              'Saltar turno'
+            )}
+          </button>
+        </div>
+      )}
+
+      {/* Previous Segments Preview */}
+      {corpse.segments.length > 0 && (
+        <div className="mt-8">
+          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
+            Segmentos anteriores
+          </h2>
+          <div className="space-y-4">
+            {corpse.segments.map((segment) => (
+              <div key={segment.id} className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div className="mb-2 flex items-center gap-2">
+                  {segment.author.image && (
+                    <img
+                      src={segment.author.image}
+                      alt={segment.author.name || 'Autor'}
+                      className="h-6 w-6 rounded-full"
+                    />
+                  )}
+                  <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                    {segment.author.name || 'Anónimo'}
+                  </span>
+                  <span className="text-xs text-gray-500 dark:text-gray-400">
+                    {segment.wordCount} palabras
+                  </span>
+                </div>
+                <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
+                  {segment.content}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
