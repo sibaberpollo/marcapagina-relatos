@@ -1,65 +1,27 @@
 import { io, Socket } from 'socket.io-client'
+import type {
+  RoomStatePayload,
+  UserJoinedPayload,
+  UserLeftPayload,
+  SegmentSubmittedPayload,
+  StatusUpdatedPayload,
+  QueueUpdatedPayload,
+  TimerStartedPayload,
+  TimerExpiredPayload,
+  TurnSkippedPayload,
+  ErrorPayload,
+  ServerToClientEvents,
+  ClientToServerEvents,
+  SocketEventHandler,
+  ServerEventPayload,
+} from '@/types/socketEvents'
 
-export interface CorpseRoomState {
-  corpse: {
-    id: string
-    title: string
-    prompt?: string
-    status: 'active' | 'ended' | 'completed' | 'pending_moderation'
-    maxContributors: number
-    currentContributorId?: string
-    createdAt: Date
-    endedAt?: Date
-  }
-  authors: Array<{
-    id: string
-    userId: string
-    joinedAt: Date
-    hasContributed: boolean
-    voteToEnd: boolean
-    user: {
-      id: string
-      name?: string
-      image?: string
-    }
-  }>
-}
-
-export interface SegmentSubmittedEvent {
-  segment: {
-    id: string
-    corpseId: string
-    authorId: string
-    content: string
-    wordCount: number
-    position: number
-    createdAt: Date
-  }
-  author: {
-    id: string
-    name?: string
-    image?: string
-  }
-}
-
-export interface UserJoinedEvent {
-  userId: string
-  user: {
-    id: string
-    name?: string
-    image?: string
-  }
-}
-
-export interface QueueUpdatedEvent {
-  votesToEnd: number
-  totalAuthors: number
-  threshold: number
-}
-
-export interface StatusUpdatedEvent {
-  status: 'active' | 'ended' | 'completed' | 'pending_moderation'
-}
+// Re-export types for backward compatibility
+export type CorpseRoomState = RoomStatePayload
+export type SegmentSubmittedEvent = SegmentSubmittedPayload
+export type UserJoinedEvent = UserJoinedPayload
+export type QueueUpdatedEvent = QueueUpdatedPayload
+export type StatusUpdatedEvent = StatusUpdatedPayload
 
 class SocketManager {
   private socket: Socket | null = null
@@ -129,7 +91,7 @@ class SocketManager {
   }
 
   // Room management
-  joinCorpse(corpseId: string): Promise<CorpseRoomState> {
+  joinCorpse(corpseId: string): Promise<RoomStatePayload> {
     return new Promise((resolve, reject) => {
       if (!this.socket) {
         reject(new Error('Socket not initialized'))
@@ -140,52 +102,52 @@ class SocketManager {
         reject(new Error('Join room timeout'))
       }, 10000)
 
-      this.socket.emit('join-corpse', corpseId)
+      this.socket.emit('join-corpse', { corpseId })
 
-      this.socket.once('room-state', (data: CorpseRoomState) => {
+      this.socket.once('room-state', (data: RoomStatePayload) => {
         clearTimeout(timeout)
         resolve(data)
       })
 
-      this.socket.once('error', (message: string) => {
+      this.socket.once('error', (errorPayload: ErrorPayload) => {
         clearTimeout(timeout)
-        reject(new Error(message))
+        reject(new Error(errorPayload.message))
       })
     })
   }
 
   leaveCorpse(corpseId: string) {
     if (this.socket) {
-      this.socket.emit('leave-corpse', corpseId)
+      this.socket.emit('leave-corpse', { corpseId })
     }
   }
 
-  // Event listeners
-  onUserJoined(callback: (data: UserJoinedEvent) => void) {
+  // Event listeners with proper typing
+  onUserJoined(callback: SocketEventHandler<UserJoinedPayload>) {
     if (this.socket) {
       this.socket.on('user-joined', callback)
     }
   }
 
-  onUserLeft(callback: (userId: string) => void) {
+  onUserLeft(callback: SocketEventHandler<UserLeftPayload>) {
     if (this.socket) {
       this.socket.on('user-left', callback)
     }
   }
 
-  onSegmentSubmitted(callback: (data: SegmentSubmittedEvent) => void) {
+  onSegmentSubmitted(callback: SocketEventHandler<SegmentSubmittedPayload>) {
     if (this.socket) {
       this.socket.on('segment-submitted', callback)
     }
   }
 
-  onStatusUpdated(callback: (data: StatusUpdatedEvent) => void) {
+  onStatusUpdated(callback: SocketEventHandler<StatusUpdatedPayload>) {
     if (this.socket) {
       this.socket.on('status-updated', callback)
     }
   }
 
-  onQueueUpdated(callback: (data: QueueUpdatedEvent) => void) {
+  onQueueUpdated(callback: SocketEventHandler<QueueUpdatedPayload>) {
     if (this.socket) {
       this.socket.on('queue-updated', callback)
     }
@@ -206,7 +168,7 @@ class SocketManager {
       this.socket.emit('submit-segment', { corpseId, content, wordCount })
 
       // Listen for success (segment-submitted event) or error
-      const successHandler = (data: SegmentSubmittedEvent) => {
+      const successHandler = (data: SegmentSubmittedPayload) => {
         if (data.segment.corpseId === corpseId) {
           clearTimeout(timeout)
           this.socket?.off('segment-submitted', successHandler)
@@ -214,11 +176,11 @@ class SocketManager {
         }
       }
 
-      const errorHandler = (message: string) => {
+      const errorHandler = (errorPayload: ErrorPayload) => {
         clearTimeout(timeout)
         this.socket?.off('error', errorHandler)
         this.socket?.off('segment-submitted', successHandler)
-        reject(new Error(message))
+        reject(new Error(errorPayload.message))
       }
 
       this.socket.on('segment-submitted', successHandler)
@@ -237,7 +199,7 @@ class SocketManager {
         reject(new Error('Vote timeout'))
       }, 5000)
 
-      this.socket.emit('vote-to-end', corpseId)
+      this.socket.emit('vote-to-end', { corpseId })
 
       // Listen for success (status-updated or queue-updated) or error
       const successHandler = () => {
@@ -247,12 +209,12 @@ class SocketManager {
         resolve()
       }
 
-      const errorHandler = (message: string) => {
+      const errorHandler = (errorPayload: ErrorPayload) => {
         clearTimeout(timeout)
         this.socket?.off('error', errorHandler)
         this.socket?.off('status-updated', successHandler)
         this.socket?.off('queue-updated', successHandler)
-        reject(new Error(message))
+        reject(new Error(errorPayload.message))
       }
 
       this.socket.on('status-updated', successHandler)
@@ -272,20 +234,20 @@ class SocketManager {
         reject(new Error('Skip turn timeout'))
       }, 5000)
 
-      this.socket.emit('skip-turn', corpseId)
+      this.socket.emit('skip-turn', { corpseId })
 
       // Listen for success (turn-skipped event) or error
-      const successHandler = () => {
+      const successHandler = (payload: TurnSkippedPayload) => {
         clearTimeout(timeout)
         this.socket?.off('turn-skipped', successHandler)
         resolve()
       }
 
-      const errorHandler = (message: string) => {
+      const errorHandler = (errorPayload: ErrorPayload) => {
         clearTimeout(timeout)
         this.socket?.off('error', errorHandler)
         this.socket?.off('turn-skipped', successHandler)
-        reject(new Error(message))
+        reject(new Error(errorPayload.message))
       }
 
       this.socket.on('turn-skipped', successHandler)
@@ -306,15 +268,21 @@ class SocketManager {
     return this.socket?.connected ?? false
   }
 
-  // Add event listener
-  on(event: string, callback: (...args: unknown[]) => void) {
+  // Add event listener with proper typing
+  on<EventName extends keyof ServerToClientEvents>(
+    event: EventName,
+    callback: SocketEventHandler<ServerEventPayload<EventName>>
+  ) {
     if (this.socket) {
       this.socket.on(event, callback)
     }
   }
 
   // Remove all listeners for a specific event
-  off(event: string, callback?: (...args: unknown[]) => void) {
+  off<EventName extends keyof ServerToClientEvents>(
+    event: EventName,
+    callback?: SocketEventHandler<ServerEventPayload<EventName>>
+  ) {
     if (this.socket) {
       if (callback) {
         this.socket.off(event, callback)

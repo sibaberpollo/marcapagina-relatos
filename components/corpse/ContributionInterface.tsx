@@ -15,6 +15,10 @@ import { ContributionSkeleton } from './CorpseSkeletons'
 import { useCorpseErrorHandler, useNetworkStatus, useAsyncOperation } from '@/lib/corpseErrorHandling'
 import { toast } from '@/components/ui/use-toast'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
+import type {
+  StatusUpdatedPayload,
+  TimerStartedPayload,
+} from '@/types/socketEvents'
 
 interface ContributionInterfaceProps {
   corpseId: string
@@ -161,7 +165,7 @@ export function ContributionInterface({
     }
   }
 
-  // Memoized handlers for real-time updates
+  // Memoized handlers for real-time updates with proper typing
   const handleUserJoined = React.useCallback(() => {
     fetchCorpseState()
   }, [fetchCorpseState])
@@ -171,7 +175,7 @@ export function ContributionInterface({
   }, [fetchCorpseState])
 
   const handleStatusUpdated = React.useCallback(
-    (data: { status: string }) => {
+    (data: StatusUpdatedPayload) => {
       if (data.status === 'ended' || data.status === 'completed') {
         router.push(`/micronarrativas/${corpseId}`)
       }
@@ -189,7 +193,7 @@ export function ContributionInterface({
   }, [fetchCorpseState])
 
   const handleTimerStarted = React.useCallback(
-    (data: { userId: string; duration: number }) => {
+    (data: TimerStartedPayload) => {
       if (data.userId === userId) {
         setTimeRemaining(data.duration)
       }
@@ -240,21 +244,21 @@ export function ContributionInterface({
   React.useEffect(() => {
     if (!corpseId) return
 
-    // Set up event listeners
-    socketManager.onUserJoined(handleUserJoined as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-    socketManager.onSegmentSubmitted(handleSegmentSubmitted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-    socketManager.onStatusUpdated(handleStatusUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-    socketManager.onQueueUpdated(handleQueueUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    // Set up event listeners with proper typing
+    socketManager.onUserJoined(handleUserJoined)
+    socketManager.onSegmentSubmitted(handleSegmentSubmitted)
+    socketManager.onStatusUpdated(handleStatusUpdated)
+    socketManager.onQueueUpdated(handleQueueUpdated)
     socketManager.on('timer-expired', handleTimerExpired)
-    socketManager.on('timer-started', handleTimerStarted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+    socketManager.on('timer-started', handleTimerStarted)
 
     return () => {
-      socketManager.off('user-joined', handleUserJoined as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-      socketManager.off('segment-submitted', handleSegmentSubmitted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-      socketManager.off('status-updated', handleStatusUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
-      socketManager.off('queue-updated', handleQueueUpdated as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('user-joined', handleUserJoined)
+      socketManager.off('segment-submitted', handleSegmentSubmitted)
+      socketManager.off('status-updated', handleStatusUpdated)
+      socketManager.off('queue-updated', handleQueueUpdated)
       socketManager.off('timer-expired', handleTimerExpired)
-      socketManager.off('timer-started', handleTimerStarted as any) // eslint-disable-line @typescript-eslint/no-explicit-any
+      socketManager.off('timer-started', handleTimerStarted)
     }
   }, [
     corpseId,
