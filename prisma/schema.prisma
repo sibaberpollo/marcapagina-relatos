@@ -18,6 +18,8 @@ model User {
   reactions     Reaction[]
   reads         Read[]
   sessions      Session[]
+  corpseSegments CorpseSegment[]
+  corpseAuthors  CorpseAuthor[]
 
   @@map("users")
 }
@@ -98,4 +100,65 @@ model Reaction {
 enum ReactionType {
   UP
   DOUBLE
+}
+
+enum CorpseStatus {
+  active
+  ended
+  completed
+}
+
+model ExquisiteCorpse {
+  id                  String         @id @default(cuid())
+  title               String
+  prompt              String?
+  status              CorpseStatus   @default(active)
+  maxContributors     Int            @default(10)
+  currentContributorId String?
+  createdAt           DateTime       @default(now())
+  endedAt             DateTime?
+
+  // Relations
+  segments            CorpseSegment[]
+  authors             CorpseAuthor[]
+
+  @@map("exquisite_corpses")
+}
+
+model CorpseSegment {
+  id        String          @id @default(cuid())
+  corpseId  String
+  authorId  String
+  content   String
+  wordCount Int
+  position  Int
+  createdAt DateTime        @default(now())
+  isSkipped Boolean         @default(false)
+
+  // Relations
+  corpse    ExquisiteCorpse @relation(fields: [corpseId], references: [id], onDelete: Cascade)
+  author    User            @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([corpseId])
+  @@index([authorId])
+  @@index([position])
+  @@map("corpse_segments")
+}
+
+model CorpseAuthor {
+  id             String          @id @default(cuid())
+  corpseId       String
+  userId         String
+  joinedAt       DateTime       @default(now())
+  hasContributed Boolean        @default(false)
+  voteToEnd      Boolean        @default(false)
+
+  // Relations
+  corpse         ExquisiteCorpse @relation(fields: [corpseId], references: [id], onDelete: Cascade)
+  user           User            @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([corpseId, userId])
+  @@index([corpseId])
+  @@index([userId])
+  @@map("corpse_authors")
 }
