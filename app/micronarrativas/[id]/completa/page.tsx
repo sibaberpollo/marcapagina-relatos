@@ -14,7 +14,22 @@ export async function generateMetadata({ params }: CompletedCorpsePageProps): Pr
 
   const corpse = await prisma.exquisiteCorpse.findUnique({
     where: { id: resolvedParams.id },
-    select: { title: true, prompt: true, status: true },
+    select: {
+      title: true,
+      prompt: true,
+      status: true,
+      authors: {
+        include: {
+          user: {
+            select: { name: true },
+          },
+        },
+      },
+      segments: {
+        select: { content: true },
+        take: 3, // First few segments for description
+      },
+    },
   })
 
   if (!corpse || corpse.status !== 'completed') {
@@ -23,11 +38,44 @@ export async function generateMetadata({ params }: CompletedCorpsePageProps): Pr
     }
   }
 
+  const contributors = corpse.authors.map((author) => author.user.name || 'Anónimo')
+  const contributorText =
+    contributors.length <= 3
+      ? contributors.join(', ')
+      : `${contributors.slice(0, 3).join(', ')} y ${contributors.length - 3} más`
+
+  const description = corpse.prompt
+    ? `Micronarrativa colaborativa: "${corpse.prompt}". Creada por ${contributorText}.`
+    : `Micronarrativa colaborativa creada por ${contributorText} en Marcapágina.`
+
+  const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://marcapagina.com'
+  const url = `${baseUrl}/micronarrativas/${resolvedParams.id}/completa`
+
   return {
     title: `"${corpse.title}" - Micronarrativa completa - Marcapágina`,
-    description: corpse.prompt
-      ? `Micronarrativa colaborativa completa: ${corpse.prompt}`
-      : 'Lee esta micronarrativa colaborativa completa en Marcapágina',
+    description,
+    openGraph: {
+      title: `"${corpse.title}" - Micronarrativa colaborativa`,
+      description,
+      url,
+      type: 'article',
+      authors: contributors,
+      siteName: 'Marcapágina',
+      images: [
+        {
+          url: `${baseUrl}/api/og/corpse/${resolvedParams.id}`,
+          width: 1200,
+          height: 630,
+          alt: `Micronarrativa: ${corpse.title}`,
+        },
+      ],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `"${corpse.title}" - Micronarrativa completa`,
+      description,
+      images: [`${baseUrl}/api/og/corpse/${resolvedParams.id}`],
+    },
   }
 }
 

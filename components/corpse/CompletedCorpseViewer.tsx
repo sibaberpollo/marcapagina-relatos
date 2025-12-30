@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
 import { GraduationCap, Users, Vote, Clock, ExternalLink, PenTool } from 'lucide-react'
 import { ContributorProfile } from './ContributorProfile'
+import { ShareCorpse } from './ShareCorpse'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 
 interface CompletedCorpseViewerProps {
@@ -206,6 +207,15 @@ export function CompletedCorpseViewer({
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Sharing Section */}
+      <div className="mb-8 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
+        <ShareCorpse
+          corpseId={corpse.id}
+          title={corpse.title}
+          contributors={authors.map((author) => author.user.name || 'Anónimo')}
+        />
       </div>
 
       {/* Moderation Actions */}
