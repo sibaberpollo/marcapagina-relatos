@@ -6,6 +6,8 @@ The site features **Transtextos**, an experimental writing feed that publishes b
 
 The platform positions itself as a space where literature happens in real time, blending contemporary Latin American voices with digital culture elements like music and art. It also accepts submissions from writers looking to publish their own short fiction.
 
+Review the `VISION.md` file for more context about the overall project goals and philosophy.
+
 ## Build/Lint/Test Commands
 
 ### Development
