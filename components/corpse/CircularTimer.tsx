@@ -27,13 +27,28 @@ export function CircularTimer({
   const isWarning = timeRemaining <= 30
   const isCritical = timeRemaining <= 10
 
+  // Format time for screen readers
+  const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`
+  const statusText = isCritical
+    ? 'Tiempo crítico'
+    : isWarning
+      ? 'Tiempo limitado'
+      : 'Tiempo restante'
+
   return (
-    <div className={cn('relative', className)}>
+    <div className={cn('relative', className)} role="timer" aria-live="polite" aria-atomic="true">
+      {/* Screen reader announcement */}
+      <div className="sr-only" aria-live="assertive" aria-atomic="true">
+        {statusText}: {timeString} restante
+      </div>
+
       <svg
         width={size}
         height={size}
         className="-rotate-90 transform"
         aria-labelledby="timer-label"
+        role="img"
+        aria-describedby="timer-description"
       >
         {/* Background circle */}
         <circle
@@ -60,6 +75,7 @@ export function CircularTimer({
             'transition-all duration-1000 ease-linear',
             isCritical ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-blue-500'
           )}
+          aria-hidden="true"
         />
       </svg>
       {/* Time display */}
@@ -75,10 +91,17 @@ export function CircularTimer({
                   : 'text-gray-900 dark:text-gray-100'
             )}
             id="timer-label"
+            aria-hidden="true"
           >
-            {minutes}:{seconds.toString().padStart(2, '0')}
+            {timeString}
           </div>
-          <div className="text-xs text-gray-500 dark:text-gray-400">restante</div>
+          <div
+            className="text-xs text-gray-500 dark:text-gray-400"
+            id="timer-description"
+            aria-hidden="true"
+          >
+            restante
+          </div>
         </div>
       </div>
     </div>

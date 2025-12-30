@@ -341,9 +341,17 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
   const canVote = isAuthor && corpse.status === 'active' && !corpseState.userVoted
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-8">
+    <main className="mx-auto max-w-4xl px-4 py-8">
+      {/* Screen reader status updates */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}.{corpseState.queue.length}{' '}
+        de {corpse.maxContributors} participantes.
+        {canJoin && 'Puedes unirte a la cola.'}
+        {canVote && 'Puedes votar para terminar.'}
+      </div>
+
       {/* Header */}
-      <div className="mb-8">
+      <header className="mb-8">
         <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">{corpse.title}</h1>
         {corpse.prompt && <p className="text-gray-600 dark:text-gray-400">{corpse.prompt}</p>}
         <div className="mt-4 flex items-center gap-4">
@@ -354,7 +362,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             {corpseState.queue.length} de {corpse.maxContributors} participantes
           </span>
         </div>
-      </div>
+      </header>
 
       {/* Error Message */}
       {error && (
@@ -364,10 +372,22 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
       )}
 
       {/* Progress */}
-      <div className="mb-8">
+      <section className="mb-8" aria-labelledby="progress-heading">
         <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">Progreso</h2>
-          <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+          <h2
+            id="progress-heading"
+            className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100"
+          >
+            Progreso
+          </h2>
+          <div
+            className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700"
+            role="progressbar"
+            aria-valuenow={corpseState.queue.filter((q) => q.hasContributed).length}
+            aria-valuemin={0}
+            aria-valuemax={corpseState.queue.length}
+            aria-label={`Progreso de contribuciones: ${corpseState.queue.filter((q) => q.hasContributed).length} de ${corpseState.queue.length} completadas`}
+          >
             <div
               className="h-2 rounded-full bg-blue-600 transition-all duration-300"
               style={{
@@ -380,13 +400,16 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             contribuciones completadas
           </div>
         </div>
-      </div>
+      </section>
 
       {/* Current Contributor */}
       {corpseState.currentContributor && (
-        <div className="mb-8">
+        <section className="mb-8" aria-labelledby="current-contributor-heading">
           <div className="rounded-lg bg-green-50 p-6 dark:bg-green-900/20">
-            <h2 className="mb-4 text-xl font-semibold text-green-900 dark:text-green-100">
+            <h2
+              id="current-contributor-heading"
+              className="mb-4 text-xl font-semibold text-green-900 dark:text-green-100"
+            >
               Escribiendo ahora
             </h2>
             <ContributorCard
@@ -398,13 +421,16 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
               timeRemaining={corpseState.timeRemaining}
             />
           </div>
-        </div>
+        </section>
       )}
 
       {/* Queue */}
-      <div className="mb-8">
+      <section className="mb-8" aria-labelledby="queue-heading">
         <div className="rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
-          <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
+          <h2
+            id="queue-heading"
+            className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100"
+          >
             Cola de participantes
           </h2>
           {corpseState.queue.length === 0 ? (
@@ -434,10 +460,14 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             </div>
           )}
         </div>
-      </div>
+      </section>
 
       {/* Actions */}
-      <div className="flex flex-col gap-4 sm:flex-row">
+      <div
+        className="flex flex-col gap-4 sm:flex-row"
+        role="group"
+        aria-label="Acciones disponibles"
+      >
         {canJoin && (
           <button
             onClick={handleJoinQueue}
@@ -448,10 +478,14 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
                 ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
                 : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
             )}
+            aria-describedby={isFull ? 'queue-full-message' : undefined}
           >
             {isJoining ? (
               <>
-                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <div
+                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+                  aria-hidden="true"
+                ></div>
                 Uniéndose...
               </>
             ) : (
@@ -473,7 +507,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
           >
             {isVoting ? (
               <>
-                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"></div>
+                <div
+                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"
+                  aria-hidden="true"
+                ></div>
                 Votando...
               </>
             ) : (
@@ -536,6 +573,6 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
           </div>
         </div>
       )}
-    </div>
+    </main>
   )
 }

@@ -68,8 +68,10 @@ export function ContributionInterface({
   const [wordCount, setWordCount] = React.useState(0)
   const [timeRemaining, setTimeRemaining] = React.useState<number | null>(null)
 
-  // Refs for focus management
+  // Refs for focus management and accessibility
   const textareaRef = React.useRef<HTMLTextAreaElement>(null)
+  const submitButtonRef = React.useRef<HTMLButtonElement>(null)
+  const skipButtonRef = React.useRef<HTMLButtonElement>(null)
 
   const fetchCorpseState = React.useCallback(async () => {
     try {
@@ -124,6 +126,22 @@ export function ContributionInterface({
       localStorage.setItem(`corpse-draft-${corpseId}`, text)
     } catch (error) {
       console.warn('Failed to save draft to localStorage:', error)
+    }
+  }
+
+  // Keyboard navigation and shortcuts
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    // Ctrl+Enter or Cmd+Enter to submit
+    if ((event.ctrlKey || event.metaKey) && event.key === 'Enter') {
+      event.preventDefault()
+      if (isWordCountValid && !isSubmitting) {
+        handleSubmit()
+      }
+    }
+    // Escape to skip (if available)
+    else if (event.key === 'Escape' && !isSubmitting && !isSkipping) {
+      event.preventDefault()
+      handleSkip()
     }
   }
 
@@ -367,17 +385,31 @@ export function ContributionInterface({
   const isCurrentUserTurn = corpseState.currentContributor?.userId === userId
   const isWordCountValid = wordCount >= 50 && wordCount <= 100
 
+  // Focus management effect
+  React.useEffect(() => {
+    if (isCurrentUserTurn && textareaRef.current) {
+      textareaRef.current.focus()
+    }
+  }, [isCurrentUserTurn])
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
+      {/* Screen reader status updates */}
+      <div className="sr-only" aria-live="polite" aria-atomic="true">
+        {isCurrentUserTurn ? 'Es tu turno para contribuir' : 'Esperando tu turno'}
+        {timeRemaining !== null &&
+          `Tiempo restante: ${Math.floor(timeRemaining / 60)}:${(timeRemaining % 60).toString().padStart(2, '0')}`}
+      </div>
+
       {/* Header */}
-      <div className="mb-8">
+      <header className="mb-8">
         <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
           Contribuir a "{corpse.title}"
         </h1>
         <p className="text-gray-600 dark:text-gray-400">
           Escribe tu segmento de 50-100 palabras para esta micronarrativa colectiva
         </p>
-      </div>
+      </header>
 
       {/* Status and Timer */}
       <div className="mb-6">
@@ -455,10 +487,11 @@ export function ContributionInterface({
             id="contribution"
             value={draft}
             onChange={handleTextChange}
+            onKeyDown={handleKeyDown}
             disabled={!isCurrentUserTurn}
             placeholder={
               isCurrentUserTurn
-                ? 'Comienza a escribir tu segmento...'
+                ? 'Comienza a escribir tu segmento... (Ctrl+Enter para enviar, Escape para saltar)'
                 : 'Espera tu turno para contribuir'
             }
             className={cn(
@@ -468,8 +501,15 @@ export function ContributionInterface({
                 : 'bg-white focus:ring-blue-500 dark:bg-gray-900',
               'border-gray-300 text-gray-900 dark:border-gray-600 dark:text-gray-100'
             )}
-            aria-describedby="word-count-help"
+            aria-describedby="word-count-help contribution-instructions"
+            aria-label="Campo de texto para tu contribución a la micronarrativa"
           />
+        </div>
+
+        {/* Instructions for screen readers */}
+        <div id="contribution-instructions" className="sr-only">
+          Escribe entre 50 y 100 palabras. Presiona Ctrl+Enter para enviar tu contribución, o Escape
+          para saltar tu turno.
         </div>
 
         {/* Word Counter */}
@@ -485,8 +525,9 @@ export function ContributionInterface({
 
       {/* Action Buttons */}
       {isCurrentUserTurn && (
-        <div className="flex gap-4">
+        <div className="flex gap-4" role="group" aria-label="Acciones de contribución">
           <button
+            ref={submitButtonRef}
             onClick={handleSubmit}
             disabled={isSubmitting || !isWordCountValid}
             className={cn(
@@ -495,18 +536,23 @@ export function ContributionInterface({
                 ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
                 : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2'
             )}
+            aria-describedby={!isWordCountValid ? 'word-count-help' : undefined}
           >
             {isSubmitting ? (
               <>
-                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+                <div
+                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
+                  aria-hidden="true"
+                ></div>
                 Enviando...
               </>
             ) : (
-              'Enviar contribución'
+              'Enviar contribución (Ctrl+Enter)'
             )}
           </button>
 
           <button
+            ref={skipButtonRef}
             onClick={handleSkip}
             disabled={isSkipping}
             className={cn(
@@ -518,11 +564,14 @@ export function ContributionInterface({
           >
             {isSkipping ? (
               <>
-                <div className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent"></div>
+                <div
+                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent"
+                  aria-hidden="true"
+                ></div>
                 Saltando...
               </>
             ) : (
-              'Saltar turno'
+              'Saltar turno (Escape)'
             )}
           </button>
         </div>

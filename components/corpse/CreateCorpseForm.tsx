@@ -69,10 +69,14 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
   }
 
   return (
-    <form onSubmit={handleSubmit} className={cn('space-y-6', className)} {...props}>
+    <form onSubmit={handleSubmit} className={cn('space-y-6', className)} {...props} noValidate>
       {/* General Error */}
       {errors.general && (
-        <div className="rounded-md bg-red-50 p-4 dark:bg-red-900/50">
+        <div
+          className="rounded-md bg-red-50 p-4 dark:bg-red-900/50"
+          role="alert"
+          aria-live="assertive"
+        >
           <p className="text-sm text-red-800 dark:text-red-200">{errors.general}</p>
         </div>
       )}
@@ -83,7 +87,10 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           htmlFor="title"
           className="block text-sm font-medium text-gray-900 dark:text-gray-100"
         >
-          Título de la micronarrativa <span className="text-red-500">*</span>
+          Título de la micronarrativa{' '}
+          <span className="text-red-500" aria-label="requerido">
+            *
+          </span>
         </label>
         <input
           type="text"
@@ -98,8 +105,17 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
               : 'border-gray-300 dark:border-gray-600'
           )}
           placeholder="Ingresa un título atractivo para tu micronarrativa"
+          aria-describedby={errors.title ? 'title-error' : 'title-help'}
+          aria-invalid={!!errors.title}
         />
-        {errors.title && <p className="text-sm text-red-600 dark:text-red-400">{errors.title}</p>}
+        {errors.title && (
+          <p id="title-error" className="text-sm text-red-600 dark:text-red-400" role="alert">
+            {errors.title}
+          </p>
+        )}
+        <p id="title-help" className="sr-only">
+          Máximo 100 caracteres
+        </p>
       </div>
 
       {/* Prompt Selection */}
@@ -115,6 +131,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           name="promptId"
           onChange={handlePromptChange}
           className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          aria-describedby="prompt-help"
         >
           <option value="">Sin prompt específico (libre creación)</option>
           {CORPSE_PROMPTS.map((prompt) => (
@@ -123,14 +140,19 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
             </option>
           ))}
         </select>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p id="prompt-help" className="text-sm text-gray-600 dark:text-gray-400">
           Los prompts ayudan a guiar la creación colectiva y generan resultados más coherentes.
         </p>
       </div>
 
       {/* Selected Prompt Description */}
       <div className="space-y-2">
-        <div className="min-h-[60px] rounded-md border border-gray-200 bg-gray-50 p-3 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300">
+        <div
+          className="min-h-[60px] rounded-md border border-gray-200 bg-gray-50 p-3 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
+          role="region"
+          aria-live="polite"
+          aria-label="Descripción del prompt seleccionado"
+        >
           {selectedPrompt ? (
             <div>
               <p className="mb-1 font-medium text-gray-900 dark:text-gray-100">
@@ -167,13 +189,14 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           name="maxContributors"
           defaultValue="7"
           className="block w-full rounded-md border border-gray-300 px-3 py-2 shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          aria-describedby="contributors-help"
         >
           <option value="7">7 colaboradores</option>
           <option value="8">8 colaboradores</option>
           <option value="9">9 colaboradores</option>
           <option value="10">10 colaboradores</option>
         </select>
-        <p className="text-sm text-gray-600 dark:text-gray-400">
+        <p id="contributors-help" className="text-sm text-gray-600 dark:text-gray-400">
           Entre 7 y 10 autores pueden contribuir. Más autores = más diversidad, menos control.
         </p>
       </div>
