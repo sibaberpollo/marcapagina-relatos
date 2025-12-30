@@ -4,9 +4,10 @@ import { authOptions } from '../../../../../auth'
 import { prisma } from '@/lib/prisma'
 import { corpseWorkflow } from '@/lib/corpseWorkflow'
 import { Server } from 'socket.io'
+import { rateLimitCorpseActions, createRateLimitError } from '@/lib/rateLimit'
 
 // Store io instance (this would be set up in the socket route)
-let io: Server | null = null
+const io: Server | null = null
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -24,6 +25,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const resolvedParams = await params
     const corpseId = resolvedParams.id
+
+    // Rate limiting for actions
+    const rateLimitResult = await rateLimitCorpseActions(user.id)
+    if (!rateLimitResult.allowed) {
+      const errorResponse = createRateLimitError(rateLimitResult)
+      return NextResponse.json(
+        {
+          error: errorResponse.error,
+          code: errorResponse.code,
+          retryAfter: errorResponse.retryAfter,
+        },
+        {
+          status: 429,
+          headers: errorResponse.headers,
+        }
+      )
+    }
 
     // Use corpseWorkflow to join
     const result = await corpseWorkflow.joinCorpse(corpseId, user.id, io!)

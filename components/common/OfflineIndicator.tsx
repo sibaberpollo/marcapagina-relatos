@@ -31,14 +31,14 @@ export function OfflineIndicator({ className }: OfflineIndicatorProps) {
   return (
     <div
       className={cn(
-        'fixed top-4 right-4 z-50 bg-red-600 text-white px-4 py-2 rounded-md shadow-lg',
+        'fixed top-4 right-4 z-50 rounded-md bg-red-600 px-4 py-2 text-white shadow-lg',
         'flex items-center gap-2 text-sm font-medium',
         className
       )}
       role="alert"
       aria-live="assertive"
     >
-      <div className="w-2 h-2 bg-white rounded-full animate-pulse"></div>
+      <div className="h-2 w-2 animate-pulse rounded-full bg-white"></div>
       Sin conexión a internet
     </div>
   )

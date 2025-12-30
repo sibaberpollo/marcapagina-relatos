@@ -12,13 +12,14 @@ import { WordCounter } from './WordCounter'
 import { clientContentValidator } from '@/lib/contentValidation'
 import { CorpseErrorBoundary } from '@/components/common/ErrorBoundary'
 import { ContributionSkeleton } from './CorpseSkeletons'
-import { useCorpseErrorHandler, useNetworkStatus, useAsyncOperation } from '@/lib/corpseErrorHandling'
+import {
+  useCorpseErrorHandler,
+  useNetworkStatus,
+  useAsyncOperation,
+} from '@/lib/corpseErrorHandling'
 import { toast } from '@/components/ui/use-toast'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
-import type {
-  StatusUpdatedPayload,
-  TimerStartedPayload,
-} from '@/types/socketEvents'
+import type { StatusUpdatedPayload, TimerStartedPayload } from '@/types/socketEvents'
 
 interface ContributionInterfaceProps {
   corpseId: string

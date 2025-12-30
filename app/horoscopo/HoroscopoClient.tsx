@@ -849,7 +849,17 @@ export default function HoroscopoClient({ signo = 'sagitario' }: HoroscopoClient
   // Obtener información del signo actual
   const currentSignInfo = zodiacSigns.find((sign) => sign.slug === currentSign)
   const displaySignName =
-    signo === 'cancer' ? 'Cáncer' : signo === 'leo' ? 'Leo' : signo === 'virgo' ? 'Virgo' : signo === 'libra' ? 'Libra' : signo === 'escorpio' ? 'Escorpio' : 'Sagitario'
+    signo === 'cancer'
+      ? 'Cáncer'
+      : signo === 'leo'
+        ? 'Leo'
+        : signo === 'virgo'
+          ? 'Virgo'
+          : signo === 'libra'
+            ? 'Libra'
+            : signo === 'escorpio'
+              ? 'Escorpio'
+              : 'Sagitario'
 
   // Seleccionar el objeto de textos correcto según el signo
   const literaryTexts =

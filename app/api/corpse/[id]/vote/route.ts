@@ -3,6 +3,7 @@ import { getServerSession } from 'next-auth'
 import { authOptions } from '../../../../../auth'
 import { prisma } from '@/lib/prisma'
 import { corpseWorkflow } from '@/lib/corpseWorkflow'
+import { rateLimitCorpseActions, createRateLimitError } from '@/lib/rateLimit'
 
 export async function POST(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
@@ -20,6 +21,23 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
 
     const resolvedParams = await params
     const corpseId = resolvedParams.id
+
+    // Rate limiting for actions
+    const rateLimitResult = await rateLimitCorpseActions(user.id)
+    if (!rateLimitResult.allowed) {
+      const errorResponse = createRateLimitError(rateLimitResult)
+      return NextResponse.json(
+        {
+          error: errorResponse.error,
+          code: errorResponse.code,
+          retryAfter: errorResponse.retryAfter,
+        },
+        {
+          status: 429,
+          headers: errorResponse.headers,
+        }
+      )
+    }
 
     // Verify user is authorized for this corpse
     const author = await prisma.corpseAuthor.findFirst({

@@ -1,14 +1,17 @@
 import { prisma } from '@/lib/prisma'
-import { contentValidator } from '@/lib/contentValidation'
+import { contentValidator } from './contentValidation'
+import { persistentStorage } from './persistentStorage'
+import {
+  CORPSE_CONFIG,
+  calculateVotingThreshold,
+  getTimerDurationMs,
+  getTimerDurationSeconds,
+} from './corpseConfig'
 import type { Server } from 'socket.io'
 
-// In-memory storage for drafts (temporary, not persisted)
-// Key: `${corpseId}:${userId}`, Value: { content: string, lastSaved: Date }
-const draftStorage = new Map<string, { content: string; lastSaved: Date }>()
-
-// In-memory storage for active timers
-// Key: `${corpseId}:${userId}`, Value: { timeoutId: NodeJS.Timeout, endTime: Date }
-const activeTimers = new Map<string, { timeoutId: NodeJS.Timeout; endTime: Date }>()
+// In-memory storage for active timeout IDs (for cleanup)
+// Key: unique timeout identifier, Value: NodeJS.Timeout
+const activeTimeouts = new Map<string, NodeJS.Timeout>()
 
 export interface CorpseQueueItem {
   userId: string
@@ -44,6 +47,42 @@ export class CorpseWorkflow {
   }
 
   /**
+   * Recover active timers on server startup
+   */
+  async recoverTimers(io: Server): Promise<void> {
+    try {
+      const activeTimers = await persistentStorage.getAllActiveTimers()
+
+      for (const timer of activeTimers) {
+        const now = Date.now()
+        const timeRemaining = timer.endTime.getTime() - now
+
+        if (timeRemaining > 0) {
+          // Timer is still active, recreate it
+          const timeoutId = setTimeout(async () => {
+            await this.handleTimeout(timer.corpseId, timer.userId, io)
+          }, timeRemaining)
+
+          // Store in memory
+          activeTimeouts.set(timer.timeoutId, timeoutId)
+
+          console.log(
+            `Recovered timer for user ${timer.userId} on corpse ${timer.corpseId}, ${Math.floor(timeRemaining / 1000)}s remaining`
+          )
+        } else {
+          // Timer has expired, handle timeout
+          console.log(
+            `Recovered expired timer for user ${timer.userId} on corpse ${timer.corpseId}, handling timeout`
+          )
+          await this.handleTimeout(timer.corpseId, timer.userId, io)
+        }
+      }
+    } catch (error) {
+      console.error('Error recovering timers:', error)
+    }
+  }
+
+  /**
    * Get the current state of a corpse including queue and timer
    */
   async getCorpseState(corpseId: string): Promise<CorpseState | null> {
@@ -53,6 +92,11 @@ export class CorpseWorkflow {
         authors: {
           include: { user: true },
           orderBy: { joinedAt: 'asc' },
+        },
+        segments: {
+          include: { author: true },
+          orderBy: { position: 'desc' },
+          take: 1, // Only need the last segment
         },
       },
     })
@@ -72,11 +116,8 @@ export class CorpseWorkflow {
     let nextContributor: CorpseQueueItem | undefined
 
     if (corpse.status === 'active') {
-      // Find the current contributor (the one whose turn it is)
-      const lastSegment = await prisma.corpseSegment.findFirst({
-        where: { corpseId },
-        orderBy: { position: 'desc' },
-      })
+      // Use the eagerly loaded last segment
+      const lastSegment = corpse.segments[0]
 
       if (lastSegment) {
         // Find the next contributor in queue after the last segment author
@@ -94,10 +135,14 @@ export class CorpseWorkflow {
     // Calculate time remaining for current contributor
     let timeRemaining: number | undefined
     if (currentContributor) {
-      const timerKey = `${corpseId}:${currentContributor.userId}`
-      const timerData = activeTimers.get(timerKey)
-      if (timerData) {
-        timeRemaining = Math.max(0, Math.floor((timerData.endTime.getTime() - Date.now()) / 1000))
+      try {
+        const timerData = await persistentStorage.getTimer(corpseId, currentContributor.userId)
+        if (timerData) {
+          timeRemaining = Math.max(0, Math.floor((timerData.endTime.getTime() - Date.now()) / 1000))
+        }
+      } catch (error) {
+        console.error('Error retrieving timer data:', error)
+        // Continue without time remaining if Redis fails
       }
     }
 
@@ -119,27 +164,36 @@ export class CorpseWorkflow {
   /**
    * Start a timer for a contributor
    */
-  startTimer(corpseId: string, userId: string, io: Server): void {
-    const timerKey = `${corpseId}:${userId}`
-    const endTime = new Date(Date.now() + 2 * 60 * 1000) // 2 minutes
+  async startTimer(corpseId: string, userId: string, io: Server): Promise<void> {
+    const timerDurationMs = getTimerDurationMs()
+    const endTime = new Date(Date.now() + timerDurationMs)
+    const timeoutIdentifier = `${corpseId}:${userId}:${Date.now()}` // Unique identifier
 
     // Clear existing timer if any
-    this.clearTimer(corpseId, userId)
+    await this.clearTimer(corpseId, userId)
 
-    const timeoutId = setTimeout(
-      async () => {
-        await this.handleTimeout(corpseId, userId, io)
-      },
-      2 * 60 * 1000
-    )
+    const timeoutId = setTimeout(async () => {
+      await this.handleTimeout(corpseId, userId, io)
+    }, timerDurationMs)
 
-    activeTimers.set(timerKey, { timeoutId, endTime })
+    // Store timeout ID in memory for cleanup
+    activeTimeouts.set(timeoutIdentifier, timeoutId)
+
+    // Persist timer data
+    try {
+      await persistentStorage.saveTimer(corpseId, userId, timeoutIdentifier, endTime)
+    } catch (error) {
+      console.error('Failed to persist timer, clearing timeout:', error)
+      clearTimeout(timeoutId)
+      activeTimeouts.delete(timeoutIdentifier)
+      return
+    }
 
     // Broadcast timer start
     io.to(corpseId).emit('timer-started', {
       userId,
       endTime: endTime.toISOString(),
-      duration: 120, // 2 minutes in seconds
+      duration: getTimerDurationSeconds(),
     })
 
     console.log(`Timer started for user ${userId} on corpse ${corpseId}`)
@@ -148,13 +202,24 @@ export class CorpseWorkflow {
   /**
    * Clear a timer for a contributor
    */
-  clearTimer(corpseId: string, userId: string): void {
-    const timerKey = `${corpseId}:${userId}`
-    const timerData = activeTimers.get(timerKey)
-    if (timerData) {
-      clearTimeout(timerData.timeoutId)
-      activeTimers.delete(timerKey)
-      console.log(`Timer cleared for user ${userId} on corpse ${corpseId}`)
+  async clearTimer(corpseId: string, userId: string): Promise<void> {
+    try {
+      const timerData = await persistentStorage.getTimer(corpseId, userId)
+      if (timerData) {
+        // Clear the timeout from memory if it exists
+        const timeout = activeTimeouts.get(timerData.timeoutId)
+        if (timeout) {
+          clearTimeout(timeout)
+          activeTimeouts.delete(timerData.timeoutId)
+        }
+
+        // Remove from persistent storage
+        await persistentStorage.clearTimer(corpseId, userId)
+        console.log(`Timer cleared for user ${userId} on corpse ${corpseId}`)
+      }
+    } catch (error) {
+      console.error('Error clearing timer:', error)
+      // Continue with cleanup even if Redis fails
     }
   }
 
@@ -166,7 +231,7 @@ export class CorpseWorkflow {
       console.log(`Timer expired for user ${userId} on corpse ${corpseId}`)
 
       // Clear the timer
-      this.clearTimer(corpseId, userId)
+      await this.clearTimer(corpseId, userId)
 
       // Create a skipped segment
       const corpse = await prisma.exquisiteCorpse.findUnique({
@@ -208,7 +273,7 @@ export class CorpseWorkflow {
     if (!state || !state.nextContributor) return
 
     // Start timer for next contributor
-    this.startTimer(corpseId, state.nextContributor.userId, io)
+    await this.startTimer(corpseId, state.nextContributor.userId, io)
 
     // Update current contributor in database
     await prisma.exquisiteCorpse.update({
@@ -248,31 +313,39 @@ export class CorpseWorkflow {
   /**
    * Save a draft
    */
-  saveDraft(corpseId: string, userId: string, content: string): void {
-    const draftKey = `${corpseId}:${userId}`
-    draftStorage.set(draftKey, {
-      content,
-      lastSaved: new Date(),
-    })
-    console.log(`Draft saved for user ${userId} on corpse ${corpseId}`)
+  async saveDraft(corpseId: string, userId: string, content: string): Promise<void> {
+    try {
+      await persistentStorage.saveDraft(corpseId, userId, content)
+      console.log(`Draft saved for user ${userId} on corpse ${corpseId}`)
+    } catch (error) {
+      console.error('Failed to save draft:', error)
+      throw new Error('Failed to save draft')
+    }
   }
 
   /**
    * Get a draft
    */
-  getDraft(corpseId: string, userId: string): string | null {
-    const draftKey = `${corpseId}:${userId}`
-    const draft = draftStorage.get(draftKey)
-    return draft ? draft.content : null
+  async getDraft(corpseId: string, userId: string): Promise<string | null> {
+    try {
+      return await persistentStorage.getDraft(corpseId, userId)
+    } catch (error) {
+      console.error('Failed to get draft:', error)
+      return null
+    }
   }
 
   /**
    * Clear a draft
    */
-  clearDraft(corpseId: string, userId: string): void {
-    const draftKey = `${corpseId}:${userId}`
-    draftStorage.delete(draftKey)
-    console.log(`Draft cleared for user ${userId} on corpse ${corpseId}`)
+  async clearDraft(corpseId: string, userId: string): Promise<void> {
+    try {
+      await persistentStorage.clearDraft(corpseId, userId)
+      console.log(`Draft cleared for user ${userId} on corpse ${corpseId}`)
+    } catch (error) {
+      console.error('Failed to clear draft:', error)
+      // Don't throw error for cleanup operations
+    }
   }
 
   /**
@@ -304,8 +377,11 @@ export class CorpseWorkflow {
         return { success: false, error: validation.error }
       }
 
+      // Use sanitized content for storage
+      const contentToStore = validation.sanitizedContent || content
+
       // Clear timer
-      this.clearTimer(corpseId, userId)
+      await this.clearTimer(corpseId, userId)
 
       // Create segment
       const lastSegment = await prisma.corpseSegment.findFirst({
@@ -317,7 +393,7 @@ export class CorpseWorkflow {
         data: {
           corpseId,
           authorId: userId,
-          content,
+          content: contentToStore,
           wordCount: validation.wordCount,
           position: (lastSegment?.position || 0) + 1,
         },
@@ -375,7 +451,7 @@ export class CorpseWorkflow {
       }
 
       // Clear timer
-      this.clearTimer(corpseId, userId)
+      await this.clearTimer(corpseId, userId)
 
       // Create skipped segment
       const lastSegment = await prisma.corpseSegment.findFirst({
@@ -456,7 +532,7 @@ export class CorpseWorkflow {
 
       // If this is the first contributor, start the timer
       if (state.queue.length === 1 && state.currentContributor) {
-        this.startTimer(corpseId, state.currentContributor.userId, io)
+        await this.startTimer(corpseId, state.currentContributor.userId, io)
       }
 
       // Broadcast join event
@@ -549,7 +625,7 @@ export class CorpseWorkflow {
 
     const totalAuthors = corpse.authors.length
     const votesToEnd = corpse.authors.filter((author) => author.voteToEnd).length
-    const threshold = Math.ceil(totalAuthors * 0.6)
+    const threshold = calculateVotingThreshold(totalAuthors)
 
     if (votesToEnd >= threshold) {
       // End the corpse
@@ -573,7 +649,7 @@ export class CorpseWorkflow {
     })
 
     // Clean up workflow resources
-    this.cleanupCorpse(corpseId)
+    await this.cleanupCorpse(corpseId)
 
     console.log(`Corpse ${corpseId} ended by majority vote`)
   }
@@ -620,7 +696,7 @@ export class CorpseWorkflow {
     })
 
     // Clean up workflow resources
-    this.cleanupCorpse(corpseId)
+    await this.cleanupCorpse(corpseId)
 
     console.log(`Corpse ${corpseId} completed - marked as pending_moderation`)
     // TODO: Trigger notification to moderators
@@ -650,7 +726,7 @@ export class CorpseWorkflow {
 
     const totalAuthors = corpse.authors.length
     const votesToEnd = corpse.authors.filter((author) => author.voteToEnd).length
-    const threshold = Math.ceil(totalAuthors * 0.6)
+    const threshold = calculateVotingThreshold(totalAuthors)
 
     // Check if specific user has voted
     let userVoted = false
@@ -671,20 +747,21 @@ export class CorpseWorkflow {
   /**
    * Clean up resources when a corpse ends
    */
-  cleanupCorpse(corpseId: string): void {
-    // Clear all timers for this corpse
-    for (const [key, timerData] of activeTimers.entries()) {
-      if (key.startsWith(`${corpseId}:`)) {
-        clearTimeout(timerData.timeoutId)
-        activeTimers.delete(key)
+  async cleanupCorpse(corpseId: string): Promise<void> {
+    // Clear all timers for this corpse from memory
+    for (const [timeoutId, timeout] of activeTimeouts.entries()) {
+      if (timeoutId.startsWith(`${corpseId}:`)) {
+        clearTimeout(timeout)
+        activeTimeouts.delete(timeoutId)
       }
     }
 
-    // Clear all drafts for this corpse
-    for (const key of draftStorage.keys()) {
-      if (key.startsWith(`${corpseId}:`)) {
-        draftStorage.delete(key)
-      }
+    // Clean up persistent storage
+    try {
+      await persistentStorage.cleanupCorpse(corpseId)
+    } catch (error) {
+      console.error('Error cleaning up persistent storage:', error)
+      // Continue with cleanup even if Redis fails
     }
 
     console.log(`Cleaned up resources for corpse ${corpseId}`)

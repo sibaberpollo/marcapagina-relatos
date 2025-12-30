@@ -70,9 +70,11 @@ export function useCorpseErrorHandler() {
 
       // Show toast notification if requested
       if (showToast) {
-        const toastVariant = corpseError.severity === ErrorSeverity.CRITICAL ||
-                           corpseError.severity === ErrorSeverity.HIGH
-                           ? 'destructive' : 'default'
+        const toastVariant =
+          corpseError.severity === ErrorSeverity.CRITICAL ||
+          corpseError.severity === ErrorSeverity.HIGH
+            ? 'destructive'
+            : 'default'
 
         toast({
           variant: toastVariant,
@@ -130,7 +132,11 @@ function classifyError(error: Error): CorpseError {
   }
 
   // Authentication errors
-  if (message.includes('unauthorized') || message.includes('authentication') || message.includes('401')) {
+  if (
+    message.includes('unauthorized') ||
+    message.includes('authentication') ||
+    message.includes('401')
+  ) {
     return {
       type: CorpseErrorType.AUTHENTICATION,
       severity: ErrorSeverity.CRITICAL,
@@ -142,7 +148,11 @@ function classifyError(error: Error): CorpseError {
   }
 
   // Authorization errors
-  if (message.includes('forbidden') || message.includes('not authorized') || message.includes('403')) {
+  if (
+    message.includes('forbidden') ||
+    message.includes('not authorized') ||
+    message.includes('403')
+  ) {
     return {
       type: CorpseErrorType.AUTHORIZATION,
       severity: ErrorSeverity.HIGH,
@@ -232,14 +242,17 @@ export async function withErrorHandling<T>(
   try {
     return await promise
   } catch (error) {
-    const corpseError = error instanceof Error ? classifyError(error) : {
-      type: CorpseErrorType.UNKNOWN,
-      severity: ErrorSeverity.MEDIUM,
-      message: String(error),
-      userMessage: 'Ha ocurrido un error inesperado',
-      retryable: false,
-      originalError: error as Error,
-    }
+    const corpseError =
+      error instanceof Error
+        ? classifyError(error)
+        : {
+            type: CorpseErrorType.UNKNOWN,
+            severity: ErrorSeverity.MEDIUM,
+            message: String(error),
+            userMessage: 'Ha ocurrido un error inesperado',
+            retryable: false,
+            originalError: error as Error,
+          }
 
     errorHandler(corpseError)
     return null
@@ -273,7 +286,7 @@ export function useAsyncOperation() {
   const { handleError } = useCorpseErrorHandler()
 
   const execute = React.useCallback(
-    async <T,>(
+    async <T>(
       operation: () => Promise<T>,
       options: {
         showErrorToast?: boolean

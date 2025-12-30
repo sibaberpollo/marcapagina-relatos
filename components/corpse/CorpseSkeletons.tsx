@@ -31,7 +31,7 @@ export function ContributionSkeleton({ className }: ContributionSkeletonProps) {
         <div className="space-y-4">
           <Skeleton className="h-5 w-40" />
           <Skeleton className="h-32 w-full" />
-          <div className="flex justify-between items-center">
+          <div className="flex items-center justify-between">
             <Skeleton className="h-4 w-24" />
             <Skeleton className="h-4 w-16" />
           </div>
@@ -93,7 +93,7 @@ export function CorpseCardSkeleton({ className }: CorpseCardSkeletonProps) {
     <div className={cn('rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800', className)}>
       <div className="space-y-3">
         <div className="flex items-start justify-between">
-          <div className="space-y-2 flex-1">
+          <div className="flex-1 space-y-2">
             <Skeleton className="h-5 w-3/4" />
             <Skeleton className="h-4 w-1/2" />
           </div>

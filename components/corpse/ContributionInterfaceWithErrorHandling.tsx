@@ -28,11 +28,11 @@ export function ContributionInterfaceWithErrorHandling({
     <CorpseErrorBoundary
       fallback={({ error, resetError }) => (
         <div className="flex min-h-screen items-center justify-center p-4">
-          <div className="text-center max-w-md">
+          <div className="max-w-md text-center">
             <div className="mb-6">
-              <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+              <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
                 <svg
-                  className="w-8 h-8 text-red-600 dark:text-red-400"
+                  className="h-8 w-8 text-red-600 dark:text-red-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -46,18 +46,18 @@ export function ContributionInterfaceWithErrorHandling({
                   />
                 </svg>
               </div>
-              <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+              <h2 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
                 Error en la colaboración
               </h2>
-              <p className="text-gray-600 dark:text-gray-400 mb-4">
+              <p className="mb-4 text-gray-600 dark:text-gray-400">
                 Ha ocurrido un error inesperado en la interfaz de contribución
               </p>
               {process.env.NODE_ENV === 'development' && error && (
                 <details className="mb-4 text-left">
-                  <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400 mb-2">
+                  <summary className="mb-2 cursor-pointer text-sm text-gray-500 dark:text-gray-400">
                     Detalles técnicos (desarrollo)
                   </summary>
-                  <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded overflow-auto max-h-32">
+                  <pre className="max-h-32 overflow-auto rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">
                     {error.message}
                   </pre>
                 </details>
@@ -66,13 +66,13 @@ export function ContributionInterfaceWithErrorHandling({
             <div className="space-y-3">
               <button
                 onClick={resetError}
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+                className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
               >
                 Reintentar
               </button>
               <button
-                onClick={() => window.location.href = '/'}
-                className="w-full border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-md font-medium hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors"
+                onClick={() => (window.location.href = '/')}
+                className="w-full rounded-md border border-gray-300 px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
               >
                 Volver al inicio
               </button>

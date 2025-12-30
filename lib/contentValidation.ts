@@ -1,4 +1,6 @@
 import { Filter } from 'bad-words'
+import { sanitizeCorpseContent, validateSecurityPatterns } from './inputSanitization'
+import { CORPSE_CONFIG } from './corpseConfig'
 
 export interface ValidationResult {
   isValid: boolean
@@ -6,6 +8,7 @@ export interface ValidationResult {
   warnings?: string[]
   wordCount: number
   qualityScore: number
+  sanitizedContent?: string
 }
 
 export interface ContentFilters {
@@ -52,7 +55,10 @@ export class ContentValidator {
     badWords.forEach((word) => this.filter.addWords(word))
 
     this.filters = {
-      wordCount: { min: 50, max: 100 },
+      wordCount: {
+        min: CORPSE_CONFIG.CONTENT_VALIDATION.MIN_WORDS,
+        max: CORPSE_CONFIG.CONTENT_VALIDATION.MAX_WORDS,
+      },
       profanity: true,
       spam: true,
       quality: true,
@@ -73,9 +79,36 @@ export class ContentValidator {
       }
     }
 
-    const trimmedContent = content.trim()
-    const wordCount = this.countWords(trimmedContent)
-    const warnings: string[] = []
+    // First, sanitize the content
+    const sanitizationResult = sanitizeCorpseContent(content)
+    if (sanitizationResult.warnings.length > 0) {
+      console.warn('Content sanitization warnings:', sanitizationResult.warnings)
+    }
+
+    const sanitizedContent = sanitizationResult.sanitized
+    const wordCount = this.countWords(sanitizedContent)
+    const warnings: string[] = [...sanitizationResult.warnings]
+
+    // Security pattern validation
+    const securityCheck = validateSecurityPatterns(sanitizedContent)
+    if (!securityCheck.isValid) {
+      return {
+        isValid: false,
+        error: 'El contenido contiene patrones de seguridad potencialmente peligrosos.',
+        wordCount,
+        qualityScore: 0,
+      }
+    }
+
+    // Length validation (after sanitization)
+    if (sanitizedContent.length > CORPSE_CONFIG.CONTENT_VALIDATION.MAX_CONTENT_LENGTH) {
+      return {
+        isValid: false,
+        error: `El contenido excede la longitud máxima permitida de ${CORPSE_CONFIG.CONTENT_VALIDATION.MAX_CONTENT_LENGTH} caracteres.`,
+        wordCount,
+        qualityScore: 0,
+      }
+    }
 
     // Word count validation
     if (this.filters.wordCount) {
@@ -100,7 +133,7 @@ export class ContentValidator {
 
     // Profanity check
     if (this.filters.profanity) {
-      const hasProfanity = this.checkProfanity(trimmedContent)
+      const hasProfanity = this.checkProfanity(sanitizedContent)
       if (hasProfanity) {
         return {
           isValid: false,
@@ -114,7 +147,7 @@ export class ContentValidator {
 
     // Spam detection
     if (this.filters.spam) {
-      const spamCheck = this.checkSpam(trimmedContent)
+      const spamCheck = this.checkSpam(sanitizedContent)
       if (!spamCheck.isValid) {
         return {
           isValid: false,
@@ -131,7 +164,7 @@ export class ContentValidator {
     // Quality check
     let qualityScore = 0
     if (this.filters.quality) {
-      qualityScore = this.assessQuality(trimmedContent)
+      qualityScore = this.assessQuality(sanitizedContent)
       if (qualityScore < 0.3) {
         warnings.push('El contenido podría beneficiarse de una revisión para mejorar la calidad.')
       }
@@ -142,6 +175,7 @@ export class ContentValidator {
       warnings: warnings.length > 0 ? warnings : undefined,
       wordCount,
       qualityScore,
+      sanitizedContent, // Include sanitized content in result
     }
   }
 

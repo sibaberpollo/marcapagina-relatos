@@ -68,22 +68,23 @@ interface CorpseErrorFallbackProps {
 function CorpseErrorFallback({ error, resetError }: CorpseErrorFallbackProps) {
   const translations = useCorpseTranslations()
 
-  const errorMessage = translations?.errorBoundary?.genericError ||
+  const errorMessage =
+    translations?.errorBoundary?.genericError ||
     'Ha ocurrido un error inesperado en la interfaz de colaboración'
 
-  const retryMessage = translations?.errorBoundary?.retryMessage ||
-    'Inténtalo de nuevo'
+  const retryMessage = translations?.errorBoundary?.retryMessage || 'Inténtalo de nuevo'
 
-  const reportMessage = translations?.errorBoundary?.reportMessage ||
+  const reportMessage =
+    translations?.errorBoundary?.reportMessage ||
     'Si el problema persiste, por favor reporta el error'
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="text-center max-w-md">
+      <div className="max-w-md text-center">
         <div className="mb-6">
-          <div className="mx-auto w-16 h-16 bg-red-100 dark:bg-red-900/30 rounded-full flex items-center justify-center mb-4">
+          <div className="mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full bg-red-100 dark:bg-red-900/30">
             <svg
-              className="w-8 h-8 text-red-600 dark:text-red-400"
+              className="h-8 w-8 text-red-600 dark:text-red-400"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -97,18 +98,16 @@ function CorpseErrorFallback({ error, resetError }: CorpseErrorFallbackProps) {
               />
             </svg>
           </div>
-          <h2 className="text-xl font-semibold text-gray-900 dark:text-gray-100 mb-2">
+          <h2 className="mb-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
             {translations?.errorBoundary?.title || 'Error en la colaboración'}
           </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
-            {errorMessage}
-          </p>
+          <p className="mb-4 text-gray-600 dark:text-gray-400">{errorMessage}</p>
           {process.env.NODE_ENV === 'development' && error && (
             <details className="mb-4 text-left">
-              <summary className="cursor-pointer text-sm text-gray-500 dark:text-gray-400 mb-2">
+              <summary className="mb-2 cursor-pointer text-sm text-gray-500 dark:text-gray-400">
                 Detalles técnicos (desarrollo)
               </summary>
-              <pre className="text-xs bg-gray-100 dark:bg-gray-800 p-2 rounded overflow-auto max-h-32">
+              <pre className="max-h-32 overflow-auto rounded bg-gray-100 p-2 text-xs dark:bg-gray-800">
                 {error.message}
                 {error.stack && `\n\n${error.stack}`}
               </pre>
@@ -118,13 +117,11 @@ function CorpseErrorFallback({ error, resetError }: CorpseErrorFallbackProps) {
         <div className="space-y-3">
           <button
             onClick={resetError}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-md font-medium transition-colors"
+            className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
           >
             {retryMessage}
           </button>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            {reportMessage}
-          </p>
+          <p className="text-sm text-gray-500 dark:text-gray-400">{reportMessage}</p>
         </div>
       </div>
     </div>
