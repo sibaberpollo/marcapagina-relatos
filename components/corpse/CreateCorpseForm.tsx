@@ -6,10 +6,12 @@ import { useSession } from 'next-auth/react'
 import { cn } from '@/lib/utils'
 import { CORPSE_PROMPTS } from '@/data/corpsePrompts'
 import { createExquisiteCorpse } from '../../app/micronarrativas/nueva/actions'
+import { useCorpseTranslations } from '@/lib/i18n'
 
 function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>) {
   const router = useRouter()
   const { data: session, status } = useSession()
+  const translations = useCorpseTranslations()
   const [isSubmitting, setIsSubmitting] = React.useState(false)
   const [errors, setErrors] = React.useState<Record<string, string>>({})
 
@@ -23,6 +25,18 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
   const [selectedPromptId, setSelectedPromptId] = React.useState<string>('')
 
   const selectedPrompt = CORPSE_PROMPTS.find((prompt) => prompt.id === selectedPromptId)
+
+  // Loading state while translations load
+  if (!translations) {
+    return (
+      <div className="flex items-center justify-center p-8">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Cargando...</p>
+        </div>
+      </div>
+    )
+  }
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault()
@@ -43,7 +57,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
       }
     } catch (error) {
       console.error('Error creating corpse:', error)
-      setErrors({ general: 'Error al crear la micronarrativa. Inténtalo de nuevo.' })
+      setErrors({ general: translations.createForm.generalError })
     } finally {
       setIsSubmitting(false)
     }
@@ -58,7 +72,9 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
-          <p className="text-sm text-gray-600 dark:text-gray-400">Cargando...</p>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            {translations.waitingRoom.loading}
+          </p>
         </div>
       </div>
     )
@@ -87,8 +103,8 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           htmlFor="title"
           className="block text-sm font-medium text-gray-900 dark:text-gray-100"
         >
-          Título de la micronarrativa{' '}
-          <span className="text-red-500" aria-label="requerido">
+          {translations.createForm.title}{' '}
+          <span className="text-red-500" aria-label={translations.createForm.titleRequired}>
             *
           </span>
         </label>
@@ -104,7 +120,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
               ? 'border-red-300 dark:border-red-600'
               : 'border-gray-300 dark:border-gray-600'
           )}
-          placeholder="Ingresa un título atractivo para tu micronarrativa"
+          placeholder={translations.createForm.titlePlaceholder}
           aria-describedby={errors.title ? 'title-error' : 'title-help'}
           aria-invalid={!!errors.title}
         />
@@ -114,7 +130,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           </p>
         )}
         <p id="title-help" className="sr-only">
-          Máximo 100 caracteres
+          {translations.createForm.titleHelp}
         </p>
       </div>
 
@@ -124,7 +140,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           htmlFor="promptId"
           className="block text-sm font-medium text-gray-900 dark:text-gray-100"
         >
-          Elige un prompt creativo
+          {translations.createForm.promptLabel}
         </label>
         <select
           id="promptId"
@@ -133,7 +149,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           aria-describedby="prompt-help"
         >
-          <option value="">Sin prompt específico (libre creación)</option>
+          <option value="">{translations.createForm.promptPlaceholder}</option>
           {CORPSE_PROMPTS.map((prompt) => (
             <option key={prompt.id} value={prompt.id}>
               {prompt.title}
@@ -141,7 +157,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           ))}
         </select>
         <p id="prompt-help" className="text-sm text-gray-600 dark:text-gray-400">
-          Los prompts ayudan a guiar la creación colectiva y generan resultados más coherentes.
+          {translations.createForm.promptHelp}
         </p>
       </div>
 
@@ -151,7 +167,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           className="min-h-[60px] rounded-md border border-gray-200 bg-gray-50 p-3 text-sm dark:border-gray-700 dark:bg-gray-900 dark:text-gray-300"
           role="region"
           aria-live="polite"
-          aria-label="Descripción del prompt seleccionado"
+          aria-label={translations.createForm.selectedPrompt}
         >
           {selectedPrompt ? (
             <div>
@@ -160,18 +176,18 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
               </p>
               <p className="text-gray-700 dark:text-gray-300">{selectedPrompt.description}</p>
               <p className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-                Categoría:{' '}
+                {translations.createForm.category}:{' '}
                 {selectedPrompt.category === 'literary'
-                  ? 'Literario'
+                  ? translations.createForm.categories.literary
                   : selectedPrompt.category === 'creative'
-                    ? 'Creativo'
+                    ? translations.createForm.categories.creative
                     : selectedPrompt.category === 'experimental'
-                      ? 'Experimental'
+                      ? translations.createForm.categories.experimental
                       : selectedPrompt.category}
               </p>
             </div>
           ) : (
-            <p>Selecciona un prompt para ver su descripción aquí.</p>
+            <p>{translations.createForm.selectPrompt}</p>
           )}
         </div>
       </div>
@@ -182,7 +198,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           htmlFor="maxContributors"
           className="block text-sm font-medium text-gray-900 dark:text-gray-100"
         >
-          Número máximo de colaboradores
+          {translations.createForm.maxContributors}
         </label>
         <select
           id="maxContributors"
@@ -191,13 +207,13 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
           aria-describedby="contributors-help"
         >
-          <option value="7">7 colaboradores</option>
-          <option value="8">8 colaboradores</option>
-          <option value="9">9 colaboradores</option>
-          <option value="10">10 colaboradores</option>
+          <option value="7">{translations.createForm.contributorsOptions['7']}</option>
+          <option value="8">{translations.createForm.contributorsOptions['8']}</option>
+          <option value="9">{translations.createForm.contributorsOptions['9']}</option>
+          <option value="10">{translations.createForm.contributorsOptions['10']}</option>
         </select>
         <p id="contributors-help" className="text-sm text-gray-600 dark:text-gray-400">
-          Entre 7 y 10 autores pueden contribuir. Más autores = más diversidad, menos control.
+          {translations.createForm.contributorsHelp}
         </p>
       </div>
 
@@ -211,10 +227,10 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           {isSubmitting ? (
             <>
               <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
-              Creando...
+              {translations.createForm.submitting}
             </>
           ) : (
-            'Crear micronarrativa'
+            translations.createForm.submitButton
           )}
         </button>
       </div>

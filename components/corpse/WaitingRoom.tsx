@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { socketManager } from '@/lib/socket'
+import { useCorpseTranslations } from '@/lib/i18n'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 import { ContributorProfile, ContributorCard } from './ContributorProfile'
 
@@ -65,6 +66,7 @@ interface CorpseState {
 export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomProps) {
   const router = useRouter()
   const { data: session, status } = useSession()
+  const translations = useCorpseTranslations()
   const [corpseState, setCorpseState] = React.useState<CorpseState | null>(null)
   const [isJoining, setIsJoining] = React.useState(false)
   const [isVoting, setIsVoting] = React.useState(false)
@@ -340,14 +342,27 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
   const canJoin = !isAuthor && !isFull && corpse.status === 'active'
   const canVote = isAuthor && corpse.status === 'active' && !corpseState.userVoted
 
+  // Loading state while translations load
+  if (!translations) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">Cargando sala de espera...</p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <main className="mx-auto max-w-4xl px-4 py-8">
       {/* Screen reader status updates */}
       <div className="sr-only" aria-live="polite" aria-atomic="true">
-        Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}.{corpseState.queue.length}{' '}
-        de {corpse.maxContributors} participantes.
-        {canJoin && 'Puedes unirte a la cola.'}
-        {canVote && 'Puedes votar para terminar.'}
+        {translations.waitingRoom.statusLabel}:{' '}
+        {corpse.status === 'active' ? translations.waitingRoom.status.active : corpse.status}.
+        {corpseState.queue.length} de {corpse.maxContributors}{' '}
+        {translations.waitingRoom.participants}.{canJoin && translations.waitingRoom.canJoin}
+        {canVote && translations.waitingRoom.canVote}
       </div>
 
       {/* Header */}
@@ -360,10 +375,12 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
         )}
         <div className="mt-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}
+            {translations.waitingRoom.statusLabel}:{' '}
+            {corpse.status === 'active' ? translations.waitingRoom.status.active : corpse.status}
           </span>
           <span className="text-sm text-gray-500 dark:text-gray-400">
-            {corpseState.queue.length} de {corpse.maxContributors} participantes
+            {corpseState.queue.length} de {corpse.maxContributors}{' '}
+            {translations.waitingRoom.participants}
           </span>
         </div>
       </header>
@@ -382,7 +399,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             id="progress-heading"
             className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
           >
-            Progreso
+            {translations.waitingRoom.progress}
           </h2>
           <div
             className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700"
@@ -390,7 +407,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             aria-valuenow={corpseState.queue.filter((q) => q.hasContributed).length}
             aria-valuemin={0}
             aria-valuemax={corpseState.queue.length}
-            aria-label={`Progreso de contribuciones: ${corpseState.queue.filter((q) => q.hasContributed).length} de ${corpseState.queue.length} completadas`}
+            aria-label={`${translations.waitingRoom.progress}: ${corpseState.queue.filter((q) => q.hasContributed).length} de ${corpseState.queue.length} ${translations.waitingRoom.contributionsCompleted}`}
           >
             <div
               className="h-2 rounded-full bg-blue-600 transition-all duration-300"
@@ -401,7 +418,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
           </div>
           <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
             {corpseState.queue.filter((q) => q.hasContributed).length} de {corpseState.queue.length}{' '}
-            contribuciones completadas
+            {translations.waitingRoom.contributionsCompleted}
           </div>
         </div>
       </section>
@@ -414,7 +431,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
               id="current-contributor-heading"
               className="mb-4 text-xl font-semibold text-green-900 dark:text-green-100"
             >
-              Escribiendo ahora
+              {translations.waitingRoom.writingNow}
             </h2>
             <ContributorCard
               userId={corpseState.currentContributor.userId}
@@ -435,11 +452,11 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             id="queue-heading"
             className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
           >
-            Cola de participantes
+            {translations.waitingRoom.queue}
           </h2>
           {corpseState.queue.length === 0 ? (
             <p className="text-sm text-gray-500 sm:text-base dark:text-gray-400">
-              No hay participantes aún. ¡Sé el primero en unirte!
+              {translations.waitingRoom.noParticipants}
             </p>
           ) : (
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
@@ -490,10 +507,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
                   className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
                   aria-hidden="true"
                 ></div>
-                Uniéndose...
+                {translations.waitingRoom.joining}
               </>
             ) : (
-              'Unirse a la cola'
+              translations.waitingRoom.joinQueue
             )}
           </button>
         )}
@@ -515,10 +532,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
                   className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"
                   aria-hidden="true"
                 ></div>
-                Votando...
+                {translations.waitingRoom.voting}
               </>
             ) : (
-              'Votar para terminar'
+              translations.waitingRoom.voteToEnd
             )}
           </button>
         )}
@@ -529,8 +546,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
         <div className="mt-8">
           <div className="rounded-lg bg-gray-50 p-4 dark:bg-gray-800">
             <p className="text-sm text-gray-600 dark:text-gray-400">
-              Votos para terminar: {corpseState.votesToEnd} de {corpseState.threshold} necesarios
-              {corpseState.userVoted && ' (Ya votaste)'}
+              {translations.waitingRoom.votesToEnd
+                .replace('{{votes}}', corpseState.votesToEnd.toString())
+                .replace('{{threshold}}', corpseState.threshold.toString())}
+              {corpseState.userVoted && ` ${translations.waitingRoom.alreadyVoted}`}
             </p>
           </div>
         </div>
@@ -540,7 +559,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
       {corpse.segments.length > 0 && (
         <div className="mt-8">
           <h2 className="mb-4 text-xl font-semibold text-gray-900 dark:text-gray-100">
-            Segmentos anteriores
+            {translations.waitingRoom.previousSegments}
           </h2>
           <div className="space-y-4">
             {corpse.segments.slice(0, 3).map((segment) => (
@@ -549,17 +568,17 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
                   {segment.author.image && (
                     <Image
                       src={segment.author.image}
-                      alt={segment.author.name || 'Autor'}
+                      alt={segment.author.name || translations.waitingRoom.anonymous}
                       width={24}
                       height={24}
                       className="h-6 w-6 rounded-full"
                     />
                   )}
                   <span className="text-sm font-medium text-gray-900 dark:text-gray-100">
-                    {segment.author.name || 'Anónimo'}
+                    {segment.author.name || translations.waitingRoom.anonymous}
                   </span>
                   <span className="text-xs text-gray-500 dark:text-gray-400">
-                    {segment.wordCount} palabras
+                    {segment.wordCount} {translations.waitingRoom.words}
                   </span>
                 </div>
                 <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
@@ -571,7 +590,10 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             ))}
             {corpse.segments.length > 3 && (
               <p className="text-center text-sm text-gray-500 dark:text-gray-400">
-                Y {corpse.segments.length - 3} segmentos más...
+                {translations.waitingRoom.andMore.replace(
+                  '{{count}}',
+                  (corpse.segments.length - 3).toString()
+                )}
               </p>
             )}
           </div>

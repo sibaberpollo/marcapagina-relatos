@@ -1,0 +1,124 @@
+{
+  "createForm": {
+    "title": "Título de la micronarrativa",
+    "titleRequired": "requerido",
+    "titlePlaceholder": "Ingresa un título atractivo para tu micronarrativa",
+    "titleHelp": "Máximo 100 caracteres",
+    "promptLabel": "Elige un prompt creativo",
+    "promptHelp": "Los prompts ayudan a guiar la creación colectiva y generan resultados más coherentes.",
+    "promptPlaceholder": "Sin prompt específico (libre creación)",
+    "selectedPrompt": "Descripción del prompt seleccionado",
+    "category": "Categoría",
+    "categories": {
+      "literary": "Literario",
+      "creative": "Creativo",
+      "experimental": "Experimental"
+    },
+    "selectPrompt": "Selecciona un prompt para ver su descripción aquí.",
+    "maxContributors": "Número máximo de colaboradores",
+    "contributorsOptions": {
+      "7": "7 colaboradores",
+      "8": "8 colaboradores",
+      "9": "9 colaboradores",
+      "10": "10 colaboradores"
+    },
+    "contributorsHelp": "Entre 7 y 10 autores pueden contribuir. Más autores = más diversidad, menos control.",
+    "submitButton": "Crear micronarrativa",
+    "submitting": "Creando...",
+    "generalError": "Error al crear la micronarrativa. Inténtalo de nuevo."
+  },
+  "waitingRoom": {
+    "title": "Sala de espera",
+    "status": {
+      "active": "Activa",
+      "pending": "Pendiente",
+      "completed": "Completada",
+      "ended": "Finalizada"
+    },
+    "participants": "participantes",
+    "statusLabel": "Estado",
+    "progress": "Progreso",
+    "contributionsCompleted": "contribuciones completadas",
+    "writingNow": "Escribiendo ahora",
+    "queue": "Cola de participantes",
+    "noParticipants": "No hay participantes aún. ¡Sé el primero en unirte!",
+    "joinQueue": "Unirse a la cola",
+    "joining": "Uniéndose...",
+    "voteToEnd": "Votar para terminar",
+    "voting": "Votando...",
+    "votesToEnd": "Votos para terminar: {{votes}} de {{threshold}} necesarios",
+    "alreadyVoted": "(Ya votaste)",
+    "previousSegments": "Segmentos anteriores",
+    "andMore": "Y {{count}} segmentos más...",
+    "words": "palabras",
+    "anonymous": "Anónimo",
+    "loading": "Cargando sala de espera...",
+    "queueFull": "La cola está llena",
+    "canJoin": "Puedes unirte a la cola.",
+    "canVote": "Puedes votar para terminar."
+  },
+  "contributionInterface": {
+    "contributeTo": "Contribuir a",
+    "instructions": "Escribe tu segmento de 50-100 palabras para esta micronarrativa colectiva",
+    "yourPosition": "Tu posición",
+    "status": "Estado",
+    "contributionLabel": "Tu contribución (50-100 palabras)",
+    "contributionPlaceholder": "Comienza a escribir tu segmento... (Ctrl+Enter para enviar, Escape para saltar)",
+    "waitingPlaceholder": "Espera tu turno para contribuir",
+    "contributionInstructions": "Escribe entre 50 y 100 palabras. Presiona Ctrl+Enter para enviar tu contribución, o Escape para saltar tu turno.",
+    "submitButton": "Enviar contribución (Ctrl+Enter)",
+    "submitButtonShort": "Enviar contribución",
+    "submitting": "Enviando...",
+    "skipButton": "Saltar turno (Escape)",
+    "skipButtonShort": "Saltar turno",
+    "skipping": "Saltando...",
+    "yourTurn": "Es tu turno",
+    "waitingTurn": "Esperando tu turno",
+    "loading": "Cargando interfaz de contribución...",
+    "retry": "Reintentar",
+    "notYourTurn": "No es tu turno para contribuir",
+    "notYourTurnSkip": "No es tu turno para saltar",
+    "submitError": "Error al enviar el segmento. Inténtalo de nuevo.",
+    "skipError": "Error al saltar el turno. Inténtalo de nuevo.",
+    "fetchError": "Error al obtener el estado actual",
+    "initError": "Error al cargar la interfaz de contribución"
+  },
+  "circularTimer": {
+    "remaining": "restante",
+    "criticalTime": "Tiempo crítico",
+    "limitedTime": "Tiempo limitado",
+    "timeRemaining": "Tiempo restante"
+  },
+  "wordCounter": {
+    "requiredWords": "Palabras requeridas: {{min}}-{{max}}",
+    "words": "palabras",
+    "valid": "Conteo de palabras válido",
+    "needMore": "Necesitas {{count}} palabras más",
+    "tooMany": "Tienes {{count}} palabras de más",
+    "progress": "Progreso del conteo de palabras: {{current}} de {{max}} palabras requeridas"
+  },
+  "validation": {
+    "warnings": {
+      "tooShort": "Tu contribución es muy corta. Intenta expandir tus ideas.",
+      "tooLong": "Tu contribución excede el límite. Considera acortar algunas partes.",
+      "repetitive": "Hay repetición de palabras. Intenta usar sinónimos para variar el lenguaje.",
+      "inappropriate": "El contenido parece contener lenguaje inapropiado. Por favor, revisa y modifica.",
+      "offTopic": "Tu contribución parece desviarse del tema establecido por el prompt.",
+      "generic": "Tu texto es muy genérico. Intenta ser más específico y creativo."
+    },
+    "suggestionsTitle": "Sugerencias para mejorar tu contribución:"
+  },
+  "newPage": {
+    "title": "Crear nueva micronarrativa",
+    "description": "Inicia una historia colaborativa donde múltiples autores contribuirán con segmentos de texto. Cada participante añade su voz a la narrativa colectiva.",
+    "howItWorks": "¿Cómo funciona?",
+    "howItWorksSteps": {
+      "1": "Define un título atractivo y elige un prompt creativo (opcional)",
+      "2": "Establece el número máximo de colaboradores (7-10 autores)",
+      "3": "Los autores se unen automáticamente y contribuyen por turnos",
+      "4": "Cada segmento debe tener entre 50-100 palabras",
+      "5": "Tienes 2 minutos para escribir cada segmento",
+      "6": "La historia se completa cuando todos han contribuido o se vota para finalizarla"
+    }
+  }
+}

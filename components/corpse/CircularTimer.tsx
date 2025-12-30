@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { useCorpseTranslations } from '@/lib/i18n'
 
 interface CircularTimerProps {
   timeRemaining: number
@@ -11,6 +12,7 @@ interface CircularTimerProps {
 }
 
 export function CircularTimer({ timeRemaining, totalTime, size, className }: CircularTimerProps) {
+  const translations = useCorpseTranslations()
   // Default size based on responsive breakpoints
   const responsiveSize = size || 80
   const radius = (responsiveSize - 8) / 2
@@ -26,17 +28,23 @@ export function CircularTimer({ timeRemaining, totalTime, size, className }: Cir
 
   // Format time for screen readers
   const timeString = `${minutes}:${seconds.toString().padStart(2, '0')}`
-  const statusText = isCritical
-    ? 'Tiempo crítico'
-    : isWarning
-      ? 'Tiempo limitado'
-      : 'Tiempo restante'
+  const statusText = translations
+    ? isCritical
+      ? translations.circularTimer.criticalTime
+      : isWarning
+        ? translations.circularTimer.limitedTime
+        : translations.circularTimer.timeRemaining
+    : isCritical
+      ? 'Tiempo crítico'
+      : isWarning
+        ? 'Tiempo limitado'
+        : 'Tiempo restante'
 
   return (
     <div className={cn('relative', className)} role="timer" aria-live="polite" aria-atomic="true">
       {/* Screen reader announcement */}
       <div className="sr-only" aria-live="assertive" aria-atomic="true">
-        {statusText}: {timeString} restante
+        {statusText}: {timeString} {translations?.circularTimer?.remaining || 'restante'}
       </div>
 
       <svg
@@ -97,7 +105,7 @@ export function CircularTimer({ timeRemaining, totalTime, size, className }: Cir
             id="timer-description"
             aria-hidden="true"
           >
-            restante
+            {translations?.circularTimer?.remaining || 'restante'}
           </div>
         </div>
       </div>

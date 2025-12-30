@@ -2,6 +2,7 @@
 
 import * as React from 'react'
 import { cn } from '@/lib/utils'
+import { useCorpseTranslations } from '@/lib/i18n'
 
 interface WordCounterProps {
   current: number
@@ -11,23 +12,32 @@ interface WordCounterProps {
 }
 
 export function WordCounter({ current, min, max, className }: WordCounterProps) {
+  const translations = useCorpseTranslations()
   const progress = Math.min((current - min) / (max - min), 1)
   const isValid = current >= min && current <= max
   const isUnder = current < min
   const isOver = current > max
 
   const progressPercentage = Math.max(0, Math.min(100, progress * 100))
-  const statusText = isValid
-    ? 'Conteo de palabras válido'
-    : isUnder
-      ? `Necesitas ${min - current} palabras más`
-      : `Tienes ${current - max} palabras de más`
+  const statusText = translations
+    ? isValid
+      ? translations.wordCounter.valid
+      : isUnder
+        ? translations.wordCounter.needMore.replace('{{count}}', (min - current).toString())
+        : translations.wordCounter.tooMany.replace('{{count}}', (current - max).toString())
+    : isValid
+      ? 'Conteo de palabras válido'
+      : isUnder
+        ? `Necesitas ${min - current} palabras más`
+        : `Tienes ${current - max} palabras de más`
 
   return (
     <div className={cn('space-y-2', className)}>
       <div className="flex items-center justify-between text-sm">
         <span className="text-gray-600 dark:text-gray-400">
-          Palabras requeridas: {min}-{max}
+          {translations?.wordCounter?.requiredWords
+            ?.replace('{{min}}', min.toString())
+            .replace('{{max}}', max.toString()) || `Palabras requeridas: ${min}-${max}`}
         </span>
         <span
           className={cn(
@@ -41,7 +51,7 @@ export function WordCounter({ current, min, max, className }: WordCounterProps) 
           aria-live="polite"
           aria-atomic="true"
         >
-          {current} palabras
+          {current} {translations?.wordCounter?.words || 'palabras'}
         </span>
       </div>
 
@@ -52,7 +62,12 @@ export function WordCounter({ current, min, max, className }: WordCounterProps) 
         aria-valuenow={current}
         aria-valuemin={min}
         aria-valuemax={max}
-        aria-label={`Progreso del conteo de palabras: ${current} de ${max} palabras requeridas`}
+        aria-label={
+          translations?.wordCounter?.progress
+            ?.replace('{{current}}', current.toString())
+            .replace('{{max}}', max.toString()) ||
+          `Progreso del conteo de palabras: ${current} de ${max} palabras requeridas`
+        }
       >
         <div
           className={cn(

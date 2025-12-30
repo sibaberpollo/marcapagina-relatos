@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { socketManager } from '@/lib/socket'
+import { useCorpseTranslations } from '@/lib/i18n'
 import { CircularTimer } from './CircularTimer'
 import { WordCounter } from './WordCounter'
 import { clientContentValidator } from '@/lib/contentValidation'
@@ -58,6 +59,7 @@ export function ContributionInterface({
 }: ContributionInterfaceProps) {
   const router = useRouter()
   const { data: session, status } = useSession()
+  const translations = useCorpseTranslations()
   const [corpseState, setCorpseState] = React.useState<CorpseState | null>(null)
   const [draft, setDraft] = React.useState('')
   const [isLoading, setIsLoading] = React.useState(true)
@@ -102,7 +104,9 @@ export function ContributionInterface({
       updateWordCount(data.draft || '')
     } catch (error) {
       console.error('Error fetching corpse state:', error)
-      setError('Error al obtener el estado actual')
+      setError(
+        translations?.contributionInterface?.fetchError || 'Error al obtener el estado actual'
+      )
     }
   }, [corpseId])
 
@@ -218,7 +222,10 @@ export function ContributionInterface({
       await fetchCorpseState()
     } catch (error) {
       console.error('Error initializing contribution:', error)
-      setError('Error al cargar la interfaz de contribución')
+      setError(
+        translations?.contributionInterface?.initError ||
+          'Error al cargar la interfaz de contribución'
+      )
     } finally {
       setIsLoading(false)
     }
@@ -297,7 +304,7 @@ export function ContributionInterface({
 
   const handleSubmit = async () => {
     if (!corpseState?.currentContributor || corpseState.currentContributor.userId !== userId) {
-      setError('No es tu turno para contribuir')
+      setError(translations?.contributionInterface?.notYourTurn || 'No es tu turno para contribuir')
       return
     }
 
@@ -323,7 +330,10 @@ export function ContributionInterface({
       setTimeRemaining(null)
     } catch (error) {
       console.error('Error submitting segment:', error)
-      setError('Error al enviar el segmento. Inténtalo de nuevo.')
+      setError(
+        translations?.contributionInterface?.submitError ||
+          'Error al enviar el segmento. Inténtalo de nuevo.'
+      )
     } finally {
       setIsSubmitting(false)
     }
@@ -331,7 +341,7 @@ export function ContributionInterface({
 
   const handleSkip = async () => {
     if (!corpseState?.currentContributor || corpseState.currentContributor.userId !== userId) {
-      setError('No es tu turno para saltar')
+      setError(translations?.contributionInterface?.notYourTurnSkip || 'No es tu turno para saltar')
       return
     }
 
@@ -350,7 +360,10 @@ export function ContributionInterface({
       setTimeRemaining(null)
     } catch (error) {
       console.error('Error skipping turn:', error)
-      setError('Error al saltar el turno. Inténtalo de nuevo.')
+      setError(
+        translations?.contributionInterface?.skipError ||
+          'Error al saltar el turno. Inténtalo de nuevo.'
+      )
     } finally {
       setIsSkipping(false)
     }
@@ -363,7 +376,7 @@ export function ContributionInterface({
         <div className="text-center">
           <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
           <p className="text-sm text-gray-600 dark:text-gray-400">
-            Cargando interfaz de contribución...
+            {translations?.contributionInterface?.loading || 'Cargando interfaz de contribución...'}
           </p>
         </div>
       </div>
@@ -392,6 +405,20 @@ export function ContributionInterface({
   const isCurrentUserTurn = corpseState.currentContributor?.userId === userId
   const isWordCountValid = wordCount >= 50 && wordCount <= 100
 
+  // Loading state while translations load
+  if (!translations) {
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <div className="text-center">
+          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <p className="text-sm text-gray-600 dark:text-gray-400">
+            Cargando interfaz de contribución...
+          </p>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-8">
       {/* Screen reader status updates */}
@@ -404,10 +431,10 @@ export function ContributionInterface({
       {/* Header */}
       <header className="mb-6 sm:mb-8">
         <h1 className="mb-2 text-2xl font-bold text-gray-900 sm:text-3xl dark:text-gray-100">
-          Contribuir a "{corpse.title}"
+          {translations.contributionInterface.contributeTo} "{corpse.title}"
         </h1>
         <p className="text-sm text-gray-600 sm:text-base dark:text-gray-400">
-          Escribe tu segmento de 50-100 palabras para esta micronarrativa colectiva
+          {translations.contributionInterface.instructions}
         </p>
       </header>
 
@@ -417,10 +444,14 @@ export function ContributionInterface({
           <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                Tu posición: {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
+                {translations.contributionInterface.yourPosition}:{' '}
+                {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
-                Estado: {corpse.status === 'active' ? 'Activa' : corpse.status}
+                {translations.contributionInterface.status}:{' '}
+                {corpse.status === 'active'
+                  ? translations.waitingRoom.status.active
+                  : corpse.status}
               </div>
             </div>
             {timeRemaining !== null && isCurrentUserTurn && (
@@ -470,7 +501,8 @@ export function ContributionInterface({
           <div className="flex">
             <div className="ml-3">
               <h3 className="text-sm font-medium text-yellow-800 dark:text-yellow-200">
-                Sugerencias para mejorar tu contribución:
+                {translations?.validation?.suggestionsTitle ||
+                  'Sugerencias para mejorar tu contribución:'}
               </h3>
               <div className="mt-2 text-sm text-yellow-700 dark:text-yellow-300">
                 <ul className="list-inside list-disc space-y-1">
@@ -491,7 +523,7 @@ export function ContributionInterface({
             htmlFor="contribution"
             className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-100"
           >
-            Tu contribución (50-100 palabras)
+            {translations.contributionInterface.contributionLabel}
           </label>
           <textarea
             ref={textareaRef}
@@ -502,8 +534,8 @@ export function ContributionInterface({
             disabled={!isCurrentUserTurn}
             placeholder={
               isCurrentUserTurn
-                ? 'Comienza a escribir tu segmento... (Ctrl+Enter para enviar, Escape para saltar)'
-                : 'Espera tu turno para contribuir'
+                ? translations.contributionInterface.contributionPlaceholder
+                : translations.contributionInterface.waitingPlaceholder
             }
             className={cn(
               'min-h-[120px] w-full resize-none rounded-md border px-3 py-3 text-base focus:ring-2 focus:outline-none sm:h-64',
@@ -519,8 +551,7 @@ export function ContributionInterface({
 
         {/* Instructions for screen readers */}
         <div id="contribution-instructions" className="sr-only">
-          Escribe entre 50 y 100 palabras. Presiona Ctrl+Enter para enviar tu contribución, o Escape
-          para saltar tu turno.
+          {translations.contributionInterface.contributionInstructions}
         </div>
 
         {/* Word Counter */}
@@ -529,7 +560,9 @@ export function ContributionInterface({
         {/* Status */}
         <div className="flex justify-end">
           <div className="text-xs text-gray-500 dark:text-gray-400">
-            {isCurrentUserTurn ? 'Es tu turno' : 'Esperando tu turno'}
+            {isCurrentUserTurn
+              ? translations.contributionInterface.yourTurn
+              : translations.contributionInterface.waitingTurn}
           </div>
         </div>
       </div>
@@ -559,12 +592,16 @@ export function ContributionInterface({
                   className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
                   aria-hidden="true"
                 ></div>
-                Enviando...
+                {translations.contributionInterface.submitting}
               </>
             ) : (
               <>
-                <span className="hidden sm:inline">Enviar contribución (Ctrl+Enter)</span>
-                <span className="sm:hidden">Enviar contribución</span>
+                <span className="hidden sm:inline">
+                  {translations.contributionInterface.submitButton}
+                </span>
+                <span className="sm:hidden">
+                  {translations.contributionInterface.submitButtonShort}
+                </span>
               </>
             )}
           </button>
@@ -586,12 +623,16 @@ export function ContributionInterface({
                   className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent"
                   aria-hidden="true"
                 ></div>
-                Saltando...
+                {translations.contributionInterface.skipping}
               </>
             ) : (
               <>
-                <span className="hidden sm:inline">Saltar turno (Escape)</span>
-                <span className="sm:hidden">Saltar turno</span>
+                <span className="hidden sm:inline">
+                  {translations.contributionInterface.skipButton}
+                </span>
+                <span className="sm:hidden">
+                  {translations.contributionInterface.skipButtonShort}
+                </span>
               </>
             )}
           </button>
