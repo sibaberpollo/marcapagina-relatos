@@ -5,7 +5,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { Separator } from '@/components/ui/separator'
-import { GraduationCap, Users, Vote, Clock, ExternalLink } from 'lucide-react'
+import { GraduationCap, Users, Vote, Clock, ExternalLink, PenTool } from 'lucide-react'
+import { ContributorProfile } from './ContributorProfile'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 
 interface CompletedCorpseViewerProps {
@@ -168,36 +169,38 @@ export function CompletedCorpseViewer({
       <div className="mb-8 rounded-lg bg-white p-6 shadow-sm dark:bg-gray-800">
         <h2 className="mb-4 flex items-center gap-2 text-xl font-semibold text-gray-900 dark:text-gray-100">
           <Users className="h-5 w-5" />
-          Colaboradores
+          Colaboradores ({authors.length})
         </h2>
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3">
+        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           {authors.map((author) => (
-            <div key={author.userId} className="flex items-center gap-3">
-              <div className="flex h-10 w-10 items-center justify-center overflow-hidden rounded-full bg-gray-200 dark:bg-gray-700">
-                {author.user.image ? (
-                  <Image
-                    src={author.user.image}
-                    alt={author.user.name || 'Autor'}
-                    width={40}
-                    height={40}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
-                  <span className="text-sm font-semibold text-gray-600 dark:text-gray-300">
-                    {(author.user.name || 'A').charAt(0).toUpperCase()}
+            <div
+              key={author.userId}
+              className="rounded-lg border border-gray-100 bg-gray-50 p-4 dark:border-gray-700 dark:bg-gray-700"
+            >
+              <div className="flex items-start justify-between">
+                <ContributorProfile
+                  userId={author.userId}
+                  name={author.user.name}
+                  image={author.user.image}
+                  showStats={true}
+                />
+                <div className="ml-2 flex flex-col items-end gap-1">
+                  <span
+                    className={`inline-flex items-center rounded-full px-2 py-1 text-xs font-medium ${
+                      author.hasContributed
+                        ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                    }`}
+                  >
+                    <PenTool className="mr-1 h-3 w-3" />
+                    {author.hasContributed ? 'Contribuyó' : 'No contribuyó'}
                   </span>
-                )}
-              </div>
-              <div className="min-w-0 flex-1">
-                <Link
-                  href={`/autor/${author.userId}`}
-                  className="block truncate font-medium text-blue-600 hover:text-blue-800 dark:text-blue-400 dark:hover:text-blue-300"
-                >
-                  {author.user.name || 'Autor anónimo'}
-                </Link>
-                <div className="text-xs text-gray-500 dark:text-gray-400">
-                  {author.hasContributed ? 'Contribuyó' : 'No contribuyó'}
-                  {author.voteToEnd && ' • Votó para terminar'}
+                  {author.voteToEnd && (
+                    <span className="inline-flex items-center rounded-full bg-purple-100 px-2 py-1 text-xs font-medium text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                      <Vote className="mr-1 h-3 w-3" />
+                      Votó terminar
+                    </span>
+                  )}
                 </div>
               </div>
             </div>

@@ -20,7 +20,7 @@ export async function POST(request: NextRequest, { params }: { params: Promise<{
       return NextResponse.json({ error: 'Corpse not found' }, { status: 404 })
     }
 
-    const invitations: any[] = []
+    const invitations: { email: string; token: string; status: string }[] = []
 
     for (const email of emails) {
       const token = crypto.randomBytes(32).toString('hex')

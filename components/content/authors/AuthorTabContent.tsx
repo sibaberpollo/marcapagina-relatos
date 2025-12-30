@@ -2,12 +2,23 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import Image from 'next/image'
 import TabsAuthor from './TabsAuthor'
 import { useSearchParams } from 'next/navigation'
 import HighlightStroke from '@/components/common/HighlightStroke'
-import { BookOpen, Clock, Share2, User, ArrowRight, Calendar } from 'lucide-react'
+import {
+  BookOpen,
+  Clock,
+  Share2,
+  User,
+  ArrowRight,
+  Calendar,
+  PenTool,
+  FileText,
+  TrendingUp,
+} from 'lucide-react'
 
-type Tab = 'relatos' | 'series' | 'articulos'
+type Tab = 'relatos' | 'series' | 'articulos' | 'corpse'
 
 interface Content {
   slug: string
@@ -29,10 +40,45 @@ interface SeriesGroup {
   relatos: Content[]
 }
 
+interface CorpseContribution {
+  id: string
+  corpseId: string
+  title: string
+  prompt: string | null
+  status: string
+  contributedAt: Date
+  segment: {
+    content: string
+    wordCount: number
+    position: number
+  }
+}
+
+interface CorpseStats {
+  totalContributions: number
+  totalWords: number
+  completedCorpses: number
+  activeCorpses: number
+  averageWordsPerSegment: number
+}
+
 interface AuthorTabContentProps {
   relatos: Content[]
   articulos: Content[]
-  series?: any[]
+  series?: Array<{
+    title: string
+    slug?: { current: string }
+    relatos: Array<{
+      slug: { current: string }
+      title: string
+      summary: string
+      date: string
+      readingTime: number
+      status: string
+    }>
+  }>
+  corpseContributions?: CorpseContribution[]
+  corpseStats?: CorpseStats
   authorSlug: string
   defaultTab?: Tab
 }
@@ -41,6 +87,8 @@ export default function AuthorTabContent({
   relatos,
   articulos,
   series = [],
+  corpseContributions = [],
+  corpseStats,
   authorSlug,
   defaultTab = 'relatos',
 }: AuthorTabContentProps) {
@@ -49,7 +97,11 @@ export default function AuthorTabContent({
   // Obtener el tab de los parámetros de URL o usar el defaultTab
   const tabParam = searchParams.get('tab') as Tab | null
   const initialTab =
-    tabParam && (tabParam === 'relatos' || tabParam === 'series' || tabParam === 'articulos')
+    tabParam &&
+    (tabParam === 'relatos' ||
+      tabParam === 'series' ||
+      tabParam === 'articulos' ||
+      tabParam === 'corpse')
       ? tabParam
       : defaultTab
 
@@ -356,9 +408,11 @@ export default function AuthorTabContent({
                 <div className="flex flex-col gap-4 md:flex-row">
                   {articulo.image && (
                     <div className="flex-shrink-0 md:w-1/4">
-                      <img
+                      <Image
                         src={articulo.image}
                         alt={articulo.title}
+                        width={200}
+                        height={200}
                         className="aspect-square w-full rounded-lg object-cover"
                       />
                     </div>
@@ -423,6 +477,175 @@ export default function AuthorTabContent({
         </section>
       )}
 
+      {/* Contenido para el tab de Cadáveres Exquisitos */}
+      {activeTab === 'corpse' && (
+        <section className="mt-2">
+          <div className="mb-4 flex items-center justify-between">
+            <h2 className="mt-0 pt-0 text-3xl font-bold">Cadáveres Exquisitos</h2>
+            <button
+              onClick={() => {
+                const url = `${window.location.origin}/autor/${authorSlug}?tab=corpse`
+                navigator.clipboard.writeText(url)
+                alert('Enlace copiado al portapapeles')
+              }}
+              className="flex items-center rounded-md bg-gray-100 p-2 text-sm hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700"
+            >
+              <Share2 className="mr-1 h-4 w-4" />
+              Compartir
+            </button>
+          </div>
+
+          {/* Estadísticas */}
+          {corpseStats && (corpseStats.totalContributions > 0 || corpseStats.activeCorpses > 0) && (
+            <div className="mb-8 grid grid-cols-2 gap-4 md:grid-cols-4">
+              <div className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div className="flex items-center gap-2">
+                  <PenTool className="h-5 w-5 text-blue-600" />
+                  <div>
+                    <div className="text-2xl font-bold text-blue-600">
+                      {corpseStats.totalContributions}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Contribuciones</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div className="flex items-center gap-2">
+                  <FileText className="h-5 w-5 text-green-600" />
+                  <div>
+                    <div className="text-2xl font-bold text-green-600">
+                      {corpseStats.totalWords}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Palabras totales</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5 text-purple-600" />
+                  <div>
+                    <div className="text-2xl font-bold text-purple-600">
+                      {corpseStats.completedCorpses}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Completados</div>
+                  </div>
+                </div>
+              </div>
+              <div className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+                <div className="flex items-center gap-2">
+                  <Clock className="h-5 w-5 text-orange-600" />
+                  <div>
+                    <div className="text-2xl font-bold text-orange-600">
+                      {corpseStats.activeCorpses}
+                    </div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400">Activos</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {/* Lista de contribuciones */}
+          {corpseContributions.length > 0 ? (
+            <div className="space-y-6">
+              {corpseContributions.map((contribution) => (
+                <div
+                  key={contribution.id}
+                  className="rounded-lg border border-gray-200 bg-white p-6 shadow-sm dark:border-gray-700 dark:bg-gray-800"
+                >
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1">
+                      <div className="mb-2 flex items-center gap-2">
+                        <Link
+                          href={`/micronarrativas/${contribution.corpseId}`}
+                          className="text-xl font-semibold text-gray-900 hover:text-blue-600 dark:text-gray-100 dark:hover:text-blue-400"
+                        >
+                          {contribution.title}
+                        </Link>
+                        <span
+                          className={`inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium ${
+                            contribution.status === 'completed'
+                              ? 'bg-green-100 text-green-800 dark:bg-green-900 dark:text-green-200'
+                              : contribution.status === 'active'
+                                ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
+                                : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
+                          }`}
+                        >
+                          {contribution.status === 'completed'
+                            ? 'Completado'
+                            : contribution.status === 'active'
+                              ? 'Activo'
+                              : contribution.status === 'ended'
+                                ? 'Finalizado'
+                                : 'Pendiente'}
+                        </span>
+                      </div>
+
+                      {contribution.prompt && (
+                        <p className="mb-3 text-sm text-gray-600 dark:text-gray-400">
+                          <strong>Prompt:</strong> {contribution.prompt}
+                        </p>
+                      )}
+
+                      <div className="mb-3 rounded-md bg-gray-50 p-3 dark:bg-gray-700">
+                        <p className="line-clamp-3 text-sm text-gray-900 dark:text-gray-100">
+                          {contribution.segment.content}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-4 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center gap-1">
+                          <FileText className="h-3 w-3" />
+                          <span>Segmento {contribution.segment.position}</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Clock className="h-3 w-3" />
+                          <span>{contribution.segment.wordCount} palabras</span>
+                        </div>
+                        <div className="flex items-center gap-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>{contribution.contributedAt.toLocaleDateString('es-ES')}</span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="ml-4 flex-shrink-0">
+                      <Link
+                        href={`/micronarrativas/${contribution.corpseId}`}
+                        className="flex items-center gap-2 rounded-md border border-gray-200 bg-gray-100 px-3 py-2 text-sm font-medium text-gray-700 transition-colors hover:bg-gray-200 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-300 dark:hover:bg-gray-600"
+                      >
+                        <ArrowRight className="h-4 w-4" />
+                        Ver narrativa
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div className="py-12 text-center">
+              <PenTool className="mx-auto h-12 w-12 text-gray-400" />
+              <h3 className="mt-4 text-lg font-medium text-gray-900 dark:text-gray-100">
+                No hay contribuciones aún
+              </h3>
+              <p className="mt-2 text-gray-600 dark:text-gray-400">
+                Este autor aún no ha participado en ningún cadáver exquisito.
+              </p>
+              <div className="mt-6">
+                <Link
+                  href="/micronarrativas"
+                  className="inline-flex items-center gap-2 rounded-md border px-4 py-2 font-medium text-black transition-colors hover:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                  style={{ borderColor: 'var(--color-accent)', color: 'var(--color-accent)' }}
+                >
+                  <PenTool className="h-4 w-4" />
+                  Explorar cadáveres exquisitos
+                </Link>
+              </div>
+            </div>
+          )}
+        </section>
+      )}
+
       {/* Mensaje si no hay contenido para el tab activo */}
       {activeTab === 'relatos' && relatosSueltos.length === 0 && (
         <p className="text-gray-600 dark:text-gray-400">
@@ -437,6 +660,15 @@ export default function AuthorTabContent({
           No hay artículos disponibles de este autor.
         </p>
       )}
+      {activeTab === 'corpse' &&
+        corpseContributions &&
+        corpseContributions.length === 0 &&
+        corpseStats &&
+        corpseStats.totalContributions === 0 && (
+          <p className="text-gray-600 dark:text-gray-400">
+            Este autor aún no ha participado en cadáveres exquisitos.
+          </p>
+        )}
     </div>
   )
 }

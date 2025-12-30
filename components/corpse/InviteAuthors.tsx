@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useSession } from 'next-auth/react'
+import Image from 'next/image'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -149,10 +150,24 @@ export default function InviteAuthors({ corpseId }: InviteAuthorsProps) {
                   key={author.email}
                   className="hover:bg-muted cursor-pointer border-b p-3 last:border-b-0"
                   onClick={() => addAuthor(author)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault()
+                      addAuthor(author)
+                    }
+                  }}
+                  role="button"
+                  tabIndex={0}
                 >
                   <div className="flex items-center gap-3">
                     {author.avatar && (
-                      <img src={author.avatar} alt={author.name} className="h-8 w-8 rounded-full" />
+                      <Image
+                        src={author.avatar}
+                        alt={author.name}
+                        width={32}
+                        height={32}
+                        className="h-8 w-8 rounded-full"
+                      />
                     )}
                     <div>
                       <p className="font-medium">{author.name}</p>

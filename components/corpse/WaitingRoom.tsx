@@ -7,6 +7,7 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { socketManager } from '@/lib/socket'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
+import { ContributorProfile, ContributorCard } from './ContributorProfile'
 
 interface WaitingRoomProps {
   corpseId: string
@@ -388,25 +389,14 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
             <h2 className="mb-4 text-xl font-semibold text-green-900 dark:text-green-100">
               Escribiendo ahora
             </h2>
-            <div className="flex items-center gap-3">
-              {corpseState.currentContributor.user.image && (
-                <Image
-                  src={corpseState.currentContributor.user.image}
-                  alt={corpseState.currentContributor.user.name || 'Autor'}
-                  width={40}
-                  height={40}
-                  className="h-10 w-10 rounded-full"
-                />
-              )}
-              <div>
-                <p className="font-medium text-green-900 dark:text-green-100">
-                  {corpseState.currentContributor.user.name || 'Anónimo'}
-                </p>
-                <p className="text-sm text-green-700 dark:text-green-300">
-                  Posición {corpseState.currentContributor.position}
-                </p>
-              </div>
-            </div>
+            <ContributorCard
+              userId={corpseState.currentContributor.userId}
+              name={corpseState.currentContributor.user.name || null}
+              image={corpseState.currentContributor.user.image || null}
+              hasContributed={corpseState.currentContributor.hasContributed}
+              isCurrentContributor={true}
+              timeRemaining={corpseState.timeRemaining}
+            />
           </div>
         </div>
       )}
@@ -422,64 +412,24 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
               No hay participantes aún. ¡Sé el primero en unirte!
             </p>
           ) : (
-            <div className="space-y-3">
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
               {corpseState.queue.map((participant) => (
-                <div
+                <ContributorCard
                   key={participant.userId}
-                  className={cn(
-                    'flex items-center gap-3 rounded-lg p-3',
-                    participant.userId === userId && 'bg-blue-50 dark:bg-blue-900/20',
-                    participant.userId === corpseState.currentContributor?.userId &&
-                      'bg-green-50 dark:bg-green-900/20'
-                  )}
-                >
-                  <div className="relative">
-                    {participant.user.image ? (
-                      <Image
-                        src={participant.user.image}
-                        alt={participant.user.name || 'Autor'}
-                        width={32}
-                        height={32}
-                        className="h-8 w-8 rounded-full"
-                      />
-                    ) : (
-                      <div className="h-8 w-8 rounded-full bg-gray-300 dark:bg-gray-600" />
-                    )}
-                    {participant.hasContributed && (
-                      <div className="absolute -right-1 -bottom-1 flex h-4 w-4 items-center justify-center rounded-full bg-green-500">
-                        <svg className="h-2 w-2 text-white" fill="currentColor" viewBox="0 0 20 20">
-                          <path
-                            fillRule="evenodd"
-                            d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z"
-                            clipRule="evenodd"
-                          />
-                        </svg>
-                      </div>
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <p
-                      className={cn(
-                        'text-sm font-medium',
-                        participant.userId === userId && 'text-blue-900 dark:text-blue-100',
-                        participant.userId === corpseState.currentContributor?.userId &&
-                          'text-green-900 dark:text-green-100'
-                      )}
-                    >
-                      {participant.user.name || 'Anónimo'}
-                      {participant.userId === userId && ' (Tú)'}
-                    </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400">
-                      Posición {participant.position} • Se unió{' '}
-                      {new Date(participant.joinedAt).toLocaleDateString('es-ES')}
-                    </p>
-                  </div>
-                  {participant.userId === corpseState.currentContributor?.userId && (
-                    <span className="rounded-full bg-green-100 px-2 py-1 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-200">
-                      Escribiendo
-                    </span>
-                  )}
-                </div>
+                  userId={participant.userId}
+                  name={participant.user.name || null}
+                  image={participant.user.image || null}
+                  hasContributed={participant.hasContributed}
+                  isCurrentContributor={
+                    participant.userId === corpseState.currentContributor?.userId
+                  }
+                  timeRemaining={
+                    participant.userId === corpseState.currentContributor?.userId
+                      ? corpseState.timeRemaining
+                      : undefined
+                  }
+                  className={cn(participant.userId === userId && 'ring-2 ring-blue-500')}
+                />
               ))}
             </div>
           )}
