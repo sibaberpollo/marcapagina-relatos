@@ -1,9 +1,11 @@
 import { defineDocumentType, ComputedFields, makeSource } from 'contentlayer2/source-files'
+import type { LocalDocument } from 'contentlayer2/source-files'
 import { writeFileSync } from 'fs'
 import path from 'path'
 import readingTime from 'reading-time'
 import { slug } from 'github-slugger'
 import { allCoreContent, sortPosts } from 'pliny/utils/contentlayer.js'
+import type { MDXDocumentDate } from 'pliny/utils/contentlayer.js'
 import prettier from 'prettier'
 
 // Remark plugins
@@ -55,7 +57,7 @@ const computedFields: ComputedFields = {
   },
 }
 
-async function createTagCount(allBlogs: any[]) {
+async function createTagCount(allBlogs: LocalDocument[]) {
   const tagCount: Record<string, number> = {}
   allBlogs.forEach((file) => {
     if (file.tags && (!isProduction || file.draft !== true)) {
@@ -65,11 +67,13 @@ async function createTagCount(allBlogs: any[]) {
       })
     }
   })
-  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), { parser: 'json' })
+  const formatted = await prettier.format(JSON.stringify(tagCount, null, 2), {
+    parser: 'json',
+  })
   writeFileSync('./app/tag-data.json', formatted)
 }
 
-function createSearchIndex(allBlogs: any[]) {
+function createSearchIndex(allBlogs: MDXDocumentDate[]) {
   if (
     siteMetadata?.search?.provider === 'kbar' &&
     siteMetadata.search.kbarConfig.searchDocumentsPath
@@ -77,12 +81,12 @@ function createSearchIndex(allBlogs: any[]) {
     const searchData = allCoreContent(sortPosts(allBlogs)).map((doc) => ({
       ...doc,
       path: `${doc.author[0]}/relato/${doc.slug}`,
-    }));
+    }))
     writeFileSync(
       `public/${path.basename(siteMetadata.search.kbarConfig.searchDocumentsPath)}`,
       JSON.stringify(searchData)
-    );
-    console.log('Local search index generated...');
+    )
+    console.log('Local search index generated...')
   }
 }
 

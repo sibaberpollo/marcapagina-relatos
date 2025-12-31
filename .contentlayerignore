@@ -1,0 +1,13 @@
+# Contentlayer ignore patterns
+# These JSON files are read manually elsewhere in the app
+
+# Root-level JSON data files
+data/external-articles.json
+data/home-content-en.json
+data/home-content.json
+data/horoscopo-demo.json
+data/playlist-data.json
+
+# JSON files in posts directories
+data/posts/en/*.json
+data/posts/es/*.json
