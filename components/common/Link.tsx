@@ -20,11 +20,7 @@ const CustomLink = ({
   const combinedClass = `${className} ${activeClass}`.trim()
 
   if (isInternalLink) {
-    return (
-      <Link href={href} passHref legacyBehavior>
-        <a className={combinedClass} {...rest} />
-      </Link>
-    )
+    return <Link href={href} className={combinedClass} {...rest} />
   }
 
   if (isAnchorLink) {
