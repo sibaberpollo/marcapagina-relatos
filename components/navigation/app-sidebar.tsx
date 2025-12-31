@@ -69,6 +69,11 @@ const data = {
       url: '/dashboard/favoritos',
       icon: Heart,
     },
+    {
+      title: 'Moderación',
+      url: '/dashboard/moderacion',
+      icon: Settings,
+    },
   ],
   navSecondary: [
     {

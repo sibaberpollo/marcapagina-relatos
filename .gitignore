@@ -46,3 +46,9 @@ yarn-error.log*
 
 # Contentlayer
 .contentlayer
+
+# Specs
+/specs/
+
+# AI Agents
+/.opencode/

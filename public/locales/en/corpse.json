@@ -1,0 +1,124 @@
+{
+  "createForm": {
+    "title": "Micronarrative Title",
+    "titleRequired": "required",
+    "titlePlaceholder": "Enter an attractive title for your micronarrative",
+    "titleHelp": "Maximum 100 characters",
+    "promptLabel": "Choose a creative prompt",
+    "promptHelp": "Prompts help guide collective creation and generate more coherent results.",
+    "promptPlaceholder": "No specific prompt (free creation)",
+    "selectedPrompt": "Selected prompt description",
+    "category": "Category",
+    "categories": {
+      "literary": "Literary",
+      "creative": "Creative",
+      "experimental": "Experimental"
+    },
+    "selectPrompt": "Select a prompt to see its description here.",
+    "maxContributors": "Maximum number of contributors",
+    "contributorsOptions": {
+      "7": "7 contributors",
+      "8": "8 contributors",
+      "9": "9 contributors",
+      "10": "10 contributors"
+    },
+    "contributorsHelp": "Between 7 and 10 authors can contribute. More authors = more diversity, less control.",
+    "submitButton": "Create micronarrative",
+    "submitting": "Creating...",
+    "generalError": "Error creating the micronarrative. Please try again."
+  },
+  "waitingRoom": {
+    "title": "Waiting Room",
+    "status": {
+      "active": "Active",
+      "pending": "Pending",
+      "completed": "Completed",
+      "ended": "Ended"
+    },
+    "participants": "participants",
+    "statusLabel": "Status",
+    "progress": "Progress",
+    "contributionsCompleted": "contributions completed",
+    "writingNow": "Writing now",
+    "queue": "Participant queue",
+    "noParticipants": "No participants yet. Be the first to join!",
+    "joinQueue": "Join queue",
+    "joining": "Joining...",
+    "voteToEnd": "Vote to end",
+    "voting": "Voting...",
+    "votesToEnd": "Votes to end: {{votes}} of {{threshold}} required",
+    "alreadyVoted": "(Already voted)",
+    "previousSegments": "Previous segments",
+    "andMore": "And {{count}} more segments...",
+    "words": "words",
+    "anonymous": "Anonymous",
+    "loading": "Loading waiting room...",
+    "queueFull": "Queue is full",
+    "canJoin": "You can join the queue.",
+    "canVote": "You can vote to end."
+  },
+  "contributionInterface": {
+    "contributeTo": "Contribute to",
+    "instructions": "Write your 50-100 word segment for this collective micronarrative",
+    "yourPosition": "Your position",
+    "status": "Status",
+    "contributionLabel": "Your contribution (50-100 words)",
+    "contributionPlaceholder": "Start writing your segment... (Ctrl+Enter to submit, Escape to skip)",
+    "waitingPlaceholder": "Wait for your turn to contribute",
+    "contributionInstructions": "Write between 50 and 100 words. Press Ctrl+Enter to submit your contribution, or Escape to skip your turn.",
+    "submitButton": "Submit contribution (Ctrl+Enter)",
+    "submitButtonShort": "Submit contribution",
+    "submitting": "Submitting...",
+    "skipButton": "Skip turn (Escape)",
+    "skipButtonShort": "Skip turn",
+    "skipping": "Skipping...",
+    "yourTurn": "It's your turn",
+    "waitingTurn": "Waiting for your turn",
+    "loading": "Loading contribution interface...",
+    "retry": "Retry",
+    "notYourTurn": "It's not your turn to contribute",
+    "notYourTurnSkip": "It's not your turn to skip",
+    "submitError": "Error submitting segment. Please try again.",
+    "skipError": "Error skipping turn. Please try again.",
+    "fetchError": "Error fetching current state",
+    "initError": "Error loading contribution interface"
+  },
+  "circularTimer": {
+    "remaining": "remaining",
+    "criticalTime": "Critical time",
+    "limitedTime": "Limited time",
+    "timeRemaining": "Time remaining"
+  },
+  "wordCounter": {
+    "requiredWords": "Required words: {{min}}-{{max}}",
+    "words": "words",
+    "valid": "Word count valid",
+    "needMore": "You need {{count}} more words",
+    "tooMany": "You have {{count}} words too many",
+    "progress": "Word count progress: {{current}} of {{max}} words required"
+  },
+  "validation": {
+    "warnings": {
+      "tooShort": "Your contribution is too short. Try expanding your ideas.",
+      "tooLong": "Your contribution exceeds the limit. Consider shortening some parts.",
+      "repetitive": "There is repetition of words. Try using synonyms to vary the language.",
+      "inappropriate": "The content appears to contain inappropriate language. Please review and modify.",
+      "offTopic": "Your contribution seems to deviate from the topic established by the prompt.",
+      "generic": "Your text is too generic. Try to be more specific and creative."
+    },
+    "suggestionsTitle": "Suggestions to improve your contribution:"
+  },
+  "newPage": {
+    "title": "Create new micronarrative",
+    "description": "Start a collaborative story where multiple authors will contribute text segments. Each participant adds their voice to the collective narrative.",
+    "howItWorks": "How it works?",
+    "howItWorksSteps": {
+      "1": "Define an attractive title and choose a creative prompt (optional)",
+      "2": "Set the maximum number of contributors (7-10 authors)",
+      "3": "Authors join automatically and contribute in turns",
+      "4": "Each segment must be between 50-100 words",
+      "5": "You have 2 minutes to write each segment",
+      "6": "The story is completed when everyone has contributed or voting ends it"
+    }
+  }
+}

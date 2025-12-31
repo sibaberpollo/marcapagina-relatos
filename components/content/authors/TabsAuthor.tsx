@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useSearchParams, useRouter, usePathname } from 'next/navigation'
 
-type Tab = 'relatos' | 'series' | 'articulos'
+type Tab = 'relatos' | 'series' | 'articulos' | 'corpse'
 
 interface TabsAuthorProps {
   onTabChange: (tab: Tab) => void
@@ -18,7 +18,11 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
   // Determinar el tab activo desde los parámetros de búsqueda o usar el initialTab
   const tabParam = searchParams.get('tab') as Tab | null
   const [activeTab, setActiveTab] = useState<Tab>(
-    tabParam && (tabParam === 'relatos' || tabParam === 'series' || tabParam === 'articulos')
+    tabParam &&
+      (tabParam === 'relatos' ||
+        tabParam === 'series' ||
+        tabParam === 'articulos' ||
+        tabParam === 'corpse')
       ? tabParam
       : initialTab
   )
@@ -38,7 +42,13 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
 
   // Escuchar cambios en los parámetros de búsqueda para mantener sincronizado el estado
   useEffect(() => {
-    if (tabParam && (tabParam === 'relatos' || tabParam === 'series' || tabParam === 'articulos')) {
+    if (
+      tabParam &&
+      (tabParam === 'relatos' ||
+        tabParam === 'series' ||
+        tabParam === 'articulos' ||
+        tabParam === 'corpse')
+    ) {
       setActiveTab(tabParam)
       onTabChange(tabParam)
     }
@@ -68,13 +78,23 @@ export default function TabsAuthor({ onTabChange, initialTab = 'relatos' }: Tabs
       </button>
       <button
         onClick={() => handleTabChange('articulos')}
-        className={`rounded-t-lg px-4 py-2 font-medium transition-colors duration-200 ${
+        className={`mr-2 rounded-t-lg px-4 py-2 font-medium transition-colors duration-200 ${
           activeTab === 'articulos'
             ? 'bg-black text-[var(--color-accent)] dark:bg-[var(--color-gray-700)] dark:text-[var(--color-text-dark)]'
             : 'bg-transparent text-[var(--color-text-light)] hover:bg-gray-100 hover:text-black dark:text-[var(--color-text-dark)] dark:hover:bg-[var(--color-gray-700)]'
         } `}
       >
         No ficción
+      </button>
+      <button
+        onClick={() => handleTabChange('corpse')}
+        className={`rounded-t-lg px-4 py-2 font-medium transition-colors duration-200 ${
+          activeTab === 'corpse'
+            ? 'bg-black text-[var(--color-accent)] dark:bg-[var(--color-gray-700)] dark:text-[var(--color-text-dark)]'
+            : 'bg-transparent text-[var(--color-text-light)] hover:bg-gray-100 hover:text-black dark:text-[var(--color-text-dark)] dark:hover:bg-[var(--color-gray-700)]'
+        } `}
+      >
+        Cadáveres Exquisitos
       </button>
     </div>
   )

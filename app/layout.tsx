@@ -19,6 +19,8 @@ import { Metadata } from 'next'
 import Script from 'next/script'
 import { SpeedInsights } from '@vercel/speed-insights/next'
 import CookieBanner from '@/components/common/CookieBanner'
+import { Toaster } from '@/components/ui/toaster'
+import { OfflineIndicator } from '@/components/common/OfflineIndicator'
 
 const playfair = Playfair_Display({
   subsets: ['latin'],
@@ -86,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       suppressHydrationWarning
     >
       <head>
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
         {gaId && (
           <>
             {/* Consent Mode v2: default denied */}
@@ -189,7 +192,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationSchema />
         <NavigationSchema />
       </head>
-      <body className="bg-white font-serif text-black antialiased">
+      <body className="bg-white font-serif text-black antialiased" suppressHydrationWarning>
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SpeedInsights />
@@ -205,6 +208,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </ConditionalBackgroundWrapper>
           <Footer />
           <CookieBanner />
+          <Toaster />
+          <OfflineIndicator />
         </ThemeProviders>
       </body>
     </html>

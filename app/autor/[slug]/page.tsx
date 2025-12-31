@@ -6,6 +6,7 @@ import {
   getArticulosByAutor,
   getSeriesByAutor,
 } from '../../../lib/sanity'
+import { getCorpseContributionsByUserSlug } from '../../../lib/corpseContributions'
 import AuthorLayout from '@/layouts/AuthorLayout'
 import { genPageMetadata } from 'app/seo'
 import { notFound } from 'next/navigation'
@@ -138,6 +139,10 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
   // Obtenemos todos los datos del autor en una sola llamada
   const { author, formattedRelatos, series } = await getAutorData(slug)
 
+  // Obtenemos las contribuciones a cadáveres exquisitos
+  const { contributions: corpseContributions, stats: corpseStats } =
+    await getCorpseContributionsByUserSlug(slug)
+
   if (!author) {
     return notFound()
   }
@@ -264,6 +269,8 @@ export default async function Page({ params }: { params: Promise<{ slug: string 
           relatos={formattedRelatos}
           articulos={articulos}
           series={series}
+          corpseContributions={corpseContributions}
+          corpseStats={corpseStats}
           authorSlug={slug}
           defaultTab={defaultTab}
         />

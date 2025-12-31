@@ -14,7 +14,16 @@ const compat = new FlatCompat({
 
 export default [
   {
-    ignores: [],
+    ignores: [
+      // build outputs
+      '.next',
+      '.contentlayer',
+      '.yarn',
+      'public/static/images/ilustraciones',
+      // lockfiles
+      'yarn.lock',
+      'package-lock.json',
+    ],
   },
   js.configs.recommended,
   ...compat.extends(
