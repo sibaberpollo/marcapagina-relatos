@@ -192,7 +192,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <OrganizationSchema />
         <NavigationSchema />
       </head>
-      <body className="bg-white font-serif text-black antialiased">
+      <body className="bg-white font-serif text-black antialiased" suppressHydrationWarning>
         <ThemeProviders>
           <Analytics analyticsConfig={siteMetadata.analytics as AnalyticsConfig} />
           <SpeedInsights />
