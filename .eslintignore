@@ -1,9 +1,0 @@
-# build outputs
-.next
-.contentlayer
-.yarn
-public/static/images/ilustraciones
-
-# lockfiles
-yarn.lock
-package-lock.json
