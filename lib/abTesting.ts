@@ -32,7 +32,7 @@ export interface ABTestResult {
   variantId: string
   assignedAt: Date
   completedActions?: string[]
-  metadata?: Record<string, any>
+  metadata?: Record<string, unknown>
 }
 
 class ABTestingManager {
@@ -55,9 +55,24 @@ class ABTestingManager {
       name: 'Timer Duration Optimization',
       description: 'Test different timer durations to optimize user engagement',
       variants: [
-        { id: 'short', name: '2 minutes', weight: 50, config: { durationSeconds: 120 } },
-        { id: 'medium', name: '3 minutes', weight: 30, config: { durationSeconds: 180 } },
-        { id: 'long', name: '5 minutes', weight: 20, config: { durationSeconds: 300 } },
+        {
+          id: 'short',
+          name: '2 minutes',
+          weight: 50,
+          config: { durationSeconds: 120 },
+        },
+        {
+          id: 'medium',
+          name: '3 minutes',
+          weight: 30,
+          config: { durationSeconds: 180 },
+        },
+        {
+          id: 'long',
+          name: '5 minutes',
+          weight: 20,
+          config: { durationSeconds: 300 },
+        },
       ],
       enabled: true,
     })
@@ -68,9 +83,24 @@ class ABTestingManager {
       name: 'Contribution Interface Layout',
       description: 'Test different UI layouts for the contribution interface',
       variants: [
-        { id: 'compact', name: 'Compact Layout', weight: 40, config: { layout: 'compact' } },
-        { id: 'spacious', name: 'Spacious Layout', weight: 40, config: { layout: 'spacious' } },
-        { id: 'minimal', name: 'Minimal Layout', weight: 20, config: { layout: 'minimal' } },
+        {
+          id: 'compact',
+          name: 'Compact Layout',
+          weight: 40,
+          config: { layout: 'compact' },
+        },
+        {
+          id: 'spacious',
+          name: 'Spacious Layout',
+          weight: 40,
+          config: { layout: 'spacious' },
+        },
+        {
+          id: 'minimal',
+          name: 'Minimal Layout',
+          weight: 20,
+          config: { layout: 'minimal' },
+        },
       ],
       enabled: true,
     })
@@ -195,7 +225,7 @@ class ABTestingManager {
     testId: string,
     userId: string,
     action: string,
-  metadata?: Record<string, unknown>
+    metadata?: Record<string, unknown>
   ): Promise<void> {
     try {
       const assignmentData = await this.redis.get(`abtest:${testId}:${userId}`)
