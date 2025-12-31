@@ -4,12 +4,15 @@ import * as React from 'react'
 import { CorpseErrorBoundary } from '@/components/common/ErrorBoundary'
 import { ContributionInterface } from './ContributionInterface'
 import { ContributionSkeleton } from './CorpseSkeletons'
+import { Button } from '@/components/ui/button'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 
 interface ContributionInterfaceWithErrorHandlingProps {
   corpseId: string
   corpse: ExquisiteCorpse & {
-    authors: (CorpseAuthor & { user: { id: string; name: string | null; image: string | null } })[]
+    authors: (CorpseAuthor & {
+      user: { id: string; name: string | null; image: string | null }
+    })[]
     segments: (CorpseSegment & {
       author: { id: string; name: string | null; image: string | null }
     })[]
@@ -64,18 +67,16 @@ export function ContributionInterfaceWithErrorHandling({
               )}
             </div>
             <div className="space-y-3">
-              <button
-                onClick={resetError}
-                className="w-full rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
-              >
+              <Button onClick={resetError} className="w-full">
                 Reintentar
-              </button>
-              <button
+              </Button>
+              <Button
                 onClick={() => (window.location.href = '/')}
-                className="w-full rounded-md border border-gray-300 px-4 py-2 font-medium text-gray-700 transition-colors hover:bg-gray-50 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700"
+                variant="outline"
+                className="w-full"
               >
                 Volver al inicio
-              </button>
+              </Button>
             </div>
           </div>
         </div>

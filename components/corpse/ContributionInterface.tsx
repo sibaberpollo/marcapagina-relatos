@@ -18,13 +18,18 @@ import {
   useAsyncOperation,
 } from '@/lib/corpseErrorHandling'
 import { toast } from '@/components/ui/use-toast'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 import type { StatusUpdatedPayload, TimerStartedPayload } from '@/types/socketEvents'
 
 interface ContributionInterfaceProps {
   corpseId: string
   corpse: ExquisiteCorpse & {
-    authors: (CorpseAuthor & { user: { id: string; name: string | null; image: string | null } })[]
+    authors: (CorpseAuthor & {
+      user: { id: string; name: string | null; image: string | null }
+    })[]
     segments: (CorpseSegment & {
       author: { id: string; name: string | null; image: string | null }
     })[]
@@ -380,7 +385,7 @@ export function ContributionInterface({
   }
 
   // Loading state
-  if (fetchStateOperation.loading && !corpseState) {
+  if (isLoading && !corpseState) {
     return <ContributionSkeleton />
   }
 
@@ -390,12 +395,7 @@ export function ContributionInterface({
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
           <p className="mb-4 text-red-600 dark:text-red-400">{error}</p>
-          <button
-            onClick={() => window.location.reload()}
-            className="rounded-md bg-blue-600 px-4 py-2 text-white hover:bg-blue-700"
-          >
-            Reintentar
-          </button>
+          <Button onClick={() => window.location.reload()}>Reintentar</Button>
         </div>
       </div>
     )
@@ -411,7 +411,7 @@ export function ContributionInterface({
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <LoadingSpinner className="mx-auto mb-4" />
           <p className="text-sm text-gray-600 dark:text-gray-400">
             Cargando interfaz de contribución...
           </p>
@@ -426,7 +426,9 @@ export function ContributionInterface({
       <div className="sr-only" aria-live="polite" aria-atomic="true">
         {isCurrentUserTurn ? 'Es tu turno para contribuir' : 'Esperando tu turno'}
         {timeRemaining !== null &&
-          `Tiempo restante: ${Math.floor(timeRemaining / 60)}:${(timeRemaining % 60).toString().padStart(2, '0')}`}
+          `Tiempo restante: ${Math.floor(timeRemaining / 60)}:${(timeRemaining % 60)
+            .toString()
+            .padStart(2, '0')}`}
       </div>
 
       {/* Header */}
@@ -441,52 +443,58 @@ export function ContributionInterface({
 
       {/* Status and Timer */}
       <div className="mb-6">
-        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
-          <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {translations.contributionInterface.yourPosition}:{' '}
-                {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
+        <Card>
+          <CardContent className="p-4 sm:p-6">
+            <div className="mb-4 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:gap-4">
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {translations.contributionInterface.yourPosition}:{' '}
+                  {corpseState.queue.find((q) => q.isCurrentUser)?.position || 'N/A'}
+                </div>
+                <div className="text-sm text-gray-600 dark:text-gray-400">
+                  {translations.contributionInterface.status}:{' '}
+                  {corpse.status === 'active'
+                    ? translations.waitingRoom.status.active
+                    : corpse.status}
+                </div>
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
-                {translations.contributionInterface.status}:{' '}
-                {corpse.status === 'active'
-                  ? translations.waitingRoom.status.active
-                  : corpse.status}
-              </div>
+              {timeRemaining !== null && isCurrentUserTurn && (
+                <div className="flex items-center justify-center">
+                  <CircularTimer
+                    timeRemaining={timeRemaining}
+                    totalTime={120}
+                    size={60}
+                    className="sm:hidden"
+                  />
+                  <CircularTimer
+                    timeRemaining={timeRemaining}
+                    totalTime={120}
+                    size={80}
+                    className="hidden sm:block"
+                  />
+                </div>
+              )}
             </div>
-            {timeRemaining !== null && isCurrentUserTurn && (
-              <div className="flex items-center justify-center">
-                <CircularTimer
-                  timeRemaining={timeRemaining}
-                  totalTime={120}
-                  size={60}
-                  className="sm:hidden"
-                />
-                <CircularTimer
-                  timeRemaining={timeRemaining}
-                  totalTime={120}
-                  size={80}
-                  className="hidden sm:block"
-                />
-              </div>
-            )}
-          </div>
 
-          {/* Progress Bar */}
-          <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700">
-            <div
-              className="h-2 rounded-full bg-blue-600 transition-all duration-300"
-              style={{
-                width: `${(corpseState.queue.filter((q) => q.hasContributed).length / corpse.authors.length) * 100}%`,
-              }}
-            />
-          </div>
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-            {corpseState.queue.filter((q) => q.hasContributed).length} de {corpse.authors.length}{' '}
-            contribuciones completadas
-          </div>
-        </div>
+            {/* Progress Bar */}
+            <div className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700">
+              <div
+                className="bg-accent h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: `${
+                    (corpseState.queue.filter((q) => q.hasContributed).length /
+                      corpse.authors.length) *
+                    100
+                  }%`,
+                }}
+              />
+            </div>
+            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+              {corpseState.queue.filter((q) => q.hasContributed).length} de {corpse.authors.length}{' '}
+              contribuciones completadas
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Error Message */}
@@ -518,55 +526,57 @@ export function ContributionInterface({
       )}
 
       {/* Writing Interface */}
-      <div className="mb-6 rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
-        <div className="mb-4">
-          <label
-            htmlFor="contribution"
-            className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-100"
-          >
-            {translations.contributionInterface.contributionLabel}
-          </label>
-          <textarea
-            ref={textareaRef}
-            id="contribution"
-            value={draft}
-            onChange={handleTextChange}
-            onKeyDown={handleKeyDown}
-            disabled={!isCurrentUserTurn}
-            placeholder={
-              isCurrentUserTurn
-                ? translations.contributionInterface.contributionPlaceholder
-                : translations.contributionInterface.waitingPlaceholder
-            }
-            className={cn(
-              'min-h-[120px] w-full resize-none rounded-md border px-3 py-3 text-base focus:ring-2 focus:outline-none sm:h-64',
-              !isCurrentUserTurn
-                ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-700'
-                : 'bg-white focus:ring-blue-500 dark:bg-gray-900',
-              'border-gray-300 text-gray-900 dark:border-gray-600 dark:text-gray-100'
-            )}
-            aria-describedby="word-count-help contribution-instructions"
-            aria-label="Campo de texto para tu contribución a la micronarrativa"
-          />
-        </div>
-
-        {/* Instructions for screen readers */}
-        <div id="contribution-instructions" className="sr-only">
-          {translations.contributionInterface.contributionInstructions}
-        </div>
-
-        {/* Word Counter */}
-        <WordCounter current={wordCount} min={50} max={100} />
-
-        {/* Status */}
-        <div className="flex justify-end">
-          <div className="text-xs text-gray-500 dark:text-gray-400">
-            {isCurrentUserTurn
-              ? translations.contributionInterface.yourTurn
-              : translations.contributionInterface.waitingTurn}
+      <Card className="mb-6">
+        <CardContent className="p-4 sm:p-6">
+          <div className="mb-4">
+            <label
+              htmlFor="contribution"
+              className="mb-2 block text-sm font-medium text-gray-900 dark:text-gray-100"
+            >
+              {translations.contributionInterface.contributionLabel}
+            </label>
+            <textarea
+              ref={textareaRef}
+              id="contribution"
+              value={draft}
+              onChange={handleTextChange}
+              onKeyDown={handleKeyDown}
+              disabled={!isCurrentUserTurn}
+              placeholder={
+                isCurrentUserTurn
+                  ? translations.contributionInterface.contributionPlaceholder
+                  : translations.contributionInterface.waitingPlaceholder
+              }
+              className={cn(
+                'min-h-[120px] w-full resize-none rounded-md border px-3 py-3 text-base focus:ring-2 focus:outline-none sm:h-64',
+                !isCurrentUserTurn
+                  ? 'cursor-not-allowed bg-gray-100 opacity-50 dark:bg-gray-700'
+                  : 'bg-background focus:ring-accent dark:bg-gray-900',
+                'border-gray-300 text-gray-900 dark:border-gray-600 dark:text-gray-100'
+              )}
+              aria-describedby="word-count-help contribution-instructions"
+              aria-label="Campo de texto para tu contribución a la micronarrativa"
+            />
           </div>
-        </div>
-      </div>
+
+          {/* Instructions for screen readers */}
+          <div id="contribution-instructions" className="sr-only">
+            {translations.contributionInterface.contributionInstructions}
+          </div>
+
+          {/* Word Counter */}
+          <WordCounter current={wordCount} min={50} max={100} />
+
+          {/* Status */}
+          <div className="flex justify-end">
+            <div className="text-xs text-gray-500 dark:text-gray-400">
+              {isCurrentUserTurn
+                ? translations.contributionInterface.yourTurn
+                : translations.contributionInterface.waitingTurn}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
 
       {/* Action Buttons */}
       {isCurrentUserTurn && (
@@ -575,24 +585,17 @@ export function ContributionInterface({
           role="group"
           aria-label="Acciones de contribución"
         >
-          <button
+          <Button
             ref={submitButtonRef}
             onClick={handleSubmit}
             disabled={isSubmitting || !isWordCountValid}
-            className={cn(
-              'min-h-[44px] flex-1 rounded-md px-4 py-3 text-base font-medium transition-colors sm:px-6',
-              isSubmitting || !isWordCountValid
-                ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
-                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800'
-            )}
+            size="lg"
+            className="min-h-[44px] flex-1 sm:px-6"
             aria-describedby={!isWordCountValid ? 'word-count-help' : undefined}
           >
             {isSubmitting ? (
               <>
-                <div
-                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-                  aria-hidden="true"
-                ></div>
+                <LoadingSpinner size="sm" className="mr-2 border-white border-t-transparent" />
                 {translations.contributionInterface.submitting}
               </>
             ) : (
@@ -605,25 +608,19 @@ export function ContributionInterface({
                 </span>
               </>
             )}
-          </button>
+          </Button>
 
-          <button
+          <Button
             ref={skipButtonRef}
             onClick={handleSkip}
             disabled={isSkipping}
-            className={cn(
-              'min-h-[44px] rounded-md border px-4 py-3 text-base font-medium transition-colors sm:px-6',
-              isSkipping
-                ? 'cursor-not-allowed border-gray-300 text-gray-500 dark:border-gray-600 dark:text-gray-400'
-                : 'border-gray-300 text-gray-700 hover:bg-gray-50 focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 active:bg-gray-100 dark:border-gray-600 dark:text-gray-300 dark:hover:bg-gray-700 dark:active:bg-gray-600'
-            )}
+            variant="outline"
+            size="lg"
+            className="min-h-[44px] sm:px-6"
           >
             {isSkipping ? (
               <>
-                <div
-                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-gray-500 border-t-transparent"
-                  aria-hidden="true"
-                ></div>
+                <LoadingSpinner size="sm" className="mr-2 border-gray-500 border-t-transparent" />
                 {translations.contributionInterface.skipping}
               </>
             ) : (
@@ -636,7 +633,7 @@ export function ContributionInterface({
                 </span>
               </>
             )}
-          </button>
+          </Button>
         </div>
       )}
 
@@ -648,7 +645,7 @@ export function ContributionInterface({
           </h2>
           <div className="space-y-4">
             {corpse.segments.map((segment) => (
-              <div key={segment.id} className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+              <Card key={segment.id} className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   {segment.author.image && (
                     <Image
@@ -669,7 +666,7 @@ export function ContributionInterface({
                 <p className="whitespace-pre-wrap text-gray-700 dark:text-gray-300">
                   {segment.content}
                 </p>
-              </div>
+              </Card>
             ))}
           </div>
         </div>

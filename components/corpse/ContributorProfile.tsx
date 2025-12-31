@@ -3,6 +3,7 @@
 import * as React from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
+import { Card } from '@/components/ui/card'
 import { User, PenTool, FileText, Clock } from 'lucide-react'
 
 interface ContributorProfileProps {
@@ -47,7 +48,7 @@ export function ContributorProfile({
       <div className="min-w-0 flex-1">
         <Link
           href={`/autor/${userId}`}
-          className="block flex min-h-[44px] items-center truncate font-medium text-blue-600 hover:text-blue-800 active:text-blue-900 dark:text-blue-400 dark:hover:text-blue-300 dark:active:text-blue-200"
+          className="text-accent hover:text-accent/80 active:text-accent dark:text-accent dark:hover:text-accent/80 dark:active:text-accent block flex min-h-[44px] items-center truncate font-medium"
           aria-label={`Ver perfil de ${name || 'autor anónimo'}`}
         >
           {name || 'Autor anónimo'}
@@ -87,10 +88,8 @@ export function ContributorCard({
   const currentStatus = isCurrentContributor ? 'Escribiendo actualmente' : statusText
 
   return (
-    <article
-      className={`rounded-lg border border-gray-200 bg-white p-3 shadow-sm transition-all sm:p-4 dark:border-gray-700 dark:bg-gray-800 ${
-        isCurrentContributor ? 'ring-2 ring-blue-500' : ''
-      } ${className}`}
+    <Card
+      className={`p-3 sm:p-4 ${isCurrentContributor ? 'ring-accent ring-2' : ''} ${className}`}
       aria-label={`Participante: ${displayName}. ${currentStatus}.`}
     >
       <div className="flex items-start justify-between">
@@ -104,7 +103,7 @@ export function ContributorCard({
         <div className="ml-2 flex flex-col items-end gap-1">
           {isCurrentContributor && (
             <span
-              className="inline-flex min-h-[24px] items-center rounded-full bg-blue-100 px-2 py-1 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-200"
+              className="bg-accent/10 text-accent dark:bg-accent/20 dark:text-accent inline-flex min-h-[24px] items-center rounded-full px-2 py-1 text-xs font-medium"
               aria-live="polite"
               aria-atomic="true"
             >
@@ -124,6 +123,6 @@ export function ContributorCard({
           </span>
         </div>
       </div>
-    </article>
+    </Card>
   )
 }

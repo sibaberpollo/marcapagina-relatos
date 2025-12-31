@@ -7,13 +7,18 @@ import Image from 'next/image'
 import { cn } from '@/lib/utils'
 import { socketManager } from '@/lib/socket'
 import { useCorpseTranslations } from '@/lib/i18n'
+import { Button } from '@/components/ui/button'
+import { Card, CardContent } from '@/components/ui/card'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 import type { ExquisiteCorpse, CorpseAuthor, CorpseSegment } from '@prisma/client'
 import { ContributorProfile, ContributorCard } from './ContributorProfile'
 
 interface WaitingRoomProps {
   corpseId: string
   corpse: ExquisiteCorpse & {
-    authors: (CorpseAuthor & { user: { id: string; name: string | null; image: string | null } })[]
+    authors: (CorpseAuthor & {
+      user: { id: string; name: string | null; image: string | null }
+    })[]
     segments: (CorpseSegment & {
       author: { id: string; name: string | null; image: string | null }
     })[]
@@ -329,7 +334,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <LoadingSpinner className="mx-auto mb-4" />
           <p className="text-sm text-gray-600 dark:text-gray-400">Cargando sala de espera...</p>
         </div>
       </div>
@@ -347,7 +352,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
     return (
       <div className="flex min-h-screen items-center justify-center">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <LoadingSpinner className="mx-auto mb-4" />
           <p className="text-sm text-gray-600 dark:text-gray-400">Cargando sala de espera...</p>
         </div>
       </div>
@@ -394,33 +399,41 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
 
       {/* Progress */}
       <section className="mb-6 sm:mb-8" aria-labelledby="progress-heading">
-        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
-          <h2
-            id="progress-heading"
-            className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
-          >
-            {translations.waitingRoom.progress}
-          </h2>
-          <div
-            className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700"
-            role="progressbar"
-            aria-valuenow={corpseState.queue.filter((q) => q.hasContributed).length}
-            aria-valuemin={0}
-            aria-valuemax={corpseState.queue.length}
-            aria-label={`${translations.waitingRoom.progress}: ${corpseState.queue.filter((q) => q.hasContributed).length} de ${corpseState.queue.length} ${translations.waitingRoom.contributionsCompleted}`}
-          >
+        <Card>
+          <CardContent className="p-4 sm:p-6">
+            <h2
+              id="progress-heading"
+              className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
+            >
+              {translations.waitingRoom.progress}
+            </h2>
             <div
-              className="h-2 rounded-full bg-blue-600 transition-all duration-300"
-              style={{
-                width: `${(corpseState.queue.filter((q) => q.hasContributed).length / corpseState.queue.length) * 100}%`,
-              }}
-            />
-          </div>
-          <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
-            {corpseState.queue.filter((q) => q.hasContributed).length} de {corpseState.queue.length}{' '}
-            {translations.waitingRoom.contributionsCompleted}
-          </div>
-        </div>
+              className="h-2 w-full rounded-full bg-gray-200 dark:bg-gray-700"
+              role="progressbar"
+              aria-valuenow={corpseState.queue.filter((q) => q.hasContributed).length}
+              aria-valuemin={0}
+              aria-valuemax={corpseState.queue.length}
+              aria-label={`${translations.waitingRoom.progress}: ${
+                corpseState.queue.filter((q) => q.hasContributed).length
+              } de ${corpseState.queue.length} ${translations.waitingRoom.contributionsCompleted}`}
+            >
+              <div
+                className="bg-accent h-2 rounded-full transition-all duration-300"
+                style={{
+                  width: `${
+                    (corpseState.queue.filter((q) => q.hasContributed).length /
+                      corpseState.queue.length) *
+                    100
+                  }%`,
+                }}
+              />
+            </div>
+            <div className="mt-2 text-xs text-gray-500 dark:text-gray-400">
+              {corpseState.queue.filter((q) => q.hasContributed).length} de{' '}
+              {corpseState.queue.length} {translations.waitingRoom.contributionsCompleted}
+            </div>
+          </CardContent>
+        </Card>
       </section>
 
       {/* Current Contributor */}
@@ -447,40 +460,42 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
 
       {/* Queue */}
       <section className="mb-6 sm:mb-8" aria-labelledby="queue-heading">
-        <div className="rounded-lg bg-white p-4 shadow-sm sm:p-6 dark:bg-gray-800">
-          <h2
-            id="queue-heading"
-            className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
-          >
-            {translations.waitingRoom.queue}
-          </h2>
-          {corpseState.queue.length === 0 ? (
-            <p className="text-sm text-gray-500 sm:text-base dark:text-gray-400">
-              {translations.waitingRoom.noParticipants}
-            </p>
-          ) : (
-            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
-              {corpseState.queue.map((participant) => (
-                <ContributorCard
-                  key={participant.userId}
-                  userId={participant.userId}
-                  name={participant.user.name || null}
-                  image={participant.user.image || null}
-                  hasContributed={participant.hasContributed}
-                  isCurrentContributor={
-                    participant.userId === corpseState.currentContributor?.userId
-                  }
-                  timeRemaining={
-                    participant.userId === corpseState.currentContributor?.userId
-                      ? corpseState.timeRemaining
-                      : undefined
-                  }
-                  className={cn(participant.userId === userId && 'ring-2 ring-blue-500')}
-                />
-              ))}
-            </div>
-          )}
-        </div>
+        <Card>
+          <CardContent className="p-4 sm:p-6">
+            <h2
+              id="queue-heading"
+              className="mb-4 text-lg font-semibold text-gray-900 sm:text-xl dark:text-gray-100"
+            >
+              {translations.waitingRoom.queue}
+            </h2>
+            {corpseState.queue.length === 0 ? (
+              <p className="text-sm text-gray-500 sm:text-base dark:text-gray-400">
+                {translations.waitingRoom.noParticipants}
+              </p>
+            ) : (
+              <div className="grid grid-cols-1 gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {corpseState.queue.map((participant) => (
+                  <ContributorCard
+                    key={participant.userId}
+                    userId={participant.userId}
+                    name={participant.user.name || null}
+                    image={participant.user.image || null}
+                    hasContributed={participant.hasContributed}
+                    isCurrentContributor={
+                      participant.userId === corpseState.currentContributor?.userId
+                    }
+                    timeRemaining={
+                      participant.userId === corpseState.currentContributor?.userId
+                        ? corpseState.timeRemaining
+                        : undefined
+                    }
+                    className={cn(participant.userId === userId && 'ring-2 ring-blue-500')}
+                  />
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
       </section>
 
       {/* Actions */}
@@ -490,54 +505,41 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
         aria-label="Acciones disponibles"
       >
         {canJoin && (
-          <button
+          <Button
             onClick={handleJoinQueue}
             disabled={isJoining}
-            className={cn(
-              'min-h-[44px] flex-1 rounded-md px-4 py-3 text-base font-medium transition-colors sm:px-6',
-              isJoining
-                ? 'cursor-not-allowed bg-gray-300 text-gray-500 dark:bg-gray-600 dark:text-gray-400'
-                : 'bg-blue-600 text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 active:bg-blue-800'
-            )}
+            size="lg"
+            className="min-h-[44px] flex-1 sm:px-6"
             aria-describedby={isFull ? 'queue-full-message' : undefined}
           >
             {isJoining ? (
               <>
-                <div
-                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"
-                  aria-hidden="true"
-                ></div>
+                <LoadingSpinner size="sm" className="mr-2 border-white border-t-transparent" />
                 {translations.waitingRoom.joining}
               </>
             ) : (
               translations.waitingRoom.joinQueue
             )}
-          </button>
+          </Button>
         )}
 
         {canVote && (
-          <button
+          <Button
             onClick={handleVoteToEnd}
             disabled={isVoting}
-            className={cn(
-              'min-h-[44px] rounded-md border px-4 py-3 text-base font-medium transition-colors sm:px-6',
-              isVoting
-                ? 'cursor-not-allowed border-gray-300 text-gray-500 dark:border-gray-600 dark:text-gray-400'
-                : 'border-red-300 text-red-700 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-100 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/20 dark:active:bg-red-800/30'
-            )}
+            variant="outline"
+            size="lg"
+            className="min-h-[44px] border-red-300 text-red-700 hover:bg-red-50 focus:ring-2 focus:ring-red-500 focus:ring-offset-2 active:bg-red-100 sm:px-6 dark:border-red-600 dark:text-red-300 dark:hover:bg-red-900/20 dark:active:bg-red-800/30"
           >
             {isVoting ? (
               <>
-                <div
-                  className="mr-2 inline-block h-4 w-4 animate-spin rounded-full border-2 border-red-500 border-t-transparent"
-                  aria-hidden="true"
-                ></div>
+                <LoadingSpinner size="sm" className="mr-2 border-red-500 border-t-transparent" />
                 {translations.waitingRoom.voting}
               </>
             ) : (
               translations.waitingRoom.voteToEnd
             )}
-          </button>
+          </Button>
         )}
       </div>
 
@@ -563,7 +565,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
           </h2>
           <div className="space-y-4">
             {corpse.segments.slice(0, 3).map((segment) => (
-              <div key={segment.id} className="rounded-lg bg-white p-4 shadow-sm dark:bg-gray-800">
+              <Card key={segment.id} className="p-4">
                 <div className="mb-2 flex items-center gap-2">
                   {segment.author.image && (
                     <Image
@@ -586,7 +588,7 @@ export function WaitingRoom({ corpseId, corpse, userId, isAuthor }: WaitingRoomP
                     ? `${segment.content.substring(0, 200)}...`
                     : segment.content}
                 </p>
-              </div>
+              </Card>
             ))}
             {corpse.segments.length > 3 && (
               <p className="text-center text-sm text-gray-500 dark:text-gray-400">

@@ -7,6 +7,8 @@ import { cn } from '@/lib/utils'
 import { CORPSE_PROMPTS } from '@/data/corpsePrompts'
 import { createExquisiteCorpse } from '../../app/micronarrativas/nueva/actions'
 import { useCorpseTranslations } from '@/lib/i18n'
+import { Button } from '@/components/ui/button'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>) {
   const router = useRouter()
@@ -31,7 +33,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <LoadingSpinner className="mx-auto mb-4" />
           <p className="text-sm text-gray-600 dark:text-gray-400">Cargando...</p>
         </div>
       </div>
@@ -71,7 +73,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
     return (
       <div className="flex items-center justify-center p-8">
         <div className="text-center">
-          <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+          <LoadingSpinner className="mx-auto mb-4" />
           <p className="text-sm text-gray-600 dark:text-gray-400">
             {translations.waitingRoom.loading}
           </p>
@@ -115,7 +117,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           required
           maxLength={100}
           className={cn(
-            'block min-h-[44px] w-full rounded-md border px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:bg-gray-800 dark:text-gray-100',
+            'focus:border-accent focus:ring-accent dark:bg-input block min-h-[44px] w-full rounded-md border px-3 py-3 text-base shadow-sm focus:ring-1 focus:outline-none dark:text-gray-100',
             errors.title
               ? 'border-red-300 dark:border-red-600'
               : 'border-gray-300 dark:border-gray-600'
@@ -146,7 +148,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           id="promptId"
           name="promptId"
           onChange={handlePromptChange}
-          className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          className="focus:border-accent focus:ring-accent dark:bg-input block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:ring-1 focus:outline-none dark:border-gray-600 dark:text-gray-100"
           aria-describedby="prompt-help"
         >
           <option value="">{translations.createForm.promptPlaceholder}</option>
@@ -204,7 +206,7 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
           id="maxContributors"
           name="maxContributors"
           defaultValue="7"
-          className="block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500 focus:outline-none dark:border-gray-600 dark:bg-gray-800 dark:text-gray-100"
+          className="focus:border-accent focus:ring-accent dark:bg-input block min-h-[44px] w-full rounded-md border border-gray-300 px-3 py-3 text-base shadow-sm focus:ring-1 focus:outline-none dark:border-gray-600 dark:text-gray-100"
           aria-describedby="contributors-help"
         >
           <option value="7">{translations.createForm.contributorsOptions['7']}</option>
@@ -219,20 +221,16 @@ function CreateCorpseForm({ className, ...props }: React.ComponentProps<'form'>)
 
       {/* Submit Button */}
       <div className="flex justify-end">
-        <button
-          type="submit"
-          disabled={isSubmitting}
-          className="inline-flex min-h-[44px] items-center gap-2 rounded-md bg-blue-600 px-4 py-3 text-base font-medium text-white hover:bg-blue-700 focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 focus:outline-none active:bg-blue-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-blue-700 dark:hover:bg-blue-800 dark:active:bg-blue-900"
-        >
+        <Button type="submit" disabled={isSubmitting} size="lg">
           {isSubmitting ? (
             <>
-              <div className="h-4 w-4 animate-spin rounded-full border-2 border-white border-t-transparent"></div>
+              <LoadingSpinner size="sm" className="border-white border-t-transparent" />
               {translations.createForm.submitting}
             </>
           ) : (
             translations.createForm.submitButton
           )}
-        </button>
+        </Button>
       </div>
     </form>
   )

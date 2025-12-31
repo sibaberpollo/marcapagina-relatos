@@ -78,7 +78,7 @@ export function CircularTimer({ timeRemaining, totalTime, size, className }: Cir
           strokeLinecap="round"
           className={cn(
             'transition-all duration-1000 ease-linear',
-            isCritical ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-blue-500'
+            isCritical ? 'text-red-500' : isWarning ? 'text-orange-500' : 'text-accent'
           )}
           aria-hidden="true"
         />
