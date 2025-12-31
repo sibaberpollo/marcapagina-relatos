@@ -2,27 +2,29 @@
 
 import { useCorpseTranslations } from '@/lib/i18n'
 import { CreateCorpseForm } from '@/components/corpse/CreateCorpseForm'
+import SectionContainer from '@/components/layout/SectionContainer'
+import { LoadingSpinner } from '@/components/ui/loading-spinner'
 
 export default function NuevaMicronarrativaClient() {
   const translations = useCorpseTranslations()
 
   if (!translations) {
     return (
-      <div className="container mx-auto px-4 py-8">
+      <SectionContainer>
         <div className="mx-auto max-w-2xl">
           <div className="flex items-center justify-center p-8">
             <div className="text-center">
-              <div className="mx-auto mb-4 h-8 w-8 animate-spin rounded-full border-2 border-gray-300 border-t-blue-600"></div>
+              <LoadingSpinner className="mx-auto mb-4" />
               <p className="text-sm text-gray-600 dark:text-gray-400">Cargando...</p>
             </div>
           </div>
         </div>
-      </div>
+      </SectionContainer>
     )
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <SectionContainer>
       <div className="mx-auto max-w-2xl">
         <div className="mb-8">
           <h1 className="mb-2 text-3xl font-bold text-gray-900 dark:text-gray-100">
@@ -37,11 +39,11 @@ export default function NuevaMicronarrativaClient() {
           <CreateCorpseForm />
         </div>
 
-        <div className="mt-8 rounded-lg bg-blue-50 p-6 dark:bg-blue-900/20">
-          <h2 className="mb-2 text-lg font-semibold text-blue-900 dark:text-blue-100">
+        <div className="bg-accent/10 dark:bg-accent/20 mt-8 rounded-lg p-6">
+          <h2 className="text-accent dark:text-accent mb-2 text-lg font-semibold">
             {translations.newPage.howItWorks}
           </h2>
-          <ul className="space-y-2 text-sm text-blue-800 dark:text-blue-200">
+          <ul className="text-accent dark:text-accent space-y-2 text-sm">
             <li>• {translations.newPage.howItWorksSteps['1']}</li>
             <li>• {translations.newPage.howItWorksSteps['2']}</li>
             <li>• {translations.newPage.howItWorksSteps['3']}</li>
@@ -51,6 +53,6 @@ export default function NuevaMicronarrativaClient() {
           </ul>
         </div>
       </div>
-    </div>
+    </SectionContainer>
   )
 }
